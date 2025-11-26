@@ -30,7 +30,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Ventas");
+                    ValidarPermisos("Mis ventas");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -57,23 +57,17 @@ namespace fpWebApp
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             txbFechaIni.Attributes.Add("type", "date");
-                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            //CargarPlanes();
                         }
                     }
-                   // ddlMes.SelectedValue = DateTime.Now.Month.ToString();
-                  //  ddlAnnio.SelectedValue = DateTime.Now.Year.ToString();
 
-                    if (Session["idSede"].ToString() == "11")
-                    {
-                        divPagosRechazados.Visible = true;
-                    }
-
+                    int filtroMedioPago = int.TryParse(ddlTipoPago.SelectedValue, out int valor)
+                    ? valor
+                    : 0;
                     listaVentas();
-                    //listaTransaccionesPorFecha(Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),txbFechaIni.Value.ToString(),txbFechaFin.Value.ToString());
-                   // VentasWeb();
+
                     //VentasCounter();
                 }
                 else
@@ -107,54 +101,93 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        //private void CargarPlanes()
-        //{
-        //    ddlPlanes.Items.Clear();
-        //    ListItem li = new ListItem("Todos los planes", "0");
-        //    ddlPlanes.Items.Add(li);
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarPlanesVigentes();
-
-        //    ddlPlanes.DataSource = dt;
-        //    ddlPlanes.DataBind();
-        //    dt.Dispose();
-        //}
-
         private void listaVentas()
         {
             clasesglobales cg = new clasesglobales();
-
-
-            ltMes2.Text = ltMes1.Text;
-            ltMes3.Text = ltMes1.Text;
-            ltMes4.Text = ltMes1.Text;
-            ltMes5.Text = ltMes1.Text;
-
-            CalcularTotalesVentas();
-            HistorialCobrosRechazados();
-
-
-
-            int  filtroMedioPago = Convert.ToInt32(ddlTipoPago.SelectedValue); 
-
-   
-
-            DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago,"2025-11-18","2025-11-18", out decimal valorTotal);
-
-            rpPagos.DataSource = dt;
-            rpPagos.DataBind();
-
-            decimal sumatoriaValor = 0;
-
-            if (dt.Rows.Count > 0)
+            try
             {
-                object suma = dt.Compute("SUM(Valor)", "");
-                sumatoriaValor = suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
+                ltMes2.Text = ltMes1.Text;
+                ltMes3.Text = ltMes1.Text;
+                ltMes4.Text = ltMes1.Text;
+                ltMes5.Text = ltMes1.Text;
+
+                CalcularTotalesVentas();
+
+                int filtroMedioPago = Convert.ToInt32(ddlTipoPago.SelectedValue);
+
+                DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago, txbFechaIni.Value, txbFechaFin.Value, out decimal valorTotal);
+
+                rpPagos.DataSource = dt;
+                rpPagos.DataBind();
+
+                /////////////////////////////////INDICADORES/////////////////////////////////////////////////////
+                DateTime hoyInicio = DateTime.Today;                          
+                DateTime hoyFin = hoyInicio.AddDays(1).AddTicks(-1);
+
+                DateTime ayerInicio = DateTime.Today.AddDays(-1);                 // 2025-11-25 00:00:00
+                DateTime ayerFin = ayerInicio.AddHours(23).AddMinutes(59).AddSeconds(59); // 2025-11-25 23:59:59
+
+                DateTime mesInicio = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                DateTime mesFin = mesInicio.AddMonths(1).AddTicks(-1);
+
+
+                DataRow[] filasHoy = dt.Select(
+                    $"FechaHoraPago >= #{hoyInicio:MM/dd/yyyy HH:mm:ss}# AND FechaHoraPago <= #{hoyFin:MM/dd/yyyy HH:mm:ss}#"
+                );
+
+                DataRow[] filasAyer = dt.Select(
+                    $"FechaHoraPago >= #{ayerInicio:yyyy-MM-dd HH:mm:ss}# AND FechaHoraPago <= #{ayerFin:yyyy-MM-dd HH:mm:ss}#"
+                );
+
+                DataRow[] filasMes = dt.Select(
+                    $"FechaHoraPago >= #{mesInicio:MM/dd/yyyy HH:mm:ss}# AND FechaHoraPago <= #{mesFin:MM/dd/yyyy HH:mm:ss}#"
+                );
+
+
+                // Ventas de hoy
+                decimal ventasHoy = filasHoy.Length > 0 ? filasHoy.Sum(r => r.Field<int>("Valor")) : 0;
+
+                // Ventas de ayer
+                decimal ventasAyer = 0;
+                int registrosAyer = 0;
+
+
+
+                if (filasAyer.Length > 0)
+                {
+                    ventasAyer = filasAyer.Sum(f => Convert.ToDecimal(f["Valor"]));
+                }
+
+                ltVentasMes.Text = "$ " + ventasAyer.ToString("N0");
+
+                // Ventas del mes
+                decimal ventasMes = filasMes.Length > 0 ? filasMes.Sum(r => r.Field<int>("Valor")) : 0;
+
+                // Cantidad de transacciones hoy
+                int transaccionesHoy = filasHoy.Length;
+
+                // Ticket promedio del día
+                decimal ticketPromedioHoy = transaccionesHoy > 0 ? ventasHoy / transaccionesHoy : 0;
+
+                ltVentasHoy.Text = "$ " + ventasHoy.ToString("N0");
+                ltVentasMes.Text = "$ " + ventasAyer.ToString("N0");
+                //ltVentasMes.Text = "$ " + ventasMes.ToString("N0");
+                ltTicketPromedio.Text = "$ " + ticketPromedioHoy.ToString("N0");
+                ltTransaccionesHoy.Text = transaccionesHoy.ToString("N0");
+
+                dt.Dispose();
+
+            }
+            catch (Exception ex)
+            {
+
+                ltMensaje.Text =
+                 "<div class='alert alert-danger alert-dismissable'>" +
+                 "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
+                 "<strong>Error:</strong> " + ex.Message.ToString() +
+                 "</div>";
             }
 
-            ltCuantos1.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
-            ltRegistros1.Text = dt.Rows.Count.ToString();
-            dt.Dispose();
 
 
         }
@@ -238,7 +271,7 @@ namespace fpWebApp
                 }
             }
 
-            ltCuantos4.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
+            ltTransaccionesHoy.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
             ltRegistros4.Text = sumatoriaRegistros.ToString();
         }
 

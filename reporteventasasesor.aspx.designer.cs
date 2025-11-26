@@ -42,6 +42,15 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divMensaje;
 
         /// <summary>
+        /// Control ltMensaje.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltMensaje;
+
+        /// <summary>
         /// Control paginasperfil.
         /// </summary>
         /// <remarks>
@@ -96,13 +105,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltMes1;
 
         /// <summary>
-        /// Control ltCuantos1.
+        /// Control ltVentasHoy.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCuantos1;
+        protected global::System.Web.UI.WebControls.Literal ltVentasHoy;
 
         /// <summary>
         /// Control ltRegistros1.
@@ -123,13 +132,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltMes2;
 
         /// <summary>
-        /// Control ltCuantos2.
+        /// Control ltVentasMes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCuantos2;
+        protected global::System.Web.UI.WebControls.Literal ltVentasMes;
 
         /// <summary>
         /// Control ltRegistros2.
@@ -150,13 +159,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltMes3;
 
         /// <summary>
-        /// Control ltCuantos3.
+        /// Control ltTicketPromedio.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCuantos3;
+        protected global::System.Web.UI.WebControls.Literal ltTicketPromedio;
 
         /// <summary>
         /// Control ltRegistros3.
@@ -168,13 +177,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltRegistros3;
 
         /// <summary>
-        /// Control ltCuantos4.
+        /// Control ltTransaccionesHoy.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCuantos4;
+        protected global::System.Web.UI.WebControls.Literal ltTransaccionesHoy;
 
         /// <summary>
         /// Control ltRegistros4.

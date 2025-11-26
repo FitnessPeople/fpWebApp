@@ -46,13 +46,13 @@
     </script>
 
     <script>
-       $(document).ready(function () {
-           $('.datepicker').datepicker({
-               format: 'yyyy-mm-dd',
-               autoclose: true,
-               todayHighlight: true
-           });
-       });
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
     </script>
 </head>
 
@@ -148,6 +148,10 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                    </div>
+
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form id="form1" runat="server">
@@ -193,12 +197,12 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-success pull-right">Mes actual</span>--%>
-                                                <h5>Ventas totales
+                                                <h5>Ventas hoy
                                                     <asp:Literal ID="ltMes1" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
-                                                    <asp:Literal ID="ltCuantos1" runat="server"></asp:Literal></h1>
+                                                    <asp:Literal ID="ltVentasHoy" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros1" runat="server"></asp:Literal>
                                                     registros
@@ -211,12 +215,12 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-info pull-right">Mes actual</span>--%>
-                                                <h5>Ventas Web
+                                                <h5>Ventas mes
                                                     <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
-                                                    <asp:Literal ID="ltCuantos2" runat="server"></asp:Literal></h1>
+                                                    <asp:Literal ID="ltVentasMes" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros2" runat="server"></asp:Literal>
                                                     registros
@@ -229,12 +233,12 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-primary pull-right">Mes actual</span>--%>
-                                                <h5>Ventas Counter
+                                                <h5>Ventas promedio
                                                     <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
-                                                    <asp:Literal ID="ltCuantos3" runat="server"></asp:Literal></h1>
+                                                    <asp:Literal ID="ltTicketPromedio" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros3" runat="server"></asp:Literal>
                                                     registros
@@ -247,11 +251,11 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-danger pull-right">Mes actual</span>--%>
-                                                <h5>Ventas Totales Acumuladas</h5>
+                                                <h5>No. Trasaciones </h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
-                                                    <asp:Literal ID="ltCuantos4" runat="server"></asp:Literal></h1>
+                                                    <asp:Literal ID="ltTransaccionesHoy" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros4" runat="server"></asp:Literal>
                                                     registros
@@ -286,11 +290,11 @@
                                                 <div class="form-group">
                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Todos" Value="0"></asp:ListItem>
+                                                        <asp:ListItem Text="Todos" Value="0" Selected="True"></asp:ListItem>
                                                         <asp:ListItem Text="Efectivo" Value="1"></asp:ListItem>
                                                         <asp:ListItem Text="Transferencia" Value="2"></asp:ListItem>
                                                         <asp:ListItem Text="Datafono" Value="3"></asp:ListItem>
-                                                        <asp:ListItem Text="Pago en línea" Value="4" Selected="True"></asp:ListItem>
+                                                        <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
                                                         <asp:ListItem Text="Financiación" Value="5"></asp:ListItem>
 
                                                     </asp:DropDownList>
