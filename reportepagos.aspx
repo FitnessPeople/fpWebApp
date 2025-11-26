@@ -6,8 +6,6 @@
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
-<%--<%@ Register Src="~/controles/indicadoresreportespagos.ascx" TagPrefix="uc1" TagName="indicadoresreportespagos" %>--%>
-
 
 <!DOCTYPE html>
 <html>
@@ -283,7 +281,7 @@
                                             </div>
                                             <div class="col-lg-2">
                                                 <div>
-                                                    <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
+                                                    <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlanAgrupado" DataValueField="idPlanAgrupado"
                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                     </asp:DropDownList>
                                                 </div>
@@ -329,7 +327,7 @@
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
                                             data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
@@ -363,7 +361,7 @@
                                                             <td><%# Eval("CanalVenta") %></td>
                                                             <td>
                                                                 <asp:Button ID="btnDetalle" runat="server" Text="Ver"
-                                                                    CssClass="btn btn-primary btn-sm"
+                                                                    CssClass="btn btn-primary btn-xs"
                                                                     CommandArgument='<%# Eval("idAfiliadoPlan") %>'
                                                                     OnCommand="btnDetalle_Command"
                                                                     CommandName="mostrarDetalle"
@@ -451,11 +449,11 @@
     <script>
         $('.footable').footable();
 
-        const miTabla = document.getElementById('miTabla');
-        const tbody = miTabla.tBodies[0];
-        const numeroRegistros = tbody.rows.length;
+        //const miTabla = document.getElementById('miTabla');
+        //const tbody = miTabla.tBodies[0];
+        //const numeroRegistros = tbody.rows.length;
 
-        console.log("Número total de registros:", numeroRegistros);
+        //console.log("Número total de registros:", numeroRegistros);
     </script>
 
     <script>

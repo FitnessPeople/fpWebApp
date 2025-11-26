@@ -108,10 +108,25 @@ namespace fpWebApp
         private void CargarPlanes()
         {
             ddlPlanes.Items.Clear();
-            ListItem li = new ListItem("Todos los planes", "0");
-            ddlPlanes.Items.Add(li);
+            //ListItem li = new ListItem("Todos los planes", "0");
+            //ddlPlanes.Items.Add(li);
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesVigentes();
+            //DataTable dt = cg.ConsultarPlanesVigentes();
+            string strQuery = @"
+                SELECT 
+                    CASE 
+                        WHEN DebitoAutomatico = 1 THEN 'Débito automático'
+                        ELSE NombrePlan
+                    END AS NombrePlanAgrupado,
+                    COUNT(*) AS Cantidad, 
+                    CASE 
+                        WHEN DebitoAutomatico = 1 THEN 0
+                        ELSE idPlan
+                    END AS idPlanAgrupado 
+                FROM planes 
+                WHERE (DATEDIFF(FechaFinal, CURDATE()) >= 0 OR Permanente = 1) 
+                GROUP BY NombrePlanAgrupado, idPlanAgrupado;";
+            DataTable dt = cg.TraerDatos(strQuery);
 
             ddlPlanes.DataSource = dt;
             ddlPlanes.DataBind();

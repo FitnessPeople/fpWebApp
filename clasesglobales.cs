@@ -11287,6 +11287,38 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public string ActualizarIdSiigoFacturaDePagoPlanAfiliadoxIdPlanAfiliado(int idAfiliadoPago, string idSiigoFactura)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open(); // Abrir conexión antes de usarla
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ID_SIIGO_FACTURA_DE_PAGO_ID_PLAN_AFILIADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_afiliado_pago", idAfiliadoPago);
+                        cmd.Parameters.AddWithValue("@p_id_siigo_factura", idSiigoFactura);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
         public DataTable ConsultarIntegracion(int idSede)
         {
             DataTable dt = new DataTable();

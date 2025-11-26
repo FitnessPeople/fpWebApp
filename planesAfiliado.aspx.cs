@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -60,8 +61,12 @@ namespace fpWebApp
                         CargarPlanesAfiliado();
                         ConsultarCodDatafono();
 
-                        string strData = ListarDetalle();
-                        ltDetalleWompi.Text = strData;
+                        txbWompi.Enabled = false;
+                        txbDatafono.Enabled = false;
+                        txbEfectivo.Enabled = false;
+                        txbTransferencia.Enabled = false;
+                        txbNroAprobacion.Enabled = false;
+
                     }
                     else
                     {
@@ -338,14 +343,14 @@ namespace fpWebApp
 
         protected void rpPlanesAfiliado_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            Repeater rptPlanes = sender as Repeater; // Get the Repeater control object.
+            Repeater rptPlanes = sender as Repeater;
 
-            // If the Repeater contains no data.
+            // Si el repeater no contiene datos
             if (rpPlanesAfiliado.Items.Count < 1)
             {
                 if (e.Item.ItemType == ListItemType.Footer)
                 {
-                    // Show the Error Label (if no data is present).
+                    // Muestra la etiqueta de error (si no hay datos)
                     Label lblSinRegistros = e.Item.FindControl("lblSinRegistros") as Label;
                     if (lblSinRegistros != null)
                     {
@@ -357,6 +362,9 @@ namespace fpWebApp
 
         protected void txbWompi_TextChanged(object sender, EventArgs e)
         {
+            string strData = ListarDetalle();
+            ltDetalleWompi.Text = strData;
+
             if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
             {
                 int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
@@ -369,13 +377,13 @@ namespace fpWebApp
                     Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
                 {
                     string script = @"
-                                    Swal.fire({
-                                        title: 'Precio total',
-                                        text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
-                                        icon: 'error'
-                                    }).then(() => {
-                                    });
-                                    ";
+                        Swal.fire({
+                            title: 'Precio total',
+                            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                            icon: 'error'
+                        }).then(() => {
+                        });
+                        ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     return;
                 }
@@ -397,19 +405,22 @@ namespace fpWebApp
                     Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
                 {
                     string script = @"
-                                    Swal.fire({
-                                        title: 'Precio total',
-                                        text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
-                                        icon: 'error'
-                                    }).then(() => {
-                                    });
-                                    ";
+                        Swal.fire({
+                            title: 'Precio total',
+                            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                            icon: 'error'
+                        }).then(() => {
+                        });
+                        ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     return;
                 }
             }
         }
 
+        /// <summary>
+        /// Función para iniciar el pago por datafono
+        /// </summary>
         private async void IniciarPago()
         {
             string urlRedirect = $"planesAfiliado?id=" + Request.QueryString["id"].ToString();
@@ -439,7 +450,7 @@ namespace fpWebApp
 
         protected async void tmrRespuesta_Tick(object sender, EventArgs e)
         {
-            string urlRedirect = $"register?idPlan={Session["idPlan"]}";
+            string urlRedirect = $"planesAfiiliado?id={Session["IdAfiliado"]}";
             int intentos = (int)(Session["intentos"] ?? 0);
 
             string idTransaccion = Session["idTransaccion"]?.ToString();
@@ -484,8 +495,10 @@ namespace fpWebApp
 
                 Session["idTransaccionRRN"] = partesRespuesta[12];
                 Session["numReciboDatafono"] = partesRespuesta[10];
+                
+                txbNroAprobacion.Text = Session["numReciboDatafono"].ToString();
 
-                await ProcesarPagoExitosoAsync();
+                //await ProcesarPagoExitosoAsync();
             }
             else if ((respuesta.Contains("Cod:00") && (respuesta.Contains("Msj:1") || respuesta.Contains("Msj:01"))))
             {
@@ -495,7 +508,7 @@ namespace fpWebApp
             }
         }
 
-        private async Task ProcesarPagoExitosoAsync()
+        private async Task ProcesarPagoExitosoAsync(int idAfiliadoPlan)
         {
             string urlRedirect = $"planesAfiliado?id=" + Request.QueryString["id"].ToString();
 
@@ -525,11 +538,13 @@ namespace fpWebApp
                 //int idVendedor = 856;
                 //int idPayment = 9438;
                 int idSede = Session["idSede"] != null ? Convert.ToInt32(Session["idSede"].ToString()) : 0;
-                string codSiigoPlan = "COD2433";
-                string nombrePlan = "Pago de suscripción";
-                int precioPlanSiigo = 10000;
+                string codSiigoPlan = ViewState["codSiigoPlan"].ToString();
+                string nombrePlan = ViewState["nombrePlan"].ToString();
+                //int precioPlanSiigo = Convert.ToInt32(txbTotal.Text.ToString());
+                int precioPlanSiigo = Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", ""));
                 string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
-                    ViewState["DocumentoAfiliado"].ToString(),
+                    //ViewState["DocumentoAfiliado"].ToString(),
+                    "1005137101",
                     codSiigoPlan,
                     nombrePlan,
                     precioPlanSiigo,
@@ -539,48 +554,49 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
 
                 // 3. Registro de afiliación en la base de datos (AfiliadoPlan)
-                cg.InsertarAfiliadoPlan(
-                    int.Parse(Session["idAfiliado"].ToString()),
-                    int.Parse(Session["idPlan"].ToString()),
-                    Session["fechaInicioPlan"].ToString(),
-                    Session["fechaFinPlan"].ToString(),
-                    int.Parse(Session["meses"].ToString()),
-                    int.Parse(Session["valorPlan"].ToString()),
-                    "Débito automático", // TODO: Cambiar dependiendo el plan
-                    "Pendiente"
-                );
+                //cg.InsertarAfiliadoPlan(
+                //    int.Parse(Session["idAfiliado"].ToString()),
+                //    int.Parse(Session["idPlan"].ToString()),
+                //    Session["fechaInicioPlan"].ToString(),
+                //    Session["fechaFinPlan"].ToString(),
+                //    int.Parse(Session["meses"].ToString()),
+                //    int.Parse(Session["valorPlan"].ToString()),
+                //    "Débito automático", // TODO: Cambiar dependiendo el plan
+                //    "Pendiente"
+                //);
 
                 // 4. Obtención de idAfiliadoPlan recién creado
-                DataTable dt = cg.ConsultarIdAfiliadoPlanPorIdAfiliado(int.Parse(Session["idAfiliado"].ToString()));
-                if (dt.Rows.Count == 0)
-                {
-                    MostrarAlerta("Error", "No se pudo recuperar el plan del afiliado.", "error", urlRedirect);
-                    return;
-                }
+                //DataTable dt = cg.ConsultarIdAfiliadoPlanPorIdAfiliado(int.Parse(Session["idAfiliado"].ToString()));
+                //if (dt.Rows.Count == 0)
+                //{
+                //    MostrarAlerta("Error", "No se pudo recuperar el plan del afiliado.", "error", urlRedirect);
+                //    return;
+                //}
 
-                int idAfiliadoPlan = int.Parse(dt.Rows[0]["idAfiliadoPlan"].ToString());
+                //int idAfiliadoPlan = int.Parse(dt.Rows[0]["idAfiliadoPlan"].ToString());
                 Session["idAfiliadoPlan"] = idAfiliadoPlan;
 
                 //string referencia = Session["documentoAfiliado"].ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
                 string codDatafono = Session["codDatafono"].ToString();
 
                 // 5. Registro de pago en la base de datos (PagosPlanAfiliado)
-                cg.InsertarPagoPlanAfiliadoWeb(
-                    idAfiliadoPlan,
-                    int.Parse(Session["valorPlan"].ToString()),
-                    3,
-                    Session["idTransaccion"].ToString(),
-                    "Ninguno",
-                    152,
-                    "Pendiente",
-                    idSiigoFactura,
-                    null,
-                    null,
-                    null,
-                    codDatafono,
-                    Session["idTransaccionRRN"].ToString(),
-                    Session["numReciboDatafono"].ToString()
-                );
+                cg.ActualizarIdSiigoFacturaDePagoPlanAfiliadoxIdPlanAfiliado(idAfiliadoPlan, idSiigoFactura);
+                //cg.InsertarPagoPlanAfiliadoWeb(
+                //    idAfiliadoPlan,
+                //    int.Parse(Session["valorPlan"].ToString()),
+                //    3,
+                //    Session["idTransaccion"].ToString(),
+                //    "Ninguno",
+                //    152,
+                //    "Pendiente",
+                //    idSiigoFactura,
+                //    null,
+                //    null,
+                //    null,
+                //    codDatafono,
+                //    Session["idTransaccionRRN"].ToString(),
+                //    Session["numReciboDatafono"].ToString()
+                //);
 
                 LimpiarTodo();
                 MostrarAlerta("Pago Aprobado", "La transacción fue realizada exitosamente.", "success", urlRedirect);
@@ -617,14 +633,17 @@ namespace fpWebApp
                 if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
                     Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
                 {
+                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                    //MostrarAlerta("Precio total", "Precio total incorrecto. Proporcione los valores adecuados para el total.", "error", "");
+
                     string script = @"
-                                    Swal.fire({
-                                        title: 'Precio total',
-                                        text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
-                                        icon: 'error'
-                                    }).then(() => {
-                                    });
-                                    ";
+                        Swal.fire({
+                            title: 'Precio total',
+                            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                            icon: 'error'
+                        }).then(() => {
+                        });
+                        ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     return;
                 }
@@ -641,20 +660,29 @@ namespace fpWebApp
                 if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
                     Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
                 {
+                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                    //MostrarAlerta("Precio total", "Precio total incorrecto. Proporcione los valores adecuados para el total.", "error", "");
+                    //return;
+
                     string script = @"
-                                    Swal.fire({
-                                        title: 'Precio total',
-                                        text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
-                                        icon: 'error'
-                                    }).then(() => {
-                                    });
-                                    ";
+                        Swal.fire({
+                            title: 'Precio total',
+                            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                            icon: 'error'
+                        }).then(() => {
+                        });
+                        ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                     return;
                 }
             }
         }
 
+        /// <summary>
+        /// Función para realizar el pago asincrónico con Redeban
+        /// </summary>
+        /// <param name="precioPlan"></param>
+        /// <returns></returns>
         private async Task<bool> RealizarPagoAsync(int precioPlan)
         {
             string urlRedirect = $"planesAfiliado?id=" + Request.QueryString["id"].ToString();
@@ -768,28 +796,29 @@ namespace fpWebApp
             ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
 
-        private void btn_Click(object sender, CommandEventArgs e)
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanPorId(Convert.ToInt32(e.CommandArgument));
+        //private void btn_Click(object sender, CommandEventArgs e)
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarPlanPorId(Convert.ToInt32(e.CommandArgument));
 
-            ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
-            ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
-            ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
-            ViewState["precioMinimo"] = Convert.ToInt32(dt.Rows[0]["PrecioMinimo"].ToString());
-            ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
-            ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
-            ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());
+        //    ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
+        //    ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
+        //    ViewState["codSiigoPlan"] = dt.Rows[0]["CodSiigoPlan"].ToString();
+        //    ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
+        //    ViewState["precioMinimo"] = Convert.ToInt32(dt.Rows[0]["PrecioMinimo"].ToString());
+        //    ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
+        //    ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
+        //    ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());
 
-            ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
-            ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
+        //    ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
+        //    ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
 
-            CalculoPrecios();
-            ActivarCortesia(ViewState["mesesCortesia"].ToString());
+        //    CalculoPrecios();
+        //    ActivarCortesia(ViewState["mesesCortesia"].ToString());
 
-            ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
-            ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
-        }
+        //    ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
+        //    ltNombrePlan.Text = "<b>" + ViewState["nombrePlan"].ToString() + "</b>";
+        //}
 
         /// <summary>
         /// Calcula y muestra los precios finales del plan, incluyendo descuento, ahorro, valor por mes,
@@ -838,15 +867,8 @@ namespace fpWebApp
 
             if (ViewState["idPlan"] == null)
             {
-                string script = @"
-                                    Swal.fire({
-                                        title: 'Elije un plan',
-                                        text: 'Debes seleccionar un plan de la lista.',
-                                        icon: 'error'
-                                    }).then(() => {
-                                    });
-                                    ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                MostrarAlerta("Elije un plan", "Debes seleccionar un plan de la lista.", "error", "");
                 txbWompi.Text = "";
                 return;
             }
@@ -884,7 +906,7 @@ namespace fpWebApp
         /// Si la URL ya es corta (menos de 30 caracteres) o ocurre un error en la solicitud, se retorna la URL original.
         /// </returns>
         /// <remarks>
-        /// Usa una solicitud HTTP al endpoint público de TinyURL para obtener la versión reducida de la URL.
+        /// Usa una solicitud HTTP al endpoint público para obtener la versión reducida de la URL.
         /// Si el servicio no está disponible o se produce una excepción, se maneja silenciosamente y se retorna la URL original.
         /// </remarks>
         public static string AcortarURL(string url)
@@ -1017,7 +1039,6 @@ namespace fpWebApp
         /// - Registra el plan con fecha de inicio y calcula fecha final con base en meses y días de cortesía.
         /// - Registra también el pago asociado al plan, incluyendo el tipo de pago (Wompi, datáfono, transferencia o efectivo),
         ///   banco (si aplica), y número de referencia (si aplica).
-        /// 
         /// En caso de error, se muestra un mensaje al usuario.
         /// </remarks>
         /// <summary>
@@ -1025,7 +1046,7 @@ namespace fpWebApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected void lbAgregarPlan_Click(object sender, EventArgs e)
+        protected async void lbAgregarPlan_Click(object sender, EventArgs e)
         {
             int idAfiliado = Convert.ToInt32(Session["IdAfiliado"].ToString());
             int idCanalVenta = 0;
@@ -1041,14 +1062,8 @@ namespace fpWebApp
                         if (dt.Rows[0]["EstadoPlan"].ToString() == "Activo")
                         {
                             string fechaFinal = string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]);
-                            string script = $@"
-                                Swal.fire({{
-                                    title: 'Plan activo',
-                                    text: 'El afiliado ya tiene un plan activo hasta el {fechaFinal}. Modifique la fecha de inicio para continuar.',
-                                    icon: 'warning'
-                                }});
-                            ";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "PlanActivo", script, true);
+                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                            MostrarAlerta("Plan activo", "El afiliado ya tiene un plan activo hasta el " + fechaFinal + ". Modifique la fecha de inicio para continuar.", "warning", "");
                         }
                         dt.Dispose();
                     }
@@ -1056,30 +1071,16 @@ namespace fpWebApp
                     //{
                     if (txbTotal.Text.ToString() == "")
                         {
-                            string script = @"
-                                Swal.fire({
-                                    title: 'Verificación',
-                                    text: 'Falta el valor a pagar',
-                                    icon: 'error'
-                                }).then(() => {
-                                });
-                                ";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                            MostrarAlerta("Verificación", "Verificación", "error", "");
                         }
                         else
                         {
                             if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
                                 Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
                             {
-                                string script = @"
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: 'Precio incorrecto. Intenta nuevamente.',
-                                        icon: 'error'
-                                    }).then(() => {
-                                    });
-                                    ";
-                                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                                MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error", "");
                             }
                             else
                             {
@@ -1116,40 +1117,94 @@ namespace fpWebApp
                                         string strTipoPago = string.Empty;
                                         string strReferencia = string.Empty;
                                         string strBanco = string.Empty;
+                                        string respuesta = string.Empty;
 
                                         if (txbWompi.Text.ToString() != "$0")
                                         {
-                                            strTipoPago = dt2.Rows[4]["idMedioPago"].ToString(); //Pago en linea - Wompi
+                                            strTipoPago = dt2.Rows[3]["idMedioPago"].ToString(); //Pago en linea - Wompi
+
+                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+                                                Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")),
+                                                Convert.ToInt32(strTipoPago),
+                                                strReferencia,
+                                                "Wompi",
+                                                Convert.ToInt32(Session["idUsuario"].ToString()),
+                                                "Aprobado",
+                                                "",
+                                                idCanalVenta,
+                                                Convert.ToInt32(Session["idcrm"]));
                                         }
+
                                         if (txbDatafono.Text.ToString() != "$0")
                                         {
                                             strTipoPago = dt2.Rows[2]["idMedioPago"].ToString(); //Pago con Datafono Tarjeta Debito
                                             strReferencia = txbNroAprobacion.Text.ToString();
+
+                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+                                                Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")),
+                                                Convert.ToInt32(strTipoPago),
+                                                strReferencia,
+                                                strBanco,
+                                                Convert.ToInt32(Session["idUsuario"].ToString()),
+                                                "Aprobado",
+                                                "",
+                                                idCanalVenta,
+                                                Convert.ToInt32(Session["idcrm"]));
+                                            strReferencia = "";
                                         }
-                                        if (txbTransferencia.Text.ToString() != "$0")
-                                        {
-                                            strTipoPago = dt2.Rows[1]["idMedioPago"].ToString();  //Pago con Transferencia
-                                        }
+
                                         if (txbEfectivo.Text.ToString() != "$0")
                                         {
                                             strTipoPago = dt2.Rows[0]["idMedioPago"].ToString();  //Pago con Efectivo
+
+                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+                                                Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")),
+                                                Convert.ToInt32(strTipoPago),
+                                                strReferencia,
+                                                strBanco,
+                                                Convert.ToInt32(Session["idUsuario"].ToString()),
+                                                "Aprobado",
+                                                "",
+                                                idCanalVenta,
+                                                Convert.ToInt32(Session["idcrm"]));
                                         }
 
-                                        if (rblBancos.SelectedItem == null)
+                                    if (txbTransferencia.Text.ToString() != "$0")
                                         {
-                                            strBanco = "Ninguno";
+                                            strTipoPago = dt2.Rows[1]["idMedioPago"].ToString();  //Pago con Transferencia
+                                            if (rblBancos.SelectedItem == null)
+                                            {
+                                                strBanco = "Ninguno";
+                                            }
+                                            else
+                                            {
+                                                strBanco = rblBancos.SelectedItem.Value.ToString();
+                                            }
+
+                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+                                                Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")),
+                                                Convert.ToInt32(strTipoPago),
+                                                strReferencia,
+                                                strBanco,
+                                                Convert.ToInt32(Session["idUsuario"].ToString()),
+                                                "Aprobado",
+                                                "",
+                                                idCanalVenta,
+                                                Convert.ToInt32(Session["idcrm"]));
                                         }
 
-                                        string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                            Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                            Convert.ToInt32(strTipoPago), 
-                                            strReferencia, 
-                                            strBanco, 
-                                            Convert.ToInt32(Session["idUsuario"].ToString()), 
-                                            "Aprobado", 
-                                            "", 
-                                            idCanalVenta, 
-                                            Convert.ToInt32(Session["idcrm"]));
+                                        await ProcesarPagoExitosoAsync(idAfiliadoPlan);
+
+                                        //string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+                                        //    Convert.ToInt32(ViewState["precioTotal"].ToString()),
+                                        //    Convert.ToInt32(strTipoPago), 
+                                        //    strReferencia, 
+                                        //    strBanco, 
+                                        //    Convert.ToInt32(Session["idUsuario"].ToString()), 
+                                        //    "Aprobado", 
+                                        //    "", 
+                                        //    idCanalVenta, 
+                                        //    Convert.ToInt32(Session["idcrm"]));
 
                                         DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(int.Parse(Session["IdAfiliado"].ToString()));
                                         string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()), 
@@ -1157,6 +1212,7 @@ namespace fpWebApp
                                             Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()), 
                                             Convert.ToInt32(Session["idUsuario"].ToString()), 
                                             3);
+                                        dt3.Dispose();
 
                                         if (respuesta == "OK" && respuesta1 == "OK")
                                         {
@@ -1195,41 +1251,22 @@ namespace fpWebApp
                                         }
                                         else
                                         {
-                                            string script = @"
-                                            Swal.fire({
-                                                title: 'Error',
-                                                text: 'No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + @"',
-                                                icon: 'error'
-                                            });
-                                        ";
-                                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                                            MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error", "");
                                         }
 
                                     }
                                     else
                                     {
-                                        string script = @"
-                                            Swal.fire({
-                                                title: 'Error',
-                                                text: 'No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + @"',
-                                                icon: 'error'
-                                            });
-                                        ";
-                                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                                        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                                        MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error", "");
                                     }
 
                                 }
                                 catch (Exception ex)
                                 {
-                                    string script = @"
-                                        Swal.fire({
-                                            title: 'Error',
-                                            text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
-                                            icon: 'error'
-                                        }).then(() => {
-                                        });
-                                        ";
-                                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                                    MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error", "");
                                 }
                             }
                         }
@@ -1239,28 +1276,14 @@ namespace fpWebApp
 
                 else
                 {
-                    string script = @"
-                        Swal.fire({
-                            title: 'Validación',
-                            text: 'Por favor, selecciona la fecha de inicio del plan.',
-                            icon: 'error'
-                        }).then(() => {
-                        });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                    MostrarAlerta("Validación", "Por favor, selecciona la fecha de inicio del plan.", "error", "");
                 }
             }
             else
             {
-                string script = @"
-                    Swal.fire({
-                        title: 'Validación',
-                        text: 'Debes seleccionar un tipo de plan para continuar.',
-                        icon: 'warning'
-                    }).then(() => {
-                    });
-                    ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                MostrarAlerta("Validación", "Debes seleccionar un tipo de plan para continuar.", "warning", "");
             }
             //}
         }
@@ -1288,12 +1311,18 @@ namespace fpWebApp
         {
             if (e.CommandName == "SeleccionarPlan")
             {
+                txbWompi.Enabled = true;
+                txbDatafono.Enabled = true;
+                txbEfectivo.Enabled = true;
+                txbTransferencia.Enabled = true;
+
                 int idPlan = Convert.ToInt32(e.CommandArgument.ToString());
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarPlanPorId(idPlan);
 
                 ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
                 ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
+                ViewState["codSiigoPlan"] = dt.Rows[0]["CodSiigoPlan"].ToString();
                 ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
                 ViewState["precioMinimo"] = Convert.ToInt32(dt.Rows[0]["PrecioMinimo"].ToString());
                 ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());

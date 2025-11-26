@@ -46,13 +46,13 @@
     </script>
 
     <script>
-       $(document).ready(function () {
-           $('.datepicker').datepicker({
-               format: 'yyyy-mm-dd',
-               autoclose: true,
-               todayHighlight: true
-           });
-       });
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true
+            });
+        });
     </script>
 </head>
 
@@ -193,7 +193,8 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-success pull-right">Mes actual</span>--%>
-                                                <h5>Ventas totales <asp:Literal ID="ltMes1" runat="server"></asp:Literal></h5>
+                                                <h5>Ventas totales
+                                                    <asp:Literal ID="ltMes1" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -210,7 +211,8 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-info pull-right">Mes actual</span>--%>
-                                                <h5>Ventas Web <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
+                                                <h5>Ventas Web
+                                                    <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -227,7 +229,8 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-primary pull-right">Mes actual</span>--%>
-                                                <h5>Ventas Counter <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
+                                                <h5>Ventas Counter
+                                                    <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -263,7 +266,8 @@
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Reporte de pagos <asp:Literal ID="ltMes4" runat="server"></asp:Literal>:</h5>
+                                        <h5>Reporte de pagos
+                                            <asp:Literal ID="ltMes4" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -316,7 +320,7 @@
                                             <div class="col-lg-2">
                                                 <asp:DropDownList ID="ddlAnnio" runat="server" AppendDataBoundItems="true"
                                                     CssClass="form-control input-sm">
-                                                        <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
+                                                    <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
                                                     <asp:ListItem Text="2025" Value="2025"></asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
@@ -338,7 +342,7 @@
                                             <div class="col-lg-1">
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server"
                                                     CausesValidation="false"
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
@@ -349,7 +353,7 @@
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
                                             data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
@@ -400,9 +404,9 @@
                                     </div>
                                 </div>
 
-                                <div class="ibox float-e-margins" id="divPagosRechazados" runat="server" visible="false"> 
+                                <div class="ibox float-e-margins" id="divPagosRechazados" runat="server" visible="false">
                                     <div class="ibox-title">
-                                        <h5>Reporte de pagos rechazados (<asp:Literal ID="ltCuantos" runat="server"></asp:Literal>):</h5>
+                                        <h5>Reporte de pagos rechazados (<asp:Literal ID="ltCuantos" runat="server"></asp:Literal> registros por valor de  <asp:Literal ID="ltTotalPorRecuadar" runat="server"></asp:Literal>):</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -411,17 +415,34 @@
                                     </div>
                                     <div class="ibox-content">
 
+                                        <div class="row" style="font-size: 12px;" runat="server" id="div1">
+                                            <div class="col-lg-10">
+                                                <div class="form-group">
+                                                    <div class="form-group" id="filter-form-container1"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <asp:LinkButton ID="lkbExcel1" runat="server"
+                                                    CausesValidation="false"
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                    OnClick="lkbExcel1_Click">
+                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
+                                            </div>
+                                        </div>
+
                                         <table class="footable table table-striped list-group-item-text" data-paging-size="10"
-                                            data-paging="true" data-sorting="true" 
-                                            data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
-                                            data-filtering="false" data-filter-delay="300"
-                                            data-empty="Sin resultados" id="miTabla2">
+                                            data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                            data-filtering="true" data-filter-container="#filter-form-container1" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">ID</th>
                                                     <th>Documento</th>
                                                     <th>Afiliado</th>
-                                                    <th data-breakpoints="xs sm md">Intentos</th>
+                                                    <th class="text-right">Valor</th>
+                                                    <th data-type="number" data-breakpoints="xs sm md" class="text-center">Intentos</th>
                                                     <th data-breakpoints="xs sm md">Último intento</th>
                                                     <th data-breakpoints="xs sm md">Mensaje</th>
                                                     <%--<th data-breakpoints="xs sm md">Detalle</th>--%>
@@ -434,7 +455,8 @@
                                                             <td><%# Eval("idAfiliadoPlan") %></td>
                                                             <td><%# Eval("DocumentoAfiliado") %></td>
                                                             <td><%# Eval("NombreCompletoAfiliado") %></td>
-                                                            <td><%# Eval("Intentos") %></td>
+                                                            <td class="text-right"><%# Eval("PrecioBase", "{0:C0}") %></td>
+                                                            <td class="text-center"><%# Eval("Intentos") %></td>
                                                             <td><%# Eval("UltimoIntento") %></td>
                                                             <td><%# Eval("Mensaje") %></td>
                                                             <%--<td>
@@ -458,7 +480,8 @@
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Gráficos <asp:Literal ID="ltMes5" runat="server"></asp:Literal>:</h5>
+                                        <h5>Gráficos
+                                            <asp:Literal ID="ltMes5" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -527,11 +550,11 @@
     <script>
         $('.footable').footable();
 
-        const miTabla = document.getElementById('miTabla');
-        const tbody = miTabla.tBodies[0];
-        const numeroRegistros = tbody.rows.length;
+        //const miTabla = document.getElementById('miTabla');
+        //const tbody = miTabla.tBodies[0];
+        //const numeroRegistros = tbody.rows.length;
 
-        console.log("Número total de registros:", numeroRegistros);
+        //console.log("Número total de registros:", numeroRegistros);
     </script>
 
     <script>
@@ -561,7 +584,7 @@
         const ctx1 = document.getElementById('miGrafico1');
 
         const maxVentas1 = Math.max(...datos1.ventas_web, ...datos1.ventas_counter);
-        const maxCantidad1 = Math.max(...datos1.cantidad_web, ...datos1.cantidad_counter); 
+        const maxCantidad1 = Math.max(...datos1.cantidad_web, ...datos1.cantidad_counter);
 
         const maxY11 = redondearSuperior(maxVentas1 * 1.1, 100000);
         const maxY12 = Math.ceil(maxCantidad1 * 1.2);
