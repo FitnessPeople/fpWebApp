@@ -1,4 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Presentation;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using K4os.Compression.LZ4.Internal;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
@@ -6,13 +8,14 @@ using Newtonsoft.Json.Linq;
 using Npgsql;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
-using OfficeOpenXml.Style;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -21,7 +24,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Configuration;
-using System.Drawing;
 using System.Web.Services.Description;
 
 namespace fpWebApp
@@ -357,6 +359,110 @@ namespace fpWebApp
             }
         }
 
+
+        public void ExportarExcelOk(DataTable dt, string nombreArchivo)
+        {
+            if (dt == null || dt.Rows.Count == 0)
+                return;
+
+            IWorkbook workbook = new XSSFWorkbook();
+            ISheet sheet = workbook.CreateSheet("Datos");
+
+            // ----- Estilos -----
+            // Encabezados
+            ICellStyle headerStyle = workbook.CreateCellStyle();
+            headerStyle.Alignment = HorizontalAlignment.Center;
+            headerStyle.VerticalAlignment = VerticalAlignment.Center;
+            headerStyle.BorderTop = BorderStyle.Thin;
+            headerStyle.BorderBottom = BorderStyle.Thin;
+            headerStyle.BorderLeft = BorderStyle.Thin;
+            headerStyle.BorderRight = BorderStyle.Thin;
+
+            IFont font = workbook.CreateFont();
+            font.IsBold = true;
+            headerStyle.SetFont(font);
+
+            // Celdas de datos
+            ICellStyle borderStyle = workbook.CreateCellStyle();
+            borderStyle.BorderTop = BorderStyle.Thin;
+            borderStyle.BorderBottom = BorderStyle.Thin;
+            borderStyle.BorderLeft = BorderStyle.Thin;
+            borderStyle.BorderRight = BorderStyle.Thin;
+
+            // ----- Encabezados -----
+            IRow headerRow = sheet.CreateRow(0);
+            headerRow.HeightInPoints = 20;
+
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                var cell = headerRow.CreateCell(i);
+                cell.SetCellValue(dt.Columns[i].ColumnName);
+                cell.CellStyle = headerStyle;
+            }
+
+            // ----- Datos -----
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                IRow row = sheet.CreateRow(i + 1);
+
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    ICell cell = row.CreateCell(j);
+                    object value = dt.Rows[i][j];
+
+                    if (value == DBNull.Value)
+                    {
+                        cell.SetCellValue("");
+                    }
+                    else
+                    {
+                        // Conversión inteligente de tipos
+                        Type tipo = value.GetType();
+
+                        if (tipo == typeof(int) || tipo == typeof(long))
+                            cell.SetCellValue(Convert.ToInt64(value));
+                        else if (tipo == typeof(decimal) ||
+                                 tipo == typeof(double) ||
+                                 tipo == typeof(float))
+                            cell.SetCellValue(Convert.ToDouble(value));
+                        else if (tipo == typeof(DateTime))
+                            cell.SetCellValue(((DateTime)value).ToString("yyyy-MM-dd HH:mm"));
+                        else
+                            cell.SetCellValue(value.ToString());
+                    }
+
+                    cell.CellStyle = borderStyle;
+                }
+            }
+
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                sheet.AutoSizeColumn(i);
+            }
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                workbook.Write(ms);
+                workbook.Close();
+
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.Buffer = true;
+                HttpContext.Current.Response.Charset = "";
+                HttpContext.Current.Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                HttpContext.Current.Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
+
+                HttpContext.Current.Response.BinaryWrite(ms.ToArray());
+                HttpContext.Current.Response.Flush();
+
+                // Evita que WebForms agregue HTML
+                HttpContext.Current.Response.SuppressContent = true;
+
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            }
+        }
+
+
+
         // Exportar Excel Mejorado
         public void ExportarExcelEPPlus(DataTable dt, string nombreArchivo)
         {
@@ -530,6 +636,176 @@ namespace fpWebApp
             b = Math.Max(0, Math.Min(255, b));
 
             return $"#{r:X2}{g:X2}{b:X2}";
+        }
+
+        public class EncabezadoPiePDF : PdfPageEventHelper
+        {
+            private DataTable data;
+
+            public EncabezadoPiePDF(DataTable dt)
+            {
+                data = dt;
+            }
+
+            public override void OnEndPage(PdfWriter writer, Document doc)
+            {
+                // =============================
+                //     ENCABEZADO SUPERIOR
+                // =============================
+                PdfPTable encabezado = new PdfPTable(2)
+                {
+                    TotalWidth = doc.PageSize.Width - 50
+                };
+                encabezado.DefaultCell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+
+                // Título / logo
+                PdfPCell colLogo = new PdfPCell(new Phrase(
+                    "FITNESS PEOPLE COLOMBIA",
+                    FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 12, BaseColor.BLACK)))
+                {
+                    Border = iTextSharp.text.Rectangle.NO_BORDER,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                encabezado.AddCell(colLogo);
+
+                // Fecha reporte
+                PdfPCell colFecha = new PdfPCell(new Phrase(
+                    "Fecha reporte: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                    FontFactory.GetFont(FontFactory.HELVETICA, 8)))
+                {
+                    Border = iTextSharp.text.Rectangle.NO_BORDER,
+                    HorizontalAlignment = Element.ALIGN_RIGHT
+                };
+                encabezado.AddCell(colFecha);
+
+                // Datos asesor
+                string asesor = data.Rows[0]["NombreEmpleado"].ToString();
+                string usuario = data.Rows[0]["Usuario"].ToString();
+                string canal = data.Rows[0]["CanalVenta"].ToString();
+
+                PdfPCell info = new PdfPCell(new Phrase(
+                    $"Asesor: {asesor}   |   Usuario: {usuario}   |   Canal: {canal}",
+                    FontFactory.GetFont(FontFactory.HELVETICA, 8)))
+                {
+                    Colspan = 2,
+                    Border = iTextSharp.text.Rectangle.NO_BORDER,
+                    PaddingTop = 4
+                };
+
+                encabezado.AddCell(info);
+
+                encabezado.WriteSelectedRows(
+                    0, -1,
+                    25,
+                    doc.PageSize.Height - 20,
+                    writer.DirectContent
+                );
+
+                // =============================
+                //       PIE DE PÁGINA
+                // =============================
+                PdfPTable pie = new PdfPTable(1)
+                {
+                    TotalWidth = doc.PageSize.Width - 50
+                };
+
+                PdfPCell pieCell = new PdfPCell(new Phrase(
+                    "Página " + writer.PageNumber,
+                    FontFactory.GetFont(FontFactory.HELVETICA, 8)))
+                {
+                    Border = iTextSharp.text.Rectangle.NO_BORDER,
+                    HorizontalAlignment = Element.ALIGN_CENTER
+                };
+
+                pie.AddCell(pieCell);
+
+                pie.WriteSelectedRows(
+                    0, -1,
+                    25,
+                    40,
+                    writer.DirectContent
+                );
+            }
+        }
+
+        public void ExportarPDF(DataTable dt, string nombreArchivo)
+        {
+            if (dt == null || dt.Rows.Count == 0)
+                return;
+
+            Document doc = new Document(PageSize.A4, 25, 25, 80, 50);
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                PdfWriter writer = PdfWriter.GetInstance(doc, ms);
+
+                // Activar encabezado y pie
+                writer.PageEvent = new EncabezadoPiePDF(dt);
+
+                doc.Open();
+
+                // Tabla principal del reporte
+                PdfPTable tabla = new PdfPTable(dt.Columns.Count)
+                {
+                    WidthPercentage = 100
+                };
+
+                // Ajuste automático según cantidad de columnas
+                float[] widths = new float[dt.Columns.Count];
+                for (int i = 0; i < dt.Columns.Count; i++)
+                    widths[i] = 4f;
+
+                tabla.SetWidths(widths);
+
+                // Fuente
+                iTextSharp.text.Font headerFont = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 8, BaseColor.WHITE);
+                iTextSharp.text.Font cellFont = FontFactory.GetFont(FontFactory.HELVETICA, 8, BaseColor.BLACK);
+
+                // ENCABEZADOS
+                foreach (DataColumn col in dt.Columns)
+                {
+                    iTextSharp.text.Font headerFont2 = FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 9, iTextSharp.text.BaseColor.BLACK);
+
+                    PdfPCell celda = new PdfPCell(new Phrase(col.ColumnName, headerFont2))
+                    {
+                        BackgroundColor = iTextSharp.text.BaseColor.WHITE,
+                        Border = iTextSharp.text.Rectangle.NO_BORDER, 
+                        HorizontalAlignment = Element.ALIGN_CENTER,
+                        Padding = 4
+                    };
+                    tabla.AddCell(celda);
+                }
+
+                // FILAS
+                foreach (DataRow row in dt.Rows)
+                {
+                    foreach (var item in row.ItemArray)
+                    {
+                        PdfPCell celda = new PdfPCell(new Phrase(item.ToString(), cellFont))
+                        {
+                            BackgroundColor = BaseColor.WHITE,
+                            HorizontalAlignment = Element.ALIGN_CENTER,
+                            Padding = 4,
+                            Border = iTextSharp.text.Rectangle.NO_BORDER
+                        };
+                        tabla.AddCell(celda);
+                    }
+                }
+
+                doc.Add(tabla);
+                doc.Close();
+
+                // Descargar archivo
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.ContentType = "application/pdf";
+                HttpContext.Current.Response.AddHeader(
+                    "Content-Disposition",
+                    $"attachment; filename={nombreArchivo}.pdf");
+                HttpContext.Current.Response.BinaryWrite(ms.ToArray());
+                HttpContext.Current.Response.Flush();
+                HttpContext.Current.Response.SuppressContent = true;
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            }
         }
 
 
@@ -5019,6 +5295,52 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
                         cmd.Parameters.AddWithValue("@p_fecha_ini", fechaIni);
                         cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+
+                        // Parámetro de salida
+                        MySqlParameter ValorTotal = new MySqlParameter("@p_total_valor", MySqlDbType.Decimal);
+                        ValorTotal.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(ValorTotal);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+
+                            if (ValorTotal.Value != DBNull.Value)
+                            {
+                                valorTotal = Convert.ToDecimal(ValorTotal.Value);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarPagosPorTipoPorAsesorSinFechas(int idUsuario, int tipoPago, out decimal valorTotal)
+        {
+            DataTable dt = new DataTable();
+            valorTotal = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PAGOS_ASESOR_GENERAL", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
 
                         // Parámetro de salida
                         MySqlParameter ValorTotal = new MySqlParameter("@p_total_valor", MySqlDbType.Decimal);
