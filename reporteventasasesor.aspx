@@ -296,9 +296,9 @@
                                             <div class="col-lg-1">
                                                 <asp:LinkButton ID="lbExportarPdf" runat="server"
                                                     CausesValidation="false"
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                    CssClass="btn btn-success pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarPdf_Click">
-                                                    <i class="fa fa-file-excel"></i> PDF
+                                                    <i class="fa fa-file-pdf"></i> PDF
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
