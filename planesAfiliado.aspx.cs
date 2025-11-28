@@ -373,26 +373,27 @@ namespace fpWebApp
                 // Llamar funcion que muestra la URL de pago de Wompi
                 MostrarURLWompi();
 
-                if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
-                    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
-                {
-                    string script = @"
-                        Swal.fire({
-                            title: 'Precio total',
-                            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
-                            icon: 'error'
-                        }).then(() => {
-                        });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                    return;
-                }
+                //if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+                //    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
+                //{
+                //    string script = @"
+                //        Swal.fire({
+                //            title: 'Precio total',
+                //            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                //            icon: 'error'
+                //        }).then(() => {
+                //        });
+                //        ";
+                //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                //    return;
+                //}
 
             }
         }
 
         protected void txbDatafono_TextChanged(object sender, EventArgs e)
         {
+            MostrarAlertaProcesando();
             if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
             {
                 int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
@@ -401,20 +402,20 @@ namespace fpWebApp
                 // Inicia el proceso de compra
                 IniciarPago();
 
-                if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
-                    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
-                {
-                    string script = @"
-                        Swal.fire({
-                            title: 'Precio total',
-                            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
-                            icon: 'error'
-                        }).then(() => {
-                        });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                    return;
-                }
+                //if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+                //    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
+                //{
+                //    string script = @"
+                //        Swal.fire({
+                //            title: 'Precio total',
+                //            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                //            icon: 'error'
+                //        }).then(() => {
+                //        });
+                //        ";
+                //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                //    return;
+                //}
             }
         }
 
@@ -435,7 +436,7 @@ namespace fpWebApp
                 if (!pagoIniciado)
                 {
                     LimpiarPago();
-                    MostrarAlerta("Error de Pago", "No se pudo iniciar el proceso de pago.", "error", urlRedirect);
+                    MostrarAlerta("Error de Pago", "No se pudo iniciar el proceso de pago.", "error");
                     return;
                 }
 
@@ -444,7 +445,7 @@ namespace fpWebApp
             catch (Exception ex)
             {
                 LimpiarPago();
-                MostrarAlerta("Error", "Ha ocurrido un error inesperado: " + ex.Message, "error", urlRedirect);
+                MostrarAlerta("Error", "Ha ocurrido un error inesperado: " + ex.Message, "error");
             }
         }
 
@@ -471,7 +472,7 @@ namespace fpWebApp
                 }
 
                 LimpiarPago();
-                MostrarAlerta("Tiempo excedido", "No se recibió respuesta del datáfono. Por favor, intente nuevamente.", "warning", urlRedirect);
+                MostrarAlerta("Tiempo excedido", "No se recibió respuesta del datáfono. Por favor, intente nuevamente.", "warning");
                 return;
             }
 
@@ -481,7 +482,7 @@ namespace fpWebApp
             {
                 tmrRespuesta.Enabled = false;
                 LimpiarPago();
-                MostrarAlerta("Error", "No hay datos de transacción para consultar.", "error", urlRedirect);
+                MostrarAlerta("Error", "No hay datos de transacción para consultar.", "error");
                 return;
             }
 
@@ -504,7 +505,7 @@ namespace fpWebApp
             {
                 tmrRespuesta.Enabled = false;
                 LimpiarPago();
-                MostrarAlerta("Pago rechazado", "La transacción fue rechazada.", "error", urlRedirect);
+                MostrarAlerta("Pago rechazado", "La transacción fue rechazada.", "error");
             }
         }
 
@@ -599,11 +600,11 @@ namespace fpWebApp
                 //);
 
                 LimpiarTodo();
-                MostrarAlerta("Pago Aprobado", "La transacción fue realizada exitosamente.", "success", urlRedirect);
+                MostrarAlerta("Pago Aprobado", "La transacción fue realizada exitosamente.", "success");
             }
             catch (Exception ex)
             {
-                MostrarAlerta("Error", "El pago fue aprobado, pero ocurrió un error en el registro interno. Por favor, comunicarse con el área de sistemas.", "error", urlRedirect);
+                MostrarAlerta("Error", "El pago fue aprobado, pero ocurrió un error en el registro interno. Por favor, comunicarse con el área de sistemas.", "error");
                 System.Diagnostics.Debug.WriteLine("Error en ProcesarPagoExitosoAsync: " + ex.ToString());
             }
         }
@@ -630,52 +631,70 @@ namespace fpWebApp
                 int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
                 txbTotal.Text = intTotal.ToString("C0", new CultureInfo("es-CO"));
 
-                if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
-                    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
-                {
-                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                    //MostrarAlerta("Precio total", "Precio total incorrecto. Proporcione los valores adecuados para el total.", "error", "");
+                //if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+                //    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
+                //{
+                //    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                //    //MostrarAlerta("Precio total", "Precio total incorrecto. Proporcione los valores adecuados para el total.", "error", "");
 
-                    string script = @"
-                        Swal.fire({
-                            title: 'Precio total',
-                            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
-                            icon: 'error'
-                        }).then(() => {
-                        });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                    return;
-                }
+                //    string script = @"
+                //        Swal.fire({
+                //            title: 'Precio total',
+                //            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                //            icon: 'error'
+                //        }).then(() => {
+                //        });
+                //        ";
+                //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                //    return;
+                //}
             }
         }
 
         protected void txbTransferencia_TextChanged(object sender, EventArgs e)
         {
+            ValidarBanco();
             if (txbWompi.Text != "" && txbDatafono.Text != "" && txbEfectivo.Text != "" && txbTransferencia.Text != "")
             {
                 int intTotal = Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")) + Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", ""));
                 txbTotal.Text = intTotal.ToString("C0", new CultureInfo("es-CO"));
 
-                if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
-                    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
-                {
-                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                    //MostrarAlerta("Precio total", "Precio total incorrecto. Proporcione los valores adecuados para el total.", "error", "");
-                    //return;
+                //if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+                //    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
+                //{
+                //    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                //    //MostrarAlerta("Precio total", "Precio total incorrecto. Proporcione los valores adecuados para el total.", "error", "");
+                //    //return;
 
-                    string script = @"
-                        Swal.fire({
-                            title: 'Precio total',
-                            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
-                            icon: 'error'
-                        }).then(() => {
-                        });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                    return;
+                //    string script = @"
+                //        Swal.fire({
+                //            title: 'Precio total',
+                //            text: 'Precio total incorrecto. Proporcione los valores adecuados para el total.',
+                //            icon: 'error'
+                //        }).then(() => {
+                //        });
+                //        ";
+                //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                //    return;
+                //}
+            }
+        }
+
+        protected bool ValidarBanco()
+        {
+            bool rta = false;
+            if (Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")) > 0)
+            {
+                if (rblBancos.SelectedItem == null)
+                {
+                    MostrarAlerta("Banco", "Por favor, seleccione un banco", "error");
+                }
+                else
+                {
+                    rta = true;
                 }
             }
+            return rta;
         }
 
         /// <summary>
@@ -697,7 +716,7 @@ namespace fpWebApp
                 if (string.IsNullOrEmpty(token))
                 {
                     LimpiarPago();
-                    MostrarAlerta("Error", "No se pudo obtener el token de Redeban.", "error", urlRedirect);
+                    MostrarAlerta("Error", "No se pudo obtener el token de Redeban.", "error");
                     return false;
                 }
 
@@ -738,21 +757,21 @@ namespace fpWebApp
                     else
                     {
                         LimpiarPago();
-                        MostrarAlerta("Error en pago", "No se pudo iniciar la transacción. Detalle: " + resultado, "error", urlRedirect);
+                        MostrarAlerta("Error en pago", "No se pudo iniciar la transacción. Detalle: " + resultado, "error");
                         return false;
                     }
                 }
                 else
                 {
                     LimpiarPago();
-                    MostrarAlerta("Error en pago", "Respuesta inesperada del servicio Redeban: " + resultado, "error", urlRedirect);
+                    MostrarAlerta("Error en pago", "Respuesta inesperada del servicio Redeban: " + resultado, "error");
                     return false;
                 }
             }
             catch (Exception ex)
             {
                 LimpiarPago();
-                MostrarAlerta("Error inesperado", "Ocurrió un error al procesar el pago.", "error", urlRedirect);
+                MostrarAlerta("Error inesperado", "Ocurrió un error al procesar el pago.", "error");
                 System.Diagnostics.Debug.WriteLine("Error en RealizarCompra: " + ex.ToString());
                 return false;
             }
@@ -770,7 +789,7 @@ namespace fpWebApp
             );
         }
 
-        private void MostrarAlerta(string titulo, string mensaje, string tipo, string urlRedirect)
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
         {
             // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
             string script = $@"
@@ -786,10 +805,6 @@ namespace fpWebApp
                 customClass: {{
                     popup: 'alert',
                     confirmButton: 'btn-confirm-alert'
-                }},
-            }}).then((result) => {{
-                if (result.isConfirmed) {{
-                    window.location.replace('{urlRedirect}');
                 }}
             }});";
 
@@ -868,7 +883,7 @@ namespace fpWebApp
             if (ViewState["idPlan"] == null)
             {
                 // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                MostrarAlerta("Elije un plan", "Debes seleccionar un plan de la lista.", "error", "");
+                MostrarAlerta("Elije un plan", "Debes seleccionar un plan de la lista.", "error");
                 txbWompi.Text = "";
                 return;
             }
@@ -1063,26 +1078,27 @@ namespace fpWebApp
                         {
                             string fechaFinal = string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]);
                             // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                            MostrarAlerta("Plan activo", "El afiliado ya tiene un plan activo hasta el " + fechaFinal + ". Modifique la fecha de inicio para continuar.", "warning", "");
+                            MostrarAlerta("Plan activo", "El afiliado ya tiene un plan activo hasta el " + fechaFinal + ". Modifique la fecha de inicio para continuar.", "warning");
                         }
                         dt.Dispose();
                     }
-                    //else
-                    //{
+                    
                     if (txbTotal.Text.ToString() == "")
+                    {
+                        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                        MostrarAlerta("Verificación", "Verificación", "error");
+                    }
+                    else
+                    {
+                        if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+                            Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
                         {
                             // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                            MostrarAlerta("Verificación", "Verificación", "error", "");
+                            MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error");
                         }
                         else
                         {
-                            if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
-                                Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
-                            {
-                                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error", "");
-                            }
-                            else
+                            if (ValidarBanco())
                             {
                                 try
                                 {
@@ -1093,13 +1109,13 @@ namespace fpWebApp
                                     fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
                                     int idAfiliadoPlan = 0;
 
-                                    string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()), 
+                                    string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()),
                                         Convert.ToInt32(ViewState["idPlan"].ToString()),
-                                        txbFechaInicio.Text.ToString(), 
-                                        String.Format("{0:yyyy-MM-dd}", fechafinal), 
+                                        txbFechaInicio.Text.ToString(),
+                                        String.Format("{0:yyyy-MM-dd}", fechafinal),
                                         Convert.ToInt32(ViewState["meses"].ToString()),
-                                        Convert.ToInt32(ViewState["precioTotal"].ToString()), 
-                                        ViewState["observaciones"].ToString(), 
+                                        Convert.ToInt32(ViewState["precioTotal"].ToString()),
+                                        ViewState["observaciones"].ToString(),
                                         "Activo");
 
                                     if (rta.StartsWith("OK"))
@@ -1169,7 +1185,7 @@ namespace fpWebApp
                                                 Convert.ToInt32(Session["idcrm"]));
                                         }
 
-                                    if (txbTransferencia.Text.ToString() != "$0")
+                                        if (txbTransferencia.Text.ToString() != "$0")
                                         {
                                             strTipoPago = dt2.Rows[1]["idMedioPago"].ToString();  //Pago con Transferencia
                                             if (rblBancos.SelectedItem == null)
@@ -1207,10 +1223,10 @@ namespace fpWebApp
                                         //    Convert.ToInt32(Session["idcrm"]));
 
                                         DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(int.Parse(Session["IdAfiliado"].ToString()));
-                                        string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()), 
-                                            dt3.Rows[0]["NombrePlan"].ToString(), 
-                                            Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()), 
-                                            Convert.ToInt32(Session["idUsuario"].ToString()), 
+                                        string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()),
+                                            dt3.Rows[0]["NombrePlan"].ToString(),
+                                            Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()),
+                                            Convert.ToInt32(Session["idUsuario"].ToString()),
                                             3);
                                         dt3.Dispose();
 
@@ -1218,11 +1234,11 @@ namespace fpWebApp
                                         {
                                             DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
                                             DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
-                                            cg.InsertarLog(Session["idusuario"].ToString(), 
-                                                "afiliadosplanes", 
-                                                "Agrega", 
-                                                "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".", 
-                                                "", 
+                                            cg.InsertarLog(Session["idusuario"].ToString(),
+                                                "afiliadosplanes",
+                                                "Agrega",
+                                                "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".",
+                                                "",
                                                 "");
 
                                             string script = @"
@@ -1243,7 +1259,7 @@ namespace fpWebApp
 
                                             string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
                                             strMensaje += "Descripción del plan.\r\n\r\n";
-                                           
+
                                             //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
 
                                             //////////////////////////////////////////////////////////////////////////////////
@@ -1252,38 +1268,36 @@ namespace fpWebApp
                                         else
                                         {
                                             // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                            MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error", "");
+                                            MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error");
                                         }
 
                                     }
                                     else
                                     {
                                         // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                        MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error", "");
+                                        MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error");
                                     }
 
                                 }
                                 catch (Exception ex)
                                 {
                                     // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                    MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error", "");
+                                    MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error");
                                 }
                             }
                         }
                     }
-
-                    //}
-
+                }
                 else
                 {
                     // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                    MostrarAlerta("Validación", "Por favor, selecciona la fecha de inicio del plan.", "error", "");
+                    MostrarAlerta("Validación", "Por favor, selecciona la fecha de inicio del plan.", "error");
                 }
             }
             else
             {
                 // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                MostrarAlerta("Validación", "Debes seleccionar un tipo de plan para continuar.", "warning", "");
+                MostrarAlerta("Validación", "Debes seleccionar un tipo de plan para continuar.", "warning");
             }
             //}
         }
@@ -1358,6 +1372,48 @@ namespace fpWebApp
                     lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row["NombreColorPlan"].ToString() + " btn-block btn-sm");
                 }
             }
+        }
+
+        private void MostrarAlertaProcesando()
+        {
+            string script = @"
+            let contador = 5;
+            Swal.fire({
+                title: 'Cargando',
+                html: `Este proceso iniciará en <b>${contador}</b> segundos...`,
+                icon: 'info',
+                background: '#3C3C3C', 
+                allowOutsideClick: false,
+                showConfirmButton: false, 
+                customClass: {
+                    popup: 'alert',
+                    confirmButton: 'btn-confirm-alert'
+                },
+                didOpen: () => {
+                    Swal.showLoading();
+                    const interval = setInterval(() => {
+                        contador--;
+                        Swal.getHtmlContainer().querySelector('b').textContent = contador;
+                        if (contador <= 0) {
+                            clearInterval(interval);
+                            Swal.fire({
+                                title: 'Continúa en el datáfono',
+                                html: 'Por favor, presiona la <b style=""color: #157347;"">TECLA VERDE</b> del datáfono para continuar.',
+                                background: '#3C3C3C',
+                                icon: 'info',
+                                allowOutsideClick: false,
+                                showConfirmButton: true,
+                                customClass: {
+                                    popup: 'alert',
+                                    confirmButton: 'btn-confirm-alert'
+                                }
+                            });
+                        }
+                    }, 1000);
+                }
+            });";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlertProcesando", script, true);
         }
 
     }

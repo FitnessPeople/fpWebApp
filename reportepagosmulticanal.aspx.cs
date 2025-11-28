@@ -7,6 +7,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -39,13 +40,15 @@ namespace fpWebApp
                             txbFechaFin.Attributes.Add("type", "date");
                             txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
 
+                            CargarPlanes();
+
                             listaTransaccionesEfectivo(1, (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
-                            listaTransaccionesDatafono(4, (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+                            listaTransaccionesDatafono(3, (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
                             listaTransaccionesTransferencia(2, (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
-                            listaTransaccionesWompi(5, (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
+                            listaTransaccionesWompi(4, (txbFechaIni.Value.ToString()), (txbFechaFin.Value.ToString()));
 
                         }
                     }
@@ -80,10 +83,23 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void CargarPlanes()
+        {
+            ddlPlanes.Items.Clear();
+            ListItem li = new ListItem("Todos los planes", "0");
+            ddlPlanes.Items.Add(li);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPlanesVigentes();
+
+            ddlPlanes.DataSource = dt;
+            ddlPlanes.DataBind();
+            dt.Dispose();
+        }
+
         private void listaTransaccionesEfectivo(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), tipoPago, Convert.ToInt32(rblValor.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
+            DataTable dt = cg.ConsultarPagosPorTipoPlanes(Convert.ToInt32(Session["idCanalVenta"].ToString()), tipoPago, Convert.ToInt32(ddlPlanes.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
             rpTipoEfectivo.DataSource = dt;
             rpTipoEfectivo.DataBind();
             ltValorTotalEfe.Text = valorTotal.ToString("C0");
@@ -93,7 +109,7 @@ namespace fpWebApp
         private void listaTransaccionesDatafono(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), tipoPago, Convert.ToInt32(rblValor.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
+            DataTable dt = cg.ConsultarPagosPorTipoPlanes(Convert.ToInt32(Session["idCanalVenta"].ToString()), tipoPago, Convert.ToInt32(ddlPlanes.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
             rpTipoDatafono.DataSource = dt;
             rpTipoDatafono.DataBind();
             ltValorTotalData.Text = valorTotal.ToString("C0");
@@ -103,7 +119,7 @@ namespace fpWebApp
         private void listaTransaccionesTransferencia(int tipoPago, string fechaIni, string fechaFin)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), tipoPago, Convert.ToInt32(rblValor.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
+            DataTable dt = cg.ConsultarPagosPorTipoPlanes(Convert.ToInt32(Session["idCanalVenta"].ToString()), tipoPago, Convert.ToInt32(ddlPlanes.SelectedValue.ToString()), fechaIni, fechaFin, out decimal valorTotal);
             rpTransferencia.DataSource = dt;
             rpTransferencia.DataBind();
             ltValorTotalTrans.Text = valorTotal.ToString("C0");
@@ -128,10 +144,10 @@ namespace fpWebApp
                 }
 
                 DataTable dt = cg.ConsultarPagosTransaccWompi(txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valorTotal);
-                rpWompi.DataSource = dt1;
+                rpWompi.DataSource = dt;
                 rpWompi.DataBind();
                 ltValortotalWompi.Text = valorTotal.ToString("C0");
-                dt1.Dispose();
+                dt.Dispose();
             }
             else
             {
@@ -150,6 +166,7 @@ namespace fpWebApp
                 rpWompi.DataSource = new DataTable();
                 rpWompi.DataBind();
             }
+            dt1.Dispose();
         }
 
         private DataTable listarDetalle(out bool rtaStatus)
@@ -216,16 +233,16 @@ namespace fpWebApp
         protected void btnFiltrar_Click(object sender, EventArgs e)
         {
             listaTransaccionesEfectivo(1, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
-            listaTransaccionesDatafono(4, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesDatafono(3, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
             listaTransaccionesTransferencia(2, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
-            listaTransaccionesWompi(5, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
+            listaTransaccionesWompi(4, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString());
         }
         protected void btnExportarEfe_Click(object sender, EventArgs e)
         {
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), 1, Convert.ToInt32(rblValor.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), 1, Convert.ToInt32(ddlPlanes.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Efectivo_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -287,7 +304,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), 4, Convert.ToInt32(rblValor.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), 4, Convert.ToInt32(ddlPlanes.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Datafono_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -349,7 +366,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), 2, Convert.ToInt32(rblValor.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), 2, Convert.ToInt32(ddlPlanes.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
                 string nombreArchivo = $"Transferencia_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)

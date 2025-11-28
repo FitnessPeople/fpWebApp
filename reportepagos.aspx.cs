@@ -115,7 +115,7 @@ namespace fpWebApp
             string strQuery = @"
                 SELECT 
                     CASE 
-                        WHEN DebitoAutomatico = 1 THEN 'Débito automático'
+                        WHEN DebitoAutomatico = 1 THEN 'Débitos automáticos'
                         ELSE NombrePlan
                     END AS NombrePlanAgrupado,
                     COUNT(*) AS Cantidad, 

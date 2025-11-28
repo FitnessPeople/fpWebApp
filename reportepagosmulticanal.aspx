@@ -64,15 +64,15 @@
                 </div>
                 <div class="modal-body">
                     <p>
-                         <b>¿Cómo funciona?</b><br />
-                         El sistema muestra <b>4 tablas independientes</b>, una para cada tipo de autorización. En cada una encontrarás:<br />
-                         <i class="fa-solid fa-money-bill-wave" style="color: #0D6EFD;"></i> <b>Tabla de Pagos en Efectivo</b><br />
-                         <i class="fa-solid fa-credit-card" style="color: #0D6EFD;"></i> <b>Tabla de Pagos con Datáfono</b><br />
-                         <i class="fa-solid fa-arrows-rotate" style="color: #0D6EFD;"></i> <b>Tabla de Transferencias</b><br />
-                         <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i> <b>Tabla de Pagos con Wompi</b>
-                    <br />
-                         <br />
-                         <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <b>¿Cómo funciona?</b><br />
+                        El sistema muestra <b>4 tablas independientes</b>, una para cada tipo de autorización. En cada una encontrarás:<br />
+                        <i class="fa-solid fa-money-bill-wave" style="color: #0D6EFD;"></i><b>Tabla de Pagos en Efectivo</b><br />
+                        <i class="fa-solid fa-credit-card" style="color: #0D6EFD;"></i><b>Tabla de Pagos con Datáfono</b><br />
+                        <i class="fa-solid fa-arrows-rotate" style="color: #0D6EFD;"></i><b>Tabla de Transferencias</b><br />
+                        <i class="fa-solid fa-mobile" style="color: #0D6EFD;"></i><b>Tabla de Pagos con Wompi</b>
+                        <br />
+                        <br />
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -105,303 +105,350 @@
                 <%--Fin Breadcrumb!!!--%>
             </div>
             <form id="form1" runat="server">
-            <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="row animated fadeInDown">
-                    <%--Inicio Contenido!!!!--%>
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row animated fadeInDown">
+                        <%--Inicio Contenido!!!!--%>
 
-                    <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
-                        <div class="p-xs">
-                            <div class="pull-left m-r-md">
-                                <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
+                        <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
+                            <div class="p-xs">
+                                <div class="pull-left m-r-md">
+                                    <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
+                                </div>
+                                <h2>Acceso Denegado</h2>
+                                <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
                             </div>
-                            <h2>Acceso Denegado</h2>
-                            <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
                         </div>
-                    </div>
 
-                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+                        <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
 
-                    <div class="ibox float-e-margins" runat="server" id="divContenido">
-                        <div class="row">
+                        <div class="ibox float-e-margins" runat="server" id="divContenido">
+                            <div class="row">
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="col-md-3">
+                                            <div id="filtros">
+                                                <%--<asp:RadioButtonList ID="rblValor" runat="server">
+                                                    <asp:ListItem Value="0" Text="Todos" Selected="True"></asp:ListItem>
+                                                    <asp:ListItem Value="2" Text="Alguno"></asp:ListItem>
+                                                </asp:RadioButtonList>--%>
+                                                <asp:DropDownList ID="ddlPlanes" DataTextField="NombrePlan" DataValueField="idPlan"
+                                                    runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label>
+                                                <br />
+                                            </label>
+                                            <asp:Button ID="btnFiltrar" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrar_Click" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="ibox">
+                                        <div class="ibox-title bg-info">
+                                            <h5><i class="fa fa-gift m-r-xs"></i>Efectivo total : </h5>
+                                            <span class="label label-success">
+                                                <asp:Literal ID="ltValorTotalEfe" runat="server"></asp:Literal>
+                                            </span>
+                                            <div class="ibox-tools">
+                                                <a class="collapse-link">
+                                                    <i class="fa fa-chevron-up text-white"></i>
+                                                </a>
+                                                <a class="fullscreen-link">
+                                                    <i class="fa fa-expand text-white"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <div class="form-group">
+                                                        <div class="form-group" id="filter-form-container-efectivo"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <asp:LinkButton ID="btnExportarEfe" runat="server" CausesValidation="false"
+                                                        CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                        OnClick="btnExportarEfe_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                                    </asp:LinkButton>
+                                                </div>
+                                            </div>
+                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                data-filter-min="3" data-filter-placeholder="Buscar"
+                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="5"
+                                                data-filtering="true" data-filter-container="#filter-form-container-efectivo" data-filter-delay="300"
+                                                data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
+                                                <thead>
+                                                    <tr>
+                                                        <th data-breakpoints="xs">Documento</th>
+                                                        <th data-breakpoints="xs">Afiliado</th>
+                                                        <th data-breakpoints="xs" class="text-right">Valor</th>
+                                                        <th data-breakpoints="xs">Fecha Hora</th>
+                                                        <th data-breakpoints="xs">Estado</th>
+                                                        <th data-breakpoints="xs">Canal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:Repeater ID="rpTipoEfectivo" runat="server">
+                                                        <ItemTemplate>
+                                                            <tr>
+                                                                <td><%# Eval("DocumentoAfiliado") %></td>
+                                                                <td><%# Eval("NombreAfiliado") %></td>
+                                                                <td class="text-right"><%# Eval("Valor", "{0:C0}") %></td>
+                                                                <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                                <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>
+                                                                <td><%# Eval("CanalVenta") %></td>
+                                                            </tr>
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="ibox">
+                                        <div class="ibox-title bg-success">
+                                            <h5><i class="fa fa-right-left m-r-xs"></i>Datafono total : </h5>
+                                            <span class="label label-info">
+                                                <asp:Literal ID="ltValorTotalData" runat="server"></asp:Literal>
+                                            </span>
+                                            <div class="ibox-tools">
+                                                <a class="collapse-link">
+                                                    <i class="fa fa-chevron-up text-white"></i>
+                                                </a>
+                                                <a class="fullscreen-link">
+                                                    <i class="fa fa-expand text-white"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <div class="form-group">
+                                                        <div class="form-group" id="filter-form-container-datafono"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <asp:LinkButton ID="btnExportarData" runat="server" CausesValidation="false"
+                                                        CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                        OnClick="btnExportarData_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                                    </asp:LinkButton>
+                                                </div>
+                                            </div>
+                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                data-filter-min="3" data-filter-placeholder="Buscar"
+                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="5"
+                                                data-filtering="true" data-filter-container="#filter-form-container-datafono" data-filter-delay="300"
+                                                data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
+                                                <thead>
+                                                    <tr>
+                                                        <th data-breakpoints="xs">Documento</th>
+                                                        <th data-breakpoints="xs">Afiliado</th>
+                                                        <th data-breakpoints="xs" class="text-right">Valor</th>
+                                                        <th data-breakpoints="xs">Fecha Hora</th>
+                                                        <th data-breakpoints="xs">Referencia</th>
+                                                        <th data-breakpoints="xs">Estado</th>
+                                                        <th data-breakpoints="xs">Canal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:Repeater ID="rpTipoDatafono" runat="server">
+                                                        <ItemTemplate>
+                                                            <tr>
+                                                                <td><%# Eval("DocumentoAfiliado") %></td>
+                                                                <td><%# Eval("NombreAfiliado") %></td>
+                                                                <td class="text-right"><%# Eval("Valor", "{0:C0}") %></td>
+                                                                <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                                <td><%# Eval("idReferencia") %></td>
+                                                                <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>
+                                                                <td><%# Eval("CanalVenta") %></td>
+                                                            </tr>
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="row">
-                              <div class="col-lg-6">
-                                  <div class="col-md-3">
-                                      <div id="filtros">
-                                        <asp:RadioButtonList ID="rblValor" runat="server">
-                                            <asp:ListItem Value="2000" Text="2000" Selected="True"></asp:ListItem>
-                                            <asp:ListItem Value="89000" Text="89000"></asp:ListItem>
-                                        </asp:RadioButtonList>
-                                    </div>
-                                  </div>
-                               <div class="col-md-3"> 
-                                   <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker"/>                              
-                               </div>
-                               <div class="col-md-3">                                    
-                                 <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker"  />
-                               </div>
-                               <div class="col-md-3">
-                                <label><br/></label>
-                                    <asp:Button ID="btnFiltrar" runat="server" Text="Buscar" CssClass="btn btn-primary" OnClick="btnFiltrar_Click" />
-                              </div>
-                              </div>
-                           </div>
 
-                            <div class="col-lg-6">
-                                <div class="ibox">
-                                    <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-gift"></i> Efectivo  Total : </h5>
-                                        <span class="label label-success">
-                                            <asp:Literal ID="ltValorTotalEfe" runat="server"></asp:Literal>
-                                        </span>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up text-white"></i>
-                                            </a>
-                                            <a class="fullscreen-link">
-                                                <i class="fa fa-expand text-white"></i>
-                                            </a>
+                                <div class="col-lg-6">
+
+                                    <div class="ibox">
+                                        <div class="ibox-title bg-warning">
+                                            <h5><i class="fa fa-snowflake m-r-xs"></i>Transferencia total : </h5>
+                                            <span class="label label-danger">
+                                                <asp:Literal ID="ltValorTotalTrans" runat="server"></asp:Literal>
+                                            </span>
+                                            <div class="ibox-tools">
+                                                <a class="collapse-link">
+                                                    <i class="fa fa-chevron-up text-white"></i>
+                                                </a>
+                                                <a class="fullscreen-link">
+                                                    <i class="fa fa-expand text-white"></i>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div class="row">
-                                    <div class="col-lg-12">
-                                       <asp:LinkButton ID="btnExportarEfe" runat="server" CausesValidation="false"
-                                           CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                           OnClick ="btnExportarEfe_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
-                                       </asp:LinkButton>
-                                    </div>
+                                        <div class="ibox-content">
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <div class="form-group">
+                                                        <div class="form-group" id="filter-form-container-transferencia"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <asp:LinkButton ID="btnExportarTrans" runat="server" CausesValidation="false"
+                                                        CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                        OnClick="btnExportarTrans_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                                    </asp:LinkButton>
+                                                </div>
+                                            </div>
+                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                data-filter-min="3" data-filter-placeholder="Buscar"
+                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="5"
+                                                data-filtering="true" data-filter-container="#filter-form-container-transferencia" data-filter-delay="300"
+                                                data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
+                                                <thead>
+                                                    <tr>
+                                                        <th data-breakpoints="xs">Documento</th>
+                                                        <th data-breakpoints="xs">Afiliado</th>
+                                                        <th data-breakpoints="xs" class="text-right">Valor</th>
+                                                        <th data-breakpoints="xs">Fecha Hora</th>
+                                                        <th data-breakpoints="xs">Banco</th>
+                                                        <th data-breakpoints="xs">Estado</th>
+                                                        <th data-breakpoints="xs">Canal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:Repeater ID="rpTransferencia" runat="server">
+                                                        <ItemTemplate>
+                                                            <tr>
+                                                                <td><%# Eval("DocumentoAfiliado") %></td>
+                                                                <td><%# Eval("NombreAfiliado") %></td>
+                                                                <td class="text-right"><%# Eval("Valor", "{0:C0}") %></td>
+                                                                <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                                <td><%# Eval("Banco") %></td>
+                                                                <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>
+                                                                <td><%# Eval("CanalVenta") %></td>
+                                                            </tr>
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
-                                            data-empty="Sin resultados">
-                                            <thead>
-                                                <tr>                                                    
-                                                     <th data-breakpoints="xs">Documento</th>
-                                                     <th data-breakpoints="xs">Afiliado</th>
-                                                     <th data-breakpoints="xs">Valor</th>
-                                                     <th data-breakpoints="xs">Fecha Hora</th>
-                                                     <th data-breakpoints="xs">Estado</th>
-                                                     <th data-breakpoints="xs">Canal</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <asp:Repeater ID="rpTipoEfectivo" runat="server">
-                                                     <ItemTemplate>
-                                                        <tr>                                                           
-                                                            <td><%# Eval("DocumentoAfiliado") %></td>
-                                                            <td><%# Eval("NombreAfiliado") %></td>
-                                                            <td><%# Eval("Valor", "{0:C0}") %></td>                                                        
-                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                            <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>                                                       
-                                                            <td><%# Eval("CanalVenta") %></td>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-lg-6">
-                                <div class="ibox">
-                                    <div class="ibox-title bg-success">
-                                        <h5><i class="fa fa-right-left"></i> Datafono  Total : </h5>
-                                        <span class="label label-info">
-                                            <asp:Literal ID="ltValorTotalData" runat="server"></asp:Literal>
-                                        </span>                                        
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up text-white"></i>
-                                            </a>
-                                            <a class="fullscreen-link">
-                                                <i class="fa fa-expand text-white"></i>
-                                            </a>
+                                <div class="col-lg-6">
+
+                                    <div class="ibox">
+                                        <div class="ibox-title bg-info">
+                                            <h5><i class="fa fa-head-side-mask m-r-xs"></i>Wompi total : </h5>
+                                            <span class="label label-success">
+                                                <asp:Literal ID="ltValortotalWompi" runat="server"></asp:Literal>
+                                            </span>
+                                            <div class="ibox-tools">
+                                                <a class="collapse-link">
+                                                    <i class="fa fa-chevron-up text-white"></i>
+                                                </a>
+                                                <a class="fullscreen-link">
+                                                    <i class="fa fa-expand text-white"></i>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div class="row">
-                                        <div class="col-lg-12">
-                                           <asp:LinkButton ID="btnExportarData" runat="server" CausesValidation="false"
-                                               CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                               OnClick ="btnExportarData_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
-                                           </asp:LinkButton>
+                                        <div class="ibox-content">
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <div class="form-group">
+                                                        <div class="form-group" id="filter-form-container-wompi"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <asp:LinkButton ID="btnExportarWompi" runat="server" CausesValidation="false"
+                                                        CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                        OnClick="btnExportarWompi_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                                    </asp:LinkButton>
+                                                </div>
+                                            </div>
+
+                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                data-filter-min="3" data-filter-placeholder="Buscar"
+                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="5"
+                                                data-filtering="true" data-filter-container="#filter-form-container-wompi" data-filter-delay="300"
+                                                data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
+                                                <thead>
+                                                    <tr>
+                                                        <th data-breakpoints="xs">Id</th>
+                                                        <th data-breakpoints="xs">Afiliado</th>
+                                                        <th data-breakpoints="xs" class="text-right" data-type="number">Valor</th>
+                                                        <th data-breakpoints="xs">Fecha Hora</th>
+                                                        <th data-breakpoints="xs">Estado</th>
+                                                        <th data-breakpoints="xs">Método</th>
+                                                        <%--<th data-breakpoints="xs">Canal</th>--%>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:Repeater ID="rpWompi" runat="server">
+                                                        <ItemTemplate>
+                                                            <tr>
+                                                                <td><%# Eval("id") %></td>
+                                                                <td><%# Eval("full_name") %></td>
+                                                                <td class="text-right"
+                                                                    data-value='<%# (Convert.ToInt32(Eval("amount_in_cents")) / 100) %>'>
+                                                                    <%# (Convert.ToInt32(Eval("amount_in_cents")) / 100)
+                                                                          .ToString("C0", new System.Globalization.CultureInfo("es-CO")) %>
+                                                                </td>
+                                                                <td><%# Eval("created_at", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                                <td>
+                                                                    <span class='<%# Eval("status").ToString().ToLower() == "error" ? "badge badge-danger" : "badge badge-info" %>'>
+                                                                        <%# Eval("status").ToString().ToLower() %> 
+                                                                    </span>
+                                                                </td>
+                                                                <%--<td><%# Eval("payment_method_type").ToString().ToLower() %></td>--%>
+                                                                <td class="text-center"><asp:Image 
+                                                                    runat="server" 
+                                                                    Width="24"
+                                                                    ImageUrl='<%# 
+                                                                        Eval("payment_method_type").ToString().ToLower() == "card"      ? "~/img/flags/32/Argentina.png" :
+                                                                        Eval("payment_method_type").ToString().ToLower() == "bancolombia_transfer"      ? "~/img/flags/32/Peru.png" :
+                                                                        Eval("payment_method_type").ToString().ToLower() == "pse"       ? "~/img/flags/32/Paraguay.png" :
+                                                                        Eval("payment_method_type").ToString().ToLower() == "nequi"     ? "~/img/flags/32/Chile.png" :
+                                                                        "~/img/flags/32/Colombia.png"
+                                                                    %>' /></td>
+                                                                <td><%--<%# Eval("Canal") %>--%></td>
+                                                            </tr>
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                    <tr id="trError" runat="server" visible="false">
+                                                        <td colspan="7" class="text-center">
+                                                            <asp:Literal ID="ltError" runat="server"></asp:Literal>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        </div>
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
-                                            data-empty="Sin resultados">
-                                            <thead>
-                                                <tr>                                                    
-                                                     <th data-breakpoints="xs">Documento</th>
-                                                     <th data-breakpoints="xs">Afiliado</th>
-                                                     <th data-breakpoints="xs">Valor</th>
-                                                     <th data-breakpoints="xs">Fecha Hora</th>
-                                                     <th data-breakpoints="xs">Referencia</th>
-                                                     <th data-breakpoints="xs">Estado</th>
-                                                     <th data-breakpoints="xs">Canal</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <asp:Repeater ID="rpTipoDatafono" runat="server">
-                                                      <ItemTemplate>
-                                                        <tr>
-                                                            <td><%# Eval("DocumentoAfiliado") %></td>
-                                                            <td><%# Eval("NombreAfiliado") %></td>
-                                                            <td><%# Eval("Valor", "{0:C0}") %></td>                                                        
-                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                            <td><%# Eval("idReferencia") %></td>  
-                                                            <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>                                                       
-                                                            <td><%# Eval("CanalVenta") %></td>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="row">
-
-                            <div class="col-lg-6">
-
-                                <div class="ibox">
-                                    <div class="ibox-title bg-warning">
-                                        <h5><i class="fa fa-snowflake"></i>Transferencia  Total : </h5>                                        
-                                        <span class="label label-danger">
-                                            <asp:Literal ID="ltValorTotalTrans" runat="server"></asp:Literal>
-                                        </span>   
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up text-white"></i>
-                                            </a>
-                                            <a class="fullscreen-link">
-                                                <i class="fa fa-expand text-white"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                         <div class="row">
-                                        <div class="col-lg-12">
-                                           <asp:LinkButton ID="btnExportarTrans" runat="server" CausesValidation="false"
-                                               CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                               OnClick ="btnExportarTrans_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
-                                           </asp:LinkButton>
-                                        </div>
-                                        </div>
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
-                                            data-empty="Sin resultados">
-                                            <thead>
-                                                <tr>
-                                                     <th data-breakpoints="xs">Documento</th>
-                                                     <th data-breakpoints="xs">Afiliado</th>
-                                                     <th data-breakpoints="xs">Valor</th>
-                                                     <th data-breakpoints="xs">Fecha Hora</th>
-                                                     <th data-breakpoints="xs">Banco</th>
-                                                     <th data-breakpoints="xs">Estado</th>
-                                                     <th data-breakpoints="xs">Canal</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>                                             
-                                                 <asp:Repeater ID="rpTransferencia" runat="server">
-                                                    <ItemTemplate>
-                                                        <tr>
-                                                            <td><%# Eval("DocumentoAfiliado") %></td>
-                                                            <td><%# Eval("NombreAfiliado") %></td>
-                                                            <td><%# Eval("Valor", "{0:C0}") %></td>                                                        
-                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                            <td><%# Eval("Banco") %></td>  
-                                                            <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>                                                       
-                                                            <td><%# Eval("CanalVenta") %></td>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-6">
-
-                                <div class="ibox">
-                                    <div class="ibox-title bg-info">
-                                        <h5><i class="fa fa-head-side-mask"></i> Wompi   Total : </h5>                                        
-                                        <span class="label label-success">
-                                            <asp:Literal ID="ltValortotalWompi" runat="server"></asp:Literal>
-                                        </span>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up text-white"></i>
-                                            </a>
-                                            <a class="fullscreen-link">
-                                                <i class="fa fa-expand text-white"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                         <div class="row">
-                                         <div class="col-lg-12">
-                                           <asp:LinkButton ID="btnExportarWompi" runat="server" CausesValidation="false"
-                                               CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                               OnClick ="btnExportarWompi_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
-                                           </asp:LinkButton>
-                                        </div>
-                                        </div>
-
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
-                                            data-paging="true" data-paging-count-format="{CP} de {TP}" 
-                                            data-empty="Sin resultados">
-                                            <thead>
-                                                <tr>
-                                                     <th data-breakpoints="xs">id</th>
-                                                     <th data-breakpoints="xs">Afiliado</th>
-                                                     <th data-breakpoints="xs">Valor</th>
-                                                     <th data-breakpoints="xs">Fecha Hora</th>                                                    
-                                                     <th data-breakpoints="xs">Estado</th>
-                                                     <th data-breakpoints="xs">Método</th>
-                                                     <th data-breakpoints="xs">Canal</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <asp:Repeater ID="rpWompi" runat="server">                                                
-                                                    <ItemTemplate>
-                                                        <tr>
-                                                            <td><%# Eval("id") %></td>
-                                                            <td><%# Eval("full_name") %></td>                                                           
-                                                            <td><%# Eval("amount_in_cents", "{0:C0}") %></td>                                                        
-                                                            <td><%# Eval("created_at", "{0:dd MMM yyyy HH:mm}") %></td>                                                           
-                                                            <td>
-                                                                <span class='<%# Eval("status").ToString() == "Error" ? "badge badge-danger" : "badge badge-info" %>'>
-                                                                    <%# Eval("status") %> 
-                                                                </span>
-                                                            </td>
-                                                            <td><%# Eval("payment_method_type") %></td>
-                                                            <td><%# Eval("Canal") %></td>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            <tr id="trError" runat="server" visible="false">
-                                                <td colspan="7" class="text-center">
-                                                    <asp:Literal ID="ltError" runat="server"></asp:Literal>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>                        
-                        </div>
+                        <%--Fin Contenido!!!!--%>
                     </div>
-                    <%--Fin Contenido!!!!--%>
                 </div>
-            </div>
-            <uc1:footer runat="server" ID="footer" />
+                <uc1:footer runat="server" ID="footer" />
             </form>
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
