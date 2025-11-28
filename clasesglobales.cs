@@ -728,7 +728,7 @@ namespace fpWebApp
             }
         }
 
-        public void ExportarPDF(DataTable dt, string nombreArchivo)
+        public void ExportarPDF(DataTable dt, DataTable dtTotales, string nombreArchivo)
         {
             if (dt == null || dt.Rows.Count == 0)
                 return;
@@ -793,14 +793,72 @@ namespace fpWebApp
                 }
 
                 doc.Add(tabla);
-                doc.Close();
+
+                if (dtTotales != null && dtTotales.Rows.Count > 0)
+                {
+                    Paragraph tituloTotales = new Paragraph(
+                        "\nTotales por Medio de Pago\n",
+                        FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.BLACK)
+                    );
+                    doc.Add(tituloTotales);
+
+                    PdfPTable tablaTot = new PdfPTable(2)
+                    {
+                        WidthPercentage = 40
+                    };
+
+                    // Encabezados sin borde
+                    PdfPCell c1 = new PdfPCell(new Phrase("Medio de Pago", headerFont))
+                    {
+                        Border = iTextSharp.text.Rectangle.NO_BORDER,
+                        Padding = 4,
+                        BackgroundColor = BaseColor.WHITE
+                    };
+                    tablaTot.AddCell(c1);
+
+                    PdfPCell c2 = new PdfPCell(new Phrase("Total", headerFont))
+                    {
+                        Border = iTextSharp.text.Rectangle.NO_BORDER,
+                        Padding = 4,
+                        BackgroundColor = BaseColor.WHITE
+                    };
+                    tablaTot.AddCell(c2);
+
+                    // Filas sin borde
+                    foreach (DataRow row in dtTotales.Rows)
+                    {
+                        PdfPCell celda1 = new PdfPCell(new Phrase(
+                            row["MedioPago"].ToString(), cellFont))
+                        {
+                            Border = iTextSharp.text.Rectangle.NO_BORDER,
+                            Padding = 4,
+                            BackgroundColor = BaseColor.WHITE
+                        };
+                        tablaTot.AddCell(celda1);
+
+                        PdfPCell celda2 = new PdfPCell(new Phrase(
+                            Convert.ToDecimal(row["TotalPorMedioPago"]).ToString("C0"),
+                            cellFont))
+                        {
+                            Border = iTextSharp.text.Rectangle.NO_BORDER,
+                            Padding = 4,
+                            BackgroundColor = BaseColor.WHITE
+                        };
+                        tablaTot.AddCell(celda2);
+                    }
+
+                    doc.Add(tablaTot);  // Se agrega la tabla al PDF correctamente
+                }
+
+                // ❌ NO CERRAR EL DOCUMENTO AQUÍ
+                 doc.Close(); //  
+
+
 
                 // Descargar archivo
                 HttpContext.Current.Response.Clear();
                 HttpContext.Current.Response.ContentType = "application/pdf";
-                HttpContext.Current.Response.AddHeader(
-                    "Content-Disposition",
-                    $"attachment; filename={nombreArchivo}.pdf");
+                HttpContext.Current.Response.AddHeader( "Content-Disposition", $"attachment; filename={nombreArchivo}.pdf");
                 HttpContext.Current.Response.BinaryWrite(ms.ToArray());
                 HttpContext.Current.Response.Flush();
                 HttpContext.Current.Response.SuppressContent = true;
@@ -5276,7 +5334,7 @@ namespace fpWebApp
         }
 
 
-        public DataTable ConsultarPagosPorTipoPorAsesor(int idUsuario, int tipoPago,  string fechaIni, string fechaFin, out decimal valorTotal)
+        public DataTable ConsultarPagosPorTipoPorAsesor(int idUsuario, int tipoPago, string fechaIni, string fechaFin, out decimal valorTotal)
         {
             DataTable dt = new DataTable();
             valorTotal = 0;
@@ -5323,6 +5381,58 @@ namespace fpWebApp
 
             return dt;
         }
+
+        public DataSet ConsultarPagosPorTipoPorMedioPago(int idUsuario, int tipoPago, string fechaIni, string fechaFin, out decimal valorTotal)
+        {
+            valorTotal = 0;
+            DataSet ds = new DataSet();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PAGOS_ASESOR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_tipo_pago", tipoPago);
+                        cmd.Parameters.AddWithValue("@p_fecha_ini", fechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+
+                        // Parámetro de salida
+                        MySqlParameter pTotal = new MySqlParameter("@p_total_valor", MySqlDbType.Decimal);
+                        pTotal.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pTotal);
+
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+
+                            da.Fill(ds);
+
+                            // Obtener el OUT
+                            if (pTotal.Value != DBNull.Value)
+                                valorTotal = Convert.ToDecimal(pTotal.Value);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Si hubo error, se retorna un DataSet con info del error
+                DataTable errorTable = new DataTable();
+                errorTable.Columns.Add("Error", typeof(string));
+                errorTable.Rows.Add(ex.Message);
+                ds.Tables.Add(errorTable);
+            }
+
+            return ds;
+        }
+
 
         public DataTable ConsultarPagosPorTipoPorAsesorSinFechas(int idUsuario, int tipoPago, out decimal valorTotal)
         {

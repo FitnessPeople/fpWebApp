@@ -213,7 +213,7 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 int filtroMedioPago = Convert.ToInt32(ddlTipoPago.SelectedValue);
 
-                DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(
+                DataSet ds = cg.ConsultarPagosPorTipoPorMedioPago(
                     Convert.ToInt32(Session["IdUsuario"]),
                     filtroMedioPago,
                     txbFechaIni.Value,
@@ -221,9 +221,13 @@ namespace fpWebApp
                     out decimal valorTotal
                 );
 
-                string nombreArchivo = $"{DateTime.Now:yyyyMMdd_HHmmss}";
+                DataTable dtPagos = ds.Tables[0];      // detalle
+                DataTable dtTotales = ds.Tables.Count > 2 ? ds.Tables[2] : null;
 
-                cg.ExportarPDF(dt, nombreArchivo);
+                string nombreArchivo = $"{DateTime.Now:yyyyMMdd_HHmmss}";
+                cg.ExportarPDF(dtPagos, dtTotales, nombreArchivo);
+
+
             }
             catch (Exception ex)
             {
