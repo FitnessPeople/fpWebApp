@@ -179,87 +179,56 @@
 
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-12">
-                                <%--<uc1:indicadoresreportespagos runat="server" ID="indicadoresreportespagos"/>--%>
 
-                                <!-- INDICADORES INICIO -->
-
-                                <%--
-                                    ****************
-                                    Indicadores: 
-                                        Total ventas
-                                        Total ventas por web
-                                        Total ventas por counter
-                                        Total ventas totales
-                                    ****************
-                                --%>
                                 <div class="row">
                                     <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <%--<span class="label label-success pull-right">Mes actual</span>--%>
+                                            <div class="ibox-title text-success">
+
                                                 <h5>Ventas hoy
                                                     <asp:Literal ID="ltMes1" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
                                                     <asp:Literal ID="ltVentasHoy" runat="server"></asp:Literal></h1>
-                                                <div class="stat-percent font-bold text-success">
-                                                    <asp:Literal ID="ltRegistros1" runat="server"></asp:Literal>
-                                                    registros
-                                                </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <%--<span class="label label-info pull-right">Mes actual</span>--%>
+                                            <div class="ibox-title text-success">
+                                                <h5>Transaciones hoy </h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="ltTransaccionesHoy" runat="server"></asp:Literal></h1>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-success">
                                                 <h5>Ventas mes
                                                     <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
                                                     <asp:Literal ID="ltVentasMes" runat="server"></asp:Literal></h1>
-                                                <div class="stat-percent font-bold text-success">
-                                                    <asp:Literal ID="ltRegistros2" runat="server"></asp:Literal>
-                                                    registros
-                                                </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <%--<span class="label label-primary pull-right">Mes actual</span>--%>
-                                                <h5>Ventas promedio
+                                            <div class="ibox-title text-success">
+                                                <h5>Ventas ayer
                                                     <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
-                                                    <asp:Literal ID="ltTicketPromedio" runat="server"></asp:Literal></h1>
-                                                <div class="stat-percent font-bold text-success">
-                                                    <asp:Literal ID="ltRegistros3" runat="server"></asp:Literal>
-                                                    registros
-                                                </div>
-                                                <small>&nbsp;</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title">
-                                                <%--<span class="label label-danger pull-right">Mes actual</span>--%>
-                                                <h5>No. Trasaciones </h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="ltTransaccionesHoy" runat="server"></asp:Literal></h1>
-                                                <div class="stat-percent font-bold text-success">
-                                                    <asp:Literal ID="ltRegistros4" runat="server"></asp:Literal>
-                                                    registros
-                                                </div>
+                                                    <asp:Literal ID="ltVentasAyer" runat="server"></asp:Literal></h1>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
@@ -300,31 +269,6 @@
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                            <%--                                            <div class="col-lg-2">
-                                                <asp:DropDownList ID="ddlMes" runat="server" AppendDataBoundItems="true"
-                                                    CssClass="form-control input-sm">
-                                                    <asp:ListItem Text="Enero" Value="1"></asp:ListItem>
-                                                    <asp:ListItem Text="Febrero" Value="2"></asp:ListItem>
-                                                    <asp:ListItem Text="Marzo" Value="3"></asp:ListItem>
-                                                    <asp:ListItem Text="Abril" Value="4"></asp:ListItem>
-                                                    <asp:ListItem Text="Mayo" Value="5"></asp:ListItem>
-                                                    <asp:ListItem Text="Junio" Value="6"></asp:ListItem>
-                                                    <asp:ListItem Text="Julio" Value="7"></asp:ListItem>
-                                                    <asp:ListItem Text="Agosto" Value="8"></asp:ListItem>
-                                                    <asp:ListItem Text="Septiembre" Value="9"></asp:ListItem>
-                                                    <asp:ListItem Text="Octubre" Value="10"></asp:ListItem>
-                                                    <asp:ListItem Text="Noviembre" Value="11"></asp:ListItem>
-                                                    <asp:ListItem Text="Diciembre" Value="12"></asp:ListItem>
-                                                </asp:DropDownList>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <asp:DropDownList ID="ddlAnnio" runat="server" AppendDataBoundItems="true"
-                                                    CssClass="form-control input-sm">
-                                                     
-                                                    <asp:ListItem Text="2025" Value="2025"></asp:ListItem>
-                                                </asp:DropDownList>
-                                            </div>--%>
-
                                             <div class="col-lg-2">
                                                 <div class="form-group">
                                                     <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" placeholder="Fecha inicial" />
@@ -336,17 +280,6 @@
                                                     <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" placeholder="Fecha final" />
                                                 </div>
                                             </div>
-
-                                            <%--<div class="col-lg-2">
-                                                <div class="form-group">
-                                                    <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" />
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <div class="form-group">
-                                                    <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />
-                                                </div>
-                                            </div>--%>
                                             <div class="col-lg-1">
                                                 <div class="form-group">
                                                     <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary btn-sm" OnClick="btnBuscar_Click" />
@@ -358,6 +291,14 @@
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
+                                                </asp:LinkButton>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <asp:LinkButton ID="lbExportarPdf" runat="server"
+                                                    CausesValidation="false"
+                                                    CssClass="btn btn-success pull-right dim m-l-md" Style="font-size: 12px;"
+                                                    OnClick="lbExportarPdf_Click">
+                                                    <i class="fa fa-file-pdf"></i> PDF
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
@@ -379,7 +320,6 @@
                                                     <th data-breakpoints="xs sm md">Estado</th>
                                                     <th data-breakpoints="xs sm md">Usuario</th>
                                                     <th data-breakpoints="xs sm md">Canal</th>
-                                                    <%--<th data-breakpoints="xs sm md">Detalle</th>--%>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -396,22 +336,11 @@
                                                             <td><%# Eval("EstadoPago") %></td>
                                                             <td><%# Eval("Usuario") %></td>
                                                             <td><%# Eval("CanalVenta") %></td>
-                                                            <%--<td>
-                                                                <asp:Button ID="btnDetalle" runat="server" Text="Ver"
-                                                                    CssClass="btn btn-primary"
-                                                                    CommandArgument='<%# Eval("idAfiliadoPlan") %>'
-                                                                    OnCommand="btnDetalle_Command"
-                                                                    CommandName="mostrarDetalle"
-                                                                    Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' />
-                                                            </td>--%>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
-
-                                        <%--<p>Total registros: <span id="totalRegistros"></span></p>
-                                        <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
                                     </div>
                                 </div>
 
@@ -439,7 +368,6 @@
                                                     <th data-breakpoints="xs sm md">Intentos</th>
                                                     <th data-breakpoints="xs sm md">Último intento</th>
                                                     <th data-breakpoints="xs sm md">Mensaje</th>
-                                                    <%--<th data-breakpoints="xs sm md">Detalle</th>--%>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -452,63 +380,13 @@
                                                             <td><%# Eval("Intentos") %></td>
                                                             <td><%# Eval("UltimoIntento") %></td>
                                                             <td><%# Eval("Mensaje") %></td>
-                                                            <%--<td>
-                                                                <asp:Button ID="btnDetalle" runat="server" Text="Ver"
-                                                                    CssClass="btn btn-primary"
-                                                                    CommandArgument='<%# Eval("idAfiliadoPlan") %>'
-                                                                    OnCommand="btnDetalle_Command"
-                                                                    CommandName="mostrarDetalle"
-                                                                    Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' />
-                                                            </td>--%>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
-
-                                        <%--<p>Total registros: <span id="totalRegistros"></span></p>
-                                        <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
                                     </div>
                                 </div>
-
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>Gráficos
-                                            <asp:Literal ID="ltMes5" runat="server"></asp:Literal>:</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <canvas id="miGrafico1"></canvas>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <canvas id="miGrafico2"></canvas>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <canvas id="miGrafico3"></canvas>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <canvas id="miGrafico4"></canvas>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <canvas id="miGrafico5"></canvas>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <canvas id="miGrafico6"></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </form>
@@ -565,450 +443,6 @@
         });
 
     </script>
-
-    <%--    <script>
-        function redondearSuperior(valor, base = 1000) {
-            return Math.ceil(valor / base) * base;
-        }
-
-        // Grafico de Ventas y Cantidad Diaria x mes
-        const datos1 = <%= Grafico1 %>;
-
-        const ctx1 = document.getElementById('miGrafico1');
-
-        const maxVentas1 = Math.max(...datos1.ventas);
-        const maxCantidad1 = Math.max(...datos1.cantidad); 
-
-        const maxY11 = redondearSuperior(maxVentas1 * 1.1, 100000);
-        const maxY12 = Math.ceil(maxCantidad1 * 1.2);
-
-        const data1 = {
-            labels: datos1.labels, // nombres de canal
-            datasets: [
-                {
-                    type: 'bar',                // Tipo: Barras
-                    label: 'Ventas',
-                    data: datos1.ventas,
-                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    borderWidth: 1
-                },
-                {
-                    type: 'line',               // Tipo: Línea
-                    label: 'Cantidad',
-                    data: datos1.cantidad,
-                    yAxisID: 'y2',              // Asociado al eje Y derecho
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    tension: 0,
-                    fill: false
-                }
-            ]
-        };
-
-        new Chart(ctx1, {
-            data: data1,
-            options: {
-                responsive: true,
-                interaction: {
-                    mode: 'index',
-                    intersect: false
-                },
-                stacked: false,
-                scales: {
-                    y1: {
-                        type: 'linear',
-                        position: 'left',
-                        min: 0,
-                        max: maxY11,
-                        title: { display: true, text: 'Ventas' },
-                        grid: { drawOnChartArea: true }
-                    },
-                    y2: {
-                        type: 'linear',
-                        position: 'right',
-                        min: 0,
-                        max: maxY12,
-                        title: { display: true, text: 'Cantidad' },
-                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Comparativo de Ventas y Cantidad Diario'
-                    }
-                }
-            }
-        });
-
-
-        // Grafico de Ventas y Cantidad por Usuario
-        const datos2 = <%= Grafico2 %>;
-
-        const ctx2 = document.getElementById('miGrafico2');
-
-        const maxVentas2 = Math.max(...datos2.ventas);
-        const maxCantidad2 = Math.max(...datos2.cantidad);
-
-        const maxY21 = redondearSuperior(maxVentas2 * 1.1, 100000);
-        const maxY22 = Math.ceil(maxCantidad2 * 1.2);
-
-        const data2 = {
-            labels: datos2.labels, // nombres de canal
-            datasets: [
-                {
-                    type: 'bar',                // Tipo: Barras
-                    label: 'Ventas',
-                    data: datos2.ventas,
-                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    borderWidth: 1
-                },
-                {
-                    type: 'line',               // Tipo: Línea
-                    label: 'Cantidad',
-                    data: datos2.cantidad,
-                    yAxisID: 'y2',              // Asociado al eje Y derecho
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    tension: 0,
-                    fill: false
-                }
-            ]
-        };
-
-        new Chart(ctx2, {
-            data: data2,
-            options: {
-                responsive: true,
-                interaction: {
-                    mode: 'index',
-                    intersect: false
-                },
-                stacked: false,
-                scales: {
-                    y1: {
-                        type: 'linear',
-                        position: 'left',
-                        min: 0,
-                        max: maxY21,
-                        title: { display: true, text: 'Ventas' },
-                        grid: { drawOnChartArea: true }
-                    },
-                    y2: {
-                        type: 'linear',
-                        position: 'right',
-                        min: 0,
-                        max: maxY22,
-                        title: { display: true, text: 'Cantidad' },
-                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Comparativo de Ventas y Cantidad por Usuario'
-                    }
-                }
-            }
-        });
-
-
-
-        // Grafico de Ventas y Cantidad por Canal de Venta
-        const datos3 = <%= Grafico3 %>;
-
-        const ctx3 = document.getElementById('miGrafico3');
-
-        const maxVentas3 = Math.max(...datos3.ventas);
-        const maxCantidad3 = Math.max(...datos3.cantidad);
-
-        const maxY31 = redondearSuperior(maxVentas3 * 1.1, 100000);
-        const maxY32 = Math.ceil(maxCantidad3 * 1.2);
-
-        const data3 = {
-            labels: datos3.labels, // nombres de canal
-            datasets: [
-                {
-                    type: 'bar',                // Tipo: Barras
-                    label: 'Ventas',
-                    data: datos3.ventas,
-                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    borderWidth: 1
-                },
-                {
-                    type: 'line',               // Tipo: Línea
-                    label: 'Cantidad',
-                    data: datos3.cantidad,
-                    yAxisID: 'y2',              // Asociado al eje Y derecho
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    tension: 0,
-                    fill: false
-                }
-            ]
-        };
-
-        new Chart(ctx3, {
-            data: data3,
-            options: {
-                responsive: true,
-                interaction: {
-                    mode: 'index',
-                    intersect: false
-                },
-                stacked: false,
-                scales: {
-                    y1: {
-                        type: 'linear',
-                        position: 'left',
-                        min: 0,
-                        max: maxY31,
-                        title: { display: true, text: 'Ventas' },
-                        grid: { drawOnChartArea: true }
-                    },
-                    y2: {
-                        type: 'linear',
-                        position: 'right',
-                        min: 0,
-                        max: maxY32,
-                        title: { display: true, text: 'Cantidad' },
-                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Comparativo de Ventas y Cantidad por Canal de Venta'
-                    }
-                }
-            }
-        });
-
-
-        // Grafico de Ventas y Cantidad por Banco
-        const datos4 = <%= Grafico4 %>;
-
-        const ctx4 = document.getElementById('miGrafico4');
-
-        const maxVentas4 = Math.max(...datos4.ventas);
-        const maxCantidad4 = Math.max(...datos4.cantidad);
-
-        const maxY41 = redondearSuperior(maxVentas4 * 1.1, 100000);
-        const maxY42 = Math.ceil(maxCantidad4 * 1.2);
-
-        const data4 = {
-            labels: datos4.labels, // nombres de canal
-            datasets: [
-                {
-                    type: 'bar',                // Tipo: Barras
-                    label: 'Ventas',
-                    data: datos4.ventas,
-                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    borderWidth: 1
-                },
-                {
-                    type: 'line',               // Tipo: Línea
-                    label: 'Cantidad',
-                    data: datos4.cantidad,
-                    yAxisID: 'y2',              // Asociado al eje Y derecho
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    tension: 0,
-                    fill: false
-                }
-            ]
-        };
-
-        new Chart(ctx4, {
-            data: data4,
-            options: {
-                responsive: true,
-                interaction: {
-                    mode: 'index',
-                    intersect: false
-                },
-                stacked: false,
-                scales: {
-                    y1: {
-                        type: 'linear',
-                        position: 'left',
-                        min: 0,
-                        max: maxY41,
-                        title: { display: true, text: 'Ventas' },
-                        grid: { drawOnChartArea: true }
-                    },
-                    y2: {
-                        type: 'linear',
-                        position: 'right',
-                        min: 0,
-                        max: maxY42,
-                        title: { display: true, text: 'Cantidad' },
-                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Comparativo de Ventas y Cantidad por Banco'
-                    }
-                }
-            }
-        });
-
-
-        // Grafico de Ventas y Cantidad por Medio de Pago
-        const datos5 = <%= Grafico5 %>;
-
-        const ctx5 = document.getElementById('miGrafico5');
-
-        const maxVentas5 = Math.max(...datos5.ventas);
-        const maxCantidad5 = Math.max(...datos5.cantidad);
-
-        const maxY51 = redondearSuperior(maxVentas5 * 1.1, 100000);
-        const maxY52 = Math.ceil(maxCantidad5 * 1.2);
-
-        const data5 = {
-            labels: datos5.labels, // nombres de canal
-            datasets: [
-                {
-                    type: 'bar',                // Tipo: Barras
-                    label: 'Ventas',
-                    data: datos5.ventas,
-                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    borderWidth: 1
-                },
-                {
-                    type: 'line',               // Tipo: Línea
-                    label: 'Cantidad',
-                    data: datos5.cantidad,
-                    yAxisID: 'y2',              // Asociado al eje Y derecho
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    tension: 0,
-                    fill: false
-                }
-            ]
-        };
-
-        new Chart(ctx5, {
-            data: data5,
-            options: {
-                responsive: true,
-                interaction: {
-                    mode: 'index',
-                    intersect: false
-                },
-                stacked: false,
-                scales: {
-                    y1: {
-                        type: 'linear',
-                        position: 'left',
-                        min: 0,
-                        max: maxY51,
-                        title: { display: true, text: 'Ventas' },
-                        grid: { drawOnChartArea: true }
-                    },
-                    y2: {
-                        type: 'linear',
-                        position: 'right',
-                        min: 0,
-                        max: maxY52,
-                        title: { display: true, text: 'Cantidad' },
-                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Comparativo de Ventas y Cantidad por Medio de Pago'
-                    }
-                }
-            }
-        });
-
-
-        // Grafico de Ventas y Cantidad por Plan
-        const datos6 = <%= Grafico6 %>;
-
-        const ctx6 = document.getElementById('miGrafico6');
-
-        const maxVentas6 = Math.max(...datos6.ventas);
-        const maxCantidad6 = Math.max(...datos6.cantidad);
-
-        const maxY61 = redondearSuperior(maxVentas6 * 1.1, 100000);
-        const maxY62 = Math.ceil(maxCantidad6 * 1.2);
-
-        const data6 = {
-            labels: datos6.labels, // nombres de canal
-            datasets: [
-                {
-                    type: 'bar',                // Tipo: Barras
-                    label: 'Ventas',
-                    data: datos6.ventas,
-                    yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    borderWidth: 1
-                },
-                {
-                    type: 'line',               // Tipo: Línea
-                    label: 'Cantidad',
-                    data: datos6.cantidad,
-                    yAxisID: 'y2',              // Asociado al eje Y derecho
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    tension: 0,
-                    fill: false
-                }
-            ]
-        };
-
-        new Chart(ctx6, {
-            data: data6,
-            options: {
-                responsive: true,
-                interaction: {
-                    mode: 'index',
-                    intersect: false
-                },
-                stacked: false,
-                scales: {
-                    y1: {
-                        type: 'linear',
-                        position: 'left',
-                        min: 0,
-                        max: maxY61,
-                        title: { display: true, text: 'Ventas' },
-                        grid: { drawOnChartArea: true }
-                    },
-                    y2: {
-                        type: 'linear',
-                        position: 'right',
-                        min: 0,
-                        max: maxY62,
-                        title: { display: true, text: 'Cantidad' },
-                        grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
-                    }
-                },
-                plugins: {
-                    title: {
-                        display: true,
-                        text: 'Comparativo de Ventas y Cantidad por Plan'
-                    }
-                }
-            }
-        });
-    </script>--%>
 </body>
 
 </html>

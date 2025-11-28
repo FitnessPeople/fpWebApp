@@ -114,13 +114,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltVentasHoy;
 
         /// <summary>
-        /// Control ltRegistros1.
+        /// Control ltTransaccionesHoy.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltRegistros1;
+        protected global::System.Web.UI.WebControls.Literal ltTransaccionesHoy;
 
         /// <summary>
         /// Control ltMes2.
@@ -141,15 +141,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltVentasMes;
 
         /// <summary>
-        /// Control ltRegistros2.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltRegistros2;
-
-        /// <summary>
         /// Control ltMes3.
         /// </summary>
         /// <remarks>
@@ -159,40 +150,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltMes3;
 
         /// <summary>
-        /// Control ltTicketPromedio.
+        /// Control ltVentasAyer.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltTicketPromedio;
-
-        /// <summary>
-        /// Control ltRegistros3.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltRegistros3;
-
-        /// <summary>
-        /// Control ltTransaccionesHoy.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltTransaccionesHoy;
-
-        /// <summary>
-        /// Control ltRegistros4.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltRegistros4;
+        protected global::System.Web.UI.WebControls.Literal ltVentasAyer;
 
         /// <summary>
         /// Control ltMes4.
@@ -258,6 +222,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
+        /// Control lbExportarPdf.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lbExportarPdf;
+
+        /// <summary>
         /// Control rpPagos.
         /// </summary>
         /// <remarks>
@@ -292,15 +265,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpHistorialCobrosRechazados;
-
-        /// <summary>
-        /// Control ltMes5.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltMes5;
 
         /// <summary>
         /// Control footer.
