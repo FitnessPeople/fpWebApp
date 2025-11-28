@@ -239,7 +239,7 @@
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Reporte de pagos
+                                        <h5>Reporte de ventas
                                             <asp:Literal ID="ltMes4" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
@@ -326,16 +326,16 @@
                                                 <asp:Repeater ID="rpPagos" runat="server">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("idAfiliadoPlan") %></td>
-                                                            <td><%# Eval("DocumentoAfiliado") %></td>
-                                                            <td><%# Eval("NombreAfiliado") %></td>
+                                                            <td><%# Eval("id") %></td>
+                                                            <td><%# Eval("Doc") %></td>
+                                                            <td><%# Eval("Afil") %></td>
                                                             <td><%# Eval("Valor", "{0:C0}") %></td>
-                                                            <td><%# Eval("NombreMedioPago") %></td>
-                                                            <td><%# Eval("IdReferencia") %></td>
-                                                            <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                            <td><%# Eval("EstadoPago") %></td>
-                                                            <td><%# Eval("Usuario") %></td>
-                                                            <td><%# Eval("CanalVenta") %></td>
+                                                            <td><%# Eval("Medio de pago") %></td>
+                                                            <td><%# Eval("Ref") %></td>
+                                                            <td><%# Eval("Fecha", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                            <td><%# Eval("Est") %></td>
+                                                            <td><%# Eval("Usu") %></td>
+                                                            <td><%# Eval("CanalV") %></td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>

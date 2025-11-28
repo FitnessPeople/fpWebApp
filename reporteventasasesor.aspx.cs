@@ -121,7 +121,7 @@ namespace fpWebApp
 
 
                 DataRow[] filasHoy = dt.Select(
-                    $"FechaHoraPago >= #{hoyInicio:MM/dd/yyyy HH:mm:ss}# AND FechaHoraPago <= #{hoyFin:MM/dd/yyyy HH:mm:ss}#"
+                    $"Fecha >= #{hoyInicio:MM/dd/yyyy HH:mm:ss}# AND Fecha <= #{hoyFin:MM/dd/yyyy HH:mm:ss}#"
                 );
 
                 DataRow[] filasAyer = dt1.Select(

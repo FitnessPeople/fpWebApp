@@ -66,7 +66,6 @@ namespace fpWebApp
                                 SoloAsesoresActivosCanal(idCanalVenta);
                             }
 
-                           // listaGestionAesores();
                            
                         }
                         if (ViewState["Exportar"].ToString() == "1")
@@ -437,7 +436,7 @@ namespace fpWebApp
                 case "Tibio":
                     return $"<i class='fa-solid fa-mug-hot fa-2x' style='color:#1AB394;' title='{HttpUtility.HtmlEncode(descripcion)}'></i>";
 
-                case "Frío":
+                case "Frio":
                     return $"<i class='fa-solid fa-snowflake fa-2x' style='color:#23C6C8;' title='{HttpUtility.HtmlEncode(descripcion)}'></i>";
 
                 default:

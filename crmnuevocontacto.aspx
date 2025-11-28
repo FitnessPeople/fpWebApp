@@ -679,7 +679,7 @@
                                                                     <tr class="feed-element">
                                                                         <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
                                                                         <td><%# Eval("TelefonoContacto") %></td>
-                                                                        <td>Caliente</td>
+                                                                        <td><%# Eval("NombreEstadoVenta") %></td>
                                                                         <td><%# Eval("NombrePlan") %></td>
                                                                         <td>
                                                                             <span id="ltTiempoTranscurrido" runat="server"></span></td>

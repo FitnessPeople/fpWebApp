@@ -679,9 +679,9 @@ namespace fpWebApp
                 encabezado.AddCell(colFecha);
 
                 // Datos asesor
-                string asesor = data.Rows[0]["NombreEmpleado"].ToString();
-                string usuario = data.Rows[0]["Usuario"].ToString();
-                string canal = data.Rows[0]["CanalVenta"].ToString();
+                string asesor = data.Rows[0]["Emp"].ToString();
+                string usuario = data.Rows[0]["Usu"].ToString();
+                string canal = data.Rows[0]["CanalV"].ToString();
 
                 PdfPCell info = new PdfPCell(new Phrase(
                     $"Asesor: {asesor}   |   Usuario: {usuario}   |   Canal: {canal}",
