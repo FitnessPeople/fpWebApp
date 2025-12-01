@@ -134,7 +134,7 @@ namespace fpWebApp
                 "LEFT JOIN sedes s ON s.idSede = a.idSede " +
                 "LEFT JOIN ciudadessedes cs ON s.idCiudadSede = cs.idCiudadSede " +
                 "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = a.idEstadoCivilAfiliado " +
-                "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado " +
+                "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' " +
                 "LEFT JOIN profesiones p ON p.idProfesion = a.idProfesion " +
                 "LEFT JOIN eps ON eps.idEps = a.idEps " +
                 "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +

@@ -254,7 +254,7 @@
                                                     <%--<td class="text-nowrap"><b>ID:</b> <%# Eval("idAfiliado") %></td>--%>
                                                     <td><a href="detalleafiliado?search=<%# Eval("DocumentoAfiliado") %>"><%# Eval("DocumentoAfiliado") %></a></td>
                                                     <%--<td><%# Eval("DocumentoAfiliado") %></td>--%>
-                                                    <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
+                                                    <td><span class="text-capitalize"><%# Eval("NombreAfiliado").ToString().ToLower() %> <%# Eval("ApellidoAfiliado").ToString().ToLower() %></span></td>
                                                     <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/<%# Eval("CelularAfiliado") %>" target="_blank"><%# Eval("CelularAfiliado") %></a></td>
                                                     <td style="white-space: nowrap;"><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("EmailAfiliado") %></td>
                                                     <td style="white-space: nowrap;"><i class="fa fa-cake m-r-xs font-bold"></i><span class="text-<%# Eval("badge") %> font-bold"><%# Eval("FechaNacAfiliado", "{0:dd MMM yyyy}") %> <%# Eval("edad") %> <i class="fa fa-<%# Eval("age") %>"></i></span></td>

@@ -155,7 +155,7 @@ namespace fpWebApp
                     ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
                     ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
                     ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
-                    ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
+                    ltEmail.Text = "(" + dt.Rows[0]["SiglaDocumento"].ToString() + ": " + dt.Rows[0]["DocumentoAfiliado"].ToString() + "), " + dt.Rows[0]["EmailAfiliado"].ToString();
                     ViewState["EmailAfiliado"] = dt.Rows[0]["EmailAfiliado"].ToString();
                     ltCelular.Text = "<a href=\"https://wa.me/57" + dt.Rows[0]["CelularAfiliado"].ToString() + "\" target=\"_blank\">" + dt.Rows[0]["CelularAfiliado"].ToString() + "</a>";
                     ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
@@ -798,14 +798,9 @@ namespace fpWebApp
                 title: '{titulo}',
                 text: '{mensaje}',
                 icon: '{tipo}', 
-                background: '#3C3C3C', 
                 allowOutsideClick: false, 
                 showCloseButton: false, 
-                confirmButtonText: 'Aceptar', 
-                customClass: {{
-                    popup: 'alert',
-                    confirmButton: 'btn-confirm-alert'
-                }}
+                confirmButtonText: 'Aceptar'
             }});";
 
             ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);

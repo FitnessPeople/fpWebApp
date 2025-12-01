@@ -228,7 +228,7 @@
                                                                 <%# Eval("NombrePlan") %>, <%# Eval("Meses") %> mes(es)
                                                             </label>
                                                             <br />
-                                                            <div class="progress progress-striped active">
+                                                            <div class="progress progress-striped active" style="margin-bottom: 0px;">
                                                                 <div style='width: <%# Eval("Porcentaje1") %>%' class="progress-bar progress-bar-success"></div>
                                                                 <div style='width: <%# Eval("Porcentaje2") %>%' class="progress-bar progress-bar-warning"></div>
                                                             </div>
