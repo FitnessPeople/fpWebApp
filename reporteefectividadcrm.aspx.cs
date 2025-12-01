@@ -730,7 +730,6 @@ namespace fpWebApp
                         return;
                     }
 
-                    // Construir tabla HTML con los resultados correctos
                     System.Text.StringBuilder sb = new System.Text.StringBuilder();
                     sb.Append("<table class='table table-condensed table-sm' style='font-size:13px;margin-bottom:0;'>");
                     sb.Append("<thead><tr><th>Estado de Venta</th><th class='text-right'>Cantidad</th><th class='text-right'>Valor</th></tr></thead>");
@@ -775,6 +774,63 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+
+                int idPerfil = 0;
+                int idCanalVenta = 0;
+                int idUsuario = 0;
+
+                // Consultar perfil y canal del usuario actual
+                DataTable dt_usu = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"]));
+                if (dt_usu.Rows.Count > 0)
+                {
+                    idPerfil = Convert.ToInt32(dt_usu.Rows[0]["idPerfil"].ToString());
+                    idCanalVenta = Convert.ToInt32(dt_usu.Rows[0]["idCanalVenta"].ToString());
+                }
+
+
+                DateTime? FechaIni = null;
+                DateTime? FechaFin = null;
+
+                if (!string.IsNullOrEmpty(txbFechaIni.Value))
+                    FechaIni = Convert.ToDateTime(txbFechaIni.Value);
+
+                if (!string.IsNullOrEmpty(txbFechaFin.Value))
+                    FechaFin = Convert.ToDateTime(txbFechaFin.Value);
+
+                // 🔹 Control de acceso por rol
+                if (idPerfil == 21 || idPerfil == 1 || idPerfil == 37 || idPerfil == 23 || idPerfil == 18)
+                {
+                    // Director comercial, CEO, Director operativo, Director marketing, Ingeniero desarrollo
+                    idCanalVenta = Convert.ToInt32(ddlCanalesVenta.SelectedValue);
+                    idUsuario = Convert.ToInt32(ddlAsesores.SelectedValue);
+                }
+                else if (idPerfil == 2)
+                {
+                    // 🔹 Rol 2 → Solo puede ver su canal y asesores de ese canal
+                    idCanalVenta = Convert.ToInt32(Session["idCanalVenta"]);
+                    idUsuario = Convert.ToInt32(ddlAsesores.SelectedValue);
+                }
+                else
+                {
+                    // Otros perfiles → usar canal y usuario en sesión
+                    idCanalVenta = Convert.ToInt32(Session["idCanalVenta"]);
+                    idUsuario = Convert.ToInt32(Session["idUsuario"]);
+                }
+
+
+
+                DataTable dt = cg.ConsultarEfectividadGestionCRM(idCanalVenta, FechaIni, FechaFin, idUsuario);
+                string nombre = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+
+                cg.ExportarExcelOk(dt, nombre);
+            }
+            catch (Exception ex)
+            {
+                Response.Write("<script>alert('Error al generar PDF: " + ex.Message + "');</script>");
+            }
 
         }
 
