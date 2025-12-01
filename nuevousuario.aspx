@@ -156,7 +156,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Clave</label>
-                                                    <asp:TextBox ID="txbClave" CssClass="form-control input-sm" runat="server" placeholder="Clave"></asp:TextBox>
+                                                    <asp:TextBox ID="txbClave" CssClass="form-control input-sm" runat="server" placeholder="Clave" TextMode="Password"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>

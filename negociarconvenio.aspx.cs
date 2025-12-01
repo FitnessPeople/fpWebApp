@@ -55,16 +55,17 @@ namespace fpWebApp
                         txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd");
                     }
                                        
-                    listaEstrategias();
+                    //listaEstrategias();
                     listaEmpresasAfiliadas();                    
                     CargarPlanes();
                     ListaProspectos();
+                    CargarNegociaciones();
 
                     ltTitulo.Text = "Establecer condiciones";
 
                     if (Request.QueryString.Count > 0)
                     {
-                        rpEstrategias.Visible = false;
+                        rpNegociaciones.Visible = false;
                         if (Request.QueryString["editid"] != null)
                         {
                             //Editar
@@ -157,16 +158,16 @@ namespace fpWebApp
             }
         }
 
-        private void listaEstrategias()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstrategiasMarketing();
+        //private void listaEstrategias()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarEstrategiasMarketing();
 
-            rpEstrategias.DataSource = dt;
-            rpEstrategias.DataBind();
+        //    rpEstrategias.DataSource = dt;
+        //    rpEstrategias.DataBind();
 
-            dt.Dispose();
-        }
+        //    dt.Dispose();
+        //}
 
         private void CargarPlanes()
         {
@@ -178,7 +179,17 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        
+        private void CargarNegociaciones()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarNegociaciones();
+            rpNegociaciones.DataSource = dt;
+            rpNegociaciones.DataBind();
+
+            dt.Dispose();
+        }
+
+
         private void listaEmpresasAfiliadas()
         {
             try

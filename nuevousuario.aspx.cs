@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace fpWebApp
 {
@@ -77,15 +78,33 @@ namespace fpWebApp
 
         private void CargarPerfiles()
         {
-            string strQuery = "SELECT * FROM Perfiles ORDER BY Perfil";
             clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+
+            int idPerfil = Convert.ToInt32(Session["idPerfil"]);
+
+            DataTable dt = cg1.ConsultarPerfiles();
+       
+            int[] perfilesRestringidos = { 2, 4, 6, 10, 11, 24, 25, 36 };
+
+            if (idPerfil == 2 || idPerfil == 11 || idPerfil == 36)
+            {
+
+                var perfilesPermitidos = dt.AsEnumerable()
+                                           .Where(r => perfilesRestringidos.Contains(Convert.ToInt32(r["IdPerfil"])));
+
+                if (perfilesPermitidos.Any())
+                    dt = perfilesPermitidos.CopyToDataTable();
+                else
+                    dt = dt.Clone(); 
+            }
+  
 
             ddlPerfiles.DataSource = dt;
             ddlPerfiles.DataBind();
 
             dt.Dispose();
         }
+
 
         private void CargarEmpleados()
         {

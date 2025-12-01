@@ -55,22 +55,22 @@
                     <p>
                         <b>Paso 1: Prepara la información</b><br />
                         Antes de empezar, asegúrate de tener estos datos a mano:<br />
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre Comercial, Documento (NIT, RUC, etc.) + DV (dígito de verificación), Razón Social y Tipo de Documento.</b><br />
-                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Teléfono Principal y Secundario, Celular, Email, Dirección y Ciudad.</b><br />
-                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Fecha de Convenio, Número de Empleados, Tipo de Negociación, Días de Crédito y PDF del Contrato.</b>
-                    <br />
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i><b>Nombre Comercial, Documento (NIT, RUC, etc.) + DV (dígito de verificación), Razón Social y Tipo de Documento.</b><br />
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i><b>Teléfono Principal y Secundario, Celular, Email, Dirección y Ciudad.</b><br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i><b>Fecha de Convenio, Número de Empleados, Tipo de Negociación, Días de Crédito y PDF del Contrato.</b>
+                        <br />
                         <br />
                         <b>Paso 2: Completa el formulario</b><br />
-                        <i class="fa-solid fa-pencil"></i> Llena todos los campos obligatorios (generalmente marcados con *).<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Verifica que los datos estén correctos y actualizados.
+                        <i class="fa-solid fa-pencil"></i>Llena todos los campos obligatorios (generalmente marcados con *).<br />
+                        <i class="fa-solid fa-magnifying-glass"></i>Verifica que los datos estén correctos y actualizados.
                     <br />
                         <br />
                         <b>Paso 3: Confirma o cancela</b><br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Agregar:</b> Guarda la información y finaliza el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
                    <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -179,7 +179,7 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Teléfono secundario</label>
-                                                    <asp:TextBox ID="txbTelefonoSrio" CssClass="form-control input-sm" runat="server" placeholder="Teléfono secundario" ></asp:TextBox>
+                                                    <asp:TextBox ID="txbTelefonoSrio" CssClass="form-control input-sm" runat="server" placeholder="Teléfono secundario"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -211,8 +211,8 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Ciudad</label>
-                                                    <asp:DropDownList ID="ddlCiudadEmpresa" runat="server" 
-                                                        AppendDataBoundItems="true" DataTextField="NombreCiudad" 
+                                                    <asp:DropDownList ID="ddlCiudadEmpresa" runat="server"
+                                                        AppendDataBoundItems="true" DataTextField="NombreCiudad"
                                                         DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
@@ -271,14 +271,37 @@
                                                     <span class="fileinput-exists input-sm">Cambiar</span>
                                                     <input type="file" name="fileConvenio" id="fileConvenio" accept="application/pdf">
                                                 </span>
-                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" 
+                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
                                                     data-dismiss="fileinput">Quitar</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="ValorPresupuesto" class="col-form-label">Retorno administrativo?:</label>
+                                                    <div class="col-sm-10">
+                                                        <label class="checkbox-inline">
+                                                            <div class="i-checks">
+                                                                <label>
+                                                                    <input type="radio" value="option1" name="a">
+                                                                    <i></i>Sí
+                                                                </label>
+                                                            </div>
+                                                            <div class="i-checks">
+                                                                <label>
+                                                                    <input type="radio" checked="" value="option2" name="a">
+                                                                    <i></i>No</label>
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div>
                                             <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='empresasafiliadas'"><strong>Cancelar</strong></button>
-                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click"/>
+                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
                                         </div>
                                     </div>
                                 </form>

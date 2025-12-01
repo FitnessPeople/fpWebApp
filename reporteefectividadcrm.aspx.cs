@@ -782,7 +782,6 @@ namespace fpWebApp
                 int idCanalVenta = 0;
                 int idUsuario = 0;
 
-                // Consultar perfil y canal del usuario actual
                 DataTable dt_usu = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"]));
                 if (dt_usu.Rows.Count > 0)
                 {

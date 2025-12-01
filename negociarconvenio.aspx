@@ -263,28 +263,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-sm-12">
-                                                        <div class="form-group">
-                                                            <label for="ValorPresupuesto" class="col-form-label">Retorno administrativo?:</label>
-                                                            <div class="col-sm-10">
-                                                                <label class="checkbox-inline">
-                                                                    <div class="i-checks">
-                                                                        <label>
-                                                                            <input type="radio" value="option1" name="a">
-                                                                            <i></i>Sí
-                                                                        </label>
-                                                                    </div>
-                                                                    <div class="i-checks">
-                                                                        <label>
-                                                                            <input type="radio" checked="" value="option2" name="a">
-                                                                            <i></i>No</label>
-                                                                    </div>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
 
                                                 <div class="row">
                                                     <div class="col-sm-12">
@@ -385,37 +364,39 @@
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 200px;">Nombre</th>
-                                                    <th data-breakpoints="xs">Tipo Estrategia</th>
-                                                    <th data-breakpoints="xs">Fecha Inicio</th>
+                                                    <th data-breakpoints="xs">id</th>
+                                                    <th data-breakpoints="xs">Nit</th>
+                                                    <th data-breakpoints="xs">Descripción</th>
+                                                    <th data-breakpoints="xs">Fecha Ini</th>
                                                     <th data-breakpoints="xs">Fecha Fin</th>
+                                                    <th data-breakpoints="xs">Valor</th>
+                                                    <th data-breakpoints="xs">Dscto.</th>
+                                                    <th data-breakpoints="xs">Usuario.</th>
+                                                    <th data-breakpoints="xs">Fecha.</th>
                                                     <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpEstrategias" runat="server" OnItemDataBound="rpEstrategias_ItemDataBound">
+                                                <asp:Repeater ID="rpNegociaciones" runat="server" OnItemDataBound="rpEstrategias_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("NombreEstrategia") %></td>
-                                                            <td><%# Eval("NombreTipoEstrategia") %></td>
-                                                            <td><%# Convert.ToDateTime(Eval("FechaInicio")).ToString("dd/MM/yyyy") %></td>
+                                                            <td><%# Eval("idNegociacion") %></td>
+                                                            <td><%# Eval("DocumentoEmpresa") %></td>
+                                                            <td><%# Eval("Descripcion") %></td>
+                                                            <td><%# Convert.ToDateTime(Eval("FechaIni")).ToString("dd/MM/yyyy") %></td>
                                                             <td><%# Convert.ToDateTime(Eval("FechaFin")).ToString("dd/MM/yyyy") %></td>
-
+                                                            <td><%# string.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("ValorNegociacion")) %></td>
+                                                            <td><%# Eval("Descuento") %></td>
+                                                            <td><%# Eval("idUsuario") %></td>
+                                                            <td><%# Eval("FechaCreacion") %></td>
                                                             <td>
                                                                 <table class="table table-bordered table-striped">
                                                                     <tr>
-                                                                        <th width="25%"><i class="fa fa-city m-r-xs"></i>Canales de venta</th>
-                                                                        <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Planes</th>
-                                                                        <th width="25%"><i class="fa fa-mobile m-r-xs"></i>Presupuesto</th>
-                                                                        <th width="50%" class="text-nowrap"><i class="fa fa-clock m-r-xs"></i>Descripción</th>
+                                                                        <th width="100%"><i class="fa fa-city m-r-xs"></i>Descripción</th>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td><%# Eval("CanalesVenta") %></td>
-                                                                        <td><%# Eval("Planes") %></td>
-                                                                        <td><%# string.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("ValorPresupuesto")) %></td>
-                                                                        <td><%# Eval("DescripcionEstrategia") %></td>
-
+                                                                        <td><%# Eval("Descripcion") %></td>
                                                                     </tr>
                                                                 </table>
                                                             </td>
