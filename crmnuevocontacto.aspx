@@ -481,6 +481,8 @@
                                                                             <asp:DropDownList ID="ddlEstrategia" DataTextField="NombreEstrategia" DataValueField="idEstrategia"
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                                <asp:ListItem Text="Ninguna" Value="0"></asp:ListItem>
+
                                                                             </asp:DropDownList>
                                                                             <asp:RequiredFieldValidator ID="rfvEstrategia" runat="server" ControlToValidate="ddlEstrategia"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
