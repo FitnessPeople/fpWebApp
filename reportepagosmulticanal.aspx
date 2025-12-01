@@ -392,33 +392,35 @@
                                                 data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                                 <thead>
                                                     <tr>
-                                                        <th data-breakpoints="xs">Id</th>
+                                                        <%--<th data-breakpoints="xs">Id</th>
                                                         <th data-breakpoints="xs">Afiliado</th>
-                                                        <th data-breakpoints="xs" class="text-right" data-type="number">Valor</th>
+                                                        <th data-breakpoints="xs" class="text-right">Valor</th>
                                                         <th data-breakpoints="xs">Fecha Hora</th>
                                                         <th data-breakpoints="xs">Estado</th>
                                                         <th data-breakpoints="xs">Método</th>
-                                                        <%--<th data-breakpoints="xs">Canal</th>--%>
+                                                        <th data-breakpoints="xs">Canal</th>--%>
+                                                        <th data-breakpoints="xs">Documento</th>
+                                                        <th data-breakpoints="xs">Afiliado</th>
+                                                        <th data-breakpoints="xs" class="text-right">Valor</th>
+                                                        <th data-breakpoints="xs">Fecha Hora</th>
+                                                        <th data-breakpoints="xs">Referencia</th>
+                                                        <th data-breakpoints="xs">Estado</th>
+                                                        <th data-breakpoints="xs">Canal</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <asp:Repeater ID="rpWompi" runat="server">
                                                         <ItemTemplate>
-                                                            <tr>
+                                                            <%--<tr>
                                                                 <td><%# Eval("id") %></td>
                                                                 <td><%# Eval("full_name") %></td>
-                                                                <td class="text-right"
-                                                                    data-value='<%# (Convert.ToInt32(Eval("amount_in_cents")) / 100) %>'>
-                                                                    <%# (Convert.ToInt32(Eval("amount_in_cents")) / 100)
-                                                                          .ToString("C0", new System.Globalization.CultureInfo("es-CO")) %>
+                                                                <td class="text-right">
+                                                                    <%# Eval("amount_formatted", "{0:C0}") %>
                                                                 </td>
                                                                 <td><%# Eval("created_at", "{0:dd MMM yyyy HH:mm}") %></td>
                                                                 <td>
-                                                                    <span class='<%# Eval("status").ToString().ToLower() == "error" ? "badge badge-danger" : "badge badge-info" %>'>
-                                                                        <%# Eval("status").ToString().ToLower() %> 
-                                                                    </span>
+                                                                    <span class='<%# Eval("status").ToString().ToLower() == "error" ? "badge badge-danger" : "badge badge-info" %>'>Aprobado</span>
                                                                 </td>
-                                                                <%--<td><%# Eval("payment_method_type").ToString().ToLower() %></td>--%>
                                                                 <td class="text-center"><asp:Image 
                                                                     runat="server" 
                                                                     Width="24"
@@ -429,7 +431,16 @@
                                                                         Eval("payment_method_type").ToString().ToLower() == "nequi"     ? "~/img/icons/nequi.png" :
                                                                         "~/img/icons/mastercard.png"
                                                                     %>' /></td>
-                                                                <td><%--<%# Eval("Canal") %>--%></td>
+                                                                <td><%# Eval("Canal") %></td>
+                                                            </tr>--%>
+                                                            <tr>
+                                                                <td><%# Eval("DocumentoAfiliado") %></td>
+                                                                <td><%# Eval("NombreAfiliado") %></td>
+                                                                <td class="text-right"><%# Eval("Valor", "{0:C0}") %></td>
+                                                                <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                                <td><%# Eval("idReferencia") %></td>
+                                                                <td><span class="badge badge-info"><%# Eval("EstadoPago") %></span></td>
+                                                                <td><%# Eval("CanalVenta") %></td>
                                                             </tr>
                                                         </ItemTemplate>
                                                     </asp:Repeater>

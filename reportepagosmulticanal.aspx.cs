@@ -143,10 +143,12 @@ namespace fpWebApp
                     row["status"] = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(status);
                 }
 
-                DataTable dt = cg.ConsultarPagosTransaccWompi(txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valorTotal);
+                //DataTable dt = cg.ConsultarPagosTransaccWompi(txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valorTotal);
+                DataTable dt = cg.ConsultarPagosPorTipo(Convert.ToInt32(Session["idCanalVenta"].ToString()), 4, Convert.ToInt32(ddlPlanes.SelectedValue.ToString()), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
+
                 rpWompi.DataSource = dt;
                 rpWompi.DataBind();
-                ltValortotalWompi.Text = valorTotal.ToString("C0");
+                ltValortotalWompi.Text = valortotal.ToString("C0");
                 dt.Dispose();
             }
             else

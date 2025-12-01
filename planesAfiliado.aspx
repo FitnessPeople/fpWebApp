@@ -225,7 +225,7 @@
                                             <div class="i-checks">
                                                 <small class="label label-primary pull-right"><%# Eval("DiasQueFaltan") %> días disponibles</small>
                                                 <label>
-                                                    Plan Activo: <%# Eval("NombrePlan") %>
+                                                    <%# Eval("NombrePlan") %>
                                                 </label>
                                                 <br />
                                                 <div class="progress progress-striped active">
