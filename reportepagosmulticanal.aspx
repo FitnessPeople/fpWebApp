@@ -183,9 +183,9 @@
                                                     </asp:LinkButton>
                                                 </div>
                                             </div>
-                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            <table class="footable table table-striped list-group-item-text" data-paging-size="5"
                                                 data-filter-min="3" data-filter-placeholder="Buscar"
-                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="5"
+                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
                                                 data-filtering="true" data-filter-container="#filter-form-container-efectivo" data-filter-delay="300"
                                                 data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                                 <thead>
@@ -247,9 +247,9 @@
                                                     </asp:LinkButton>
                                                 </div>
                                             </div>
-                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            <table class="footable table table-striped list-group-item-text" data-paging-size="5"
                                                 data-filter-min="3" data-filter-placeholder="Buscar"
-                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="5"
+                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
                                                 data-filtering="true" data-filter-container="#filter-form-container-datafono" data-filter-delay="300"
                                                 data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                                 <thead>
@@ -317,9 +317,9 @@
                                                     </asp:LinkButton>
                                                 </div>
                                             </div>
-                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            <table class="footable table table-striped list-group-item-text" data-paging-size="5"
                                                 data-filter-min="3" data-filter-placeholder="Buscar"
-                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="5"
+                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
                                                 data-filtering="true" data-filter-container="#filter-form-container-transferencia" data-filter-delay="300"
                                                 data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                                 <thead>
@@ -385,9 +385,9 @@
                                                 </div>
                                             </div>
 
-                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            <table class="footable table table-striped list-group-item-text" data-paging-size="5"
                                                 data-filter-min="3" data-filter-placeholder="Buscar"
-                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="5"
+                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
                                                 data-filtering="true" data-filter-container="#filter-form-container-wompi" data-filter-delay="300"
                                                 data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                                 <thead>
@@ -423,11 +423,11 @@
                                                                     runat="server" 
                                                                     Width="24"
                                                                     ImageUrl='<%# 
-                                                                        Eval("payment_method_type").ToString().ToLower() == "card"      ? "~/img/flags/32/Argentina.png" :
-                                                                        Eval("payment_method_type").ToString().ToLower() == "bancolombia_transfer"      ? "~/img/flags/32/Peru.png" :
-                                                                        Eval("payment_method_type").ToString().ToLower() == "pse"       ? "~/img/flags/32/Paraguay.png" :
-                                                                        Eval("payment_method_type").ToString().ToLower() == "nequi"     ? "~/img/flags/32/Chile.png" :
-                                                                        "~/img/flags/32/Colombia.png"
+                                                                        Eval("payment_method_type").ToString().ToLower() == "card"      ? "~/img/icons/visa.png" :
+                                                                        Eval("payment_method_type").ToString().ToLower() == "bancolombia_transfer"      ? "~/img/icons/bancolombia.png" :
+                                                                        Eval("payment_method_type").ToString().ToLower() == "pse"       ? "~/img/icons/pse.png" :
+                                                                        Eval("payment_method_type").ToString().ToLower() == "nequi"     ? "~/img/icons/nequi.png" :
+                                                                        "~/img/icons/mastercard.png"
                                                                     %>' /></td>
                                                                 <td><%--<%# Eval("Canal") %>--%></td>
                                                             </tr>

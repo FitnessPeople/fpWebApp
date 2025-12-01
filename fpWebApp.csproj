@@ -542,6 +542,11 @@
     <Content Include="img\headphones.jpg" />
     <Content Include="img\html_logo.png" />
     <Content Include="img\icono_cmd_3.png" />
+    <Content Include="img\icons\bancolombia.png" />
+    <Content Include="img\icons\martercad.png" />
+    <Content Include="img\icons\nequi.png" />
+    <Content Include="img\icons\pse.png" />
+    <Content Include="img\icons\visa.png" />
     <Content Include="img\landing\avatar1.jpg" />
     <Content Include="img\landing\avatar2.jpg" />
     <Content Include="img\landing\avatar3.jpg" />
