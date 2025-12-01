@@ -10666,7 +10666,7 @@ namespace fpWebApp
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_COMSULTAR_NEGOCIACION", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_NEGOCIACION", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
