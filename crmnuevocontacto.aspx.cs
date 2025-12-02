@@ -1765,6 +1765,27 @@ namespace fpWebApp
                         return "bloqueado";
                 }
 
+                DataTable dt3 = cg.CargarPlanesAfiliado("0", documento, "Activo");
+
+                if (dt3.Rows.Count > 0)
+                {
+                    bool tienePlanVendido = false;
+
+                    foreach (DataRow row in dt3.Rows)
+                    {
+                        int idDebitoAutomatico = Convert.ToInt32(row["DebitoAutomatico"]);
+
+                        if (idDebitoAutomatico == 1)
+                        {
+                            tienePlanVendido = true;
+                            continue;
+                        }
+                    }
+
+                    if (tienePlanVendido)
+                        return "planVendido";
+                }
+
                 return "ok";
             }
 

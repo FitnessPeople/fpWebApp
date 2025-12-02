@@ -32,7 +32,7 @@ namespace fpWebApp
     {
         #region Otros
 
-        public DataTable CargarPlanesAfiliado(string idAfiliado, string Estado)
+        public DataTable CargarPlanesAfiliado(string idAfiliado, string docAfiliado, string Estado)
         {
             DataTable dt = new DataTable();
 
@@ -45,6 +45,7 @@ namespace fpWebApp
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+                        cmd.Parameters.AddWithValue("@p_doc_afiliado", docAfiliado);
                         cmd.Parameters.AddWithValue("@p_estado", Estado);
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {

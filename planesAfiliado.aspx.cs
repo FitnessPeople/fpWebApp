@@ -199,7 +199,7 @@ namespace fpWebApp
             if (Request.QueryString.Count > 0)
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.CargarPlanesAfiliado(Session["IdAfiliado"].ToString(), "all");
+                DataTable dt = cg.CargarPlanesAfiliado(Session["IdAfiliado"].ToString(), "0", "all");
                 rpPlanesAfiliado.DataSource = dt;
                 rpPlanesAfiliado.DataBind();
                 dt.Dispose();

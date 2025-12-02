@@ -99,7 +99,7 @@ namespace fpWebApp
             {
                 ViewState["planes"] = "";
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.CargarPlanesAfiliado(Request.QueryString["deleteid"].ToString(), "all");
+                DataTable dt = cg.CargarPlanesAfiliado(Request.QueryString["deleteid"].ToString(), "0", "all");
 
                 if (dt.Rows.Count > 0)
                 {

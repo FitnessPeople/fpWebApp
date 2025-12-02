@@ -138,7 +138,7 @@ namespace fpWebApp
         private void CargarPlanesAfiliado()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.CargarPlanesAfiliado(ViewState["idAfiliado"].ToString(), "Activo");
+            DataTable dt = cg.CargarPlanesAfiliado(ViewState["idAfiliado"].ToString(), "0", "Activo");
 
             if (dt.Rows.Count > 0)
             {
