@@ -1448,6 +1448,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
+                    console.log(response);
                     const result = response.d;
 
                     function limpiarCamposContacto() {
@@ -1457,30 +1458,38 @@
                         $('#txbTelefonoContacto').val('');
                     }
 
-                    if (result === "bloqueado") {
+                    if (result.status === "bloqueado") {
                         Swal.fire({
                             icon: 'warning',
                             title: 'Atención',
-                            text: 'El contacto está siendo gestionado por otro asesor.'
+                            html: `
+                                ${result.mensaje}<br><br>
+                                Última gestión: ${result.fecha}
+                            `
                         });
                         limpiarCamposContacto();
                     }
-                    else if (result === "propio") {
+                    else if (result.status === "propio") {
                         Swal.fire({
                             icon: 'info',
                             title: 'CRM en gestión por usted',
                             text: 'Ya tienes un contacto creado para este documento.'
                         });
                     }
-                    else if (result === "planVendido") {
+                    else if (result.status === "planVendido") {
                         Swal.fire({
                             icon: 'success',
                             title: 'Contacto con plan activo',
-                            text: 'El contacto ya tiene un plan vendido o una negociación aceptada.'
+                            html: `
+                                <b>${result.mensaje}</b><br>
+                                <br><u>Detalles:</u><br>
+                                Fecha inicio: ${result.fecha}<br>
+                                Nombre del plan: ${result.nombrePlan}
+                            `
                         });
                         limpiarCamposContacto();
                     }
-                    else if (result === "ok") {
+                    else if (result.status === "ok") {
                         console.log("Contacto libre, puede continuar");
                     }
                 },

@@ -1721,8 +1721,16 @@ namespace fpWebApp
             }
         }
 
+        public class RespuestaContacto
+        {
+            public string status { get; set; }
+            public string mensaje { get; set; }
+            public string fecha { get; set; }
+            public string nombrePlan { get; set; }
+        }
+
         [System.Web.Services.WebMethod]
-        public static string ValidarContacto(string documento, int idUsuario)
+        public static RespuestaContacto ValidarContacto(string documento, int idUsuario)
         {
             clasesglobales cg = new clasesglobales();
 
@@ -1732,9 +1740,9 @@ namespace fpWebApp
 
                 if (dt2.Rows.Count > 0)
                 {
-                    bool tienePlanVendido = false;
-                    bool esPropio = false;
-                    bool bloqueadoPorOtro = false;
+                    //bool tienePlanVendido = false;
+                    //bool esPropio = false;
+                    //bool bloqueadoPorOtro = false;
 
                     foreach (DataRow row in dt2.Rows)
                     {
@@ -1744,32 +1752,49 @@ namespace fpWebApp
 
                         if (idEstadoCRM == 3)
                         {
-                            tienePlanVendido = true;
-                            continue;
+                            return new RespuestaContacto
+                            {
+                                status = "planVendido",
+                                mensaje = "El contacto ya tiene un plan vendido o una negociación aceptada.",
+                                fecha = "",
+                                nombrePlan = ""
+                            };
                         }
                         if (idUsuarioCreaCRM == idUsuario)
                         {
-                            esPropio = true;
+                            return new RespuestaContacto
+                            {
+                                status = "propio",
+                                mensaje = "Ya tienes un contacto creado para este documento.",
+                                fecha = "",
+                                nombrePlan = ""
+                            };
                         }
                         if (idUsuarioCreaCRM != idUsuario && dias <= 6)
                         {
-                            bloqueadoPorOtro = true;
+                            return new RespuestaContacto
+                            {
+                                status = "bloqueado",
+                                mensaje = "El contacto está siendo gestionado por otro asesor.",
+                                fecha = idUsuarioCreaCRM.ToString(),
+                                nombrePlan = ""
+                            };
                         }
                     }
 
-                    if (tienePlanVendido)
-                        return "planVendido";
-                    else if (esPropio)
-                        return "propio";
-                    else if (bloqueadoPorOtro)
-                        return "bloqueado";
+                    //if (tienePlanVendido)
+                    //    return "planVendido";
+                    //else if (esPropio)
+                    //    return "propio";
+                    //else if (bloqueadoPorOtro)
+                    //    return "bloqueado";
                 }
 
                 DataTable dt3 = cg.CargarPlanesAfiliado("0", documento, "Activo");
 
                 if (dt3.Rows.Count > 0)
                 {
-                    bool tienePlanVendido = false;
+                    //bool tienePlanVendido = false;
 
                     foreach (DataRow row in dt3.Rows)
                     {
@@ -1777,21 +1802,33 @@ namespace fpWebApp
 
                         if (idDebitoAutomatico == 1)
                         {
-                            tienePlanVendido = true;
-                            continue;
+                            return new RespuestaContacto
+                            {
+                                status = "planVendido",
+                                mensaje = "El contacto ya tiene un plan vendido o una negociación aceptada.",
+                                fecha = row["FechaInicioPlan"].ToString() + " - " + row["FechaFinalPlan"].ToString(),
+                                nombrePlan = row["NombrePlan"].ToString()
+                            };
                         }
                     }
 
-                    if (tienePlanVendido)
-                        return "planVendido";
+                    //if (tienePlanVendido)
+                    //    return "planVendido";
                 }
 
-                return "ok";
+                return new RespuestaContacto { status = "ok" };
             }
 
             catch (Exception ex)
             {
-                return "Error, contácte al administrador del sistema - " + ex.Message;
+                return new RespuestaContacto
+                {
+                    status = "error",
+                    mensaje = "Contacta al administrador del sistema.",
+                    fecha = "",
+                    nombrePlan = ""
+                };
+                //return "Error, contácte al administrador del sistema - " + ex.Message;
             }
         }
 
