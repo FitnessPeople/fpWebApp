@@ -1577,5 +1577,40 @@ namespace fpWebApp
             ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlertProcesando", script, true);
         }
 
+        protected void btnBancolombia_Click(object sender, EventArgs e)
+        {
+            btnBancolombia.CssClass += " active";
+            btnDavivienda.CssClass = btnDavivienda.CssClass.Replace("active", "");
+            btnBBVA.CssClass = btnBBVA.CssClass.Replace("active", "");
+            btnBogota.CssClass = btnBogota.CssClass.Replace("active", "");
+            ViewState["Banco"] = "Bancolombia";
+        }
+
+        protected void btnDavivienda_Click(object sender, EventArgs e)
+        {
+            btnDavivienda.CssClass += " active";
+            btnBancolombia.CssClass = btnBancolombia.CssClass.Replace("active", "");
+            btnBBVA.CssClass = btnBBVA.CssClass.Replace("active", "");
+            btnBogota.CssClass = btnBogota.CssClass.Replace("active", "");
+            ViewState["Banco"] = "Davivienda";
+        }
+
+        protected void btnBBVA_Click(object sender, EventArgs e)
+        {
+            btnBBVA.CssClass += " active";
+            btnDavivienda.CssClass = btnDavivienda.CssClass.Replace("active", "");
+            btnBancolombia.CssClass = btnBancolombia.CssClass.Replace("active", "");
+            btnBogota.CssClass = btnBogota.CssClass.Replace("active", "");
+            ViewState["Banco"] = "BBVA";
+        }
+
+        protected void btnBogota_Click(object sender, EventArgs e)
+        {
+            btnBogota.CssClass += " active";
+            btnDavivienda.CssClass = btnDavivienda.CssClass.Replace("active", "");
+            btnBBVA.CssClass = btnBBVA.CssClass.Replace("active", "");
+            btnBancolombia.CssClass = btnBancolombia.CssClass.Replace("active", "");
+            ViewState["Banco"] = "Bogota";
+        }
     }
 }

@@ -397,19 +397,19 @@
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <!-- DROPZONE -->
-    <script src="js/plugins/dropzone/dropzone.js"></script>
+    <%--<script src="js/plugins/dropzone/dropzone.js"></script>--%>
 
     <!-- Chosen -->
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
     <script>
-        Dropzone.options.dropzoneForm = {
-            paramName: "file", // The name that will be used to transfer the file
-            maxFilesize: 2, // MB
-            dictDefaultMessage: "<strong>Arrastre hasta aquí o haga clic para cargar la foto.</strong>",
-            maxFiles: 1,
-            acceptedFiles: "image/*"
-        };
+        //Dropzone.options.dropzoneForm = {
+        //    paramName: "file", // The name that will be used to transfer the file
+        //    maxFilesize: 2, // MB
+        //    dictDefaultMessage: "<strong>Arrastre hasta aquí o haga clic para cargar la foto.</strong>",
+        //    maxFiles: 1,
+        //    acceptedFiles: "image/*"
+        //};
 
         $("#form").validate({
             rules: {

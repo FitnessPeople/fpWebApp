@@ -49,7 +49,7 @@
     </script>
 </head>
 
-<body onload="changeClass()">
+<body onload="changeClass()" class="pace-done mini-navbar">
     <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
@@ -186,7 +186,7 @@
                                         </h2>
                                         <h4>
                                             <asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
-                                        <small>
+                                        <small class="text-capitalize">
                                             <asp:Literal ID="ltDireccion" runat="server"></asp:Literal>, 
                                             <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
                                     </div>
@@ -476,7 +476,7 @@
                                                                             <button type="button" class="btn btn-warning m-r-sm">
                                                                                 <i class="fa fa-laptop"></i>
                                                                             </button>
-                                                                            <span class="font-bold">Pago en línea</span>
+                                                                            <span class="font-bold">Online</span>
                                                                         </td>
                                                                         <td>
                                                                             <h4><small>Enlace de pago:</small></h4>
@@ -505,7 +505,7 @@
                                                                             <button type="button" class="btn btn-primary m-r-sm">
                                                                                 <i class="fa fa-credit-card"></i>
                                                                             </button>
-                                                                            <span class="font-bold">Pago por Datafono</span>
+                                                                            <span class="font-bold">Datafono</span>
                                                                         </td>
                                                                         <%--<td></td>--%>
                                                                         <td colspan="2">
@@ -526,7 +526,7 @@
                                                                             <button type="button" class="btn btn-success m-r-sm">
                                                                                 <i class="fa fa-money-bill-wave"></i>
                                                                             </button>
-                                                                            <span class="font-bold">Pago en Efectivo</span>
+                                                                            <span class="font-bold">Efectivo</span>
                                                                         </td>
                                                                         <%--<td></td>
                                                                         <td></td>--%>
@@ -540,20 +540,33 @@
                                                                         </td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td>
+                                                                        <td width="25%">
                                                                             <button type="button" class="btn btn-danger m-r-sm">
                                                                                 <i class="fa fa-university"></i>
                                                                             </button>
-                                                                            <span class="font-bold">Pago por Transferencia</span>
+                                                                            <span class="font-bold">Transferencia</span>
                                                                         </td>
                                                                         <%--<td></td>--%>
-                                                                        <td colspan="2">
+                                                                        <td>
                                                                             <asp:RadioButtonList ID="rblBancos" runat="server"
-                                                                                RepeatDirection="Horizontal" CssClass="form-control input-sm">
+                                                                                RepeatDirection="Horizontal" CssClass="form-control input-sm" Visible="false">
                                                                                 <asp:ListItem Text="&nbsp;&nbsp;Bancolombia" Value="Bancolombia" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
                                                                                 <asp:ListItem Text="&nbsp;&nbsp;Davivienda" Value="Davivienda" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
                                                                                 <asp:ListItem Text="&nbsp;&nbsp;BBVA" Value="BBVA" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
+                                                                                <asp:ListItem Text="&nbsp;&nbsp;Bogotá" Value="Bogota" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
                                                                             </asp:RadioButtonList>
+                                                                            <asp:Button ID="btnBancolombia" runat="server" Text="Bancolombia" CssClass="btn btn-info btn-outline"
+                                                                                Style="font-size: 10px;" OnClick="btnBancolombia_Click" />
+                                                                            <asp:Button ID="btnDavivienda" runat="server" Text="Davivienda" CssClass="btn btn-danger btn-outline"
+                                                                                Style="font-size: 10px;" OnClick="btnDavivienda_Click"/>
+                                                                            <asp:Button ID="btnBBVA" runat="server" Text="BBVA" CssClass="btn btn-warning btn-outline"
+                                                                                Style="font-size: 10px;" OnClick="btnBBVA_Click" />
+                                                                            <asp:Button ID="btnBogota" runat="server" Text="Bogotá" CssClass="btn btn-success btn-outline"
+                                                                                Style="font-size: 10px;" OnClick="btnBogota_Click" />
+                                                                        </td>
+                                                                        <td>
+                                                                            <asp:TextBox ID="txbReferencia" CssClass="form-control input-sm"
+                                                                                runat="server" placeholder="Ref."></asp:TextBox>
                                                                         </td>
                                                                         <td>
                                                                             <asp:TextBox ID="txbTransferencia" CssClass="form-control input-sm"

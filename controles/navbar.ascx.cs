@@ -96,12 +96,11 @@ namespace fpWebApp.controles
                     DataTable dt2 = cg.TraerDatos(strQuery);
 
                     strMenu += "<li>";
-                    strMenu += "<a href=\"#\"><i class=\"fa fa-" + dt1.Rows[i]["IconoFA"].ToString() + "\"></i><span class=\"nav-label\">" + dt1.Rows[i]["NombreCategoriaPagina"].ToString() + "</span><span class=\"fa arrow\"></span></a>";
+                    strMenu += "<a href=\"#\" title=\"" + dt1.Rows[i]["NombreCategoriaPagina"].ToString() + "\"><i class=\"fa fa-" + dt1.Rows[i]["IconoFA"].ToString() + "\"></i><span class=\"nav-label\">" + dt1.Rows[i]["NombreCategoriaPagina"].ToString() + "</span><span class=\"fa arrow\"></span></a>";
                     strMenu += "<ul id=\"" + dt1.Rows[i]["Identificador"].ToString() + "\" class=\"nav nav-second-level collapse\">";
                     for (int j = 0; j < dt2.Rows.Count; j++)
                     {
                         strMenu += "<li id=\"" + dt2.Rows[j]["NombreASPX"].ToString() + "\" class=\"old\"><a href=\"" + dt2.Rows[j]["NombreASPX"].ToString() + "\"><i class=\"fa fa-" + dt2.Rows[j]["IconoFA"].ToString() + "\"></i>" + dt2.Rows[j]["Pagina"].ToString() + "</a></li>";
-                        dt2.Dispose();
                     }
                     strMenu += "</ul>";
                     strMenu += "</li>";

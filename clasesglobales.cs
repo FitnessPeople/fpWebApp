@@ -11010,6 +11010,40 @@ namespace fpWebApp
 
         #region Afiliados
 
+        public int InsertarComprobanteTransferencia(string url)
+        {
+            int idComprobante = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_COMPROBANTE_TRANSFERENCIA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_url", url);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                idComprobante = Convert.ToInt32(reader["idComprobante"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Error en InsertarComprobanteTransferencia: " + ex.Message);
+                idComprobante = -1; // -1 indica error
+            }
+
+            return idComprobante;
+        }
+
         public DataTable ConsultarAfiliados()
         {
             DataTable dt = new DataTable();

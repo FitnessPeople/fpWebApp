@@ -275,6 +275,7 @@
     <Content Include="ciudades.aspx" />
     <Content Include="ciudadessedes.aspx" />
     <Content Include="clientecorporativo.aspx" />
+    <Content Include="comprobantetransferencia.aspx" />
     <Content Include="concursogympass.aspx" />
     <Content Include="congelaciones.aspx" />
     <Content Include="congelacionesAfil.aspx" />
@@ -1258,6 +1259,13 @@
     </Compile>
     <Compile Include="clientecorporativo.aspx.designer.cs">
       <DependentUpon>clientecorporativo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="comprobantetransferencia.aspx.cs">
+      <DependentUpon>comprobantetransferencia.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="comprobantetransferencia.aspx.designer.cs">
+      <DependentUpon>comprobantetransferencia.aspx</DependentUpon>
     </Compile>
     <Compile Include="concursogympass.aspx.cs">
       <DependentUpon>concursogympass.aspx</DependentUpon>
@@ -2251,6 +2259,7 @@
     <Folder Include="docs\contratos\" />
     <Folder Include="docs\incapacidades\" />
     <Folder Include="docs\traspasos\" />
+    <Folder Include="img\comprobantes\" />
     <Folder Include="img\contratos\" />
     <Folder Include="img\correo\docs\" />
     <Folder Include="img\correo\images\" />
