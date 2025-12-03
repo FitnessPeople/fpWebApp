@@ -10688,6 +10688,42 @@ namespace fpWebApp
             return dt;
         }
 
+        public string InsertarNegociacionCorporativo(string docEmpresa, int idPregestion, string descripcion, string fecha_ini, string fecha_fin, int idPlan, decimal descuento,
+         decimal valor, int idUsuario)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_NEGOCIACION_CORPORATIVO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_empresa", docEmpresa);
+                        cmd.Parameters.AddWithValue("@p_id_pregestion", idPregestion);
+                        cmd.Parameters.AddWithValue("@p_descripcion", descripcion);
+                        cmd.Parameters.AddWithValue("@p_fecha_ini", fecha_ini);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fecha_fin);
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_descuento", descuento);
+                        cmd.Parameters.AddWithValue("@p_valor_negociacion", valor);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
 
         #endregion
 

@@ -58,7 +58,7 @@ namespace fpWebApp
                     //listaEstrategias();
                     listaEmpresasAfiliadas();                    
                     CargarPlanes();
-                    ListaProspectos();
+                    //ListaProspectos();
                     CargarNegociaciones();
 
                     ltTitulo.Text = "Establecer condiciones";
@@ -158,16 +158,7 @@ namespace fpWebApp
             }
         }
 
-        //private void listaEstrategias()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarEstrategiasMarketing();
 
-        //    rpEstrategias.DataSource = dt;
-        //    rpEstrategias.DataBind();
-
-        //    dt.Dispose();
-        //}
 
         private void CargarPlanes()
         {
@@ -190,6 +181,27 @@ namespace fpWebApp
         }
 
 
+        //private void listaEmpresasAfiliadas()
+        //{
+        //    try
+        //    {
+        //        clasesglobales cg = new clasesglobales();
+        //        DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
+
+        //        ddlEmpresas.DataSource = dt;
+        //        ddlEmpresas.DataBind();
+
+        //        dt.Dispose();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        lblMensaje.Visible = true;
+        //        lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente.";
+        //        lblMensaje.CssClass = "text-danger";
+        //    }
+        //}
+
+
         private void listaEmpresasAfiliadas()
         {
             try
@@ -198,26 +210,49 @@ namespace fpWebApp
                 DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
 
                 ddlEmpresas.DataSource = dt;
+                ddlEmpresas.DataTextField = "NombreEmpresa";  // asegúrate de esto
+                ddlEmpresas.DataValueField = "Nit"; // este valor se usará
                 ddlEmpresas.DataBind();
-
-                dt.Dispose();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 lblMensaje.Visible = true;
-                lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente.";
+                lblMensaje.Text = "Ocurrió un error al cargar las empresas.";
                 lblMensaje.CssClass = "text-danger";
             }
         }
 
-        private void ListaProspectos()
+        protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string documento = ddlEmpresas.SelectedValue;
+
+            if (!string.IsNullOrEmpty(documento))
+            {
+                ListaProspectos(documento);
+            }
+        }
+
+
+        //private void ListaProspectos()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarProspectoClienteCorporativo("8902008771"); // opcion seleccionada de la lista
+        //    ddlProspectos.DataSource = dt;
+        //    ddlProspectos.DataBind();
+        //    dt.Dispose();
+        //}
+
+        private void ListaProspectos(string documentoEmpresa)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarProspectoClienteCorporativo("8902008771"); // opcion seleccionada de la lista
+            DataTable dt = cg.ConsultarProspectoClienteCorporativo(documentoEmpresa);
+
             ddlProspectos.DataSource = dt;
+            ddlProspectos.DataTextField = "NombreContacto"; // ajusta según tu tabla
+            ddlProspectos.DataValueField = "IdPregestion";    // ajusta según tu tabla
             ddlProspectos.DataBind();
-            dt.Dispose();
         }
+
 
         private void ValidarPermisos(string strPagina)
         {
@@ -367,7 +402,96 @@ namespace fpWebApp
             }
             else
             {
+                int idPlan = 0;
+                decimal descuento = 0;
+                decimal valorFinal = 0;
 
+                // 1. Buscar la FILA seleccionada
+                foreach (RepeaterItem item in rpPlanesVigentes.Items)
+                {
+                    HtmlInputRadioButton rd = (HtmlInputRadioButton)item.FindControl("rdDescuento");
+                    if (rd != null && rd.Checked)
+                    {
+                        // 2. Obtener idPlan
+                        // Se encuentra en el primer <td> de la fila
+                        Label lblIdPlan = item.FindControl("lblIdPlan") as Label;
+
+                        // Si prefieres sin Label: buscar el TD
+                        var tdIdPlan = item.FindControl("tdIdPlan") as System.Web.UI.HtmlControls.HtmlTableCell;
+
+                        if (tdIdPlan != null)
+                            idPlan = Convert.ToInt32(tdIdPlan.InnerText.Trim());
+
+                        // 3. Obtener porcentaje de descuento
+                        HtmlInputGenericControl txtDesc = (HtmlInputGenericControl)item.FindControl("inputDescuento");
+                        if (txtDesc != null)
+                            descuento = Convert.ToDecimal(txtDesc.Value);
+
+                        // 4. Obtener valor final (ya calculado en JS)
+                        HtmlTableCell tdValorDesc = (HtmlTableCell)item.FindControl("valorConDescuento");
+                        if (tdValorDesc != null)
+                            valorFinal = ParseCOP(tdValorDesc.InnerText);
+
+                        break; // salimos porque solo debe haber uno seleccionado
+                    }
+                }
+
+
+                try
+                    {
+                        string respuesta = cg.InsertarNegociacionCorporativo(ddlEmpresas.SelectedItem.Value, Convert.ToInt32(ddlProspectos.SelectedItem.Value),"", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, Convert.ToInt32(Session["idUsuario"]));
+                        if (salida)
+                        {
+                            string script = @"
+                                    Swal.fire({
+                                        title: '«¡Negociación creada correctamente!»',
+                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'success',
+                                        timer: 3000, // 3 segundos
+                                        showConfirmButton: false,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        window.location.href = 'negociarconvenio';
+                                    });
+                                    ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                        }
+                        else
+                        {
+                            string script = @"
+                                    Swal.fire({
+                                        title: 'Error',
+                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        icon: 'error'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                          window.location.href = 'negociarconvenio';
+                                        }
+                                    });
+                                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        mensaje = ex.Message.ToString();
+                        string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    }
+                //   }
+                //else
+                //{
+                //    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                //    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                //    //    "Ya existe una negociación con ese prospecto." +
+                //    //    "</div>";
+                //}
             }
 
         }
@@ -442,6 +566,14 @@ namespace fpWebApp
 
             }
         }
+
+        private decimal ParseCOP(string valor)
+        {
+            if (string.IsNullOrWhiteSpace(valor)) return 0;
+            string limpio = new string(valor.Where(char.IsDigit).ToArray());
+            return string.IsNullOrEmpty(limpio) ? 0 : Convert.ToDecimal(limpio);
+        }
+
 
         protected void rpPlanesVigentes_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {

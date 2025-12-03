@@ -79,13 +79,13 @@
         }
     </style>
 
-<style>
-    #tablaPlanes .inputDescuento {
-    width: 80px !important;   /* o prueba 100px si quieres más ancho */
-    text-align: center;
-    margin: 0 auto;
-}
- </style>
+    <style>
+        #tablaPlanes .inputDescuento {
+            width: 80px !important; /* o prueba 100px si quieres más ancho */
+            text-align: center;
+            margin: 0 auto;
+        }
+    </style>
 
     <script>
         function changeClass() {
@@ -199,14 +199,14 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="row">
-                                                    <div class="col-sm-12">
+                                                    <div class="col-sm-12"> 
                                                         <div class="form-group">
                                                             <label>Empresa:</label>
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
-                                                                DataValueField="idEmpresa" DataTextField="NombreEmpresa"
-                                                                AppendDataBoundItems="true">
+                                                            <asp:DropDownList ID="ddlEmpresas" CssClass="form-control input-sm required" runat="server" AutoPostBack="true" 
+                                                                OnSelectedIndexChanged="ddlEmpresas_SelectedIndexChanged">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
+
                                                             <%--                                                            <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
                                                                 ControlToValidate="ddlTipoEstrategias" ValidationGroup="agregar"
                                                                 CssClass="font-bold text-danger" Display="Dynamic">
@@ -221,8 +221,7 @@
                                                         <div class="form-group">
                                                             <label>Prospecto:</label>
                                                             <asp:DropDownList CssClass="form-control input-sm required" ID="ddlProspectos" runat="server"
-                                                                DataValueField="DocumentoContacto" DataTextField="NombreContacto"
-                                                                AppendDataBoundItems="true">
+                                                                DataValueField="DocumentoContacto" DataTextField="NombreContacto" AppendDataBoundItems="true">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                             <%--                                                            <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
@@ -277,10 +276,10 @@
                                                                 <div class="table-responsive">
                                                                     <table class="table table-bordered text-center" id="tablaPlanes">
                                                                         <thead class="thead-light">
-                                                                            <tr>                                                                              
+                                                                            <tr>
                                                                                 <th>#</th>
                                                                                 <th>Plan</th>
-                                                                                <th>Valor ($)</th>                                                                               
+                                                                                <th>Valor ($)</th>
                                                                                 <th>Aplicar</th>
                                                                                 <th>Dscto.(%)</th>
                                                                                 <th>Valor (%)</th>
@@ -289,22 +288,22 @@
                                                                         <tbody>
                                                                             <asp:Repeater ID="rpPlanesVigentes" runat="server" OnItemDataBound="rpPlanesVigentes_ItemDataBound">
                                                                                 <ItemTemplate>
-                                                                            <tr>                                                                              
-                                                                                <td><%# Eval("idPlan") %></td>
-                                                                                <td><%# Eval("NombrePlan") %></td>
-                                                                                <td class="valor"><%# String.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("PrecioTotal")) %></td>                                                                               
-                                                                                <td>
-                                                                                    <input type="checkbox" class="chkDescuento"></td>
-                                                                                <td>
-                                                                                    <input type="number" class="form-control inputDescuento" min="0" max="100" disabled></td>
-                                                                                <td class="valorConDescuento">—</td>
-                                                                            </tr>
-                                                                             </ItemTemplate>
+                                                                                    <tr>
+                                                                                        <td><%# Eval("idPlan") %></td>
+                                                                                        <td><%# Eval("NombrePlan") %></td>
+                                                                                        <td class="valor"><%# String.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("PrecioTotal")) %></td>
+                                                                                        <td>
+                                                                                            <input type="radio" class="rdDescuento" name="planSeleccionado" />
+                                                                                        <td>
+                                                                                            <input type="number" class="form-control inputDescuento" min="0" max="100" disabled></td>
+                                                                                        <td class="valorConDescuento">—</td>
+                                                                                    </tr>
+                                                                                </ItemTemplate>
                                                                             </asp:Repeater>
 
                                                                         </tbody>
                                                                     </table>
-                                                    
+
 
                                                                 </div>
                                                             </div>
@@ -433,7 +432,7 @@
                                 }
 
                                 document.querySelectorAll("#tablaPlanes tbody tr").forEach(fila => {
-                                    const chk = fila.querySelector(".chkDescuento");
+                                    const chk = fila.querySelector(".rdDescuento");
                                     const inputDesc = fila.querySelector(".inputDescuento");
                                     const celdaValor = fila.querySelector(".valor");
                                     const celdaValorConDesc = fila.querySelector(".valorConDescuento");
