@@ -357,7 +357,7 @@ namespace fpWebApp
                 int estrategias = Convert.ToInt32(canal["Estrategias"]);
                 string ranking = canal["Ranking"].ToString();
 
-                decimal meta = 1000000m; // Meta de ejemplo
+                decimal meta = 200000000; // Meta de ejemplo
                 decimal porcentaje = ventas > 0 ? (ventas / meta * 100) : 0;
 
                 lblEstadoVentas.InnerText = $"{porcentaje:0}%";
