@@ -94,32 +94,16 @@ namespace fpWebApp
 
         private void listaAfiliados(string strParam, string strSede)
         {
-            string strQueryAdd = "";
-            string strQueryAdd2 = "";
+            string strQueryAdd = "";            
             string strLimit = "100";
             if (strSede != "Todas")
             {
-                strQueryAdd = "AND a.idSede = " + strSede;
+                //strQueryAdd = "AND a.idSede = " + strSede;
             }
             if (strParam != "")
             {
                 strLimit = "1000";
             }
-            
-            //if (ddlDias.SelectedItem.Value.ToString() == "-30")
-            //{
-            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) <= -30 ";
-            //}
-
-            //if (ddlDias.SelectedItem.Value.ToString() == "30")
-            //{
-            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > -30 AND DATEDIFF(FechaFinalPlan, CURDATE()) < 30 ";
-            //}
-
-            //if (ddlDias.SelectedItem.Value.ToString() == "31")
-            //{
-            //    strQueryAdd2 = "AND DATEDIFF(FechaFinalPlan, CURDATE()) > 31 ";
-            //}
 
             string strQuery = "SELECT *, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),')'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
@@ -134,7 +118,7 @@ namespace fpWebApp
                 "LEFT JOIN sedes s ON s.idSede = a.idSede " +
                 "LEFT JOIN ciudadessedes cs ON s.idCiudadSede = cs.idCiudadSede " +
                 "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = a.idEstadoCivilAfiliado " +
-                "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado AND ap.EstadoPlan = 'Activo' " +
+                "LEFT JOIN AfiliadosPlanes ap ON ap.idAfiliado = a.idAfiliado " +
                 "LEFT JOIN profesiones p ON p.idProfesion = a.idProfesion " +
                 "LEFT JOIN eps ON eps.idEps = a.idEps " +
                 "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +

@@ -8,8 +8,6 @@
 <%@ Register Src="~/controles/indicadoresusucrm.ascx" TagPrefix="uc2" TagName="indicadoresusucrm" %>
 <%@ Register Src="~/controles/indicadoresusucrm2.ascx" TagPrefix="uc1" TagName="indicadoresusucrm2" %>
 
-
-
 <!DOCTYPE html>
 <html>
 

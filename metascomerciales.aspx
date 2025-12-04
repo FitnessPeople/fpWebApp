@@ -360,9 +360,38 @@
     <!-- Chosen -->
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
+
+        $("#form").validate({
+            rules: {
+                ddlCanalVenta: {
+                    required: true,
+                },
+                txbPresupuesto: {
+                    required: true,
+                },
+                txbAsesorSenior: {
+                    required: true,
+                },
+                txbAsesorJunior: {
+                    required: true
+                },
+                txbAsesorElite: {
+                    required: true,
+                },
+                txbDirectorSede: {
+                    required: true,
+                },
+            },
+            messages: {
+                ddlCanalVenta: "*",
+            }
+        });
     </script>
 
 </body>

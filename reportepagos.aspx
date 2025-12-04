@@ -1,11 +1,11 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportepagos.aspx.cs" Inherits="fpWebApp.reportepagos" %>
 
+<%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
-<%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
-<%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
+<%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 
 <!DOCTYPE html>
 <html>
@@ -33,9 +33,6 @@
         }
     </style>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
-
     <script>
         function changeClass() {
             var element1 = document.querySelector("#reportepagos");
@@ -45,15 +42,6 @@
         }
     </script>
 
-    <script>
-       $(document).ready(function () {
-           $('.datepicker').datepicker({
-               format: 'yyyy-mm-dd',
-               autoclose: true,
-               todayHighlight: true
-           });
-       });
-    </script>
 </head>
 
 <body onload="changeClass()">

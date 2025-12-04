@@ -33,9 +33,6 @@
         }
     </style>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
-
     <script>
         function changeClass() {
             var element1 = document.querySelector("#reporteventas");
@@ -45,15 +42,6 @@
         }
     </script>
 
-    <script>
-        $(document).ready(function () {
-            $('.datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true
-            });
-        });
-    </script>
 </head>
 
 <body onload="changeClass()">
@@ -385,80 +373,6 @@
                                                             <td><%# Eval("EstadoPago") %></td>
                                                             <td><%# Eval("Usuario") %></td>
                                                             <td><%# Eval("CanalVenta") %></td>
-                                                            <%--<td>
-                                                                <asp:Button ID="btnDetalle" runat="server" Text="Ver"
-                                                                    CssClass="btn btn-primary"
-                                                                    CommandArgument='<%# Eval("idAfiliadoPlan") %>'
-                                                                    OnCommand="btnDetalle_Command"
-                                                                    CommandName="mostrarDetalle"
-                                                                    Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' />
-                                                            </td>--%>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </tbody>
-                                        </table>
-
-                                        <%--<p>Total registros: <span id="totalRegistros"></span></p>
-                                        <p>Registros visibles: <span id="registrosVisibles"></span></p>--%>
-                                    </div>
-                                </div>
-
-                                <div class="ibox float-e-margins" id="divPagosRechazados" runat="server" visible="false">
-                                    <div class="ibox-title">
-                                        <h5>Reporte de pagos rechazados (<asp:Literal ID="ltCuantos" runat="server"></asp:Literal> registros por valor de  <asp:Literal ID="ltTotalPorRecuadar" runat="server"></asp:Literal>):</h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-
-                                        <div class="row" style="font-size: 12px;" runat="server" id="div1">
-                                            <div class="col-lg-10">
-                                                <div class="form-group">
-                                                    <div class="form-group" id="filter-form-container1"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-2">
-                                                <asp:LinkButton ID="lkbExcel1" runat="server"
-                                                    CausesValidation="false"
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                                    OnClick="lkbExcel1_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
-                                                </asp:LinkButton>
-                                            </div>
-                                        </div>
-
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
-                                            data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
-                                            data-filtering="true" data-filter-container="#filter-form-container1" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
-                                            <thead>
-                                                <tr>
-                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">ID</th>
-                                                    <th>Documento</th>
-                                                    <th>Afiliado</th>
-                                                    <th class="text-right">Valor</th>
-                                                    <th data-type="number" data-breakpoints="xs sm md" class="text-center">Intentos</th>
-                                                    <th data-breakpoints="xs sm md">Último intento</th>
-                                                    <th data-breakpoints="xs sm md">Mensaje</th>
-                                                    <%--<th data-breakpoints="xs sm md">Detalle</th>--%>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <asp:Repeater ID="rpHistorialCobrosRechazados" runat="server">
-                                                    <ItemTemplate>
-                                                        <tr class="feed-element">
-                                                            <td><%# Eval("idAfiliadoPlan") %></td>
-                                                            <td><%# Eval("DocumentoAfiliado") %></td>
-                                                            <td><%# Eval("NombreCompletoAfiliado") %></td>
-                                                            <td class="text-right"><%# Eval("PrecioBase", "{0:C0}") %></td>
-                                                            <td class="text-center"><%# Eval("Intentos") %></td>
-                                                            <td><%# Eval("UltimoIntento") %></td>
-                                                            <td><%# Eval("Mensaje") %></td>
                                                             <%--<td>
                                                                 <asp:Button ID="btnDetalle" runat="server" Text="Ver"
                                                                     CssClass="btn btn-primary"

@@ -33,27 +33,15 @@
         }
     </style>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
-
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#reporteventassesor");
+            var element1 = document.querySelector("#reporteventasasesor");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#reportes");
             element2.classList.remove("collapse");
         }
     </script>
 
-    <script>
-        $(document).ready(function () {
-            $('.datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true
-            });
-        });
-    </script>
 </head>
 
 <body onload="changeClass()">
@@ -259,12 +247,12 @@
                                                 <div class="form-group">
                                                     <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Todos" Value="0" Selected="True"></asp:ListItem>
+                                                        <asp:ListItem Text="Todos los medios de pago" Value="0" Selected="True"></asp:ListItem>
                                                         <asp:ListItem Text="Efectivo" Value="1"></asp:ListItem>
                                                         <asp:ListItem Text="Transferencia" Value="2"></asp:ListItem>
                                                         <asp:ListItem Text="Datafono" Value="3"></asp:ListItem>
                                                         <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
-                                                        <asp:ListItem Text="Financiación" Value="5"></asp:ListItem>
+                                                        <%--<asp:ListItem Text="Financiación" Value="5"></asp:ListItem>--%>
 
                                                     </asp:DropDownList>
                                                 </div>
@@ -313,29 +301,62 @@
                                                     <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
                                                     <th>Documento</th>
                                                     <th>Afiliado</th>
-                                                    <th data-breakpoints="xs sm md">Valor</th>
-                                                    <th data-breakpoints="xs sm md">Tipo Pago</th>
-                                                    <th data-breakpoints="xs sm md">Referencia</th>
+                                                    <th data-breakpoints="xs sm md">Valor total</th>
+                                                    <%--<th data-breakpoints="xs sm md">Tipo Pago</th>--%>
+                                                    <%--<th data-breakpoints="xs sm md">Referencia</th>--%>
                                                     <th data-breakpoints="xs sm md">Fecha</th>
                                                     <th data-breakpoints="xs sm md">Estado</th>
-                                                    <th data-breakpoints="xs sm md">Usuario</th>
-                                                    <th data-breakpoints="xs sm md">Canal</th>
+                                                    <th data-breakpoints="xs sm md">Plan</th>
+                                                    <th data-breakpoints="xs sm md">Cod. Siigo</th>
+                                                    <th data-breakpoints="all" data-title="Detalle"></th>
+                                                    <%--<th data-breakpoints="xs sm md">Usuario</th>--%>
+                                                    <%--<th data-breakpoints="xs sm md">Canal</th>--%>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpPagos" runat="server">
+                                                <asp:Repeater ID="rpPagos" runat="server" OnItemDataBound="rpPagos_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("id") %></td>
-                                                            <td><%# Eval("Doc") %></td>
-                                                            <td><%# Eval("Afil") %></td>
-                                                            <td><%# Eval("Valor", "{0:C0}") %></td>
-                                                            <td><%# Eval("Medio de pago") %></td>
-                                                            <td><%# Eval("Ref") %></td>
-                                                            <td><%# Eval("Fecha", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                            <td><%# Eval("idAfilPlan") %></td>
+                                                            <td><%# Eval("Documento") %></td>
+                                                            <td><%# Eval("Afiliado") %></td>
+                                                            <td><%# Eval("Sumatoria", "{0:C0}") %></td>
+                                                            <%--<td><%# Eval("Medio de pago") %></td>--%>
+                                                            <%--<td><%# Eval("Ref") %></td>--%>
+                                                            <td><%# Eval("FechaHora", "{0:dd MMM yyyy HH:mm}") %></td>
                                                             <td><%# Eval("Est") %></td>
-                                                            <td><%# Eval("Usu") %></td>
-                                                            <td><%# Eval("CanalV") %></td>
+                                                            <td><%# Eval("Plan") %></td>
+                                                            <td><%# Eval("idSiigo") %></td>
+                                                            <%--<td><%# Eval("Usu") %></td>--%>
+                                                            <%--<td><%# Eval("CanalV") %></td>--%>
+                                                            <td>
+                                                                <asp:Repeater ID="rpDetallesPago" runat="server">
+                                                                    <HeaderTemplate>
+                                                                        <table class="table table-striped list-group-item-text">
+                                                                            <tr>
+                                                                                <td class="font-bold">Pago</td>
+                                                                                <td class="font-bold">Referencia</td>
+                                                                                <td class="font-bold">Valor</td>
+                                                                                <td class="font-bold">Medio de Pago</td>
+                                                                                <td class="font-bold">Fecha</td>
+                                                                            </tr>
+                                                                    </HeaderTemplate>
+
+                                                                    <ItemTemplate>
+                                                                        <tr>
+                                                                            <td><%# Eval("Pago") %></td>
+                                                                            <td><%# Eval("Ref") %></td>
+                                                                            <td><%# Eval("Valor", "{0:C0}") %></td>
+                                                                            <td><%# Eval("Medio de pago") %></td>
+                                                                            <td><%# Eval("Fecha") %></td>
+                                                                        </tr>
+                                                                    </ItemTemplate>
+
+                                                                    <FooterTemplate>
+                                                                        </table>
+                                                                    </FooterTemplate>
+                                                                </asp:Repeater>
+                                                            </td>
                                                         </tr>
                                                     </ItemTemplate>
                                                 </asp:Repeater>

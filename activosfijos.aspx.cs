@@ -211,7 +211,7 @@ namespace fpWebApp
             CargarActivos();
         }
 
-        protected void rpActivosFijos_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
+        protected void rpActivosFijos_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {

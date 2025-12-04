@@ -430,7 +430,7 @@
 
                                                 <hr />
                                                 <div class="row">
-                                                    <div class="col-sm-5">
+                                                    <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <div class="panel panel-default" runat="server" id="divPanelResumen">
                                                                 <div class="panel-heading">
@@ -455,7 +455,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-7">
+                                                    <div class="col-sm-8">
 
                                                         <%--<div class="form-group">
                                                             <label><strong>Seleccione un método de pago:</strong></label>
@@ -587,14 +587,17 @@
                                                         <!-- Total -->
                                                         <div class="form-group" style="margin-bottom: 5px;">
                                                             <h1>
-                                                                <label class="col-lg-7 control-label">
+                                                                <label class="col-lg-5 control-label">
                                                                     TOTAL:
                                                                     <asp:Literal ID="ltValorTotal" runat="server"></asp:Literal>
                                                                 </label>
                                                             </h1>
+                                                            <div class="col-lg-2">
+                                                                <asp:CheckBox ID="cbPagaCounter" runat="server" Text="&nbsp;Paga en counter" OnCheckedChanged="cbPagaCounter_CheckedChanged" AutoPostBack="true" />
+                                                            </div>
                                                             <div class="col-lg-5">
                                                                 <asp:TextBox ID="txbTotal" CssClass="form-control input-sm"
-                                                                    runat="server" ReadOnly Style="text-align: right;"></asp:TextBox>
+                                                                    runat="server" ReadOnly="true" Style="text-align: right;"></asp:TextBox>
                                                             </div>
                                                         </div>
                                                     </div>

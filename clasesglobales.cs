@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Presentation;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Presentation;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using K4os.Compression.LZ4.Internal;
@@ -6045,6 +6046,34 @@ namespace fpWebApp
             return mensaje;
         }
 
+        public string ActualizarAfiliadosPlanesCortesia(int idAfiliadoPlan, int dias)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_AFILIADOSPLANES_CORTESIA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+                        cmd.Parameters.AddWithValue("@p_dias", dias);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
 
         public DataTable ConsultarAfiliadoPlanPorDocumento(string nroDocumento)
         {
@@ -6594,6 +6623,51 @@ namespace fpWebApp
             return dt;
         }
 
+
+        #endregion
+
+        #region Cortesias
+
+        public string ActualizarCortesia(string estado, string razones, int usuarioAutoriza, int idCortesia)
+        {
+            string mensaje = "";
+            int idAfiliadoPlan = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_CORTESIA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_estado_cortesia", estado);
+                        cmd.Parameters.AddWithValue("@p_razones_cortesia", razones);
+                        cmd.Parameters.AddWithValue("@p_id_usuario_autoriza", usuarioAutoriza);
+                        cmd.Parameters.AddWithValue("@p_id_cortesia", idCortesia);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                idAfiliadoPlan = Convert.ToInt32(reader["idAfiliadoPlan"]);
+                            }
+                        }
+                    }
+                }
+                mensaje = $"OK|{idAfiliadoPlan}";
+            }
+            catch (Exception ex)
+            {
+                mensaje = "ERROR: " + ex.Message;
+            }
+            return mensaje;
+        }
 
         #endregion
 
