@@ -217,7 +217,7 @@ namespace fpWebApp
             foreach (DataRow row in dt.Rows)
             {
                 string canal = row["CanalVenta"].ToString();
-                decimal ventas = Convert.ToDecimal(row["Ventas"]);
+                Decimal ventas = Convert.ToDecimal(row["Ventas"]);
 
                 // Estructura: [x, y, label]
                 dataList.Add(new object[] { index, ventas, canal });

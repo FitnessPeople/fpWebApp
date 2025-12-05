@@ -19,7 +19,7 @@ namespace fpWebApp.controles
             int idPerfil = Convert.ToInt32(Session["idPerfil"].ToString());
             ConsultarContactosActivosPorUsuario(idUsuario);
 
-            if (idPerfil == 21 || idPerfil == 1 || idPerfil == 37 || idPerfil == 23) // Director comercial // CEO // Director operativo // Director marketing
+            if (idPerfil == 21 || idPerfil == 1 || idPerfil == 37 ) // Director comercial // CEO // Director operativo // Director marketing
             {
                 ObtenerGraficaVentasVsMetasDirectorComercial();
             }
@@ -141,14 +141,14 @@ namespace fpWebApp.controles
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorEliteDia"]);
                             }
 
-                            if (perfilUsuario == 2 || perfilUsuario == 11 || perfilUsuario == 36)
+                            if (perfilUsuario == 2 || perfilUsuario == 11 || perfilUsuario == 36 || perfilUsuario == 23)
                             {
                                 valorMetaAsesorMes = Convert.ToInt32(filaHoy["PresupuestoMes"]);
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaSedeDia"]);
                             }
 
 
-                            if (perfilUsuario == 21 || perfilUsuario == 1 || perfilUsuario == 37 || perfilUsuario == 23)
+                            if (perfilUsuario == 21 || perfilUsuario == 1 || perfilUsuario == 37 )
                             {
                                 valorMetaAsesorMes = Convert.ToInt32(filaHoy["PresupuestoMes"]);
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaSedeDia"]);
