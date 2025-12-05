@@ -101,6 +101,7 @@ namespace fpWebApp
                 ltNombreAfiliadoCortesia.Text = dt.Rows[0]["NombreAfiliado"].ToString() + " " + dt.Rows[0]["ApellidoAfiliado"].ToString();
                 CargarPlanAfiliado(dt.Rows[0]["idAfiliadoPlan"].ToString());
                 ltDiasCortesia.Text = dt.Rows[0]["DiasCortesia"].ToString();
+                ViewState["DiasCortesia"] = dt.Rows[0]["DiasCortesia"].ToString();
                 ltFechaHoraCortesia.Text = string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaHoraCortesia"]);
                 ltObservacionesCortesia.Text = dt.Rows[0]["ObservacionesCortesia"].ToString();
                 ltUsuarioCortesia.Text = dt.Rows[0]["NombreUsuario"].ToString();
@@ -229,18 +230,25 @@ namespace fpWebApp
             string strInitData = TraerDataCortesia();
             try
             {
-                string strQuery = "UPDATE Cortesias SET " +
-                    "EstadoCortesia = '" + ViewState["EstadoCortesia"].ToString() + "', " +
-                    "RazonesCortesia = '" + txbRespuestaCortesia.Text.ToString() + "', " +
-                    "idusuarioAutoriza = " + Session["idUsuario"].ToString() + ", " +
-                    "FechaRespuesta = Now() " +
-                    "WHERE idCortesia = " + Request.QueryString["idCortesia"].ToString();
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string rta = cg.ActualizarCortesia(ViewState["EstadoCortesia"].ToString(),
+                        txbRespuestaCortesia.Text.ToString(),
+                        Convert.ToInt32(Session["idUsuario"].ToString()),
+                        Convert.ToInt32(Request.QueryString["idCortesia"].ToString()));
+
                 string strNewData = TraerDataCortesia();
+
                 cg.InsertarLog(Session["idusuario"].ToString(), "Cortesias", "Modifica", "El usuario dio respuesta a la autorización de la cortesía.", strInitData, strNewData);
 
-                // Actualizar plan con la cortesía. Agregar los días al final del plan.
+                if (ViewState["EstadoCortesia"].ToString() == "Autorizada")
+                {
+                    // Actualizar plan con la cortesía. Agregar los días al final del plan.
+                    if (rta.StartsWith("OK"))
+                    {
+                        int idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
+                        cg.ActualizarAfiliadosPlanesCortesia(idAfiliadoPlan, Convert.ToInt32(ViewState["DiasCortesia"].ToString()));
+                    }
+                }
 
                 Response.Redirect("autorizaciones");
             }

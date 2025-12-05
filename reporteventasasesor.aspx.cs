@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Newtonsoft.Json;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
@@ -103,11 +104,34 @@ namespace fpWebApp
 
                 int filtroMedioPago = Convert.ToInt32(ddlTipoPago.SelectedValue);
 
-                DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago, txbFechaIni.Value, txbFechaFin.Value, out decimal valorTotal);
-                DataTable dt1 = cg.ConsultarPagosPorTipoPorAsesorSinFechas(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago, out decimal valorTotal1);
+                //DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago, txbFechaIni.Value, txbFechaFin.Value, out decimal valorTotal);
+
+                string strQuery = @"
+                    SELECT  
+	                    ppa.idAfiliadoPlan AS idAfilPlan, 
+                        MAX(a.DocumentoAfiliado) AS Documento, 
+                        MAX(CONCAT(a.NombreAfiliado,' ',a.ApellidoAfiliado)) AS Afiliado, 
+                        SUM(ppa.Valor) AS Sumatoria,
+	                    MAX(ppa.FechaHoraPago) AS FechaHora, 
+	                    MAX(ppa.EstadoPago) AS Est, 
+	                    MAX(p.NombrePlan) AS Plan, 
+	                    MAX(ppa.idSiigoFactura) AS idSiigo 
+                    FROM PagosPlanAfiliado ppa
+                    INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan
+                    INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado
+                    LEFT JOIN planes p ON p.idPlan = ap.idPlan
+                    WHERE 
+	                    ppa.idUsuario = " + Session["IdUsuario"].ToString() + @"
+	                    AND DATE(ppa.FechaHoraPago) BETWEEN '" + txbFechaIni.Value.ToString() + @"' AND '" + txbFechaFin.Value.ToString() + @"' 
+                    GROUP BY ppa.idAfiliadoPlan 
+                    ORDER BY FechaHora DESC";
+
+                DataTable dt = cg.TraerDatos(strQuery);
 
                 rpPagos.DataSource = dt;
                 rpPagos.DataBind();
+
+                DataTable dt1 = cg.ConsultarPagosPorTipoPorAsesorSinFechas(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago, out decimal valorTotal1);
 
                 /////////////////////////////////INDICADORES/////////////////////////////////////////////////////
                 DateTime hoyInicio = DateTime.Today;
@@ -121,7 +145,7 @@ namespace fpWebApp
 
 
                 DataRow[] filasHoy = dt.Select(
-                    $"Fecha >= #{hoyInicio:MM/dd/yyyy HH:mm:ss}# AND Fecha <= #{hoyFin:MM/dd/yyyy HH:mm:ss}#"
+                    $"FechaHora >= #{hoyInicio:MM/dd/yyyy HH:mm:ss}# AND FechaHora <= #{hoyFin:MM/dd/yyyy HH:mm:ss}#"
                 );
 
                 DataRow[] filasAyer = dt1.Select(
@@ -134,12 +158,11 @@ namespace fpWebApp
 
 
                 // Ventas de hoy
-                decimal ventasHoy = filasHoy.Length > 0 ? filasHoy.Sum(r => r.Field<int>("Valor")) : 0;
+                decimal ventasHoy = Convert.ToDecimal(filasHoy[0].ItemArray[3].ToString());
 
                 // Ventas de ayer
                 decimal ventasAyer = 0;
                 int registrosAyer = 0;
-
 
 
                 if (filasAyer.Length > 0)
@@ -182,9 +205,6 @@ namespace fpWebApp
         {
             listaVentas();
         }
-
-
-
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
@@ -235,5 +255,41 @@ namespace fpWebApp
             }
         }
 
+        protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                DataRowView row = (DataRowView)e.Item.DataItem;
+                int idAfilPlan;
+                if (row["idAfilPlan"] is DBNull)
+                {
+                    idAfilPlan = 0;
+                }
+                else
+                {
+                    idAfilPlan = Convert.ToInt32(row["idAfilPlan"]);
+                }
+
+                string strQuery = @"
+                    SELECT  
+                        ppa.idPago AS Pago, 
+                        ppa.IdReferencia AS Ref, 
+                        ppa.FechaHoraPago AS Fecha, 
+                        ppa.Valor,
+                        mp.NombreMedioPago AS 'Medio de pago'
+                    FROM PagosPlanAfiliado ppa
+                        INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+                        INNER JOIN MediosDePago mp ON mp.idMedioPago = ppa.idMedioPago
+                    WHERE 
+                        ppa.idAfiliadoPlan = " + idAfilPlan.ToString() + @"";
+
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(strQuery);
+
+                Repeater rpDetallesPago = (Repeater)e.Item.FindControl("rpDetallesPago");
+                rpDetallesPago.DataSource = dt;
+                rpDetallesPago.DataBind();
+            }
+        }
     }
 }

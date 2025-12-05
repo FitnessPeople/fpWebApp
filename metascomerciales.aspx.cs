@@ -198,7 +198,12 @@ namespace fpWebApp
 
         private bool ValidarMetaComercial()
         {
-            int CanalVenta = Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString());
+            int CanalVenta = 0;
+            if (ddlCanalVenta.SelectedItem.Value.ToString() != "")
+            {
+                CanalVenta = Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString());
+            }
+            
             int mes = Convert.ToInt32(ddlMes.SelectedItem.Value.ToString());
             int annio = Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString());
 
@@ -360,13 +365,8 @@ namespace fpWebApp
                 title: '{titulo}',
                 text: '{mensaje}',
                 icon: '{tipo}', 
-                background: '#3C3C3C', 
                 showCloseButton: true, 
-                confirmButtonText: 'Aceptar', 
-                customClass: {{
-                    popup: 'alert',
-                    confirmButton: 'btn-confirm-alert'
-                }},
+                confirmButtonText: 'Aceptar'
             }});";
 
             ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);

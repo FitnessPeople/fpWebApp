@@ -6,8 +6,6 @@
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
 <%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
-<%--<%@ Register Src="~/controles/indicadoresreportespagos.ascx" TagPrefix="uc1" TagName="indicadoresreportespagos" %>--%>
-
 
 <!DOCTYPE html>
 <html>
@@ -17,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Pagos</title>
+    <title>Fitness People | Pagos recurrentes</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -35,26 +33,13 @@
         }
     </style>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
-
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#reportepagos");
+            var element1 = document.querySelector("#reportepagosrecurrentes");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#reportes");
             element2.classList.remove("collapse");
         }
-    </script>
-
-    <script>
-       $(document).ready(function () {
-           $('.datepicker').datepicker({
-               format: 'yyyy-mm-dd',
-               autoclose: true,
-               todayHighlight: true
-           });
-       });
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -127,11 +112,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-hand-holding-usd text-success m-r-sm"></i>Pagos</h2>
+                    <h2><i class="fas fa-arrows-spin text-success m-r-sm"></i>Pagos recurrentes</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Reportes</li>
-                        <li class="active"><strong>Pagos</strong></li>
+                        <li class="active"><strong>Pagos recurrentes</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">

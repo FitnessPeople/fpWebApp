@@ -1006,6 +1006,7 @@
     <Content Include="reporteestrategiascrmmarketing.aspx" />
     <Content Include="reportepagos.aspx" />
     <Content Include="reportepagosmulticanal.aspx" />
+    <Content Include="reportepagosrechazados.aspx" />
     <Content Include="reportepagosrecurrentes.aspx" />
     <Content Include="reporteventas.aspx" />
     <Content Include="reporteventasasesor.aspx" />
@@ -2140,6 +2141,13 @@
     </Compile>
     <Compile Include="reportepagosmulticanal.aspx.designer.cs">
       <DependentUpon>reportepagosmulticanal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="reportepagosrechazados.aspx.cs">
+      <DependentUpon>reportepagosrechazados.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reportepagosrechazados.aspx.designer.cs">
+      <DependentUpon>reportepagosrechazados.aspx</DependentUpon>
     </Compile>
     <Compile Include="reportepagosrecurrentes.aspx.cs">
       <DependentUpon>reportepagosrecurrentes.aspx</DependentUpon>

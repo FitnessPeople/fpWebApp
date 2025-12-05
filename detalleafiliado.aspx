@@ -145,11 +145,10 @@
                                                 <asp:Literal ID="ltApellido" runat="server"></asp:Literal>
                                             </h2>
                                             <h4>
-                                                <asp:Literal ID="ltTipoDoc" runat="server"></asp:Literal>
-                                                <asp:Literal ID="ltDocumento" runat="server"></asp:Literal></h4>
-                                            <h4>
+                                                (<asp:Literal ID="ltTipoDoc" runat="server"></asp:Literal>: 
+                                                <asp:Literal ID="ltDocumento" runat="server"></asp:Literal>), 
                                                 <asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
-                                            <small>
+                                            <small class="text-capitalize">
                                                 <asp:Literal ID="ltDireccion" runat="server"></asp:Literal>,
                                                 <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
                                         </div>

@@ -593,8 +593,7 @@ namespace fpWebApp
                     title: '{titulo}',
                     text: '{mensaje}',
                     icon: '{tipo}',
-                    confirmButtonText: 'Aceptar',
-                    background: '#3C3C3C'
+                    confirmButtonText: 'Aceptar'
                 }});";
 
             ScriptManager.RegisterStartupScript(this, GetType(), Guid.NewGuid().ToString(), script, true);
