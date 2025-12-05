@@ -258,9 +258,12 @@ namespace fpWebApp
                 if (postedFile != null && postedFile.ContentLength > 0)
                 {
                     //Save the File.
-                    string filePath = Server.MapPath("img//empleados//") + Path.GetFileName(postedFile.FileName);
+                    string nuevoNombre = txbDocumento.Text.ToString() + ".jpg";
+                    string rutaServidor = Server.MapPath("~/img/empleados/" + nuevoNombre);
+
+                    string filePath = rutaServidor;
                     postedFile.SaveAs(filePath);
-                    strFilename = postedFile.FileName;
+                    strFilename = nuevoNombre;
                 }
 
                 try

@@ -38,11 +38,11 @@ namespace fpWebApp.controles
                 ltCargo.Text = etiqueta;
                 if (Session["Foto"].ToString() != "")
                 {
-                    ltFoto.Text = "<img alt=\"image\" class=\"img-circle circle-border\" width=\"48px\" src=\"img/empleados/" + Session["Foto"].ToString() + "\" />";
+                    ltFoto.Text = "<img alt=\"image\" class=\"img-lg\" src=\"img/empleados/" + Session["Foto"].ToString() + "\" />";
                 }
                 else
                 {
-                    ltFoto.Text = "<img alt=\"image\" class=\"img-circle img-md\" src=\"img/empleados/nofoto.png\" />";
+                    ltFoto.Text = "<img alt=\"image\" class=\"img-lg\" src=\"img/empleados/nofoto.png\" />";
                 }
 
                 //totalAfiliados();

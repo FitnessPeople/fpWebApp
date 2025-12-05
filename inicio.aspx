@@ -70,13 +70,13 @@
                 <div class="row wrapper border-bottom white-bg page-heading">
                     <%--Inicio Breadcrumb!!!--%>
                     <div class="col-sm-10">
-                        <h2><i class="fa fa-gauge text-success m-r-sm"></i>Dashboard</h2>
+                        <h2><i class="fa fa-gauge text-success m-r-sm"></i>Panel de inicio</h2>
                         <ol class="breadcrumb">
                             <li>
                                 <a href="inicio">Inicio</a>
                             </li>
                             <li class="active">
-                                <strong>Dashboard</strong><asp:Literal runat="server" ID="ltMsg"></asp:Literal>
+                                <strong>Panel de inicio</strong><asp:Literal runat="server" ID="ltMsg"></asp:Literal>
                             </li>
                         </ol>
                     </div>

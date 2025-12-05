@@ -57,9 +57,8 @@ namespace fpWebApp
                         Session["idUsuario"] = Convert.ToInt16(Request.QueryString["idUsuario"].ToString());
                     }
 
-                    DateTime fechaActual = DateTime.Now;
-                    DateTime fechaDestino = new DateTime(2025, 10, 31);
-                    TimeSpan diferencia = fechaDestino - fechaActual;
+                    DateTime fechaDestino = new DateTime(2026, 01, 31);
+                    TimeSpan diferencia = fechaDestino - hoy;
                     _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
 
                     Control ctrInicio = new Control();
