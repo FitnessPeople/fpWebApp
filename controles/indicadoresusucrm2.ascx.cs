@@ -17,6 +17,7 @@ namespace fpWebApp.controles
         {
             int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
             int idPerfil = Convert.ToInt32(Session["idPerfil"].ToString());
+            int idCanalVenta = Convert.ToInt32(Session["idCanalVenta"].ToString());
             ConsultarContactosActivosPorUsuario(idUsuario);
 
             if (idPerfil == 21 || idPerfil == 1 || idPerfil == 37 ) // Director comercial // CEO // Director operativo // Director marketing
@@ -27,9 +28,13 @@ namespace fpWebApp.controles
             {
                 ObtenerGraficaVentasVsMetasCanalDeVenta();
             }
+            else if(idCanalVenta == 13)
+            {
+                ObtenerGraficaVentasVsMetasAsesor(); // Canal de ventas web
+            }
             else
             {
-                ObtenerGraficaVentasVsMetasAsesor(); // Asesor comercial //Asesor corporativo y otros
+                ObtenerGraficaVentasVsMetasAsesor(); 
             }
 
         }
@@ -102,8 +107,7 @@ namespace fpWebApp.controles
                 {
                     tipoSedeUsuario = dt6.Rows[0]["TipoSede"].ToString();
                     perfilUsuario = Convert.ToInt32(dt6.Rows[0]["IdPerfil"].ToString());
-                    cargoUsuario = Convert.ToInt32(dt6.Rows[0]["IdCargo"].ToString());
-
+                    cargoUsuario = dt6.Rows[0]["IdCargo"] == DBNull.Value ? 0: Convert.ToInt32(dt6.Rows[0]["IdCargo"]);
 
                     DataTable dt7 = cg.ConsultarMetaComercialMensual(idCanalVenta, mes, anio);
 
@@ -149,6 +153,12 @@ namespace fpWebApp.controles
 
 
                             if (perfilUsuario == 21 || perfilUsuario == 1 || perfilUsuario == 37 )
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["PresupuestoMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaSedeDia"]);
+                            }
+
+                            if (idCanalVenta == 13)
                             {
                                 valorMetaAsesorMes = Convert.ToInt32(filaHoy["PresupuestoMes"]);
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaSedeDia"]);
@@ -256,6 +266,7 @@ namespace fpWebApp.controles
             int _mes = hoy.Month;
             int _anio = hoy.Year;
             ltFechaHoy.Text = hoy.ToString("dd.MM.yyyy");
+            int valor1 = 0;
 
 
             try
@@ -273,8 +284,24 @@ namespace fpWebApp.controles
                     int.TryParse(row["IdCargo"]?.ToString(), out cargoUsuario);
                 }
 
-
                 DataTable dt = cg.ConsultarVentasVsMetasPorUusuarioCRM(idCanalVenta, _mes, _anio, idUsuario);
+
+                ///////////////////////////////////////////////META CANAL DE VENTA //////////////////////////////////
+                DataTable dt1 = cg.ConsultarMetasComerciales();
+
+                int canalVenta = Convert.ToInt32(idCanalVenta);
+                DataRow meta = ConsultarMetaCanal(dt1, canalVenta);
+
+                if (meta != null)
+                {
+                    valor1 = Convert.ToInt32(meta["Presupuesto"]);
+                    string canal = meta["NombreCanalVenta"].ToString();
+                }
+                else
+                {
+                    valor1 = 0;
+                    string canal = canalVenta.ToString();
+                }
 
                 var labels = new List<string>();
                 var metas = new List<decimal>();
