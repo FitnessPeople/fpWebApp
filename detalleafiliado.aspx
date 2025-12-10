@@ -167,12 +167,12 @@
                                         <tr>
                                             <td><strong><i class="fa fa-building m-r-xs"></i></strong>Sede:
                                                 <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
-                                            <td><strong>54</strong> Días asistidos</td>
+                                            <td><strong></strong> Días asistidos</td>
                                         </tr>
                                         <tr>
                                             <td><strong><i class="fa fa-cake m-r-xs"></i></strong>
                                                 <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
-                                            <td><strong>2</strong> Congelaciones</td>
+                                            <td><strong></strong> Congelaciones</td>
                                         </tr>
                                     </tbody>
                                 </table>

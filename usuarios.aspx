@@ -169,7 +169,7 @@
                                         </div>
                                     </form>
 
-                                    <table class="footable table table-striped" data-paging-size="10" 
+                                    <table class="footable table table-striped list-group-item-text" data-paging-size="10" 
                                         data-filter-min="3" data-filter-placeholder="Buscar" 
                                         data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
                                         data-paging-limit="10" data-filtering="true" 
@@ -182,6 +182,7 @@
                                                 <th data-sortable="false" data-breakpoints="xs">Nombre</th>
                                                 <th data-sortable="false" data-breakpoints="xs">Documento</th>
                                                 <th data-sortable="true" data-breakpoints="xs">Cargo</th>
+                                                <th></th>
                                                 <th data-sortable="false" data-breakpoints="xs sm md">Empleado</th>
                                                 <th data-breakpoints="xs sm md">Correo</th>
                                                 <%--<th data-sortable="false" data-breakpoints="xs sm md">Clave</th>--%>
@@ -199,8 +200,15 @@
                                                         <td><%# Eval("NombreUsuario") %></td>
                                                         <td><%# Eval("DocumentoEmpleado") %></td>
                                                         <td><%# Eval("NombreCargo") %></td>
+                                                        <td class="client-avatar">
+                                                            <img alt="image" src="img/empleados/<%# Eval("FotoEmpleado") %>"></td>
                                                         <td><a href="empleados" title="Ir a Empleados"><span class='badge badge-<%# Eval("label") %>'><%# Eval("Empleado") %></span></a></td>
-                                                        <td><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("EmailUsuario") %></td>
+                                                        <td>
+                                                            <%# string.IsNullOrEmpty(Eval("EmailUsuario").ToString()) 
+                                                                ? "" 
+                                                                : "<i class='fa fa-envelope m-r-xs font-bold'></i>" + Eval("EmailUsuario") 
+                                                            %>
+                                                        </td>
                                                         <%--<td><i class="fa fa-unlock-keyhole m-r-xs font-bold"></i><%# Eval("ClaveUsuario") %></td>--%>
                                                         <%--<td><%# Eval("CargoUsuario") %></td>--%>
                                                         <td><a href="perfiles" title="Ir a Perfiles"><i class="fa fa-user-shield m-r-xs font-bold"></i><%# Eval("Perfil") %></a></td>
