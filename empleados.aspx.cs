@@ -411,7 +411,7 @@ namespace fpWebApp
                 }
 
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos("SELECT * FROM logs WHERE idUsuario = " + idUsuario.ToString());
+                DataTable dt = cg.TraerDatos("SELECT * FROM logs WHERE idUsuario = " + idUsuario.ToString() + " LIMIT 10");
 
                 Repeater rpActividades = (Repeater)e.Item.FindControl("rpActividades");
                 rpActividades.DataSource = dt;

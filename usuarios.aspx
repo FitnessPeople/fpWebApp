@@ -180,6 +180,7 @@
                                             <tr>
                                                 <th data-sortable="false" data-breakpoints="xs">ID</th>
                                                 <th data-sortable="false" data-breakpoints="xs">Nombre</th>
+                                                <th data-sortable="false" data-breakpoints="xs">Documento</th>
                                                 <th data-sortable="true" data-breakpoints="xs">Cargo</th>
                                                 <th data-sortable="false" data-breakpoints="xs sm md">Empleado</th>
                                                 <th data-breakpoints="xs sm md">Correo</th>
@@ -196,6 +197,7 @@
                                                     <tr>
                                                         <td><%# Eval("idUsuario") %></td>
                                                         <td><%# Eval("NombreUsuario") %></td>
+                                                        <td><%# Eval("DocumentoEmpleado") %></td>
                                                         <td><%# Eval("NombreCargo") %></td>
                                                         <td><a href="empleados" title="Ir a Empleados"><span class='badge badge-<%# Eval("label") %>'><%# Eval("Empleado") %></span></a></td>
                                                         <td><i class="fa fa-circle-user m-r-xs font-bold"></i><%# Eval("EmailUsuario") %></td>

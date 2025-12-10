@@ -39,14 +39,9 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-
+                            divPagosRechazados.Visible = true;
+                            HistorialCobrosRechazados();
                         }
-                    }
-                    
-                    if (Session["idSede"].ToString() == "11")
-                    {
-                        divPagosRechazados.Visible = true;
-                        HistorialCobrosRechazados();
                     }
                 }
                 else
@@ -121,8 +116,7 @@ namespace fpWebApp
                 INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
                 INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
                 INNER JOIN Planes AS p ON p.idPlan = ap.idPlan 
-                GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado;
-                ";
+                GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado";
 
 
             DataTable dt = cg.TraerDatos(strQuery);

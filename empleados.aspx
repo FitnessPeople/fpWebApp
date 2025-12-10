@@ -33,6 +33,18 @@
         }
     </style>
 
+    <style type="text/css">
+        /* Imagen cuando el empleado está activo (a color) */
+        .img-activo {
+            filter: none;
+        }
+
+        /* Imagen cuando el empleado está inactivo (en blanco y negro) */
+        .img-inactivo {
+            filter: grayscale(100%);
+        }
+    </style>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#empleados");
@@ -227,7 +239,10 @@
                                                         <div class="ibox-content text-center">
                                                             <h2><%# Eval("NombreEmpleado") %></h2>
                                                             <div class="m-b-sm">
-                                                                <img alt="image" class="img-circle" src="img/empleados/<%# Eval("FotoEmpleado") %>" width="120">
+                                                                <img alt="image" 
+                                                                 class='img-circle <%# Eval("Estado").ToString() == "Inactivo" ? "img-inactivo" : "img-activo" %>' 
+                                                                 src='img/empleados/<%# Eval("FotoEmpleado") %>' 
+                                                                 width="120">
                                                                 <span class="label label-danger">Rh: <%# Eval("TipoSangre") %></span>
                                                             </div>
                                                             <p class="font-bold"><%# Eval("Cargo") %></p>
@@ -237,53 +252,9 @@
                                                                 <a class="btn btn-xs btn-warning"><i class="fa fa-rotate m-r-xs"></i>Cambiar estado</a>
                                                             </div>
                                                         </div>
-                                                        <%--<div class="col-lg-4 text-center">
-                                                            <h3><%# Eval("NombreEmpleado") %></h3>
-                                                            <div class="m-b-sm">
-                                                                <img alt="image" class="img-circle" src="img/empleados/<%# Eval("FotoEmpleado") %>" style="width: 62px" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-8">
-                                                            <strong>Acerca de mi</strong>
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                                                            <div class="user-button">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <button type="button" class="btn btn-primary btn-sm btn-block"><i class="fa fa-envelope"></i> Send Message</button>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <button type="button" class="btn btn-default btn-sm btn-block"><i class="fa fa-coffee"></i> Buy a coffee</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>--%>
                                                     </div>
                                                     <div class="client-detail">
                                                         <div class="full-height-scroll">
-                                                            <%--<strong>Detalles</strong>--%>
-
-                                                            <%--<ul class="list-group clear-list">
-                                                                <li class="list-group-item fist-item">
-                                                                    <span class="pull-right"><%# Eval("DireccionEmpleado") %></span>
-                                                                    <i class="fa fa-map-marker m-r-xs"></i>Dirección
-                                                                </li>
-                                                                <li class="list-group-item">
-                                                                    <span class="pull-right"><%# Eval("NombreCiudad") %></span>
-                                                                    <i class="fa fa-city m-r-xs"></i>Ciudad
-                                                                </li>
-                                                                <li class="list-group-item">
-                                                                    <span class="pull-right"><%# Eval("TelefonoEmpleado") %></span>
-                                                                    <i class="fab fa-whatsapp m-r-xs"></i>Teléfono personal
-                                                                </li>
-                                                                <li class="list-group-item">
-                                                                    <span class="pull-right"><%# Eval("EmailCorporativo") %></span>
-                                                                    <i class="fa fa-envelope m-r-xs"></i>Email corporativo
-                                                                </li>
-                                                                <li class="list-group-item">
-                                                                    <span class="pull-right"><%# Eval("EmailEmpleado") %></span>
-                                                                    <i class="fa fa-envelope m-r-xs"></i>Correo personal
-                                                                </li>
-                                                            </ul>--%>
 
                                                             <div class="feed-activity-list">
 
