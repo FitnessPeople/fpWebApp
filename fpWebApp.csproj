@@ -270,6 +270,7 @@
     <Content Include="canalesventa.aspx" />
     <Content Include="cancelaragendagympass.aspx" />
     <Content Include="cargos.aspx" />
+    <Content Include="categoriaspaginas.aspx" />
     <Content Include="categoriastienda.aspx" />
     <Content Include="cesantias.aspx" />
     <Content Include="ciudades.aspx" />
@@ -1208,6 +1209,13 @@
     </Compile>
     <Compile Include="cargos.aspx.designer.cs">
       <DependentUpon>cargos.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="categoriaspaginas.aspx.cs">
+      <DependentUpon>categoriaspaginas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="categoriaspaginas.aspx.designer.cs">
+      <DependentUpon>categoriaspaginas.aspx</DependentUpon>
     </Compile>
     <Compile Include="categoriastienda.aspx.cs">
       <DependentUpon>categoriastienda.aspx</DependentUpon>

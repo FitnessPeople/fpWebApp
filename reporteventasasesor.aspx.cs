@@ -150,7 +150,19 @@ namespace fpWebApp
 
 
                 // Ventas de hoy
-                decimal ventasHoy = Convert.ToDecimal(filasHoy[0].ItemArray[3].ToString());
+                decimal ventasHoy = 0;
+
+                // Validar que sí existan filas
+                if (filasHoy.Length > 0)
+                {
+                    ventasHoy = Convert.ToDecimal(filasHoy[0].ItemArray[3]);
+                }
+                else
+                {
+                    // No hay registros → valor por defecto
+                    ventasHoy = 0;
+                }
+
 
                 // Ventas de ayer
                 decimal ventasAyer = 0;
