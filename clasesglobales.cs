@@ -2798,7 +2798,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string ActualizarCategoriaPagina( int idCategoriaPagina, string nombreCategoriaPagina, string iconoPagina, string identificaor)
+        public string ActualizarCategoriaPagina( int idCategoriaPagina, string nombreCategoriaPagina, string iconoPagina, string identificador)
         {
             string respuesta = string.Empty;
             try
@@ -2817,8 +2817,36 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_categoria_pag", idCategoriaPagina);
                         cmd.Parameters.AddWithValue("@p_nombre_categoria_pag", nombreCategoriaPagina);
                         cmd.Parameters.AddWithValue("@p_icono_categoria", iconoPagina);
-                        cmd.Parameters.AddWithValue("@p_identificador", identificaor);                        
+                        cmd.Parameters.AddWithValue("@p_identificador", identificador);                        
 
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string InsertarCategoriaPagina(string nombreCategoriaPagina, string iconoPagina, string identificador)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_CATEGORIA_PAGINA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_nombre_categoria_pag", nombreCategoriaPagina);
+                        cmd.Parameters.AddWithValue("@p_icono_categoria", iconoPagina);
+                        cmd.Parameters.AddWithValue("@p_identificador", identificador);
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
                     }

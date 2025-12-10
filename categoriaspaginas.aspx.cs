@@ -158,60 +158,42 @@ namespace fpWebApp
                 {
                     // Borrar
                 }
-                Response.Redirect("paginas");
+                Response.Redirect("categoriaspaginas");
             }
             else
             {
-                //if (!ValidarCategoria(txbCategoria.Text.ToString()))
-                //{
-                //    try
-                //    {
-                //        string respuesta = cg.InsertarCategoriaPagina(txbCategoria.Text.ToString().Trim(), "", 0, "");
+                if (!ValidarCategoria(txbCategoria.Text.ToString()))
+                {
+                    try
+                    {
+                        string respuesta = cg.InsertarCategoriaPagina(txbCategoria.Text.ToString().Trim(), txbIconoFA.Text.ToString(), txbIdentificador.Text.ToString());
 
-                //        cg.InsertarLog(Session["idusuario"].ToString(), "paginas", "Agrega", "El usuario agregó una nueva página: " + txbCategoria.Text.ToString() + ".", "", "");
+                        cg.InsertarLog(Session["idusuario"].ToString(), "categorias paginas", "Agrega", "El usuario agregó una nueva categoría página: " + txbCategoria.Text.ToString() + ".", "", "");
 
-                //        DataTable dt = cg.ConsultarUltimaPagina();
-                //        int IdPagina = int.Parse(dt.Rows[0]["idPagina"].ToString());
-                //        dt.Dispose();
-
-                //        DataTable dt1 = cg.ConsultarPerfiles();
-
-                //        for (int i = 0; i < dt1.Rows.Count; i++)
-                //        {
-                //            try
-                //            {
-                //                string respuesta2 = cg.InsertarPermisoPerfil(int.Parse(dt1.Rows[i]["idPerfil"].ToString()), IdPagina, 1, 0, 0, 0, 0);
-                //            }
-                //            catch (Exception ex)
-                //            {
-                //                string mensaje = ex.Message;
-                //            }
-                //        }
-                //        dt1.Dispose();
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        string mensajeExcepcionInterna = string.Empty;
-                //        Console.WriteLine(ex.Message);
-                //        if (ex.InnerException != null)
-                //        {
-                //            mensajeExcepcionInterna = ex.InnerException.Message;
-                //            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
-                //        }
-                //        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                //        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                //        "Excepción interna." +
-                //        "</div>";
-                //    }
-                //    Response.Redirect("paginas");
-                //}
-                //else
-                //{
-                //    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                //    "Ya existe una Página con ese nombre." +
-                //    "</div>";
-                //}
+                    }
+                    catch (Exception ex)
+                    {
+                        string mensajeExcepcionInterna = string.Empty;
+                        Console.WriteLine(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            mensajeExcepcionInterna = ex.InnerException.Message;
+                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                        }
+                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        "Excepción interna." +
+                        "</div>";
+                    }
+                    Response.Redirect("categoriaspaginas");
+                }
+                else
+                {
+                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "Ya existe una Categoría de página con ese nombre." +
+                    "</div>";
+                }
             }
         }
 
