@@ -168,7 +168,7 @@
                                                         CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
-                                                    <a href="paginas" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <a href="categoriaspaginas" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
