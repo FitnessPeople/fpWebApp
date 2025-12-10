@@ -132,6 +132,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator dfvAspx;
 
         /// <summary>
+        /// Control txbOrden.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbOrden;
+
+        /// <summary>
+        /// Control dfvAspx1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator dfvAspx1;
+
+        /// <summary>
         /// Control btnAgregar.
         /// </summary>
         /// <remarks>

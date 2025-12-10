@@ -12,8 +12,11 @@ namespace fpWebApp
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            lblAnho.Text = DateTime.Now.Year.ToString();
-            txbEmail.Focus();
+            if(!IsPostBack)
+            {
+                lblAnho.Text = DateTime.Now.Year.ToString();
+                txbEmail.Focus();
+            }
         }
 
         protected void btnIngresar_Click(object sender, EventArgs e)
@@ -35,8 +38,6 @@ namespace fpWebApp
                 int longitudCodigo = 6;
                 string codigo = cg.GenerarCodigo(longitudCodigo);
 
-                ltCodigo.Text = codigo;   // Quitar esta línea de código cuando se ponga en producción
-
                 // Si ya tiene código con fecha de hoy, no se pide el codigo... Solo pide el código una vez por día.
 
                 DataTable dt = cg.ConsultarFechaCodigo(Convert.ToInt32(Session["idUsuario"].ToString()));
@@ -52,24 +53,28 @@ namespace fpWebApp
                     }
                     else
                     {
-                        cg.ActualizarCodigoUsuario(Convert.ToInt32(Session["idUsuario"].ToString()), codigo);
+                        //cg.ActualizarCodigoUsuario(Convert.ToInt32(Session["idUsuario"].ToString()), codigo);
+                        Session["codigo"] = codigo;
 
                         //Enviar por correo
                         //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
 
-                        //Mostrar div para escribir el código
-                        divCodigo.Visible = true;
+                        //Enviar a pagina de ingreso de codigo
+                        //Response.Redirect("confirmarcodigo");                     Se debe dejar esta línea en producción
+                        Response.Redirect("confirmarcodigo?ticket=" + codigo);      //Se debe comentar esta línea en producción
                     }
                 }
                 else
                 {
-                    cg.ActualizarCodigoUsuario(Convert.ToInt32(Session["idUsuario"].ToString()), codigo);
+                    //cg.ActualizarCodigoUsuario(Convert.ToInt32(Session["idUsuario"].ToString()), codigo);
+                    Session["codigo"] = codigo;
 
                     //Enviar por correo
                     //cg.EnviarCorreo("info@fitnesspeoplecmd.com", Session["usuario"].ToString(), "Clave acceso", "Clave de acceso: " + codigo);
 
-                    //Mostrar div para escribir el código
-                    divCodigo.Visible = true;
+                    //Enviar a pagina de ingreso de codigo
+                    //Response.Redirect("confirmarcodigo");                     Se debe dejar esta línea en producción
+                    Response.Redirect("confirmarcodigo?ticket=" + codigo);      //Se debe comentar esta línea en producción
                 }
 
             }
@@ -166,22 +171,6 @@ namespace fpWebApp
             ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
 
-        protected void btnIngresarCodigo_Click(object sender, EventArgs e)
-        {
-            clasesglobales cg = new clasesglobales();
-            //DataTable dt = new DataTable();
-            DataTable dt = cg.RevisarCodigo(Convert.ToInt32(Session["idUsuario"].ToString()), txbCodigo.Text.ToString());
-
-            if (dt.Rows.Count > 0)
-            {
-                // Ingresa a FP+
-                cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Login", "El usuario inicio sesión.", "", "");
-                Response.Redirect("micuenta");
-            }
-            else
-            {
-                MostrarAlerta("Código errado.", "Intente nuevamente.", "error");
-            }
-        }
+        
     }
 }

@@ -40,10 +40,14 @@ namespace fpWebApp
                         {
                             divBotonesLista.Visible = true;
                             lbExportarExcel.Visible = true;
+                            CargarCategorias();
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             btnAgregar.Visible = true;
+                            txbOrden.Attributes.Add("type", "number");
+                            txbOrden.Attributes.Add("min", "1");
+                            SugerirSiguiente();
                             CargarCategorias();
                         }
                     }
@@ -64,6 +68,7 @@ namespace fpWebApp
                                 txbCategoria.Text = dt.Rows[0]["NombreCategoriaPagina"].ToString();
                                 txbIconoFA.Text = dt.Rows[0]["IconoFA"].ToString();
                                 txbIdentificador.Text = dt.Rows[0]["Identificador"].ToString();
+                                txbOrden.Text = dt.Rows[0]["Orden"].ToString();
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar Categoría página";
                             }
@@ -148,7 +153,7 @@ namespace fpWebApp
 
                 if (Request.QueryString["editid"] != null)
                 {
-                    string respuesta = cg.ActualizarCategoriaPagina(int.Parse(Request.QueryString["editid"].ToString()), txbCategoria.Text.ToString().Trim(), txbIconoFA.Text.ToString(), txbIdentificador.Text.ToString());
+                    string respuesta = cg.ActualizarCategoriaPagina(int.Parse(Request.QueryString["editid"].ToString()), txbCategoria.Text.ToString().Trim(), txbIconoFA.Text.ToString(), txbIdentificador.Text.ToString(), txbOrden.Text.ToString());
 
                     string strNewData = TraerData();
                     cg.InsertarLog(Session["idusuario"].ToString(), "Categorias paginas", "Modifica", "El usuario modificó la página: " + txbCategoria.Text.ToString() + ".", strInitData, strNewData);
@@ -166,7 +171,7 @@ namespace fpWebApp
                 {
                     try
                     {
-                        string respuesta = cg.InsertarCategoriaPagina(txbCategoria.Text.ToString().Trim(), txbIconoFA.Text.ToString(), txbIdentificador.Text.ToString());
+                        string respuesta = cg.InsertarCategoriaPagina(txbCategoria.Text.ToString().Trim(), txbIconoFA.Text.ToString(), txbIdentificador.Text.ToString(), txbOrden.Text.ToString());
 
                         cg.InsertarLog(Session["idusuario"].ToString(), "categorias paginas", "Agrega", "El usuario agregó una nueva categoría página: " + txbCategoria.Text.ToString() + ".", "", "");
 
@@ -195,6 +200,15 @@ namespace fpWebApp
                     "</div>";
                 }
             }
+        }
+
+        private void SugerirSiguiente()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos("SELECT idCategoriaPagina FROM CategoriasPaginas ORDER BY idCategoriaPagina DESC LIMIT 1");
+
+            int siguienteId = Convert.ToInt32(dt.Rows[0]["idCategoriaPagina"].ToString()) + 1;
+            txbOrden.Text = siguienteId.ToString();
         }
 
         private void CargarCategorias()

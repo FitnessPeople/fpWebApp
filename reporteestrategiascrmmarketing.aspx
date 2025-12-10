@@ -61,7 +61,7 @@
             function changeClass() {
                 var element1 = document.querySelector("#reporteestrategiascrmmarketing");
                 element1.classList.replace("old", "active");
-                var element2 = document.querySelector("#crm");
+                var element2 = document.querySelector("#marketing");
                 element2.classList.remove("collapse");
             }
         </script>
@@ -126,7 +126,7 @@
                     <h2><i class="fa fa-magnifying-glass-chart text-success m-r-sm"></i>Reporte estrategias marketing</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>CRM</li>
+                        <li>Marketing</li>
                         <li class="Activa"><strong>Reporte estrategia</strong></li>
                     </ol>
                 </div>

@@ -83,7 +83,7 @@
         function changeClass() {
             var element1 = document.querySelector("#estrategiasmarketing");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
+            var element2 = document.querySelector("#marketing");
             element2.classList.remove("collapse");
         }
     </script>
@@ -143,10 +143,10 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-school-flag text-success m-r-sm"></i>Estrategias de Marketing</h2>
+                    <h2><i class="fa fa-arrows-to-eye text-success m-r-sm"></i>Estrategias de Marketing</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>CRM</li>
+                        <li>Marketing</li>
                         <li class="active"><strong>Estrategias de Marketing</strong></li>
                     </ol>
                 </div>

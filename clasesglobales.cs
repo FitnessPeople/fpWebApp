@@ -2798,7 +2798,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string ActualizarCategoriaPagina( int idCategoriaPagina, string nombreCategoriaPagina, string iconoPagina, string identificador)
+        public string ActualizarCategoriaPagina( int idCategoriaPagina, string nombreCategoriaPagina, string iconoPagina, string identificador, string Orden)
         {
             string respuesta = string.Empty;
             try
@@ -2817,7 +2817,8 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_categoria_pag", idCategoriaPagina);
                         cmd.Parameters.AddWithValue("@p_nombre_categoria_pag", nombreCategoriaPagina);
                         cmd.Parameters.AddWithValue("@p_icono_categoria", iconoPagina);
-                        cmd.Parameters.AddWithValue("@p_identificador", identificador);                        
+                        cmd.Parameters.AddWithValue("@p_identificador", identificador);
+                        cmd.Parameters.AddWithValue("@p_orden_categoria", Orden);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
@@ -2832,7 +2833,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string InsertarCategoriaPagina(string nombreCategoriaPagina, string iconoPagina, string identificador)
+        public string InsertarCategoriaPagina(string nombreCategoriaPagina, string iconoPagina, string identificador, string orden)
         {
             string respuesta = string.Empty;
             try
@@ -2847,6 +2848,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_nombre_categoria_pag", nombreCategoriaPagina);
                         cmd.Parameters.AddWithValue("@p_icono_categoria", iconoPagina);
                         cmd.Parameters.AddWithValue("@p_identificador", identificador);
+                        cmd.Parameters.AddWithValue("@p_orden_categoria", orden);
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
                     }

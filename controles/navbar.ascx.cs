@@ -74,7 +74,7 @@ namespace fpWebApp.controles
                 "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
                 "AND SinPermiso = 0 " +
                 "GROUP BY cp.idCategoriaPagina " +
-                "ORDER BY cp.idCategoriaPagina";
+                "ORDER BY cp.Orden";
             clasesglobales cg = new clasesglobales();
             DataTable dt1 = cg.TraerDatos(strQuery);
 

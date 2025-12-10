@@ -278,6 +278,7 @@
     <Content Include="clientecorporativo.aspx" />
     <Content Include="comprobantetransferencia.aspx" />
     <Content Include="concursogympass.aspx" />
+    <Content Include="confirmarcodigo.aspx" />
     <Content Include="congelaciones.aspx" />
     <Content Include="congelacionesAfil.aspx" />
     <Content Include="contratoafiliado.aspx" />
@@ -1266,6 +1267,13 @@
     </Compile>
     <Compile Include="concursogympass.aspx.designer.cs">
       <DependentUpon>concursogympass.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="confirmarcodigo.aspx.cs">
+      <DependentUpon>confirmarcodigo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="confirmarcodigo.aspx.designer.cs">
+      <DependentUpon>confirmarcodigo.aspx</DependentUpon>
     </Compile>
     <Compile Include="congelaciones.aspx.cs">
       <DependentUpon>congelaciones.aspx</DependentUpon>

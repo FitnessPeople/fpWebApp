@@ -35,7 +35,7 @@
             <p class="text-white">
                 ¡Nuestra app está lista, construida desde cero!<br />
                 Se avecinan muchas funciones y mejoras.
-                <br />(Servidor: Localhost)
+                <br />(Servidor: AWS)
             </p>
             <form class="m-t" role="form" id="form1" runat="server">
                 <div class="row" runat="server" id="divUsuario">
@@ -68,14 +68,6 @@
                     </div>
                 </div>
                 <asp:Button ID="btnIngresar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="INGRESAR" OnClick="btnIngresar_Click" />
-
-                <div class="alert alert-danger alert-dismissable" runat="server" id="divCodigo" visible="false">
-                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                    <asp:Literal ID="ltCodigo" runat="server"></asp:Literal>
-                    <asp:TextBox ID="txbCodigo" CssClass="form-control" runat="server" required></asp:TextBox>
-                    <asp:Button ID="btnIngresarCodigo" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold"
-                        Text="INGRESAR CON CODIGO" OnClick="btnIngresarCodigo_Click" />
-                </div>
 
             <p><a href="olvidoclave"><small style="color: #fff; text-decoration: underline;">Olvidaste la contraseña?</small></a></p>
             <%--<p class="text-muted text-center text-white"><small>No tienes una cuenta?</small></p>--%>

@@ -162,9 +162,18 @@
                                                 <div class="form-group">
                                                     <label>Identificador:</label>
                                                     <asp:TextBox ID="txbIdentificador" name="txbAspx" runat="server" CssClass="form-control input-sm" 
-                                                        ToolTip="Identificador par que quede activo el menú seleccionado"> </asp:TextBox>
+                                                        ToolTip="Identificador para que quede activo el menú seleccionado"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="dfvAspx" runat="server"
                                                         ErrorMessage="* Campo requerido" ControlToValidate="txbIdentificador"
+                                                        CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label>Orden:</label>
+                                                    <asp:TextBox ID="txbOrden" name="txbAspx" runat="server" CssClass="form-control input-sm" 
+                                                        ToolTip="Orden en el menú de opciones"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="dfvAspx1" runat="server"
+                                                        ErrorMessage="* Campo requerido" ControlToValidate="txbOrden"
                                                         CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
@@ -222,6 +231,7 @@
                                                     <th width="25%">Categoría</th>
                                                     <th width="25%">Icono FA</th>
                                                     <th width="20%">Identificador</th>
+                                                    <th width="10%" data-type="number">Orden</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -233,6 +243,7 @@
                                                             <td><%# Eval("NombreCategoriaPagina") %></td>
                                                             <td><i class='fa fa-<%# Eval("IconoFA") %> m-r-sm'></i><%# Eval("IconoFA") %></td>
                                                             <td><%# Eval("Identificador") %></td>
+                                                            <td><%# Eval("Orden") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
