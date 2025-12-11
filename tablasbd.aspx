@@ -188,7 +188,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <asp:Repeater ID="rpProcedimientos" runat="server" OnItemDataBound="rpProcedimientos_ItemDataBound">
+                                            <asp:Repeater ID="rpTablas" runat="server" OnItemDataBound="rpTablas_ItemDataBound">
                                                 <ItemTemplate>
                                                     <tr>
                                                         <td><%# Eval("Table_name") %></td>

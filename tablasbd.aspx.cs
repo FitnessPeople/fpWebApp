@@ -79,8 +79,8 @@ namespace fpWebApp
             string strQuery = "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'fitnesspeople'";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
-            rpProcedimientos.DataSource = dt;
-            rpProcedimientos.DataBind();
+            rpTablas.DataSource = dt;
+            rpTablas.DataBind();
             dt.Dispose();
         }
 
@@ -109,7 +109,7 @@ namespace fpWebApp
             }
         }
 
-        protected void rpProcedimientos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        protected void rpTablas_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {

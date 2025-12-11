@@ -142,10 +142,8 @@
                             </Scripts>
                         </asp:ScriptManager>
                         <div class="row" id="divContenido" runat="server">
-                            <div class="form-group">
-                                <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
-                            </div>
-
+                            
+                            <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
                             <div class="col-lg-5">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
@@ -190,24 +188,24 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="row">
-                                                    <div class="col-lg-6 form-group">
-                                                        <label>Celular:</label>
-                                                        <asp:TextBox ID="txbCelular" CssClass="form-control input-sm"
-                                                            runat="server" placeholder="Celular"
-                                                            autocomplete="off" spellcheck="false" required></asp:TextBox>
-                                                    </div>
-
-                                                    <div class="col-lg-6 form-group">
-                                                        <label>Empresa:</label>
-                                                        <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
-                                                            DataValueField="idEmpresa" DataTextField="NombreEmpresa"
-                                                            AppendDataBoundItems="true">
-                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        </asp:DropDownList>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 form-group">
+                                                            <label>Celular:</label>
+                                                            <asp:TextBox ID="txbCelular" CssClass="form-control input-sm"
+                                                                runat="server" placeholder="Celular"
+                                                                autocomplete="off" spellcheck="false" required></asp:TextBox>
+                                                        </div>
+                                                        <div class="col-lg-6 form-group">
+                                                            <label>Empresa:</label>
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
+                                                                DataValueField="idEmpresa" DataTextField="NombreEmpresa"
+                                                                AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
                                                     </div>
                                                 </div>
-
 
                                                 <div class="form-group">
                                                     <a href="prospectoscrm" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>

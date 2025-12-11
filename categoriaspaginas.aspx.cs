@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -291,5 +292,123 @@ namespace fpWebApp
                 }
             }
         }
+
+        protected void rpCategorias_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            int idCategoriaPagina = Convert.ToInt32(e.CommandArgument);
+
+            if (e.CommandName == "Subir")
+            {
+                CambiarOrden(idCategoriaPagina, "UP");
+            }
+            else if (e.CommandName == "Bajar")
+            {
+                CambiarOrden(idCategoriaPagina, "DOWN");
+            }
+
+            // Recargar datos
+            CargarCategorias();
+            upTabla.Update();
+        }
+
+        private void CambiarOrden(int idCategoriaPagina, string accion)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            // Obtener registro actual
+            string strQuery = "SELECT Orden FROM CategoriasPaginas WHERE idCategoriaPagina = " + idCategoriaPagina.ToString();
+            DataTable dt = cg.TraerDatos(strQuery);
+            int ordenActual = Convert.ToInt32(dt.Rows[0]["Orden"]);
+            dt.Dispose();
+
+            // Buscar el registro a intercambiar
+            string strGetSwap = (accion == "UP")
+                ? "SELECT idCategoriaPagina, Orden FROM CategoriasPaginas WHERE Orden = " + ordenActual + " - 1"
+                : "SELECT idCategoriaPagina, Orden FROM CategoriasPaginas WHERE Orden = " + ordenActual + " + 1";
+
+            int idSwap = 0;
+            int ordenSwap = 0;
+
+            dt = cg.TraerDatos(strGetSwap);
+            if (dt.Rows.Count > 0)
+            {
+                idSwap = Convert.ToInt32(dt.Rows[0]["idCategoriaPagina"]);
+                ordenSwap = Convert.ToInt32(dt.Rows[0]["Orden"]);
+            }
+            dt.Dispose();
+
+            if (idSwap == 0) return; // no hay más arriba o abajo
+
+            // Intercambiar ordenes
+            string strUpdate1 = "UPDATE CategoriasPaginas SET Orden = " + ordenSwap + " WHERE idCategoriaPagina = " + idCategoriaPagina.ToString();
+            string strUpdate2 = "UPDATE CategoriasPaginas SET Orden = " + ordenActual + " WHERE idCategoriaPagina = " + idSwap.ToString();
+
+            string respuesta1 = cg.TraerDatosStr(strUpdate1);
+            string respuesta2 = cg.TraerDatosStr(strUpdate2);
+
+
+            //using (MySqlConnection cn = new MySqlConnection(connString))
+            //{
+            //    cn.Open();
+
+            //    // Obtener registro actual
+            //    string sqlGet = "SELECT Orden FROM Categoria WHERE Id = @Id";
+            //    //int ordenActual;
+
+            //    using (MySqlCommand cmd = new MySqlCommand(sqlGet, cn))
+            //    {
+            //        cmd.Parameters.AddWithValue("@Id", id);
+            //        ordenActual = Convert.ToInt32(cmd.ExecuteScalar());
+            //    }
+
+            //    // Buscar el registro a intercambiar
+            //    string sqlGetSwap = (accion == "UP")
+            //        ? "SELECT Id, Orden FROM Categoria WHERE Orden = @Orden - 1"
+            //        : "SELECT Id, Orden FROM Categoria WHERE Orden = @Orden + 1";
+
+            //    //int idSwap = 0;
+            //    //int ordenSwap = 0;
+
+            //    using (MySqlCommand cmd = new MySqlCommand(sqlGetSwap, cn))
+            //    {
+            //        cmd.Parameters.AddWithValue("@Orden", ordenActual);
+
+            //        using (var dr = cmd.ExecuteReader())
+            //        {
+            //            if (dr.Read())
+            //            {
+            //                idSwap = dr.GetInt32("Id");
+            //                ordenSwap = dr.GetInt32("Orden");
+            //            }
+            //        }
+            //    }
+
+            //    if (idSwap == 0) return; // no hay más arriba o abajo
+
+            //    // Intercambiar ordenes
+            //    string sqlUpdate1 = "UPDATE Categoria SET Orden = @OrdenSwap WHERE Id = @Id";
+            //    string sqlUpdate2 = "UPDATE Categoria SET Orden = @OrdenActual WHERE Id = @IdSwap";
+
+            //    using (MySqlTransaction tr = cn.BeginTransaction())
+            //    {
+            //        using (MySqlCommand cmd = new MySqlCommand(sqlUpdate1, cn, tr))
+            //        {
+            //            cmd.Parameters.AddWithValue("@OrdenSwap", ordenSwap);
+            //            cmd.Parameters.AddWithValue("@Id", id);
+            //            cmd.ExecuteNonQuery();
+            //        }
+
+            //        using (MySqlCommand cmd = new MySqlCommand(sqlUpdate2, cn, tr))
+            //        {
+            //            cmd.Parameters.AddWithValue("@OrdenActual", ordenActual);
+            //            cmd.Parameters.AddWithValue("@IdSwap", idSwap);
+            //            cmd.ExecuteNonQuery();
+            //        }
+
+            //        tr.Commit();
+            //    }
+            //}
+        }
+
     }
 }

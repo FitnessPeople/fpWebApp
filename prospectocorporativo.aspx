@@ -162,12 +162,10 @@
                                     <div class="ibox-content">
                                         <div class="row">
                                             <div class="col-lg-12">
-
-                                                <div class="row">
-
+                                                <div class="form-group">
                                                     <div class="row"> 
                                                         <div class="col-sm-4">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <label>Tipo Doc.</label>
                                                                 <asp:DropDownList ID="ddlTipoDocumento" runat="server" AppendDataBoundItems="true"
                                                                     DataTextField="SiglaDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
@@ -176,70 +174,72 @@
                                                                 <asp:RequiredFieldValidator ID="rfvTipoDoc" runat="server" ControlToValidate="ddlTipoDocumento"
                                                                     ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar">
                                                                 </asp:RequiredFieldValidator>
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                         <div class="col-sm-4">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <label>Número</label>
                                                                 <asp:TextBox ID="txbDocumento" TextMode="Number" MaxLength="12" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#"
                                                                     spellcheck="false" autocomplete="new-password" autocorrect="off" autocapitalize="off"></asp:TextBox>
                                                                 <asp:RequiredFieldValidator ID="rfvNumDoc" runat="server" ControlToValidate="txbDocumento"
                                                                     ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar">
                                                                 </asp:RequiredFieldValidator>
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                         <div class="col-sm-4">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <label>DV</label>
                                                                 <asp:TextBox ID="txbDigitoVerificacion" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#"
                                                                     MaxLength="1"></asp:TextBox>
                                                                 <asp:RequiredFieldValidator ID="rfvDigitoVerfica" runat="server" ControlToValidate="txbDigitoVerificacion"
                                                                     ErrorMessage="*" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar">
                                                                 </asp:RequiredFieldValidator>
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                     </div>
-
+                                                </div>
+                                                <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-sm-12">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <i class="fa fa-industry text-info"></i>
                                                                 <label for="txbRazonSocial" class="col-form-label">Razon social:</label>
                                                                 <input type="text" runat="server" id="txbRazonSocial" class="form-control"
                                                                     style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
                                                                 <asp:RequiredFieldValidator ID="rfvNombreEmpresa" runat="server" ControlToValidate="txbRazonSocial"
                                                                     ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                     </div>
-
+                                                </div>
+                                                <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-sm-6">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <i class="fa fa-building text-info"></i>
                                                                 <label for="NombreComercialEmpresa" class="col-form-label">Nombre comercial:</label>
                                                                 <input type="text" runat="server" id="txbNombreComercialEmpresa" class="form-control"
                                                                     style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
                                                                 <asp:RequiredFieldValidator ID="rfvNombre" runat="server" ControlToValidate="txbNombreComercialEmpresa"
                                                                     ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                         <div class="col-sm-6">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <i class="fa fa-person text-info"></i>
                                                                 <label for="NombreContacto" class="col-form-label">Nombre del contacto:</label>
                                                                 <input type="text" runat="server" id="txbNombreContacto" class="form-control"
                                                                     oninput="validarSoloLetras(this)" style="text-transform: uppercase;" spellcheck="false" autocomplete="off" />
                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txbNombreContacto"
                                                                     ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                     </div>
-
-
+                                                </div>
+                                                <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-sm-6">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <i class="fa fa-building text-info"></i>
                                                                 <label for="CargoContacto" class="col-form-label">Cargo del contacto:</label>
                                                                 <input type="text" runat="server" id="txbCargoContacto" class="form-control"
@@ -247,23 +247,24 @@
                                                                     placeholder="Ej: Secretario/a…" />
                                                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txbCargoContacto"
                                                                     ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                         <div class="col-sm-6">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <i class="fa fa-phone text-info"></i>
                                                                 <label for="txbCelularEmpresa" class="col-form-label">Celular:</label>
                                                                 <input type="text" runat="server" id="txbCelularEmpresa" class="form-control"
                                                                     spellcheck="false" autocorrect="off" autocapitalize="off" />
                                                                 <asp:RequiredFieldValidator ID="rfvCelularEmpresa" runat="server" ControlToValidate="txbCelularEmpresa"
                                                                     ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                     </div>
-
+                                                </div>
+                                                <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-sm-6">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <i class="fa fa-envelope text-info"></i>
                                                                 <label for="correoEmpresa" class="col-form-label">Correo:</label>
                                                                 <input type="email" runat="server" id="txbCorreoEmpresa" class="form-control"
@@ -271,10 +272,10 @@
                                                                     spellcheck="false" autocorrect="off" autocapitalize="off" />
                                                                 <asp:RequiredFieldValidator ID="rfvCorreoEmpresa" runat="server" ControlToValidate="txbCorreoEmpresa"
                                                                     ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                         <div class="col-sm-6">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <label>Ciudad:</label>
                                                                 <asp:DropDownList ID="ddlCiudades" runat="server" AppendDataBoundItems="true" DataTextField="NombreCiudad"
                                                                     DataValueField="idCiudad" CssClass="form-control input-sm m-b" InitialValue="">
@@ -282,20 +283,21 @@
                                                                 </asp:DropDownList>
                                                                 <asp:RequiredFieldValidator ID="rfvCiudad" runat="server" ControlToValidate="ddlCiudades"
                                                                     ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                     </div>
-
+                                                </div>
+                                                <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-sm-12">
-                                                            <div class="form-group">
+                                                            <%--<div class="form-group">--%>
                                                                 <i class="fas fa-pen text-info"></i>
                                                                 <label for="message-text" class="col-form-label">Oferta:</label>
                                                                 <textarea id="txaObservaciones" runat="server" rows="3"
                                                                     cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
                                                                 <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txaObservaciones"
                                                                     ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />
-                                                            </div>
+                                                            <%--</div>--%>
                                                         </div>
                                                     </div>
                                                 </div>

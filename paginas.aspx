@@ -156,7 +156,7 @@
                                                         CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Nombre del ASPX:</label>
+                                                    <label>Nombre del ASPX (sin la extensión):</label>
                                                     <asp:TextBox ID="txbAspx" name="txbAspx" runat="server" CssClass="form-control input-sm"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="dfvAspx" runat="server" 
                                                         ErrorMessage="* Campo requerido" ControlToValidate="txbAspx" 

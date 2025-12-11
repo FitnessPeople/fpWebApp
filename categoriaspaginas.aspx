@@ -127,6 +127,7 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form role="form" id="form" runat="server">
+                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -161,7 +162,7 @@
 
                                                 <div class="form-group">
                                                     <label>Identificador:</label>
-                                                    <asp:TextBox ID="txbIdentificador" name="txbAspx" runat="server" CssClass="form-control input-sm" 
+                                                    <asp:TextBox ID="txbIdentificador" name="txbAspx" runat="server" CssClass="form-control input-sm"
                                                         ToolTip="Identificador para que quede activo el menú seleccionado"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="dfvAspx" runat="server"
                                                         ErrorMessage="* Campo requerido" ControlToValidate="txbIdentificador"
@@ -170,8 +171,8 @@
 
                                                 <div class="form-group">
                                                     <label>Orden:</label>
-                                                    <asp:TextBox ID="txbOrden" name="txbAspx" runat="server" CssClass="form-control input-sm" 
-                                                        ToolTip="Orden en el menú de opciones"></asp:TextBox>
+                                                    <asp:TextBox ID="txbOrden" name="txbAspx" runat="server" CssClass="form-control input-sm"
+                                                        ToolTip="Orden en el menú de opciones" ReadOnly="true"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="dfvAspx1" runat="server"
                                                         ErrorMessage="* Campo requerido" ControlToValidate="txbOrden"
                                                         CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
@@ -220,41 +221,74 @@
                                             </div>
                                         </div>
 
+                                        <asp:UpdatePanel ID="upTabla" runat="server" UpdateMode="Conditional">
+                                            <ContentTemplate>
 
-                                        <table class="footable table table-striped" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
-                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
-                                            <thead>
-                                                <tr>
-                                                    <th width="5%" data-type="number">ID</th>
-                                                    <th width="25%">Categoría</th>
-                                                    <th width="25%">Icono FA</th>
-                                                    <th width="20%">Identificador</th>
-                                                    <th width="10%" data-type="number">Orden</th>
-                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <asp:Repeater ID="rpCategorias" runat="server" OnItemDataBound="rpCategorias_ItemDataBound">
-                                                    <ItemTemplate>
-                                                        <tr class="feed-element">
-                                                            <td><%# Eval("idCategoriaPagina") %></td>
-                                                            <td><%# Eval("NombreCategoriaPagina") %></td>
-                                                            <td><i class='fa fa-<%# Eval("IconoFA") %> m-r-sm'></i><%# Eval("IconoFA") %></td>
-                                                            <td><%# Eval("Identificador") %></td>
-                                                            <td><%# Eval("Orden") %></td>
-                                                            <td>
-                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
-                                                            </td>
+                                                <table class="footable table table-striped" data-paging-size="10" data-filter-min="3" data-filter-placeholder="Buscar"
+                                                    data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
+                                                    data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
+                                                    data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
+                                                    <thead>
+                                                        <tr>
+                                                            <th width="5%" data-type="number">ID</th>
+                                                            <th width="35%">Categoría</th>
+                                                            <th width="25%">Icono FA</th>
+                                                            <th width="20%">Identificador</th>
+                                                            <%--<th width="10%" data-type="number">Orden</th>--%>
+                                                            <th width="10%">Ordenar</th>
+                                                            <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                         </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </tbody>
-                                        </table>
+                                                    </thead>
+                                                    <tbody>
+                                                        <asp:Repeater ID="rpCategorias" runat="server" OnItemDataBound="rpCategorias_ItemDataBound" OnItemCommand="rpCategorias_ItemCommand">
+                                                            <ItemTemplate>
+                                                                <tr class="feed-element">
+                                                                    <td><%# Eval("idCategoriaPagina") %></td>
+                                                                    <td><%# Eval("NombreCategoriaPagina") %></td>
+                                                                    <td><i class='fa fa-<%# Eval("IconoFA") %> m-r-sm'></i><%# Eval("IconoFA") %></td>
+                                                                    <td><%# Eval("Identificador") %></td>
+                                                                    <%--<td><%# Eval("Orden") %></td>--%>
+                                                                    <td>
+                                                                        <!-- Botón Subir -->
+                                                                        <asp:LinkButton ID="btnUp" runat="server"
+                                                                            CommandName="Subir"
+                                                                            CommandArgument='<%# Eval("idCategoriaPagina") %>'
+                                                                            CssClass="btn btn-outline btn-primary m-r-xs" 
+                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" 
+                                                                            ToolTip="Subir">
+                                                                        <i class="fa fa-caret-up"></i>
+                                                                        </asp:LinkButton>
+
+                                                                        <!-- Botón Bajar -->
+                                                                        <asp:LinkButton ID="btnDown" runat="server"
+                                                                            CommandName="Bajar"
+                                                                            CommandArgument='<%# Eval("idCategoriaPagina") %>'
+                                                                            CssClass="btn btn-outline btn-danger m-r-xs" 
+                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" 
+                                                                            ToolTip="Bajar">
+                                                                        <i class="fa fa-caret-down"></i>
+                                                                        </asp:LinkButton>
+                                                                    </td>
+                                                                    <td>
+                                                                        <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                        <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                            style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                                    </td>
+                                                                </tr>
+                                                            </ItemTemplate>
+                                                        </asp:Repeater>
+                                                    </tbody>
+                                                </table>
+
+                                            </ContentTemplate>
+
+                                            <%--IMPORTANTE para que los LinkButtons actúen como triggers asíncronos--%>
+                                            <Triggers>
+                                                <asp:AsyncPostBackTrigger ControlID="rpCategorias" EventName="ItemCommand" />
+                                            </Triggers>
+                                        </asp:UpdatePanel>
+
                                     </div>
                                 </div>
                             </div>
@@ -287,7 +321,14 @@
 
     <!-- Page-Level Scripts -->
     <script>
-        $('.footable').footable();
+        $(function () {
+            $('.footable').footable();
+        });
+
+        // Re-inicializar FooTable después del postback del UpdatePanel
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
+            $('.footable').footable();
+        });
     </script>
 
 </body>

@@ -25,7 +25,9 @@ namespace fpWebApp
                     if (ViewState["Consulta"].ToString() == "1")
                     {
                         divBotonesLista.Visible = true;
+                        divContenido.Visible = true;
                         lbExportarExcel.Visible = false;
+                        ListaPlanes();
                     }
                     if (ViewState["Exportar"].ToString() == "1")
                     {
@@ -49,12 +51,12 @@ namespace fpWebApp
                         txbFechaInicial.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
                         txbFechaFinal.Attributes.Add("value", DateTime.Now.ToString("yyyy-MM-dd"));
                     }
-                    else
-                    {
-                        divMensaje.Visible = true;
-                        paginasperfil.Visible = true;
-                        divContenido.Visible = false;
-                    }
+                    //else
+                    //{
+                    //    divMensaje.Visible = true;
+                    //    paginasperfil.Visible = true;
+                    //    divContenido.Visible = false;
+                    //}
 
                     //Si es llamado para editar o borrar
                     if (Request.QueryString.Count > 0)
@@ -260,7 +262,8 @@ namespace fpWebApp
             string strQuery = "SELECT *, IF(pm.EstadoPlan='Activo','primary','danger') AS label, " +
                 "IF(pm.DebitoAutomatico=1,'Débito automático','Pago único') tipopago " +
                 "FROM Planes pm " +
-                "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario ";
+                "LEFT JOIN Usuarios u ON pm.idUsuario = u.idUsuario " +
+                "ORDER BY FechaFinal ASC";
             DataTable dt = cg.TraerDatos(strQuery);
             rpPlanes.DataSource = dt;
 
