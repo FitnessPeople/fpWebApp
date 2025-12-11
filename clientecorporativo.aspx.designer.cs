@@ -186,15 +186,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbCelular;
 
         /// <summary>
-        /// Control rfvCelular.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvCelular;
-
-        /// <summary>
         /// Control ddlEmpresas.
         /// </summary>
         /// <remarks>
@@ -202,15 +193,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlEmpresas;
-
-        /// <summary>
-        /// Control rfvEmpresa.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvEmpresa;
 
         /// <summary>
         /// Control btnAgregar.

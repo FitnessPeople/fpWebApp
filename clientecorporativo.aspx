@@ -221,29 +221,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-lg-6 form-group">
-                                                        <label>Celular:</label>
-                                                        <asp:TextBox ID="txbCelular" CssClass="form-control input-sm"
-                                                            runat="server" placeholder="Celular"
-                                                            autocomplete="off" spellcheck="false" required></asp:TextBox>
-                                                        <asp:RequiredFieldValidator ID="rfvCelular" runat="server"
-                                                            ErrorMessage="* Campo requerido" ControlToValidate="txbCelular"
-                                                            CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
-                                                    </div>
-
-                                                    <div class="col-lg-6 form-group">
-                                                        <label>Empresa:</label>
-                                                        <asp:DropDownList  ID="ddlEmpresas" runat="server"
-                                                            DataValueField="idEmpresa" DataTextField="NombreEmpresa"
-                                                            AppendDataBoundItems="true" CssClass="form-control input-sm required">
-                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        </asp:DropDownList>
-                                                        <asp:RequiredFieldValidator ID="rfvEmpresa" runat="server"
-                                                            ErrorMessage="* Campo requerido" ControlToValidate="ddlEmpresas"
-                                                            CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
-                                                    </div>
-                                                </div>
 
                                                 <div class="form-group">
                                                     <a href="clientecorporativo" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
