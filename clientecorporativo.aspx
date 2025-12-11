@@ -164,14 +164,23 @@
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <label>Documento:</label>
-                                                            <asp:TextBox ID="txbDocumento" ClientIDMode="Static" CssClass="form-control input-sm" runat="server" placeholder="#" autocomplete="off" spellcheck="false" required></asp:TextBox>
+                                                            <asp:TextBox ID="txbDocumento" ClientIDMode="Static" CssClass="form-control input-sm"
+                                                                runat="server" placeholder="#" autocomplete="off" spellcheck="false" required></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvDocumento" runat="server"
+                                                                ErrorMessage="* Campo requerido" ControlToValidate="txbDocumento"
+                                                                CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
+
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label>Tipo de Documento:</label>
                                                             <asp:DropDownList ID="ddlTipoDocumento" runat="server"
                                                                 AppendDataBoundItems="true" DataTextField="TipoDocumento"
                                                                 DataValueField="idTipoDoc" CssClass="form-control input-sm m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
+                                                            <asp:RequiredFieldValidator ID="rfvTipoDoc" runat="server"
+                                                                ErrorMessage="* Campo requerido" ControlToValidate="ddlTipoDocumento"
+                                                                CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -181,11 +190,17 @@
                                                             <label>Nombre(s):</label>
                                                             <asp:TextBox ID="txbNombreContacto" runat="server"
                                                                 CssClass="form-control input-sm" placeholder="Nombre(s)" required></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvNombre" runat="server"
+                                                                ErrorMessage="* Campo requerido" ControlToValidate="txbNombreContacto"
+                                                                CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                         </div>
                                                         <div class="col-lg-6">
                                                             <label>Apellidos(s):</label>
                                                             <asp:TextBox ID="txbApellidoContacto" runat="server"
                                                                 CssClass="form-control input-sm" placeholder="Apellido(s)" required></asp:TextBox>
+                                                            <asp:RequiredFieldValidator ID="rfvApellido" runat="server"
+                                                                ErrorMessage="* Campo requerido" ControlToValidate="txbApellidoContacto"
+                                                                CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -196,21 +211,27 @@
                                                         <asp:TextBox ID="txbCelular" CssClass="form-control input-sm"
                                                             runat="server" placeholder="Celular"
                                                             autocomplete="off" spellcheck="false" required></asp:TextBox>
+                                                        <asp:RequiredFieldValidator ID="rfvCelular" runat="server"
+                                                            ErrorMessage="* Campo requerido" ControlToValidate="txbCelular"
+                                                            CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                     </div>
 
                                                     <div class="col-lg-6 form-group">
                                                         <label>Empresa:</label>
-                                                        <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
+                                                        <asp:DropDownList  ID="ddlEmpresas" runat="server"
                                                             DataValueField="idEmpresa" DataTextField="NombreEmpresa"
-                                                            AppendDataBoundItems="true">
+                                                            AppendDataBoundItems="true" CssClass="form-control input-sm required">
                                                             <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                         </asp:DropDownList>
+                                                        <asp:RequiredFieldValidator ID="rfvEmpresa" runat="server"
+                                                            ErrorMessage="* Campo requerido" ControlToValidate="ddlEmpresas"
+                                                            CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                     </div>
                                                 </div>
 
 
                                                 <div class="form-group">
-                                                    <a href="prospectoscrm" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <a href="clientecorporativo" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
@@ -345,7 +366,7 @@
                                                                 <asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
                                                                     CssClass="btn btn-primary pull-right dim m-l-md" Visible="false"
                                                                     CausesValidation="true" ValidationGroup="asignar">
-                        <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
+                                                                    <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
                                                                 </asp:LinkButton>
                                                             </div>
                                                         </div>
