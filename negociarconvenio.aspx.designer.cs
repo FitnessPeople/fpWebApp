@@ -168,6 +168,33 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rpPlanesVigentes;
 
         /// <summary>
+        /// Control hfIdPlan.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfIdPlan;
+
+        /// <summary>
+        /// Control hfDescuento.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfDescuento;
+
+        /// <summary>
+        /// Control hfValorFinal.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfValorFinal;
+
+        /// <summary>
         /// Control btnAgregar.
         /// </summary>
         /// <remarks>

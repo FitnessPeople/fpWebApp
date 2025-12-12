@@ -199,18 +199,14 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="row">
-                                                    <div class="col-sm-12"> 
+                                                    <div class="col-sm-12">
                                                         <div class="form-group">
                                                             <label>Empresa:</label>
-                                                            <asp:DropDownList ID="ddlEmpresas" CssClass="form-control input-sm required" runat="server" AutoPostBack="true" 
+                                                            <asp:DropDownList ID="ddlEmpresas" CssClass="form-control input-sm required" runat="server" AutoPostBack="true"
                                                                 OnSelectedIndexChanged="ddlEmpresas_SelectedIndexChanged">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
 
-                                                            <%--                                                            <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
-                                                                ControlToValidate="ddlTipoEstrategias" ValidationGroup="agregar"
-                                                                CssClass="font-bold text-danger" Display="Dynamic">
-                                                            </asp:RequiredFieldValidator>--%>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -224,10 +220,6 @@
                                                                 DataValueField="DocumentoContacto" DataTextField="NombreContacto" AppendDataBoundItems="true">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
-                                                            <%--                                                            <asp:RequiredFieldValidator ID="rfvTipoEstrategia" runat="server" ErrorMessage="* Campo requerido"
-                                                              ControlToValidate="ddlTipoEstrategias" ValidationGroup="agregar"
-                                                              CssClass="font-bold text-danger" Display="Dynamic">
-                                                          </asp:RequiredFieldValidator>--%>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -313,10 +305,16 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <a href="estrategiasmarketing" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <a href="negociarconvenio" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:HiddenField ID="hfIdPlan" runat="server" />
+                                                    <asp:HiddenField ID="hfDescuento" runat="server" />
+                                                    <asp:HiddenField ID="hfValorFinal" runat="server" />
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar"
-                                                        OnClick="btnAgregar_Click" OnClientClick="guardarContenidoEditor()" />
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                        ValidationGroup="agregar"
+                                                        OnClick="btnAgregar_Click"
+                                                        OnClientClick="return obtenerSeleccionPlan();" />
+
                                                 </div>
                                                 <br />
                                                 <br />
@@ -377,7 +375,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpNegociaciones" runat="server" OnItemDataBound="rpEstrategias_ItemDataBound">
+                                                <asp:Repeater ID="rpNegociaciones" runat="server" OnItemDataBound="rpNegociaciones_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("idNegociacion") %></td>
@@ -474,6 +472,40 @@
                             }
                         </script>
 
+                        <script>
+                            function obtenerSeleccionPlan() {
+
+                                // Buscar el radio seleccionado
+                                const radio = document.querySelector("input.rdDescuento:checked");
+                                if (!radio) {
+                                    alert("Debe seleccionar un plan.");
+                                    return false; // Evita el postback
+                                }
+
+                                const fila = radio.closest("tr");
+
+                                // Obtener idPlan (primera celda)
+                                const idPlan = fila.children[0].textContent.trim();
+
+                                // Obtener descuento del input
+                                const descuentoInput = fila.querySelector(".inputDescuento");
+                                const descuento = parseFloat(descuentoInput.value) || 0;
+
+                                // Obtener valor final formateado
+                                const celdaValorFinal = fila.querySelector(".valorConDescuento");
+                                const valorFinalTexto = celdaValorFinal.textContent.trim();
+
+                                // Convertir "$120.000" → 120000
+                                const valorFinal = Number(valorFinalTexto.replace(/[^0-9,-]+/g, '').replace(',', '.')) || 0;
+
+                                // Pasar valores al server (HiddenFields)
+                                document.getElementById("<%= hfIdPlan.ClientID %>").value = idPlan;
+                                document.getElementById("<%= hfDescuento.ClientID %>").value = descuento;
+                                document.getElementById("<%= hfValorFinal.ClientID %>").value = valorFinal;
+
+                                return true; // permite el postback
+                            }
+                        </script>
 
 
                     </form>

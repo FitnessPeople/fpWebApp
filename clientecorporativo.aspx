@@ -107,7 +107,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-person-running text-success m-r-sm"></i>Cliente potencial</h2>
+                    <h2><i class="fa fa-person-running text-success m-r-sm"></i>Cliente corporativo</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Corporativo</li>
@@ -389,7 +389,7 @@
                                                     OnRowCreated="gvProspectos_RowCreated"
                                                     OnRowDataBound="gvProspectos_RowDataBound"
                                                     CssClass="table table-striped list-group-item-text"
-                                                    DataKeyNames="idPregestion,NombreContacto,ApellidoContacto,DocumentoContacto,idTipoDocumentoContacto,CelularContacto,hacecuanto"
+                                                    DataKeyNames="idPregestion,NombreEmpresa,NombreContacto,ApellidoContacto,DocumentoContacto,idTipoDocumentoContacto,CelularContacto,hacecuanto"
                                                     BorderStyle="None" GridLines="None"
                                                     PagerSettings-Mode="NumericFirstLast"
                                                     PagerSettings-FirstPageText="«"
@@ -406,9 +406,10 @@
                                                                 <asp:CheckBox ID="chkSeleccionar" runat="server" />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-
-                                                        <%--Otras columnas--%>
                                                         <asp:BoundField DataField="idPregestion" HeaderText="ID" Visible="false" />
+                                                        <asp:BoundField DataField="DocumentoEmpresa" HeaderText="DocumentoEmpresa" Visible="false" />
+                                                          <asp:BoundField DataField="NombreEmpresa" HeaderText="Empresa"
+                                                            SortExpression="NombreEmpresa" />
                                                         <asp:BoundField DataField="NombreContacto" HeaderText="Nombres"
                                                             SortExpression="NombreContacto" />
                                                         <asp:BoundField DataField="ApellidoContacto" HeaderText="Apellidos"
@@ -419,13 +420,8 @@
                                                             SortExpression="idTipoDocumentoContacto" Visible="False" />
                                                         <asp:BoundField DataField="CelularContacto" HeaderText="Celular"
                                                             SortExpression="CelularContacto" />
-                                                        <asp:BoundField DataField="hacecuanto" HeaderText="Hace cuanto"
-                                                            SortExpression="hacecuanto" />
-                                                        <%--<asp:TemplateField HeaderText="Estado" SortExpression="EstadoPlan">
-                                                            <ItemTemplate>
-                                                                <asp:Label ID="lblEstado" runat="server" Text='<%# Eval("EstadoPlan") %>'></asp:Label>
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>--%>
+                                                        <asp:BoundField DataField="EstadoEmpresa" HeaderText="Tipo emp."
+                                                            SortExpression="EstadoEmpresa" />
                                                     </Columns>
                                                 </asp:GridView>
 

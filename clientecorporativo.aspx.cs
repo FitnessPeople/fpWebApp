@@ -30,7 +30,7 @@ namespace fpWebApp
                         btnAgregar.Visible = false;
                         if (ViewState["Consulta"].ToString() == "1")
                         {
-                            ListaClientePotencial();
+                            ListaClienteCorporativo();
                             listaEmpresasAfiliadas();
                         }
                         if (ViewState["Exportar"].ToString() == "1")
@@ -39,7 +39,7 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            ListaClientePotencial();
+                            ListaClienteCorporativo();
                             btnAgregar.Visible = true;
                           
                         }
@@ -84,7 +84,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void ListaClientePotencial()
+        private void ListaClienteCorporativo()
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarProspectosCRM();
@@ -102,17 +102,47 @@ namespace fpWebApp
                 DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
 
                 ddlEmpresas.DataSource = dt;
+                ddlEmpresas.DataValueField = "DocumentoEmpresa";  // Ahora SÍ existe
+                ddlEmpresas.DataTextField = "NombreEmpresa";
                 ddlEmpresas.DataBind();
 
-                dt.Dispose();
+                ddlEmpresas.Items.Insert(0, new ListItem("Seleccione", ""));
+
             }
             catch (Exception ex)
             {
                 lblMensaje.Visible = true;
-                lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente.";
+                lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente. " + ex.Message.ToString();
                 lblMensaje.CssClass = "text-danger";
             }
         }
+
+        //private void listaEmpresasAfiliadas()
+        //{
+        //    try
+        //    {
+        //        clasesglobales cg = new clasesglobales();
+        //        DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
+
+        //        ddlEmpresas.DataSource = dt;
+
+        //        ddlEmpresas.DataValueField = "DocumentoEmpresa";  // ← Valor que necesitas insertar
+        //        ddlEmpresas.DataTextField = "NombreEmpresa";      // ← Nombre visible
+
+        //        ddlEmpresas.DataBind();
+
+        //        ddlEmpresas.Items.Insert(0, new ListItem("Seleccione", "")); // opcional
+
+        //        dt.Dispose();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        lblMensaje.Visible = true;
+        //        lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente. " + ex.ToString();
+        //        lblMensaje.CssClass = "text-danger";
+        //    }
+        //}
+
         private void CargarTipoDocumento()
         {
             clasesglobales cg = new clasesglobales();
@@ -194,13 +224,10 @@ namespace fpWebApp
                         string celular = txbCelular.Text.ToString();
                         int tipoGestion = 4;
 
-                        //string rta = cg.InsertarPregestionCRM(nombre, apellido,
-                        //                documento, idTipoDocumento, celular, tipoGestion,
-                        //                Convert.ToInt32(Session["idCanalVenta"].ToString()),
-                        //                Convert.ToInt32(Session["idUsuario"].ToString()));
+
 
                         string rta = cg.InsertarPregestionAsesorCRM(nombre, apellido, documento, Convert.ToInt32(idTipoDocumento), celular, Convert.ToInt32(tipoGestion),
-                                           Convert.ToInt32(Session["idCanalVenta"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 0, "Pendiente");
+                                           Convert.ToInt32(Session["idCanalVenta"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 0, "Pendiente", ddlEmpresas.SelectedValue.ToString());
 
             if (rta == "OK")
                         {
@@ -230,11 +257,11 @@ namespace fpWebApp
             //CargarCanalesVenta();
             if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
             {
-                ListaClientePotencial();
+                ListaClienteCorporativo();
             }
             else
             {
-                ListaClientePotencial();
+                ListaClienteCorporativo();
             }
         }
 
