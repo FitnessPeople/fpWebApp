@@ -47,7 +47,7 @@ namespace fpWebApp
                         {
                             btnAgregar.Visible = true;
                         }
-                        lblMensaje.Visible = false ;
+                        //lblMensaje.Visible = false ;
                         txbFechaIni.Attributes.Add("type", "date");
                         txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-dd");
                         txbFechaFin.Attributes.Add("type", "date");
@@ -58,7 +58,7 @@ namespace fpWebApp
 
                     listaEmpresasAfiliadas();                    
                     CargarPlanes();
-                    CargarNegociaciones();
+                    CargarNegociaciones( Convert.ToInt32(Session["idUsuario"].ToString()));
 
                     ltTitulo.Text = "Establecer condiciones";
 
@@ -93,11 +93,12 @@ namespace fpWebApp
                             DataTable dt = cg.ValidarEstrategiaMarketingTablas(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                lblMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta estrategia no se puede borrar, hay registros asociados a ella." +
-                                    "</div></div>";
+                                //lblMensaje.Text = "<div class=\"ibox-content\">" +
+                                //    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                //    "Esta estrategia no se puede borrar, hay registros asociados a ella." +
+                                //    "</div></div>";
+                                MostrarAlerta("Error de proceso", "\"Esta negociación no se puede borrar, hay registros asociados a ella.", "error");
 
                                 DataTable dt1 = new DataTable();
                                 dt1 = cg.ConsultarNegociacionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
@@ -166,24 +167,54 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarNegociaciones()
+        private void CargarNegociaciones(int idUsuario)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarNegociaciones();
-            rpNegociaciones.DataSource = dt;
-            rpNegociaciones.DataBind();
+            try
+            {                
+                DataTable dt = cg.ConsultarNegociacionesPorUsuario(idUsuario);
+                rpNegociaciones.DataSource = dt;
+                rpNegociaciones.DataBind();
 
-            dt.Dispose();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null)   detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("negociarconvenio", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");                         
+            }
+
         }
 
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+            Swal.hideLoading();
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
 
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+        }
 
 
         private void listaEmpresasAfiliadas()
         {
+            clasesglobales cg = new clasesglobales();
             try
-            {
-                clasesglobales cg = new clasesglobales();
+            {               
                 DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
 
                 ddlEmpresas.DataSource = dt;
@@ -209,10 +240,15 @@ namespace fpWebApp
                 }
             }
             catch (Exception ex)
-            {
-                lblMensaje.Visible = true;
-                lblMensaje.Text = "Ocurrió un error al cargar las empresas. " + ex.Message;
-                lblMensaje.CssClass = "text-danger";
+            {               
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("negociarconvenio", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
@@ -231,9 +267,10 @@ namespace fpWebApp
 
         private void ListaProspectos(string documentoEmpresa)
         {
+            clasesglobales cg = new clasesglobales();
             try
             {
-                clasesglobales cg = new clasesglobales();
+               
                 DataTable dt = cg.ConsultarProspectoClienteCorporativo(documentoEmpresa);
 
                 dt.Columns.Add("NombreCompleto", typeof(string));
@@ -251,9 +288,15 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                lblMensaje.Visible = true;
-                lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente. " + ex.Message.ToString();
-                lblMensaje.CssClass = "text-danger";
+
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("negociarconvenio", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
 
         }
@@ -454,7 +497,7 @@ namespace fpWebApp
                     valorFinal = Convert.ToDecimal(hfValorFinal.Value);
 
                     string respuesta = cg.InsertarNegociacionCorporativo(ddlEmpresas.SelectedItem.Value, Convert.ToInt32(ddlProspectos.SelectedValue.ToString()), contenidoEditor, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, Convert.ToInt32(Session["idUsuario"]));
-                    if (salida)
+                    if (respuesta=="OK")
                     {
                         string script = @"
                                     Swal.fire({

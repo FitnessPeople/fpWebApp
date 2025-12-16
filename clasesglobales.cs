@@ -868,6 +868,45 @@ namespace fpWebApp
             }
         }
 
+        public string InsertarLogError(string pagima, string descripcion, int idusuario, out int _idLogErrorQ)
+        {
+            string respuesta = string.Empty;
+            _idLogErrorQ = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_LOG_ERROR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_formulario", pagima);
+                        cmd.Parameters.AddWithValue("@p_descripcion", descripcion);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idusuario);
+
+                        // Parámetro de salida
+                        MySqlParameter idLog = new MySqlParameter("@p_id_log", MySqlDbType.Int32);
+                        idLog.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(idLog);
+
+                        cmd.ExecuteNonQuery();
+                        _idLogErrorQ = Convert.ToInt32(idLog.Value);
+
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+
+            }
+
+            return respuesta;
+        }
+
 
         #endregion
 
@@ -10924,7 +10963,35 @@ namespace fpWebApp
 
             return dt;
         }
+        public DataTable ConsultarNegociacionesPorUsuario(int idUsuario)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_NEGOCIACION_POR_USUARIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
 
+            return dt;
+        }
         public DataTable ConsultarNegociacionPorId(int idNegociacion)
         {
             DataTable dt = new DataTable();
