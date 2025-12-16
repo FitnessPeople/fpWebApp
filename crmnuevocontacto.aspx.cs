@@ -380,182 +380,398 @@ namespace fpWebApp
         #region Métodos cargue de datos
         private void ListaContactosPorUsuario()
         {
-
-            int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
-            decimal valorTotal = 0;
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarContactosCRMPorUsuario(idUsuario, out valorTotal);
+            try
+            {
+                int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+                decimal valorTotal = 0;
 
-            rpContactosCRM.DataSource = dt;
-            rpContactosCRM.DataBind();
+                DataTable dt = cg.ConsultarContactosCRMPorUsuario(idUsuario, out valorTotal);
 
-            //ltValorTotal.Text = valorTotal.ToString("C0");
-            dt.Dispose();
+                rpContactosCRM.DataSource = dt;
+                rpContactosCRM.DataBind();
+
+                //ltValorTotal.Text = valorTotal.ToString("C0");
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+
+
         }
         private void ListaMediosDePago()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarMediosDePago();
 
-            ddlTipoPago.DataSource = dt;
-            ddlTipoPago.DataBind();
-            dt.Dispose();
+            try
+            {
+                DataTable dt = cg.ConsultarMediosDePago();
+
+                ddlTipoPago.DataSource = dt;
+                ddlTipoPago.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
         private void ListaEmpresasCRM()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEmpresasCRM();
+            try
+            {
+               
+                DataTable dt = cg.ConsultarEmpresasCRM();
+                ddlEmpresa.DataSource = dt;
+                ddlEmpresa.DataBind();
 
-            ddlEmpresa.DataSource = dt;
-            ddlEmpresa.DataBind();
-            //rpEmpresasCRM.DataSource = dt;
-            //rpEmpresasCRM.DataBind();
-            dt.Dispose();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
 
         private void ListaEstadosCRM()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstadossCRM();
-            ddlStatusLead.Items.Clear();
-
-            ddlStatusLead.Items.Add(new ListItem("Seleccione", ""));
-
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                ListItem item = new ListItem
+                DataTable dt = cg.ConsultarEstadossCRM();
+                ddlStatusLead.Items.Clear();
+
+                ddlStatusLead.Items.Add(new ListItem("Seleccione", ""));
+
+                foreach (DataRow row in dt.Rows)
                 {
-                    Text = row["NombreEstadoCRM"].ToString(),
-                    Value = row["idEstadoCRM"].ToString()
-                };
-                ddlStatusLead.Items.Add(item);
+                    ListItem item = new ListItem
+                    {
+                        Text = row["NombreEstadoCRM"].ToString(),
+                        Value = row["idEstadoCRM"].ToString()
+                    };
+                    ddlStatusLead.Items.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
         private void CargarGeneros()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarGeneros();
-            ddlGenero.DataSource = dt;
-            ddlGenero.DataBind();
-            dt.Dispose();
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarGeneros();
+                ddlGenero.DataSource = dt;
+                ddlGenero.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
 
         private void CargarEstadosVentas()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarEstadosVenta();
-            ddlEstadoVenta.DataSource = dt;
-            ddlEstadoVenta.DataBind();
-            dt.Dispose();
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarEstadosVenta();
+                ddlEstadoVenta.DataSource = dt;
+                ddlEstadoVenta.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
 
         private void CargarEstrategiasMarketing()
         {
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.ConsultarEstrategiasMarketingVigentes();
-            ddlEstrategia.DataSource = dt;
-            ddlEstrategia.DataBind();
-            dt.Dispose();
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarEstrategiasMarketingVigentes();
+                ddlEstrategia.DataSource = dt;
+                ddlEstrategia.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
 
         private void ConsultarTipoAfiliado()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarTipoAfiliadoBasico();
+            try
+            {
+                DataTable dt = cg.ConsultarTipoAfiliadoBasico();
 
-            ddlTiposAfiliado.DataSource = dt;
-            ddlTiposAfiliado.DataBind();
-            dt.Dispose();
+                ddlTiposAfiliado.DataSource = dt;
+                ddlTiposAfiliado.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+
         }
-        //private void CargarPlanes()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarPlanesVigentesVisibleCRM();
-
-        //    ddlPlanes.DataSource = dt;
-        //    ddlPlanes.DataBind();
-        //    dt.Dispose();
-        //}
         private void CargarPlanes()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPlanesVigentesVisibleCRM();
-           
-            dt.DefaultView.Sort = "PrecioMinimo ASC, FechaFinal ASC";
-            dt = dt.DefaultView.ToTable();
-
-            dt.Columns.Add("TextoPlan", typeof(string));
-
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                string nombre = row["NombrePlan"].ToString().PadRight(25);
-                string valor = Convert
-                    .ToDecimal(row["PrecioMinimo"])
-                    .ToString("$#,0", System.Globalization.CultureInfo.CreateSpecificCulture("es-CO"))
-                    .PadLeft(10);
+                DataTable dt = cg.ConsultarPlanesVigentesVisibleCRM();
 
-                string fechaFinal = row["FechaFinal"] != DBNull.Value
-                    ? Convert.ToDateTime(row["FechaFinal"]).ToString("dd/MM/yy")
-                    : "";
-               
-                row["TextoPlan"] = $"{nombre}  Min: {valor}  Vence: {fechaFinal}";
+                dt.DefaultView.Sort = "PrecioMinimo ASC, FechaFinal ASC";
+                dt = dt.DefaultView.ToTable();
+
+                dt.Columns.Add("TextoPlan", typeof(string));
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string nombre = row["NombrePlan"].ToString().PadRight(25);
+
+                    decimal precioMinimo = row["PrecioMinimo"] != DBNull.Value
+                        ? Convert.ToDecimal(row["PrecioMinimo"])
+                        : 0;
+
+                    string valor = precioMinimo
+                        .ToString("$#,0", System.Globalization.CultureInfo.CreateSpecificCulture("es-CO"))
+                        .PadLeft(10);
+
+                    string fechaFinal = row["FechaFinal"] != DBNull.Value
+                        ? Convert.ToDateTime(row["FechaFinal"]).ToString("dd/MM/yy")
+                        : "";
+
+                    row["TextoPlan"] = $"{nombre}  Min: {valor}  Vence: {fechaFinal}";
+                }
+
+                ddlPlanes.DataSource = dt;
+                ddlPlanes.DataTextField = "TextoPlan";
+                ddlPlanes.DataValueField = "idPlan";
+                ddlPlanes.DataBind();
+
+                ddlPlanes.Items.Insert(0, new ListItem("Seleccione", ""));
+
             }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
 
-            ddlPlanes.DataSource = dt;
-            ddlPlanes.DataTextField = "TextoPlan";
-            ddlPlanes.DataValueField = "idPlan";
-            ddlPlanes.DataBind();
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
 
-            ddlPlanes.Items.Insert(0, new ListItem("Seleccione", ""));
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }           
         }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+        }
+
 
 
 
         private void CargarPlanesAfiliadPregestion(string strIdAfiliado)
         {
             clasesglobales cg = new clasesglobales();
-
-            DataTable dt = cg.CargarPlanesAfiliadoPregestionCRM(strIdAfiliado, "Activo");
-
-            if (dt.Rows.Count > 0)
+            try
             {
-                rpPlanesAfiliado.DataSource = dt;
-                rpPlanesAfiliado.DataBind();
-                pnlPlanesAfiliado.Visible = true;
+                DataTable dt = cg.CargarPlanesAfiliadoPregestionCRM(strIdAfiliado, "Activo");
+
+                if (dt.Rows.Count > 0)
+                {
+                    rpPlanesAfiliado.DataSource = dt;
+                    rpPlanesAfiliado.DataBind();
+                    pnlPlanesAfiliado.Visible = true;
+                }
+                else
+                {
+                    pnlPlanesAfiliado.Visible = false;
+                }
+
+                dt.Dispose();
+
             }
-            else
+            catch (Exception ex)
             {
-                pnlPlanesAfiliado.Visible = false;
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
 
-            dt.Dispose();
         }
         private void ListaObjetivosfiliadoCRM()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarObjetivosAfiliados();
+            try
+            {
+                DataTable dt = cg.ConsultarObjetivosAfiliados();
 
-            ddlObjetivos.DataSource = dt;
-            ddlObjetivos.DataBind();
-            dt.Dispose();
+                ddlObjetivos.DataSource = dt;
+                ddlObjetivos.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
         private void ListaCanalesMarketingCRM()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarCanalesMarketingCRM();
+            try
+            {
+                DataTable dt = cg.ConsultarCanalesMarketingCRM();
 
-            ddlCanalesMarketing.DataSource = dt;
-            ddlCanalesMarketing.DataBind();
-            dt.Dispose();
+                ddlCanalesMarketing.DataSource = dt;
+                ddlCanalesMarketing.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
         private void CargarTipoDocumento()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultartiposDocumento();
-            ddlTipoDocumento.DataSource = dt;
-            ddlTipoDocumento.DataBind();
-            dt.Dispose();
+            try
+            {
+                DataTable dt = cg.ConsultartiposDocumento();
+                ddlTipoDocumento.DataSource = dt;
+                ddlTipoDocumento.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
 
         private void CargarPregestion()
@@ -578,7 +794,14 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                string mensaje = ex.Message.ToString();
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
@@ -588,9 +811,9 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
             try
-            {
-                clasesglobales cg = new clasesglobales();
+            {               
                 Session["idcrm"] = string.Empty;
                 string idcrm = string.Empty;
 
@@ -941,172 +1164,22 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
+                int idLog = 0;
+                string detalleError = ex.Message;
 
-                ltMensaje.Text =
-                   "<div class='alert alert-danger alert-dismissable'>" +
-                   "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
-                   "<strong>Error:</strong> " + ex.Message.ToString() +
-                   "</div>";
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
-
         }
-
-
-        //protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        DataRowView row = (DataRowView)e.Item.DataItem;
-        //        Literal ltInfoAfiliado = (Literal)e.Item.FindControl("ltInfoAfiliado");
-
-        //        HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-        //        HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-
-
-        //        int documentoAfiliado;
-        //        if (int.TryParse(row["DocumentoAfiliado"].ToString(), out documentoAfiliado))
-        //        {
-        //            clasesglobales cg = new clasesglobales();
-        //            DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(documentoAfiliado);
-
-        //            if (dtAfiliado.Rows.Count > 0)
-        //            {
-        //                int idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
-        //                DataTable dtEstadoActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
-
-        //                // Encontrar los tres botones
-        //                btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-        //                btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-        //                HtmlAnchor btnNuevoAfiliado = (HtmlAnchor)e.Item.FindControl("btnNuevoAfiliado");
-
-        //                // Si el afiliado tiene plan activo, ocultar todos los botones
-        //                if (dtEstadoActivo.Rows.Count > 0)
-        //                {
-        //                    string nombrePlan = dtEstadoActivo.Rows[0]["NombrePlan"].ToString();
-        //                    DateTime fechaFinal;
-        //                    string fechaFormateada = string.Empty;
-        //                    if (DateTime.TryParse(dtEstadoActivo.Rows[0]["FechaFinalPlan"].ToString(), out fechaFinal))
-        //                    {
-        //                        fechaFormateada = fechaFinal.ToString("dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"));
-        //                    }
-
-        //                    decimal valorPlan;
-        //                    string valorFormateado = string.Empty;
-        //                    if (decimal.TryParse(dtEstadoActivo.Rows[0]["Valor"].ToString(), out valorPlan))
-        //                    {
-        //                        valorFormateado = valorPlan.ToString("C0", new System.Globalization.CultureInfo("es-CO"));
-        //                    }
-
-        //                    string infoExtra = $"El cliente ha tenido planes anteriores <b>{nombrePlan}</b> " +
-        //                                       $"con fecha final el día <b>{fechaFormateada}</b> " +
-        //                                       $"por un valor de <b>{valorFormateado}</b>.";
-
-        //                    ltInfoAfiliado.Text = $"<span style='display:block; text-align:justify;'>{infoExtra}</span>";
-
-
-
-        //                    if (dtEstadoActivo.Rows[0]["EstadoPlan"].ToString() == "Activo")
-        //                    {
-        //                        if (btnEditar != null) btnEditar.Visible = false;
-        //                        if (btnEliminar != null) btnEliminar.Visible = false;
-        //                        if (btnNuevoAfiliado != null) btnNuevoAfiliado.Visible = false;
-        //                    }
-        //                    else {
-
-        //                        // Mostrar botones solo si no tiene plan activo y según permisos
-        //                        if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
-        //                        {
-        //                            btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
-        //                            btnEditar.Visible = true;
-        //                        }
-
-        //                        if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
-        //                        {
-        //                            btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
-        //                            btnEliminar.Visible = true;
-        //                        }
-
-        //                        if (btnNuevoAfiliado != null)
-        //                        {
-        //                            // Este botón se muestra sin permisos adicionales
-        //                            btnNuevoAfiliado.Visible = true;
-        //                        }
-
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    // Mostrar botones solo si no tiene plan activo y según permisos
-        //                    if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
-        //                    {
-        //                        btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
-        //                        btnEditar.Visible = true;
-        //                    }
-
-        //                    if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
-        //                    {
-        //                        btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
-        //                        btnEliminar.Visible = true;
-        //                    }
-
-        //                    if (btnNuevoAfiliado != null)
-        //                    {
-        //                        // Este botón se muestra sin permisos adicionales
-        //                        btnNuevoAfiliado.Visible = true;
-        //                    }
-        //                }                        
-        //            }
-        //            else
-        //            {
-        //                // Mostrar botones solo si no tiene plan activo y según permisos
-        //                if (ViewState["CrearModificar"].ToString() == "1" && btnEditar != null)
-        //                {
-        //                    btnEditar.Attributes.Add("href", "crmnuevocontacto?editid=" + row.Row[0].ToString());
-        //                    btnEditar.Visible = true;
-        //                }
-
-        //                if (ViewState["Borrar"].ToString() == "1" && btnEliminar != null)
-        //                {
-        //                    btnEliminar.Attributes.Add("href", "crmnuevocontacto?deleteid=" + row.Row[0].ToString());
-        //                    btnEliminar.Visible = true;
-        //                }
-        //                ltInfoAfiliado.Text = "No se encontraron planes anteriores para este usuario.";
-        //                //if (btnNuevoAfiliado != null)
-        //                //{
-        //                //    // Este botón se muestra sin permisos adicionales
-        //                //    btnNuevoAfiliado.Visible = true;
-        //                //}
-        //            }
-        //        }
-
-        //        if (row["FechaGestion"] != DBNull.Value)
-        //        {
-        //            DateTime fechaPrimerContacto = Convert.ToDateTime(row["FechaGestion"]);
-        //            TimeSpan diferencia = DateTime.Now - fechaPrimerContacto;
-
-        //            string leyenda = "";
-        //            if (diferencia.TotalMinutes < 1)
-        //                leyenda = "Hace menos de un minuto";
-        //            else if (diferencia.TotalMinutes < 60)
-        //                leyenda = $"Hace {(int)diferencia.TotalMinutes} minuto{((int)diferencia.TotalMinutes == 1 ? "" : "s")}";
-        //            else if (diferencia.TotalHours < 24)
-        //                leyenda = $"Hace {(int)diferencia.TotalHours} hora{((int)diferencia.TotalHours == 1 ? "" : "s")}";
-        //            else
-        //                leyenda = $"Hace {(int)diferencia.TotalDays} día{((int)diferencia.TotalDays == 1 ? "" : "s")}";
-
-        //            Literal ltTiempo = (Literal)e.Item.FindControl("ltTiempoTranscurrido");
-        //            if (ltTiempo != null)
-        //                ltTiempo.Text = leyenda;
-        //        }
-        //    }
-        //}
 
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
             try
-            {
-                clasesglobales cg = new clasesglobales();
+            {                
                 if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
                     DataRowView row = (DataRowView)e.Item.DataItem;
@@ -1272,16 +1345,20 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                ltMensaje.Text =
-                   "<div class='alert alert-danger alert-dismissable'>" +
-                   "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
-                   "<strong>Error:</strong> " +"Contacte al administrador del sistema "+ ex.Message.ToString() +
-                   "</div>";
-                }
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
 
         private int ObtenerDiasHabiles(DateTime inicio, DateTime fin, List<DateTime> festivos)
         {
+            clasesglobales cg = new clasesglobales();
             try
             {
                 int diasHabiles = 0;
@@ -1305,11 +1382,14 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                ltMensaje.Text =
-                               "<div class='alert alert-danger alert-dismissable'>" +
-                               "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
-                               "<strong>Error:</strong> " + ex.Message.ToString() +
-                               "</div>";
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
                 return 0;
             }
         }
@@ -1317,6 +1397,7 @@ namespace fpWebApp
 
         protected void ddlPlanes_SelectedIndexChanged(object sender, EventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
             try
             {
                 if (string.IsNullOrEmpty(ddlPlanes.SelectedValue) || ddlPlanes.SelectedValue == "0")
@@ -1329,7 +1410,6 @@ namespace fpWebApp
                     return;
                 }
 
-                clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarPlanes();
                 var fila = dt.Select("IdPlan = " + ddlPlanes.SelectedValue);
                 if (fila.Length > 0)
@@ -1368,11 +1448,14 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                ltMensaje.Text =
-                "<div class='alert alert-danger alert-dismissable'>" +
-                "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
-                "<strong>Error:</strong> " + ex.Message.ToString() +
-                "</div>";
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
@@ -1407,32 +1490,49 @@ namespace fpWebApp
 
         public string GetTelefonoHTML(object telefonoObj)
         {
-            if (telefonoObj == null) return "";
+            clasesglobales cg = new clasesglobales();
 
-            // 1. Limpiar el número (quitar espacios, guiones, paréntesis, etc.)
-            string telefonoLimpio = Regex.Replace(telefonoObj.ToString(), @"\D", "");
-
-            // 2. Validar longitud y aplicar formato visual
-            string telefonoFormateado = telefonoLimpio;
-            if (telefonoLimpio.Length == 10)
+            try
             {
-                telefonoFormateado = $"{telefonoLimpio.Substring(0, 3)} {telefonoLimpio.Substring(3, 3)} {telefonoLimpio.Substring(6, 4)}";
-            }
+                if (telefonoObj == null) return "";
 
-            bool esCelular = telefonoLimpio.StartsWith("3");
-            bool esFijo = telefonoLimpio.StartsWith("60");
-            string icono = esCelular ? "fab fa-whatsapp" : "fas fa-phone";
-            string color = esCelular ? "forestgreen" : "#007bff";
-            string enlace = esCelular ? $"https://wa.me/57{telefonoLimpio}" : $"tel:{telefonoLimpio}";
-            
-            return $"<a href='{enlace}' target='_blank'>" +
-                   $"<i class='{icono} m-r-xs font-bold' style='color:{color};'></i> {telefonoFormateado}</a>";
+                // 1. Limpiar el número (quitar espacios, guiones, paréntesis, etc.)
+                string telefonoLimpio = Regex.Replace(telefonoObj.ToString(), @"\D", "");
+
+                // 2. Validar longitud y aplicar formato visual
+                string telefonoFormateado = telefonoLimpio;
+                if (telefonoLimpio.Length == 10)
+                {
+                    telefonoFormateado = $"{telefonoLimpio.Substring(0, 3)} {telefonoLimpio.Substring(3, 3)} {telefonoLimpio.Substring(6, 4)}";
+                }
+
+                bool esCelular = telefonoLimpio.StartsWith("3");
+                bool esFijo = telefonoLimpio.StartsWith("60");
+                string icono = esCelular ? "fab fa-whatsapp" : "fas fa-phone";
+                string color = esCelular ? "forestgreen" : "#007bff";
+                string enlace = esCelular ? $"https://wa.me/57{telefonoLimpio}" : $"tel:{telefonoLimpio}";
+
+                return $"<a href='{enlace}' target='_blank'>" +
+                       $"<i class='{icono} m-r-xs font-bold' style='color:{color};'></i> {telefonoFormateado}</a>";
+
+            }
+            catch (Exception ex)
+            {
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+                return "Error:"+ idLog;
+            }
         }
 
         protected void btnActualizarYRedirigir_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
-
             try
             {
 
@@ -1486,33 +1586,6 @@ namespace fpWebApp
                         ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
                     else
                         ddlEmpresa.SelectedItem.Value = "0";
-
-                    //DateTime fecNacCli;
-                    //System.Text.RegularExpressions.Match match = Regex.Match(txbEdad.Text, @"\d+");
-
-                    //int edad;
-
-                    //if (match.Success && int.TryParse(match.Value, out edad))
-                    //{
-                    //    txbEdad.Text = edad.ToString(); // Deja solo el número limpio en la caja
-                    //}
-                    //else
-                    //{
-                    //    edad = 0;
-                    //    txbEdad.Text = "0";
-                    //}
-
-                    //if (string.IsNullOrEmpty(txbFecNac.Text))
-                    //{
-                    //    fecNacCli = new DateTime(1900, 1, 1);
-                    //    txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
-                    //}
-                    //else
-                    //{
-                    //    fecNacCli = DateTime.Parse(txbFecNac.Text);
-                    //}
-
-                    //txbFecNac.Text = fecNacCli.ToString("yyyy-MM-dd");
 
                     DateTime fecNacCli;
 
@@ -1632,22 +1705,25 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                ltMensaje.Text =
-                   "<div class='alert alert-danger alert-dismissable'>" +
-                   "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
-                   "<strong>Error:</strong> " + ex.Message.ToString() +
-                   "</div>";
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
 
         protected void ddlAfiliadoOrigen_SelectedIndexChanged(object sender, EventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
             try
             {
                 if (ddlAfiliadoOrigen.SelectedItem.Value.ToString() != "")
                 {
-                    clasesglobales cg = new clasesglobales();
                     DataTable dt = new DataTable();
                     DataTable dt1 = new DataTable();
 
@@ -1707,17 +1783,27 @@ namespace fpWebApp
                     }
                     catch (Exception ex)
                     {
-                        string mensaje = ex.Message.ToString();
+                        int idLog = 0;
+                        string detalleError = ex.Message;
+
+                        if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                        detalleError += " | StackTrace: " + ex.StackTrace;
+
+                        cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
                     }
                 }
             }
             catch (Exception ex)
             {
-                ltMensaje.Text =
-                   "<div class='alert alert-danger alert-dismissable'>" +
-                   "<button aria-hidden='true' data-dismiss='alert' class='close' type='button'>×</button>" +
-                   "<strong>Error:</strong> " + ex.Message.ToString() +
-                   "</div>";
+                int idLog = 0;
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
@@ -1733,7 +1819,6 @@ namespace fpWebApp
         public static RespuestaContacto ValidarContacto(string documento, int idUsuario)
         {
             clasesglobales cg = new clasesglobales();
-
             try
             {
                 DataTable dt2 = cg.ConsultarPoliticaTiempoLeadCRM(documento, 6);
@@ -1781,13 +1866,6 @@ namespace fpWebApp
                             };
                         }
                     }
-
-                    //if (tienePlanVendido)
-                    //    return "planVendido";
-                    //else if (esPropio)
-                    //    return "propio";
-                    //else if (bloqueadoPorOtro)
-                    //    return "bloqueado";
                 }
 
                 DataTable dt3 = cg.CargarPlanesAfiliado("0", documento, "Activo");
@@ -1811,9 +1889,6 @@ namespace fpWebApp
                             };
                         }
                     }
-
-                    //if (tienePlanVendido)
-                    //    return "planVendido";
                 }
 
                 return new RespuestaContacto { status = "ok" };
