@@ -60,8 +60,6 @@
     <!-- Sweet Alert -->
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
 
-
-
     <!-- Sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -183,9 +181,6 @@
 
                             <div class="col-lg-5">
                                 <div class="ibox float-e-margins">
-                                    <div class="form-group">
-                                        <asp:Label ID="lblMensaje" runat="server" Text="Label"></asp:Label>
-                                    </div>
                                     <div class="ibox-title">
                                         <h5>
                                             <asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
@@ -313,8 +308,7 @@
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         ValidationGroup="agregar"
                                                         OnClick="btnAgregar_Click"
-                                                        OnClientClick="return obtenerSeleccionPlan();" />
-
+                                                        OnClientClick="guardarContenidoEditor(); return obtenerSeleccionPlan();" />
                                                 </div>
                                                 <br />
                                                 <br />
@@ -363,7 +357,7 @@
                                                 <tr>
                                                     <th data-breakpoints="xs">id</th>
                                                     <th data-breakpoints="xs">Nit</th>
-                                                    <th data-breakpoints="xs">Descripción</th>
+                                                    <th data-breakpoints="xs">Cliente</th>
                                                     <th data-breakpoints="xs">Fecha Ini</th>
                                                     <th data-breakpoints="xs">Fecha Fin</th>
                                                     <th data-breakpoints="xs">Valor</th>
@@ -380,19 +374,21 @@
                                                         <tr class="feed-element">
                                                             <td><%# Eval("idNegociacion") %></td>
                                                             <td><%# Eval("DocumentoEmpresa") %></td>
-                                                            <td><%# Eval("Descripcion") %></td>
+                                                            <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
                                                             <td><%# Convert.ToDateTime(Eval("FechaIni")).ToString("dd/MM/yyyy") %></td>
                                                             <td><%# Convert.ToDateTime(Eval("FechaFin")).ToString("dd/MM/yyyy") %></td>
                                                             <td><%# string.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("ValorNegociacion")) %></td>
-                                                            <td><%# Eval("Descuento") %></td>
+                                                            <td><%# Eval("Descuento") %>%</td>
                                                             <td><%# Eval("idUsuario") %></td>
                                                             <td><%# Eval("FechaCreacion") %></td>
                                                             <td>
                                                                 <table class="table table-bordered table-striped">
                                                                     <tr>
-                                                                        <th width="100%"><i class="fa fa-city m-r-xs"></i>Descripción</th>
+                                                                        <th width="50%"><i class="fa fa-city m-r-xs"></i>Razón social</th>
+                                                                        <th width="50%"><i class="fa fa-city m-r-xs"></i>Descripción</th>
                                                                     </tr>
                                                                     <tr>
+                                                                        <td><%# Eval("NombreEmpresa") %></td>
                                                                         <td><%# Eval("Descripcion") %></td>
                                                                     </tr>
                                                                 </table>
