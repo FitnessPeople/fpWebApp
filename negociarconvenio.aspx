@@ -309,12 +309,16 @@
                                                     <asp:HiddenField ID="hfIdPlan" runat="server" />
                                                     <asp:HiddenField ID="hfDescuento" runat="server" />
                                                     <asp:HiddenField ID="hfValorFinal" runat="server" />
+                                                  <%--  <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
+                                                        ValidationGroup="agregar"
+                                                        OnClick="btnAgregar_Click"
+                                                        OnClientClick="return obtenerSeleccionPlan();" />--%>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         ValidationGroup="agregar"
                                                         OnClick="btnAgregar_Click"
-                                                        OnClientClick="return obtenerSeleccionPlan();" />
-
+                                                        OnClientClick="guardarContenidoEditor(); return obtenerSeleccionPlan();" />
                                                 </div>
                                                 <br />
                                                 <br />

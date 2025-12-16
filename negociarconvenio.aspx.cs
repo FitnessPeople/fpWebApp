@@ -69,21 +69,18 @@ namespace fpWebApp
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["editid"].ToString()));
+                            DataTable dt = cg.ConsultarNegociacionPorId(int.Parse(Request.QueryString["editid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
                                
-                                ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt.Rows[0]["idTipoEstrategia"].ToString()));
+                                ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt.Rows[0]["idNegociacion"].ToString()));
 
-                                hiddenEditor.Value = dt.Rows[0]["DescripcionEstrategia"].ToString();
+                                hiddenEditor.Value = dt.Rows[0]["Descripcion"].ToString();
 
-                                decimal ValorPresupuesto = Convert.ToDecimal(dt.Rows[0]["ValorPresupuesto"]);
-                             
+                                decimal ValorPresupuesto = Convert.ToDecimal(dt.Rows[0]["ValorPresupuesto"]);                             
 
                                 txbFechaIni.Value = Convert.ToDateTime(dt.Rows[0]["FechaInicio"]).ToString("yyyy-MM-dd");
                                 txbFechaFin.Value = Convert.ToDateTime(dt.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
-
-
 
                                 btnAgregar.Text = "Actualizar";
                                 ltTitulo.Text = "Actualizar estrategia";
@@ -103,7 +100,7 @@ namespace fpWebApp
                                     "</div></div>";
 
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarNegociacionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
 
@@ -128,7 +125,7 @@ namespace fpWebApp
                             {
                                 //Borrar
                                 DataTable dt1 = new DataTable();
-                                dt1 = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                dt1 = cg.ConsultarNegociacionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
 
@@ -239,8 +236,16 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarProspectoClienteCorporativo(documentoEmpresa);
 
+                dt.Columns.Add("NombreCompleto", typeof(string));
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    row["NombreCompleto"] = row["NombreContacto"].ToString() + " " +
+                                            row["ApellidoContacto"].ToString();
+                }
+
                 ddlProspectos.DataSource = dt;
-                ddlProspectos.DataTextField = "NombreContacto"; // ajusta según tu tabla
+                ddlProspectos.DataTextField = "NombreCompleto"; // ajusta según tu tabla
                 ddlProspectos.DataValueField = "IdPregestion";    // ajusta según tu tabla
                 ddlProspectos.DataBind();
             }
@@ -443,11 +448,12 @@ namespace fpWebApp
 
                 try
                 {
+                    contenidoEditor = hiddenEditor.Value;
                     idPlan = Convert.ToInt32(hfIdPlan.Value);
                     descuento = Convert.ToDecimal(hfDescuento.Value);
                     valorFinal = Convert.ToDecimal(hfValorFinal.Value);
 
-                    string respuesta = cg.InsertarNegociacionCorporativo(ddlEmpresas.SelectedItem.Value, Convert.ToInt32(ddlProspectos.SelectedValue.ToString()), "", txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, Convert.ToInt32(Session["idUsuario"]));
+                    string respuesta = cg.InsertarNegociacionCorporativo(ddlEmpresas.SelectedItem.Value, Convert.ToInt32(ddlProspectos.SelectedValue.ToString()), contenidoEditor, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, Convert.ToInt32(Session["idUsuario"]));
                     if (salida)
                     {
                         string script = @"
