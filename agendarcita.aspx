@@ -265,58 +265,7 @@
     <%--<script src="js/plugins/validate/jquery.validate.min.js"></script>--%>
 
     <script>
-
-        //$.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
-
-        //$("#form").validate({
-        //    rules: {
-        //        txbAfiliado: {
-        //            required: true,
-        //            minlength: 3
-        //        },
-        //    }
-        //});
-
-        //$(document).ready(function () {
-        //    $('.select2').select2({
-        //        width: '100%',
-        //        minimumResultsForSearch: 10,
-        //        minimumInputLength: 3,
-        //        language: "es"
-        //    });
-        //});
-
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
-    </script>
-
-    <%--<script type="text/javascript">  
-        $(document).ready(function () {
-            $("#txbAfiliado").autocomplete({
-                source: function (request, response) {
-                    $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
-                        response($.map(data, function (item) {
-                            return {
-                                label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
-                                value: item.id + " - " + item.nombre + " " + item.apellido,
-                            };
-                        }));
-                    });
-                },
-                select: function (event, ui) {
-                    if (ui.item) {
-                        console.log(ui.item.value);
-                        document.getElementById("txbAfiliado").value = ui.item.value;
-                        var btn = document.getElementById("btnAfiliado");
-                        btn.click();
-                    }
-                },
-                minLength: 3,
-                delay: 100,
-            });
-        });
-    </script>--%>
-
-    <script>
 
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');

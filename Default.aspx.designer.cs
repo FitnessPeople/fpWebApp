@@ -33,13 +33,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divUsuario;
 
         /// <summary>
-        /// Control txbEmail.
+        /// Control txbIdentificacion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbEmail;
+        protected global::System.Web.UI.WebControls.TextBox txbIdentificacion;
 
         /// <summary>
         /// Control divPassword.

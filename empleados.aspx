@@ -248,8 +248,14 @@
                                                             <p class="font-bold"><%# Eval("Cargo") %></p>
 
                                                             <div class="text-center">
-                                                                <a runat="server" id="btnEditarTab" href="#" class="btn btn-xs btn-primary"><i class="fa fa-edit m-r-xs"></i>Editar</a>
-                                                                <a class="btn btn-xs btn-warning"><i class="fa fa-rotate m-r-xs"></i>Cambiar estado</a>
+                                                                <a runat="server" id="btnEditarTab" href="#" class="btn btn-xs btn-primary"><i class="fa fa-edit m-r-xs" visible="false"></i>Editar</a>
+                                                                <%--<asp:LinkButton ID="lkbCambiarEstado" runat="server" 
+                                                                    CssClass="btn btn-xs btn-warning" OnClick="lkbCambiarEstado_Click">
+                                                                    <i class="fa fa-rotate m-r-xs"></i>Cambiar estado
+                                                                </asp:LinkButton>--%>
+                                                                <a runat="server" id="btnCambiarEstado" href="#" visible="false" 
+                                                                    class='btn btn-xs btn-danger'><i class="fa fa-rotate m-r-xs"></i><%# Eval("Estado") %> (cambiar)
+                                                                </a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -370,7 +376,7 @@
                                                                     <ItemTemplate>
                                                                         <div class="vertical-timeline-block">
                                                                             <div class="vertical-timeline-icon gray-bg">
-                                                                                <i class="fa fa-coffee"></i>
+                                                                                <i class="fa fa-<%# Eval("Label") %>"></i>
                                                                             </div>
                                                                             <div class="vertical-timeline-content">
                                                                                 <p><%# Eval("Accion") %></p>

@@ -1,8 +1,5 @@
-﻿using MySql.Data.MySqlClient;
-using System;
-using System.Configuration;
+﻿using System;
 using System.Data;
-using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 

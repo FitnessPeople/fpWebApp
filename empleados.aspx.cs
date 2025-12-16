@@ -397,6 +397,10 @@ namespace fpWebApp
                     HtmlAnchor btnEditarTab = (HtmlAnchor)e.Item.FindControl("btnEditarTab");
                     btnEditarTab.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row["DocumentoEmpleado"].ToString());
                     btnEditarTab.Visible = true;
+
+                    HtmlAnchor btnCambiarEstado = (HtmlAnchor)e.Item.FindControl("btnCambiarEstado");
+                    btnCambiarEstado.Attributes.Add("href", "cambiarestadoempleado?id=" + ((DataRowView)e.Item.DataItem).Row["DocumentoEmpleado"].ToString());
+                    btnCambiarEstado.Visible = true;
                 }
 
                 DataRowView row = (DataRowView)e.Item.DataItem;
@@ -410,13 +414,31 @@ namespace fpWebApp
                     idUsuario = Convert.ToInt32(row["idUsuario"]);
                 }
 
+                string strQuery = @"
+                    SELECT Accion, DescripcionLog, FechaHora, 
+                    CASE Accion 
+                        WHEN 'Agrega' THEN 'circle-plus' 
+                        WHEN 'Elimino' THEN 'trash' 
+                        WHEN 'Login' THEN 'lock-open' 
+                        WHEN 'Modifica' THEN 'edit' 
+                        WHEN 'Logout' THEN 'lock' 
+                        WHEN 'Nuevo' THEN 'circle-plus' 
+                        ELSE 'coffee' 
+                    END AS Label 
+                    FROM logs 
+                    WHERE idUsuario = " + idUsuario.ToString() + " LIMIT 10";
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos("SELECT * FROM logs WHERE idUsuario = " + idUsuario.ToString() + " LIMIT 10");
+                DataTable dt = cg.TraerDatos(strQuery);
 
                 Repeater rpActividades = (Repeater)e.Item.FindControl("rpActividades");
                 rpActividades.DataSource = dt;
                 rpActividades.DataBind();
             }
+        }
+
+        protected void lkbCambiarEstado_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

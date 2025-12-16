@@ -42,7 +42,7 @@
                     <div class="col-lg-12">
                         <div class="form-group">
                             <%--<asp:TextBox ID="txbEmail" CssClass="form-control" runat="server" placeholder="Usuario" required></asp:TextBox>--%>
-                            <asp:TextBox ID="txbEmail" CssClass="form-control" runat="server" placeholder="Identificacion" required></asp:TextBox>
+                            <asp:TextBox ID="txbIdentificacion" CssClass="form-control" runat="server" placeholder="Identificacion" required></asp:TextBox>
                         </div>
                     </div>
                     <%--<div class="col-lg-7">

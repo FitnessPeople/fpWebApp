@@ -266,6 +266,7 @@
     <Content Include="calendariofpadmin.aspx" />
     <Content Include="cambiaestadoembajador.aspx" />
     <Content Include="cambiaestadousuario.aspx" />
+    <Content Include="cambiarestadoempleado.aspx" />
     <Content Include="cambiarpermiso.aspx" />
     <Content Include="canalesventa.aspx" />
     <Content Include="cancelaragendagympass.aspx" />
@@ -1182,6 +1183,13 @@
     </Compile>
     <Compile Include="cambiaestadousuario.aspx.designer.cs">
       <DependentUpon>cambiaestadousuario.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="cambiarestadoempleado.aspx.cs">
+      <DependentUpon>cambiarestadoempleado.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="cambiarestadoempleado.aspx.designer.cs">
+      <DependentUpon>cambiarestadoempleado.aspx</DependentUpon>
     </Compile>
     <Compile Include="cambiarpermiso.aspx.cs">
       <DependentUpon>cambiarpermiso.aspx</DependentUpon>

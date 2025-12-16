@@ -15,14 +15,14 @@ namespace fpWebApp
             if(!IsPostBack)
             {
                 lblAnho.Text = DateTime.Now.Year.ToString();
-                txbEmail.Focus();
+                txbIdentificacion.Focus();
             }
         }
 
         protected void btnIngresar_Click(object sender, EventArgs e)
         {
             //string usuario = txbEmail.Text.ToString() + ddlDominio.SelectedItem.Value.ToString();
-            string usuario = txbEmail.Text.ToString();
+            string usuario = txbIdentificacion.Text.ToString();
             string clave = txbPassword.Text.ToString();
 
             clasesglobales cg = new clasesglobales();
