@@ -426,7 +426,7 @@ namespace fpWebApp
                         ELSE 'coffee' 
                     END AS Label 
                     FROM logs 
-                    WHERE idUsuario = " + idUsuario.ToString() + " LIMIT 10";
+                    WHERE idUsuario = " + idUsuario.ToString() + " ORDER BY FechaHora DESC LIMIT 10 ";
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(strQuery);
 
