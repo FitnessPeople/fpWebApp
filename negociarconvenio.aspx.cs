@@ -474,8 +474,9 @@ namespace fpWebApp
                     idPlan = Convert.ToInt32(hfIdPlan.Value);
                     descuento = Convert.ToDecimal(hfDescuento.Value);
                     valorFinal = Convert.ToDecimal(hfValorFinal.Value);
+                    int codigo = 0;
 
-                    string respuesta = cg.InsertarNegociacionCorporativo(ddlEmpresas.SelectedItem.Value, Convert.ToInt32(ddlProspectos.SelectedValue.ToString()), contenidoEditor, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, Convert.ToInt32(Session["idUsuario"]));
+                    string respuesta = cg.InsertarNegociacionCorporativo(ddlEmpresas.SelectedItem.Value, Convert.ToInt32(ddlProspectos.SelectedValue.ToString()), contenidoEditor, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, Convert.ToInt32(Session["idUsuario"]),out codigo, out  mensaje);
                     if (respuesta=="OK")
                     {
                         string script = @"

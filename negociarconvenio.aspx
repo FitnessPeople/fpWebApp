@@ -358,6 +358,7 @@
                                                     <th data-breakpoints="xs">id</th>
                                                     <th data-breakpoints="xs">Nit</th>
                                                     <th data-breakpoints="xs">Cliente</th>
+                                                    <th data-breakpoints="xs">Plan</th>
                                                     <th data-breakpoints="xs">Fecha Ini</th>
                                                     <th data-breakpoints="xs">Fecha Fin</th>
                                                     <th data-breakpoints="xs">Valor</th>
@@ -375,6 +376,7 @@
                                                             <td><%# Eval("idNegociacion") %></td>
                                                             <td><%# Eval("DocumentoEmpresa") %></td>
                                                             <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
+                                                            <td><%# Eval("NombrePlan") %></td>
                                                             <td><%# Convert.ToDateTime(Eval("FechaIni")).ToString("dd/MM/yyyy") %></td>
                                                             <td><%# Convert.ToDateTime(Eval("FechaFin")).ToString("dd/MM/yyyy") %></td>
                                                             <td><%# string.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("ValorNegociacion")) %></td>
