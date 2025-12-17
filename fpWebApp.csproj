@@ -270,6 +270,7 @@
     <Content Include="cambiarpermiso.aspx" />
     <Content Include="canalesventa.aspx" />
     <Content Include="cancelaragendagympass.aspx" />
+    <Content Include="cancelardebito.aspx" />
     <Content Include="cargos.aspx" />
     <Content Include="categoriaspaginas.aspx" />
     <Content Include="categoriastienda.aspx" />
@@ -1211,6 +1212,13 @@
     </Compile>
     <Compile Include="cancelaragendagympass.aspx.designer.cs">
       <DependentUpon>cancelaragendagympass.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="cancelardebito.aspx.cs">
+      <DependentUpon>cancelardebito.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="cancelardebito.aspx.designer.cs">
+      <DependentUpon>cancelardebito.aspx</DependentUpon>
     </Compile>
     <Compile Include="cargos.aspx.cs">
       <DependentUpon>cargos.aspx</DependentUpon>

@@ -74,13 +74,14 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        protected void lkbExcel1_Click(object sender, EventArgs e)
+        protected void lkbExcel_Click(object sender, EventArgs e)
         {
             try
             {
                 string strQuery = @"
                     SELECT ap.idAfiliadoPlan, a.DocumentoAfiliado, CONCAT(a.NombreAfiliado, "" "", a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
-                    COUNT(a.idAfiliado) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje 
+                    COUNT(a.idAfiliado) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, 
+                    a.CelularAfiliado AS Celular, a.EmailAfiliado As Email 
                     FROM HistorialCobrosRechazados AS hcr 
                     INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
                     INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 

@@ -182,10 +182,10 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-2">
-                                                <asp:LinkButton ID="lkbExcel1" runat="server"
+                                                <asp:LinkButton ID="lkbExcel" runat="server"
                                                     CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                                     OnClick="lkbExcel1_Click">
+                                                     OnClick="lkbExcel_Click">
                                                     <i class="fa fa-file-excel"></i> EXCEL
                                                 </asp:LinkButton>
                                             </div>

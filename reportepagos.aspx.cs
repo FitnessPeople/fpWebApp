@@ -829,11 +829,14 @@ namespace fpWebApp
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                if (ViewState["CrearModificar"].ToString() == "1")
+                if (ViewState["Borrar"].ToString() == "1")
                 {
-                    HtmlAnchor btnVer = (HtmlAnchor)e.Item.FindControl("btnVer");
-                    btnVer.Attributes.Add("href", "reportepagoswompi?verid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    btnVer.Visible = false;
+                    //HtmlAnchor btnVer = (HtmlAnchor)e.Item.FindControl("btnVer");
+                    //btnVer.Attributes.Add("href", "reportepagoswompi?verid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    //btnVer.Visible = false;
+
+                    Button btnCancelar = (Button)e.Item.FindControl("btnCancelar");
+                    btnCancelar.Visible = true;
                 }
             }
 
@@ -957,6 +960,16 @@ namespace fpWebApp
 
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "MostrarModal",
                    "setTimeout(function() { $('#ModalDetalle').modal('show'); }, 500);", true);
+            }
+        }
+
+        protected void btnCancelar_Command(object sender, CommandEventArgs e)
+        {
+            if (e.CommandName == "cancelarDebito")
+            {
+                int idAfiliadoPlan = int.Parse(e.CommandArgument.ToString());
+
+                Response.Redirect("cancelardebito?idAfiliadoPlan=" + idAfiliadoPlan.ToString());
             }
         }
 

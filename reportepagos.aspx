@@ -333,7 +333,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpPagos" runat="server">
+                                                <asp:Repeater ID="rpPagos" runat="server" OnItemDataBound="rpPagos_ItemDataBound">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("idAfiliadoPlan") %></td>
@@ -354,6 +354,11 @@
                                                                     OnCommand="btnDetalle_Command"
                                                                     CommandName="mostrarDetalle"
                                                                     Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' />
+                                                                <asp:Button ID="btnCancelar" runat="server" Text="Cancelar"
+                                                                    CssClass="btn btn-danger btn-xs"
+                                                                    CommandArgument='<%# Eval("idAfiliadoPlan") %>'
+                                                                    OnCommand="btnCancelar_Command"
+                                                                    CommandName="cancelarDebito" Visible="false"/>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
