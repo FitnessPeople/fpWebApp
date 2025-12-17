@@ -26,6 +26,7 @@ using System.Text;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Services.Description;
+using System.Web.UI;
 
 namespace fpWebApp
 {
@@ -905,6 +906,28 @@ namespace fpWebApp
             }
 
             return respuesta;
+        }
+
+        public int ManejarError(Exception ex, string modulo, int idUsuario)
+        {
+            int idLog = 0;
+            try
+            {
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null)
+                    detalleError += " | Inner: " + ex.InnerException.Message;
+
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                InsertarLogError(modulo, detalleError, idUsuario, out idLog);
+            }
+            catch
+            {
+                // última línea de defensa: no romper el flujo
+            }
+
+            return idLog;
         }
 
 

@@ -363,7 +363,7 @@
                                                     <th data-breakpoints="xs">Valor</th>
                                                     <th data-breakpoints="xs">Dscto.</th>
                                                     <th data-breakpoints="xs">Usuario.</th>
-                                                    <th data-breakpoints="xs">Fecha.</th>
+                                                    <th data-breakpoints="xs">Creado.</th>
                                                     <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
@@ -379,7 +379,7 @@
                                                             <td><%# Convert.ToDateTime(Eval("FechaFin")).ToString("dd/MM/yyyy") %></td>
                                                             <td><%# string.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("ValorNegociacion")) %></td>
                                                             <td><%# Eval("Descuento") %>%</td>
-                                                            <td><%# Eval("idUsuario") %></td>
+                                                            <td><%# Eval("NombreUsuario") %></td>
                                                             <td><%# Eval("FechaCreacion") %></td>
                                                             <td>
                                                                 <table class="table table-bordered table-striped">

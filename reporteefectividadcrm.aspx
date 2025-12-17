@@ -357,9 +357,9 @@
                                                             <td><%# Eval("Nombre") %></td>
                                                             <td><%# Eval("TelefonoContacto") %></td>
                                                             <td>
-                                                                <asp:Literal 
-                                                                    ID="ltEstadoVenta" 
-                                                                    runat="server" 
+                                                                <asp:Literal
+                                                                    ID="ltEstadoVenta"
+                                                                    runat="server"
                                                                     Mode="PassThrough"
                                                                     Text='<%# GetIconoEstadoVenta(Eval("NombreEstadoVenta"), Eval("DescripciónEstadoVenta")) %>'>
                                                                 </asp:Literal>
@@ -416,17 +416,17 @@
                                         <table class="footable table table-striped list-group-item-text" data-paging-size="10"
                                             data-paging="true" data-sorting="true"
                                             data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
-                                            data-filtering="false" data-filter-delay="300"
+                                            data-filtering="true" data-filter-delay="300"
                                             data-empty="Sin resultados" id="miTabla2">
                                             <thead>
                                                 <tr>
                                                     <th>Canal de venta</th>
                                                     <th>Asesor</th>
-                                                    <th>Total contactos</th>
+                                                    <th data-type="number">Total contactos</th>
                                                     <th data-breakpoints="xs sm md">Total propuestas</th>
-                                                    <th data-breakpoints="xs sm md">Cierres</th>
+                                                    <th data-breakpoints="xs sm md" data-type="number">Cierres</th>
                                                     <th data-breakpoints="xs sm md">Valor cierres</th>
-                                                    <th data-breakpoints="xs sm md">Efectividad</th>
+                                                    <th data-breakpoints="xs sm md" data-type="number">Efectividad</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

@@ -16,100 +16,108 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+
             if (!IsPostBack)
             {
-                int idContacto = 0;
-                int idEmpresa = 0;
-                bool hayContacto = int.TryParse(Request.QueryString["idContacto"], out idContacto);
-                bool hayEmpresa = int.TryParse(Request.QueryString["empresaId"], out idEmpresa);
-
-                if (hayContacto)
+                clasesglobales cg = new clasesglobales();
+                try
                 {
-                    Session["contactoId"] = idContacto;
-                    Session["empresaId"] = null;
-                    pnlContacto.Visible = true;
-                    pnlEmpresa.Visible = false;
-                    CargarDatosContacto(idContacto);
-                }
-                else if (hayEmpresa)
-                {
-                    Session["empresaId"] = idEmpresa;
-                    Session["contactoId"] = null;
-                    pnlEmpresa.Visible = true;
-                    pnlContacto.Visible = false;
-                    CargarDatosEmpresaCRM(idEmpresa);
+                    int idContacto = 0;
+                    int idEmpresa = 0;
+                    bool hayContacto = int.TryParse(Request.QueryString["idContacto"], out idContacto);
+                    bool hayEmpresa = int.TryParse(Request.QueryString["empresaId"], out idEmpresa);
 
-                    // Activar tab-2 (Empresas) visualmente con JS
-                    ScriptManager.RegisterStartupScript(this, GetType(), "activarTab", "$('a[href=\"#tab-2\"]').tab('show');", true);
-                }
-
-                // Si no hay ninguno en la URL, puedes mostrar el último contacto por defecto
-                if (!hayContacto && !hayEmpresa)
-                {
-                    clasesglobales cg = new clasesglobales();
-                    decimal valorT = 0;
-                    DataTable dtContactos = cg.ConsultarContactosCRM(out valorT);
-
-                    if (dtContactos.Rows.Count > 0)
+                    if (hayContacto)
                     {
-                        int ultimoIdContacto = Convert.ToInt32(dtContactos.Rows[0]["IdContacto"]);
-                        Session["contactoId"] = ultimoIdContacto;
+                        Session["contactoId"] = idContacto;
                         Session["empresaId"] = null;
                         pnlContacto.Visible = true;
                         pnlEmpresa.Visible = false;
-                        CargarDatosContacto(ultimoIdContacto);
+                        CargarDatosContacto(idContacto);
                     }
-                }
-
-                // Mostrar modal si está seteado
-                if (ViewState["AbrirModal"] != null && (bool)ViewState["AbrirModal"] == true)
-                {
-                    ScriptManager.RegisterStartupScript(this, GetType(), "abrirModal", "$('#ModalContacto').modal('show');", true);
-                    ViewState["AbrirModal"] = null;
-                }
-
-                // Validar usuario y permisos
-                if (Session["idUsuario"] != null)
-                {
-                    ValidarPermisos("Lista contactos CRM");
-
-                    if (ViewState["SinPermiso"]?.ToString() == "1")
+                    else if (hayEmpresa)
                     {
-                        divMensaje.Visible = true;
-                        paginasperfil.Visible = true;
+                        Session["empresaId"] = idEmpresa;
+                        Session["contactoId"] = null;
+                        pnlEmpresa.Visible = true;
+                        pnlContacto.Visible = false;
+                        CargarDatosEmpresaCRM(idEmpresa);
+
+                        // Activar tab-2 (Empresas) visualmente con JS
+                        ScriptManager.RegisterStartupScript(this, GetType(), "activarTab", "$('a[href=\"#tab-2\"]').tab('show');", true);
+                    }
+
+                    // Si no hay ninguno en la URL, puedes mostrar el último contacto por defecto
+                    if (!hayContacto && !hayEmpresa)
+                    {
+                        decimal valorT = 0;
+                        DataTable dtContactos = cg.ConsultarContactosCRM(out valorT);
+
+                        if (dtContactos.Rows.Count > 0)
+                        {
+                            int ultimoIdContacto = Convert.ToInt32(dtContactos.Rows[0]["IdContacto"]);
+                            Session["contactoId"] = ultimoIdContacto;
+                            Session["empresaId"] = null;
+                            pnlContacto.Visible = true;
+                            pnlEmpresa.Visible = false;
+                            CargarDatosContacto(ultimoIdContacto);
+                        }
+                    }
+
+                    // Mostrar modal si está seteado
+                    if (ViewState["AbrirModal"] != null && (bool)ViewState["AbrirModal"] == true)
+                    {
+                        ScriptManager.RegisterStartupScript(this, GetType(), "abrirModal", "$('#ModalContacto').modal('show');", true);
+                        ViewState["AbrirModal"] = null;
+                    }
+
+                    // Validar usuario y permisos
+                    if (Session["idUsuario"] != null)
+                    {
+                        ValidarPermisos("Lista contactos CRM");
+
+                        if (ViewState["SinPermiso"]?.ToString() == "1")
+                        {
+                            divMensaje.Visible = true;
+                            paginasperfil.Visible = true;
+                        }
+                        else
+                        {
+                            if (ViewState["CrearModificar"]?.ToString() == "1")
+                            {
+                                txbFechaPrim.Attributes.Add("type", "date");
+                                txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd"));
+                                txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                                txbFechaProx.Attributes.Add("type", "date");
+                                txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                                txbCorreoContacto.Attributes.Add("type", "email");
+                            }
+
+                            rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
+
+                            ConsultarEmpresasCRM();
+                            ListaEstadosCRM();
+                            ListaContactos();
+                            ltFechaHoy.Text = DateTime.Now.ToString("h:mm tt - dd.MM.yyyy").ToLower();
+                        }
                     }
                     else
                     {
-                        if (ViewState["CrearModificar"]?.ToString() == "1")
-                        {
-                            txbFechaPrim.Attributes.Add("type", "date");
-                            txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd"));
-                            txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd");
-                            txbFechaProx.Attributes.Add("type", "date");
-                            txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd");
-                            txbCorreoContacto.Attributes.Add("type", "email");
-                        }
-
-                        rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
-
-                        ConsultarEmpresasCRM();
-                        ListaEstadosCRM();
-                        ListaContactos();
-                        ltFechaHoy.Text = DateTime.Now.ToString("h:mm tt - dd.MM.yyyy").ToLower();                        
+                        Response.StatusCode = 401;
+                        Response.End();
+                        Response.Redirect("logout.aspx");
                     }
-                }
-                else
-                {
-                    Response.StatusCode = 401;
-                    Response.End();
-                    Response.Redirect("logout.aspx");
-                }
 
-                // Activar validación botón si aplica
-                ScriptManager.RegisterStartupScript(this, GetType(), "activarBoton", "setTimeout(validarBotonActualizar, 100);", true);
+                    // Activar validación botón si aplica
+                    ScriptManager.RegisterStartupScript(this, GetType(), "activarBoton", "setTimeout(validarBotonActualizar, 100);", true);
+                }
+                catch (Exception ex)
+                {
+                    int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                    MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+                }
             }
 
-            // Forzar visibilidad en caso de PostBack
             pnlContacto.Visible = Session["contactoId"] != null;
             pnlEmpresa.Visible = Session["empresaId"] != null && Session["contactoId"] == null;
         }
@@ -139,46 +147,77 @@ namespace fpWebApp
 
         private void ListaContactos()
         {
+            clasesglobales cg = new clasesglobales();
             try
             {
                 decimal valorTotal = 0;
-                clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarContactosCRM(out valorTotal);
-                if(dt.Rows.Count > 0)
+                if (dt.Rows.Count > 0)
                 {
                     rpContactosCRM.DataSource = dt;
                     rpContactosCRM.DataBind();
-
                     //ltValorTotal.Text = valorTotal.ToString("C0");
                     dt.Dispose();
                 }
-               
 
             }
             catch (Exception ex)
             {
-                string mensaje = ex.Message.ToString();
-               
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
+        }
 
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
         private void ConsultarEmpresasCRM()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEmpresasCRM();
-
-            ddlEmpresa.DataSource = dt;
-            ddlEmpresa.DataBind();
-            rpEmpresaCRM.DataSource = dt;
-            rpEmpresaCRM.DataBind();
-            dt.Dispose();
+            try
+            {
+                DataTable dt = cg.ConsultarEmpresasCRM();
+                ddlEmpresa.DataSource = dt;
+                ddlEmpresa.DataBind();
+                rpEmpresaCRM.DataSource = dt;
+                rpEmpresaCRM.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
         private void CargarDatosEmpresaCRM(int idEmpresaCMR)
         {
+            clasesglobales cg = new clasesglobales();
             try
             {
                 bool respuesta = false;
-                clasesglobales cg = new clasesglobales();
+
                 DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaCMR, out respuesta);
                 rpContenidoEmpresaCRM.DataSource = dt;
                 rpContenidoEmpresaCRM.DataBind();
@@ -186,38 +225,55 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                string mensaje = ex.Message.ToString();
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
 
         }
         private void ListaEstadosCRM()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstadossCRM();
-
-            ddlStatusLead.DataSource = dt;
-            ddlStatusLead.DataBind();
-            dt.Dispose();
+            try
+            {
+                DataTable dt = cg.ConsultarEstadossCRM();
+                ddlStatusLead.DataSource = dt;
+                ddlStatusLead.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
 
         protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             clasesglobales cg = new clasesglobales();
-            bool salida = false;
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+
+            try
             {
-                DataRowView drv = (DataRowView)e.Item.DataItem;
-                int idContacto = Convert.ToInt32(drv["IdContacto"]);
-
-                DataTable historial = cg.ConsultarHistorialPorContactoCMR(idContacto, out salida); // tu función personalizada
-
-                Repeater rptHistorial = (Repeater)e.Item.FindControl("rptHistorial");
-
-                if (historial != null && rptHistorial != null)
+                bool salida = false;
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
-                    rptHistorial.DataSource = historial;
-                    rptHistorial.DataBind();
+                    DataRowView drv = (DataRowView)e.Item.DataItem;
+                    int idContacto = Convert.ToInt32(drv["IdContacto"]);
+
+                    DataTable historial = cg.ConsultarHistorialPorContactoCMR(idContacto, out salida); // tu función personalizada
+
+                    Repeater rptHistorial = (Repeater)e.Item.FindControl("rptHistorial");
+
+                    if (historial != null && rptHistorial != null)
+                    {
+                        rptHistorial.DataSource = historial;
+                        rptHistorial.DataBind();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
@@ -278,86 +334,32 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-               string mensaje = ex.Message.ToString();
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
-
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            bool salida = false;
-            ViewState["AbrirModal"] = true;
-            string mensaje = string.Empty;
-            string mensajeValidacion = string.Empty;
-            string respuesta = string.Empty;
-
-            if (ddlEmpresa.SelectedItem.Value != "")
-                ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-            else
-                ddlEmpresa.SelectedItem.Value = "0";
-
             clasesglobales cg = new clasesglobales();
-            //try
-            //{
-            //    //respuesta = cg.InsertarContactoCRM(txbNombreContacto.Value.ToString().Trim().ToUpper(), Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""),
-            //    //txbCorreoContacto.Value.ToString().Trim().ToLower(), Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()),
-            //    //Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()), txbFechaPrim.Value.ToString(),
-            //    //fechaHoraMySQL.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-            //    //txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-            //    //ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-            //    //Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),
-            //    //Convert.ToInt32(rblMesesPlan.SelectedValue), out salida, out mensaje);
+            try
+            {
+                bool salida = false;
+                ViewState["AbrirModal"] = true;
+                string mensaje = string.Empty;
+                string mensajeValidacion = string.Empty;
+                string respuesta = string.Empty;
 
-            //    if (salida)
-            //    {
-            //        string script = @"
-            //            $('#ModalContacto').modal('hide');
-            //            $('.modal-backdrop').remove();
-            //            Swal.fire({
-            //                title: 'El contacto se creó de forma exitosa',
-            //                text: '" + mensaje.Replace("'", "\\'") + @"',
-            //                icon: 'success',
-            //                timer: 3000, // 3 segundos
-            //                showConfirmButton: false,
-            //                timerProgressBar: true
-            //            }).then(() => {
-            //                window.location.href = 'nuevocontactocrm';
-            //            });
-            //        ";
-
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-            //    }
-            //    else
-            //    {
-            //        string script = @"
-            //                $('#ModalContacto').modal('hide');
-            //                $('.modal-backdrop').remove();
-            //                Swal.fire({
-            //                    title: 'Error',
-            //                    text: '" + mensaje.Replace("'", "\\'") + @"',
-            //                    icon: 'error'
-            //                }).then((result) => {
-            //                    if (result.isConfirmed) {
-            //                        $('#ModalContacto').modal('show');
-            //                    }
-            //                });
-            //            ";
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    string script = @"
-            //        $('#ModalContacto').modal('hide');
-            //        $('.modal-backdrop').remove();
-            //        Swal.fire({
-            //            title: 'Error',
-            //            text: '" + ex.Message.Replace("'", "\\'") + @"',
-            //            icon: 'error'
-            //        });
-            //    ";
-            //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-            //}
+                if (ddlEmpresa.SelectedItem.Value != "")
+                    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+                else
+                    ddlEmpresa.SelectedItem.Value = "0";
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
 
         public string GetTelefonoHTML(object telefonoObj)
@@ -416,16 +418,23 @@ namespace fpWebApp
 
         protected void btnEditar_Click(object sender, EventArgs e)
         {
-           // btnActualizar.Visible = true;
-           // btnAgregar.Visible = false;
-            Button btnEditar = (Button)sender;
-            int idContacto = Convert.ToInt32(btnEditar.CommandArgument);
-
-            if (idContacto > 0)
+            clasesglobales cg = new clasesglobales();
+            try
             {
-                CargarDatosContacto(idContacto);
-                upModal.Update();
-                ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
+                Button btnEditar = (Button)sender;
+                int idContacto = Convert.ToInt32(btnEditar.CommandArgument);
+
+                if (idContacto > 0)
+                {
+                    CargarDatosContacto(idContacto);
+                    upModal.Update();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
+                }
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
@@ -438,26 +447,28 @@ namespace fpWebApp
 
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
-            bool salida = false;
-            string mensaje = string.Empty;
-            string respuesta = string.Empty;
-            string mensajeValidacion = string.Empty;
-
-            if (ddlEmpresa.SelectedItem.Value != "")
-                ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-            else
-                ddlEmpresa.SelectedItem.Value = "0";
-
             clasesglobales cg = new clasesglobales();
             try
             {
+                bool salida = false;
+                string mensaje = string.Empty;
+                string respuesta = string.Empty;
+                string mensajeValidacion = string.Empty;
+
+                if (ddlEmpresa.SelectedItem.Value != "")
+                    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
+                else
+                    ddlEmpresa.SelectedItem.Value = "0";
+
+
+
                 // Obtener y limpiar valores
                 string nombre = txbNombreContacto.Value?.ToString().Trim();
                 string telefono = Regex.Replace(txbTelefonoContacto.Value?.ToString().Trim(), @"\D", "");
                 string correo = txbCorreoContacto.Value?.ToString().Trim();
                 string fechaPrim = txbFechaPrim?.Value?.ToString().Trim();
                 string fechaProx = txbFechaProx?.Value?.ToString().Trim();
-               //string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
+                //string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
                 string empresa = ddlEmpresa.SelectedItem?.Value;
                 string statusLead = ddlStatusLead.SelectedItem?.Value;
 
@@ -468,8 +479,8 @@ namespace fpWebApp
                     string.IsNullOrWhiteSpace(empresa) ||
                     string.IsNullOrWhiteSpace(statusLead) ||
                     string.IsNullOrWhiteSpace(fechaPrim) ||
-                    string.IsNullOrWhiteSpace(fechaProx) )
-                    //string.IsNullOrWhiteSpace(valorPropuestaTexto))
+                    string.IsNullOrWhiteSpace(fechaProx))
+                //string.IsNullOrWhiteSpace(valorPropuestaTexto))
                 {
                     mensajeValidacion = "Todos los campos son obligatorios.";
 
@@ -479,14 +490,7 @@ namespace fpWebApp
                 }
                 else
                 {
-                    //respuesta = cg.ActualizarContactoCRM(Convert.ToInt32(Session["contactoId"].ToString()), txbNombreContacto.Value.ToString().Trim().ToUpper(),
-                    //        Regex.Replace(txbTelefonoContacto.Value.ToString().Trim(), @"\D", ""), txbCorreoContacto.Value.ToString().Trim().ToLower(),
-                    //        Convert.ToInt32(ddlEmpresa.SelectedItem.Value.ToString()), Convert.ToInt32(ddlStatusLead.SelectedItem.Value.ToString()),
-                    //        txbFechaPrim.Value.ToString(), txbFechaProx.Value.ToString(), Convert.ToInt32(Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "")), "",
-                    //        txaObservaciones.Value.Trim(), Convert.ToInt32(Session["idUsuario"]), Convert.ToInt32(ddlObjetivos.SelectedItem.Value.ToString()),
-                    //        ddlTipoPago.SelectedItem.Value.ToString(), Convert.ToInt32(ddlTiposAfiliado.SelectedItem.Value.ToString()),
-                    //        Convert.ToInt32(ddlCanalesMarketing.SelectedItem.Value.ToString()), Convert.ToInt32(ddlPlanes.SelectedItem.Value.ToString()),
-                    //        Convert.ToInt32(rblMesesPlan.SelectedValue), out salida, out mensaje);
+
 
                     if (salida)
                     {
@@ -528,18 +532,9 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                string script = @"
-                    $('#ModalContacto').modal('hide');
-                    $('.modal-backdrop').remove();
-                    Swal.fire({
-                        title: 'Error',
-                        text: '" + ex.Message.Replace("'", "\\'") + @"',
-                        icon: 'error'
-                    });
-                ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
-
         }
 
         protected void btnEliminar_Click(object sender, EventArgs e)
@@ -688,7 +683,7 @@ namespace fpWebApp
 
                 // Si fue exitosa la gestión
                 if (respuesta == "OK")
-                {                  
+                {
                     string script = @"
                         Swal.fire({
                             icon: 'success',
@@ -729,11 +724,11 @@ namespace fpWebApp
                     }});
                 ";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "swalCatch", script, true);
-                }
             }
+        }
 
 
 
 
-}
+    }
 }
