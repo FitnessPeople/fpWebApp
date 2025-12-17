@@ -127,6 +127,54 @@
 
                     <form role="form" id="form" runat="server">
                         <div class="row" id="divContenido" runat="server">
+
+                            <div class="row m-b-lg m-t-lg">
+                                <div class="col-md-6">
+
+                                    <div class="profile-image">
+                                        <asp:Literal ID="ltFoto" runat="server"></asp:Literal>
+                                    </div>
+                                    <div class="profile-info">
+                                        <div class="">
+                                            <div>
+                                                <h2 class="no-margins">
+                                                    <asp:Literal ID="ltNombre" runat="server"></asp:Literal>
+                                                    <asp:Literal ID="ltApellido" runat="server"></asp:Literal>
+                                                </h2>
+                                                <h4>(<asp:Literal ID="ltTipoDoc" runat="server"></asp:Literal>: 
+                                                    <asp:Literal ID="ltDocumento" runat="server"></asp:Literal>), 
+                                                    <asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
+                                                <small class="text-capitalize">
+                                                    <asp:Literal ID="ltDireccion" runat="server"></asp:Literal>,
+                                                    <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <table class="table small m-b-xs">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong><i class="fab fa-whatsapp m-r-xs"></i></strong>
+                                                    <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
+                                                <td><strong><i class="fa fa-shield m-r-xs"></i></strong>Estado: 
+                                                <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong><i class="fa fa-building m-r-xs"></i></strong>Sede:
+                                                    <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
+                                                <td><strong></strong>Días asistidos</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong><i class="fa fa-cake m-r-xs"></i></strong>
+                                                    <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
+                                                <td><strong></strong>Congelaciones</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                             <div class="col-lg-12">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
@@ -143,14 +191,14 @@
                                                 <div class="form-group">
                                                     <label>Observaciones:</label>
                                                     <asp:TextBox ID="txbObservaciones" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ErrorMessage="* Campo requerido" 
-                                                        ControlToValidate="txbObservaciones" ValidationGroup="agregar" 
+                                                    <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ErrorMessage="* Campo requerido"
+                                                        ControlToValidate="txbObservaciones" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="reportepagos" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Regresar</a>
-                                                    <asp:Button ID="btnCancelarDebito" runat="server" Text="Cancelar débito" 
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
+                                                    <asp:Button ID="btnCancelarDebito" runat="server" Text="Cancelar débito"
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnCancelarDebito_Click" Visible="true" ValidationGroup="agregar" />
                                                 </div>
                                                 <br />

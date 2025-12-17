@@ -119,7 +119,7 @@ namespace fpWebApp
                 "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label " +
                 "FROM Afiliados a " +
                 "LEFT JOIN Sedes s ON a.idSede = s.idSede " +
-                "LEFT JOIN ciudades ON ciudades.idCiudad = a.idCiudadAfiliado " +
+                "LEFT JOIN ciudades c ON c.idCiudad = a.idCiudadAfiliado " +
                 "LEFT JOIN tiposdocumento td ON td.idTipoDoc = a.idTipoDocumento " +
                 "WHERE DocumentoAfiliado = '" + strDocumento + "' ";
             clasesglobales cg = new clasesglobales();
