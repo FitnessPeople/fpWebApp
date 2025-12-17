@@ -33,9 +33,6 @@
         }
     </style>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
-
     <script>
         function changeClass() {
             var element1 = document.querySelector("#reporteefectividadcrm");
@@ -45,15 +42,6 @@
         }
     </script>
 
-    <script>
-        $(document).ready(function () {
-            $('.datepicker').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true
-            });
-        });
-    </script>
 </head>
 
 <body onload="changeClass()">
@@ -487,11 +475,11 @@
     <script>
         $('.footable').footable();
 
-        const miTabla = document.getElementById('miTabla');
-        const tbody = miTabla.tBodies[0];
-        const numeroRegistros = tbody.rows.length;
+        //const miTabla = document.getElementById('miTabla');
+        //const tbody = miTabla.tBodies[0];
+        //const numeroRegistros = tbody.rows.length;
 
-        console.log("Número total de registros:", numeroRegistros);
+        //console.log("Número total de registros:", numeroRegistros);
     </script>
 
     <script>
