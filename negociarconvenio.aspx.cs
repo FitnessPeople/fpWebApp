@@ -51,8 +51,12 @@ namespace fpWebApp
                         txbFechaIni.Attributes.Add("type", "date");
                         txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-dd");
                         txbFechaFin.Attributes.Add("type", "date");
-                        txbFechaFin.Attributes.Add("min", DateTime.Now.ToString("yyyy-MM-dd"));
-                        txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                        //txbFechaFin.Attributes.Add("min", DateTime.Now.ToString("yyyy-MM-dd"));
+                        //txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd");
+                        DateTime hoy = DateTime.Today;
+                        DateTime ultimoDiaMes = new DateTime(hoy.Year, hoy.Month, DateTime.DaysInMonth(hoy.Year, hoy.Month));
+
+                        txbFechaFin.Value = ultimoDiaMes.ToString("yyyy-MM-dd");
                     }
                                        
 
@@ -180,14 +184,8 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null)   detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("negociarconvenio", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");                         
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
 
         }
@@ -240,26 +238,30 @@ namespace fpWebApp
                 }
             }
             catch (Exception ex)
-            {               
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("negociarconvenio", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
         protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string documento = ddlEmpresas.SelectedValue;
-
-            if (!string.IsNullOrEmpty(documento))
+            clasesglobales cg = new clasesglobales();
+            try
             {
-                ListaProspectos(documento);
+                string documento = ddlEmpresas.SelectedValue;
+
+                if (!string.IsNullOrEmpty(documento))
+                {
+                    ListaProspectos(documento);
+                }
             }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+
         }
 
 
@@ -269,8 +271,7 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             try
-            {
-               
+            {               
                 DataTable dt = cg.ConsultarProspectoClienteCorporativo(documentoEmpresa);
 
                 dt.Columns.Add("NombreCompleto", typeof(string));
@@ -288,17 +289,9 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("negociarconvenio", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
-
         }
 
 
@@ -383,15 +376,8 @@ namespace fpWebApp
                     }
                     catch (Exception ex)
                     {
-                        mensaje = ex.Message.ToString();
-                        string script = @"
-                            Swal.fire({
-                                title: 'Error',
-                                text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'error'
-                            });
-                        ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
                     }
                     string strNewData = TraerData();
                     cg.InsertarLog(Session["idusuario"].ToString(), "estrategiaasmarketing", "Modifica", "El usuario modificó datos a la estrategia " + "" + ".", strInitData, strNewData);
@@ -437,15 +423,8 @@ namespace fpWebApp
                     }
                     catch (Exception ex)
                     {
-                        mensaje = ex.Message.ToString();
-                        string script = @"
-                            Swal.fire({
-                                title: 'Error',
-                                text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'error'
-                            });
-                        ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
                     }
                 }
 
@@ -495,8 +474,9 @@ namespace fpWebApp
                     idPlan = Convert.ToInt32(hfIdPlan.Value);
                     descuento = Convert.ToDecimal(hfDescuento.Value);
                     valorFinal = Convert.ToDecimal(hfValorFinal.Value);
+                    int codigo = 0;
 
-                    string respuesta = cg.InsertarNegociacionCorporativo(ddlEmpresas.SelectedItem.Value, Convert.ToInt32(ddlProspectos.SelectedValue.ToString()), contenidoEditor, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, Convert.ToInt32(Session["idUsuario"]));
+                    string respuesta = cg.InsertarNegociacionCorporativo(ddlEmpresas.SelectedItem.Value, Convert.ToInt32(ddlProspectos.SelectedValue.ToString()), contenidoEditor, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, Convert.ToInt32(Session["idUsuario"]),out codigo, out  mensaje);
                     if (respuesta=="OK")
                     {
                         string script = @"
@@ -531,24 +511,9 @@ namespace fpWebApp
                 }
                 catch (Exception ex)
                 {
-                    mensaje = ex.Message.ToString();
-                    string script = @"
-                            Swal.fire({
-                                title: 'Error',
-                                text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'error'
-                            });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                    MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
                 }
-                //   }
-                //else
-                //{
-                //    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                //    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                //    //    "Ya existe una negociación con ese prospecto." +
-                //    //    "</div>";
-                //}
             }
 
         }
@@ -556,26 +521,30 @@ namespace fpWebApp
         private string TraerData()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["editid"].ToString()));
-
-            string strData = "";
-            foreach (DataColumn column in dt.Columns)
+            try
             {
-                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
-            }
-            dt.Dispose();
-            return strData;
-        }
+                DataTable dt = cg.ConsultarEstrategiaMarketingPorId(int.Parse(Request.QueryString["editid"].ToString()));
 
-        protected void cvPlanes_ServerValidate(object source, ServerValidateEventArgs args)
-        {
-            // Verifica que al menos un ítem esté seleccionado
-           // args.IsValid = chblPlanes.Items.Cast<ListItem>().Any(li => li.Selected);
+                string strData = "";
+                foreach (DataColumn column in dt.Columns)
+                {
+                    strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+                }
+                dt.Dispose();
+                return strData;
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+                return "";
+            }
         }
 
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
             try
             {
                 string consultaSQL = @"SELECT s.NombreSede AS 'Nombre de Sede', s.DireccionSede AS 'Dirección', 
@@ -585,7 +554,6 @@ namespace fpWebApp
                                        WHERE s.idCiudadSede = cs.idCiudadSede 
                                        ORDER BY s.NombreSede;";
 
-                clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
                 string nombreArchivo = $"Sedes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
@@ -600,7 +568,8 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
@@ -620,22 +589,31 @@ namespace fpWebApp
 
         protected void rpNegociaciones_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            clasesglobales cg = new clasesglobales();
+            try
             {
-                if (ViewState["CrearModificar"].ToString() == "1")
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
-                    HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "negociarconvenio?editid=" + ((DataRowView)e.Item.DataItem).Row["idNegociacion"].ToString());
-                    btnEditar.Visible = true;
+                    if (ViewState["CrearModificar"].ToString() == "1")
+                    {
+                        HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
+                        btnEditar.Attributes.Add("href", "negociarconvenio?editid=" + ((DataRowView)e.Item.DataItem).Row["idNegociacion"].ToString());
+                        btnEditar.Visible = true;
+                    }
+                    if (ViewState["Borrar"].ToString() == "1")
+                    {
+                        HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
+                        btnEliminar.Attributes.Add("href", "negociarconvenio?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idNegociacion"].ToString());
+                        btnEliminar.Visible = true;
+                    }
                 }
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "negociarconvenio?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idNegociacion"].ToString());
-                    btnEliminar.Visible = true;
-                }
-
             }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+
         }
     }
 }

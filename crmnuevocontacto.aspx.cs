@@ -396,17 +396,9 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
-
-
         }
         private void ListaMediosDePago()
         {
@@ -422,13 +414,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -446,13 +432,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -479,13 +459,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -502,13 +476,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -525,13 +493,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -548,13 +510,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -572,16 +528,9 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
-
         }
         private void CargarPlanes()
         {
@@ -624,15 +573,9 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }           
+            }
         }
 
         private void MostrarAlerta(string titulo, string mensaje, string tipo)
@@ -657,14 +600,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
 
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
@@ -694,16 +630,9 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
-
         }
         private void ListaObjetivosfiliadoCRM()
         {
@@ -718,13 +647,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -741,13 +664,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -763,13 +680,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -794,13 +705,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -1164,13 +1069,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -1345,13 +1244,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -1382,13 +1275,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
                 return 0;
             }
@@ -1448,13 +1335,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -1518,15 +1399,9 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-                return "Error:"+ idLog;
+                return "Error";
             }
         }
 
@@ -1705,13 +1580,7 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
@@ -1783,26 +1652,14 @@ namespace fpWebApp
                     }
                     catch (Exception ex)
                     {
-                        int idLog = 0;
-                        string detalleError = ex.Message;
-
-                        if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                        detalleError += " | StackTrace: " + ex.StackTrace;
-
-                        cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                         MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
                     }
                 }
             }
             catch (Exception ex)
             {
-                int idLog = 0;
-                string detalleError = ex.Message;
-
-                if (ex.InnerException != null) detalleError += " | Inner: " + ex.InnerException.Message;
-                detalleError += " | StackTrace: " + ex.StackTrace;
-
-                cg.InsertarLogError("crmnuevocontacto", detalleError, Convert.ToInt32(Session["idUsuario"].ToString()), out idLog);
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }

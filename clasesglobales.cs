@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Npgsql;
+using NPOI.OpenXmlFormats.Spreadsheet;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using OfficeOpenXml;
@@ -26,6 +27,7 @@ using System.Text;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Services.Description;
+using System.Web.UI;
 
 namespace fpWebApp
 {
@@ -905,6 +907,28 @@ namespace fpWebApp
             }
 
             return respuesta;
+        }
+
+        public int ManejarError(Exception ex, string modulo, int idUsuario)
+        {
+            int idLog = 0;
+            try
+            {
+                string detalleError = ex.Message;
+
+                if (ex.InnerException != null)
+                    detalleError += " | Inner: " + ex.InnerException.Message;
+
+                detalleError += " | StackTrace: " + ex.StackTrace;
+
+                InsertarLogError(modulo, detalleError, idUsuario, out idLog);
+            }
+            catch
+            {
+                // última línea de defensa: no romper el flujo
+            }
+
+            return idLog;
         }
 
 
@@ -11025,9 +11049,11 @@ namespace fpWebApp
         }
 
         public string InsertarNegociacionCorporativo(string docEmpresa, int idPregestion, string descripcion, string fecha_ini, string fecha_fin, int idPlan, decimal descuento,
-         decimal valor, int idUsuario)
+         decimal valor, int idUsuario, out int _codigo, out string _mensaje)
         {
             string respuesta = string.Empty;
+            _codigo = 0;
+            _mensaje = string.Empty;
             try
             {
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
@@ -11047,14 +11073,27 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_valor_negociacion", valor);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
+                        // Parámetro de salida 1
+                        MySqlParameter codigo = new MySqlParameter("@p_codigo", MySqlDbType.Int32);
+                        codigo.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(codigo);
+                        // Parámetro de salida 2
+                        MySqlParameter mensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar,255);
+                        mensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(mensaje);
+
                         cmd.ExecuteNonQuery();
-                        respuesta = "OK";
+                        _codigo = Convert.ToInt32(codigo.Value);
+                        _mensaje = mensaje.Value?.ToString();
+                        respuesta = _mensaje;
                     }
                 }
             }
             catch (Exception ex)
             {
-                respuesta = "ERROR: " + ex.Message;
+                _codigo = -1;
+                _mensaje = "Error al registrar la negociación.";
+                respuesta = _mensaje + ex.Message.ToString();
             }
 
             return respuesta;
