@@ -182,9 +182,6 @@ namespace fpWebApp
 
         private void MostrarAlerta(string titulo, string mensaje, string tipo)
         {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
                 // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
                 string script = $@"
                 Swal.hideLoading();
@@ -198,12 +195,6 @@ namespace fpWebApp
             }});";
 
                 ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
-
-            }
-            catch (Exception ex)
-            {
-
-            }
         }
 
         private void listaAsesoresActivos()
@@ -352,10 +343,10 @@ namespace fpWebApp
                     idCanalVenta = Convert.ToInt32(dt_usu.Rows[0]["idCanalVenta"].ToString());
                 }
 
-                // 🔹 Control de acceso por rol
+                // Director comercial, CEO, Director operativo, Director marketing, Ingeniero desarrollo
                 if (idPerfil == 21 || idPerfil == 1 || idPerfil == 37 || idPerfil == 23 || idPerfil == 18)
                 {
-                    // Director comercial, CEO, Director operativo, Director marketing, Ingeniero desarrollo
+                    
                     idCanalVenta = Convert.ToInt32(ddlCanalesVenta.SelectedValue);
                     idUsuario = Convert.ToInt32(ddlAsesores.SelectedValue);
                 }

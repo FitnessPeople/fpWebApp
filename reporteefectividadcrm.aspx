@@ -413,7 +413,7 @@
                                                     <th data-type="number">Total contactos</th>
                                                     <th data-breakpoints="xs sm md">Total propuestas</th>
                                                     <th data-breakpoints="xs sm md" data-type="number">Cierres</th>
-                                                    <th data-breakpoints="xs sm md">Valor cierres</th>
+                                                    <th data-breakpoints="xs sm md" data-type="number">Valor cierres</th>
                                                     <th data-breakpoints="xs sm md" data-type="number">Efectividad</th>
                                                 </tr>
                                             </thead>

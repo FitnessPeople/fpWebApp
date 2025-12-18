@@ -282,7 +282,7 @@
                                                                                         <td>
                                                                                             <input type="radio" class="rdDescuento" name="planSeleccionado" />
                                                                                         <td>
-                                                                                            <input type="number" class="form-control inputDescuento" min="0" max="100" disabled></td>
+                                                                                            <input type="number" class="form-control inputDescuento" min="0" max="100" disabled value="0"></td>
                                                                                         <td class="valorConDescuento">—</td>
                                                                                     </tr>
                                                                                 </ItemTemplate>
@@ -303,7 +303,8 @@
                                                     <a href="negociarconvenio" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:HiddenField ID="hfIdPlan" runat="server" />
                                                     <asp:HiddenField ID="hfDescuento" runat="server" />
-                                                    <asp:HiddenField ID="hfValorFinal" runat="server" />
+                                                    <asp:HiddenField ID="hfValorNegociacion" runat="server" />
+                                                    <asp:HiddenField ID="hfModo" runat="server" />
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         ValidationGroup="agregar"
@@ -411,7 +412,7 @@
                             </div>
                         </div>
 
-                        <script>
+  <%--                      <script>
                             function inicializarDescuentos() {
                                 // Formateo de moneda colombiana
                                 function formatCOP(valor) {
@@ -499,12 +500,246 @@
                                 // Pasar valores al server (HiddenFields)
                                 document.getElementById("<%= hfIdPlan.ClientID %>").value = idPlan;
                                 document.getElementById("<%= hfDescuento.ClientID %>").value = descuento;
-                                document.getElementById("<%= hfValorFinal.ClientID %>").value = valorFinal;
+                                document.getElementById("<%= hfValorNegociacion.ClientID %>").value = valorFinal;
 
                                 return true; // permite el postback
                             }
                         </script>
+                        <script>
+                            function mostrarPlanSoloLectura() {
 
+                                var idPlan = document.getElementById('<%= hfIdPlan.ClientID %>').value;
+                                var descuento = document.getElementById('<%= hfDescuento.ClientID %>').value;
+                                var valor = document.getElementById('<%= hfValorNegociacion.ClientID %>').value;
+
+                                if (!idPlan) return;
+
+                                // 🔴 BUSCAR TODOS LOS TR DEL REPEATER
+                                var filas = document.querySelectorAll(".rdDescuento");
+
+                                filas.forEach(function (radio) {
+
+                                    var fila = radio.closest("tr");
+                                    var idPlanFila = fila.cells[0].innerText.trim();
+
+                                    var inputDesc = fila.querySelector(".inputDescuento");
+                                    var lblValor = fila.querySelector(".valorConDescuento");
+
+                                    // 🔒 bloquear todo
+                                    radio.disabled = true;
+                                    if (inputDesc) inputDesc.disabled = true;
+
+                                    // 🎯 plan correcto
+                                    if (idPlanFila === idPlan) {
+
+                                        radio.checked = true;
+
+                                        if (inputDesc) {
+                                            inputDesc.value = descuento;
+                                        }
+
+                                        if (lblValor) {
+                                            lblValor.innerText =
+                                                new Intl.NumberFormat('es-CO', {
+                                                    style: 'currency',
+                                                    currency: 'COP',
+                                                    minimumFractionDigits: 0
+                                                }).format(valor);
+                                        }
+                                    }
+                                });
+                            }
+                        </script>--%>
+
+<%--                    <script>
+                        function inicializarPlanes() {
+
+                            const modo = document.getElementById('<%= hfModo.ClientID %>').value;
+
+                        const hfIdPlan = document.getElementById('<%= hfIdPlan.ClientID %>').value;
+                        const hfDescuento = document.getElementById('<%= hfDescuento.ClientID %>').value;
+                        const hfValor = document.getElementById('<%= hfValorNegociacion.ClientID %>').value;
+
+                            function formatCOP(valor) {
+                                return new Intl.NumberFormat("es-CO", {
+                                    style: "currency",
+                                    currency: "COP",
+                                    minimumFractionDigits: 0
+                                }).format(valor);
+                            }
+
+                            function parseCOP(texto) {
+                                return Number(texto.replace(/[^0-9]+/g, '')) || 0;
+                            }
+
+                            document.querySelectorAll(".rdDescuento").forEach(radio => {
+
+                                const fila = radio.closest("tr");
+                                const idPlanFila = fila.cells[0].innerText.trim();
+
+                                const inputDesc = fila.querySelector(".inputDescuento");
+                                const celdaValor = fila.querySelector(".valor");
+                                const celdaValorFinal = fila.querySelector(".valorConDescuento");
+
+                                const valorBase = parseCOP(celdaValor.innerText);
+
+                                // 🔹 valor inicial
+                                celdaValorFinal.innerText = formatCOP(valorBase);
+
+                                // 🔒 MODO SOLO LECTURA
+                                if (modo === "lectura") {
+
+                                    radio.disabled = true;
+                                    inputDesc.disabled = true;
+
+                                    if (idPlanFila === hfIdPlan) {
+                                        radio.checked = true;
+                                        inputDesc.value = hfDescuento;
+                                        celdaValorFinal.innerText = formatCOP(hfValor);
+                                    }
+
+                                    return; // ❌ no eventos
+                                }
+
+                                // ✏️ MODO EDICIÓN
+                                inputDesc.disabled = true;
+
+                                radio.addEventListener("change", function () {
+                                    document.querySelectorAll(".inputDescuento").forEach(i => {
+                                        i.disabled = true;
+                                        i.value = "";
+                                    });
+
+                                    document.querySelectorAll(".valorConDescuento").forEach(v => {
+                                        v.innerText = formatCOP(valorBase);
+                                    });
+
+                                    inputDesc.disabled = false;
+                                    inputDesc.focus();
+                                });
+
+                                inputDesc.addEventListener("input", function () {
+                                    let p = parseFloat(this.value) || 0;
+                                    if (p < 0) p = 0;
+                                    if (p > 100) p = 100;
+
+                                    const nuevoValor = valorBase - (valorBase * p / 100);
+                                    celdaValorFinal.innerText = formatCOP(nuevoValor);
+                                });
+                            });
+                        }
+
+                        // DOM + UpdatePanel
+                        Sys.Application.add_load(inicializarPlanes);
+                        //document.addEventListener("DOMContentLoaded", inicializarPlanes);
+                        if (typeof Sys !== "undefined" && Sys.WebForms) {
+                            Sys.WebForms.PageRequestManager.getInstance()
+                                .add_endRequest(inicializarPlanes);
+                        }
+                    </script>--%>
+
+                        <script>
+                            function inicializarPlanes() {
+
+                                const modo = document.getElementById('<%= hfModo.ClientID %>').value;
+                                const hfIdPlan = document.getElementById('<%= hfIdPlan.ClientID %>').value;
+                                const hfDescuento = document.getElementById('<%= hfDescuento.ClientID %>').value;
+                                const hfValor = document.getElementById('<%= hfValorNegociacion.ClientID %>').value;
+
+                                function formatCOP(valor) {
+                                    return new Intl.NumberFormat("es-CO", {
+                                        style: "currency",
+                                        currency: "COP",
+                                        minimumFractionDigits: 0
+                                    }).format(valor);
+                                }
+
+                                function parseCOP(texto) {
+                                    return Number(texto.replace(/[^0-9]+/g, '')) || 0;
+                                }
+
+                                document.querySelectorAll(".rdDescuento").forEach(radio => {
+
+                                    const fila = radio.closest("tr");
+                                    const idPlanFila = fila.cells[0].innerText.trim();
+
+                                    const inputDesc = fila.querySelector(".inputDescuento");
+                                    const celdaValor = fila.querySelector(".valor");
+                                    const celdaValorFinal = fila.querySelector(".valorConDescuento");
+
+                                    const valorBase = parseCOP(celdaValor.innerText);
+                                    celdaValorFinal.innerText = formatCOP(valorBase);
+
+                                    if (idPlanFila === hfIdPlan) {
+                                        radio.checked = true;
+                                        inputDesc.value = hfDescuento;
+                                        celdaValorFinal.innerText = formatCOP(hfValor);
+
+                                        if (modo === "edicion") {
+                                            inputDesc.disabled = false;
+                                        }
+                                    }
+
+                                    //// 🔒 SOLO LECTURA
+                                    //if (modo === "lectura") {
+                                    //    radio.disabled = true;
+                                    //    inputDesc.disabled = true;
+                                    //    return;
+                                    //}
+
+                                    // edición
+                                    inputDesc.disabled = true;
+
+                                    radio.addEventListener("change", function () {
+                                        document.querySelectorAll(".inputDescuento").forEach(i => {
+                                            i.disabled = true;
+                                            i.value = "";
+                                        });
+
+                                        inputDesc.disabled = false;
+                                        inputDesc.focus();
+                                    });
+
+                                    inputDesc.addEventListener("input", function () {
+                                        let p = parseFloat(this.value) || 0;
+                                        if (p > 100) p = 100;
+                                        const nuevoValor = valorBase - (valorBase * p / 100);
+                                        celdaValorFinal.innerText = formatCOP(nuevoValor);
+                                    });
+                                });
+                            }
+
+                            // ✅ EL ÚNICO LUGAR CORRECTO EN WEBFORMS
+                            Sys.Application.add_load(inicializarPlanes);
+                        </script>
+
+                    <script>
+                        function obtenerSeleccionPlan() {
+
+                            const radio = document.querySelector(".rdDescuento:checked");
+                            if (!radio) {
+                                alert("Debe seleccionar un plan.");
+                                return false;
+                            }
+
+                            const fila = radio.closest("tr");
+                            const idPlan = fila.cells[0].innerText.trim();
+
+                            const descuentoInput = fila.querySelector(".inputDescuento");
+                            const descuento = parseFloat(descuentoInput.value) || 0;
+
+                            const celdaValorFinal = fila.querySelector(".valorConDescuento");
+                            const valorFinal = Number(
+                                celdaValorFinal.innerText.replace(/[^0-9]/g, '')
+                            );
+
+                            document.getElementById("<%= hfIdPlan.ClientID %>").value = idPlan;
+                        document.getElementById("<%= hfDescuento.ClientID %>").value = descuento;
+                        document.getElementById("<%= hfValorNegociacion.ClientID %>").value = valorFinal;
+
+                            return true;
+                        }
+                    </script>
 
                     </form>
                     <%--Fin Contenido!!!!--%>
@@ -532,6 +767,7 @@
     <script>
         $('.footable').footable();
     </script>
+
 
 
 

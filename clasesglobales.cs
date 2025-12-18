@@ -11099,6 +11099,58 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public string ActualizarNegociacionCorporativa(int idNegociacion, string docEmpresa, int idPregestion,string descripcion, string fecha_ini, string fecha_fin, int idPlan, decimal descuento,
+         decimal valor, out int _codigo, out string _mensaje)
+        {
+            string respuesta = string.Empty;
+            _mensaje = string.Empty;
+            _codigo  = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_NEGOCIACION", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_negociacion", idNegociacion);
+                        cmd.Parameters.AddWithValue("@p_documento_empresa", docEmpresa);
+                        cmd.Parameters.AddWithValue("@p_id_pregestion", idPregestion);
+                        cmd.Parameters.AddWithValue("@p_descripcion", descripcion);
+                        cmd.Parameters.AddWithValue("@p_fecha_ini", fecha_ini);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", fecha_fin);
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_descuento", descuento);
+                        cmd.Parameters.AddWithValue("@p_valor_negociacion", valor);
+
+                        // Parámetro de salida 1
+                        MySqlParameter codigo = new MySqlParameter("@p_codigo", MySqlDbType.Int32);
+                        codigo.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(codigo);
+                        // Parámetro de salida 2
+                        MySqlParameter mensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 255);
+                        mensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(mensaje);
+
+                        cmd.ExecuteNonQuery();
+                        _codigo = Convert.ToInt32(codigo.Value);
+                        _mensaje = mensaje.Value?.ToString();
+                        respuesta = _mensaje;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _codigo = -1;
+                _mensaje = "Error al registrar la negociación.";
+                respuesta = _mensaje + ex.Message.ToString(); 
+            }
+
+            return respuesta;
+        }
+
 
         #endregion
 
