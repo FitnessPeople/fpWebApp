@@ -306,10 +306,6 @@
                 background: '#3C3C3C',
                 showCloseButton: true,
                 confirmButtonText: 'Aceptar',
-                customClass: {
-                    popup: 'alert',
-                    confirmButton: 'btn-confirm-alert'
-                },
                 ...opcionesExtras
             });
         }

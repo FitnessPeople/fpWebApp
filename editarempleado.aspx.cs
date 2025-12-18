@@ -224,7 +224,15 @@ namespace fpWebApp
         private void CargarEmpleado()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.CargarEmpleados(Request.QueryString["editid"].ToString());
+
+            string cifrado = Request.QueryString["editid"];
+            ViewState["cifrado"] = cifrado;
+            string base64 = cg.RestoreBase64(cifrado);
+
+            string descifrado = cg.Decrypt(base64);
+            ViewState["descifrado"] = descifrado;
+
+            DataTable dt = cg.CargarEmpleados(descifrado);
             txbDocumento.Text = dt.Rows[0]["DocumentoEmpleado"].ToString();
 
             if (dt.Rows[0]["idTipoDocumento"].ToString() != "")
@@ -505,7 +513,7 @@ namespace fpWebApp
                         text: 'Ha ocurrido un error inesperado. " + ex.Message.ToString() + @"',
                         icon: 'error'
                     }).then(() => {
-                        window.location.href = 'editarempleado?" + Request.QueryString["editid"].ToString() + @"';
+                        window.location.href = 'editarempleado?" + ViewState["cifrado"] + @"';
                     });
                     ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
@@ -515,7 +523,7 @@ namespace fpWebApp
         private string TraerData()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEmpleado(Request.QueryString["editid"].ToString());
+            DataTable dt = cg.ConsultarEmpleado(ViewState["descifrado"].ToString());
 
             string strData = "";
             foreach (DataColumn column in dt.Columns)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -335,12 +336,18 @@ namespace fpWebApp
 
         protected void rpEmpleados_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
+            
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
+                    string valor = ((DataRowView)e.Item.DataItem).Row[0].ToString();
+                    string cifrado = HttpUtility.UrlEncode(cg.Encrypt(valor).Replace("+", "-").Replace("/", "_").Replace("=", ""));
+
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    //btnEditar.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "editarempleado?editid=" + cifrado);
                     btnEditar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")

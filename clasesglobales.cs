@@ -607,6 +607,85 @@ namespace fpWebApp
         }
 
         /// <summary>
+        /// Encripta textos. Util para enviar parametros por QueryString
+        /// </summary>
+        /// <param name="plainText"></param>
+        /// <returns></returns>
+        public string Encrypt(string plainText)
+        {
+            string Key = ConfigurationManager.AppSettings["AES_KEY"];
+            string IV = ConfigurationManager.AppSettings["AES_IV"];
+
+            if (string.IsNullOrEmpty(plainText))
+                throw new ArgumentException("El texto a cifrar está vacío");
+
+            if (string.IsNullOrEmpty(Key) || string.IsNullOrEmpty(IV))
+                throw new Exception("AES_KEY o AES_IV no configurados");
+
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = Encoding.UTF8.GetBytes(Key);
+                aes.IV = Encoding.UTF8.GetBytes(IV);
+                aes.Mode = CipherMode.CBC;
+                aes.Padding = PaddingMode.PKCS7;
+
+                using (var ms = new MemoryStream())
+                using (var encryptor = aes.CreateEncryptor())
+                using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                {
+                    byte[] data = Encoding.UTF8.GetBytes(plainText);
+                    cs.Write(data, 0, data.Length);
+
+                    // 🔑 ESTA LÍNEA ES LA CLAVE
+                    cs.FlushFinalBlock();
+
+                    return Convert.ToBase64String(ms.ToArray());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Desencripta textos. Util para enviar parametros por QueryString
+        /// </summary>
+        /// <param name="cipherText"></param>
+        /// <returns></returns>
+        public string Decrypt(string cipherText)
+        {
+            string Key = ConfigurationManager.AppSettings["AES_KEY"];
+            string IV = ConfigurationManager.AppSettings["AES_IV"];
+
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = Encoding.UTF8.GetBytes(Key.PadRight(32).Substring(0, 32));
+                aes.IV = Encoding.UTF8.GetBytes(IV);
+
+                using (var decryptor = aes.CreateDecryptor())
+                using (var ms = new MemoryStream(Convert.FromBase64String(cipherText)))
+                using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                using (var sr = new StreamReader(cs))
+                {
+                    return sr.ReadToEnd();
+                }
+            }
+        }
+
+        public string RestoreBase64(string base64Url)
+        {
+            string base64 = base64Url
+                .Replace("-", "+")
+                .Replace("_", "/");
+
+            // Restaurar padding
+            switch (base64.Length % 4)
+            {
+                case 2: base64 += "=="; break;
+                case 3: base64 += "="; break;
+            }
+
+            return base64;
+        }
+
+        /// <summary>
         /// Generador HSL -> HEX
         /// </summary>
         /// <param name="index"></param>

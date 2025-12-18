@@ -107,7 +107,7 @@ namespace fpWebApp
             {
                 string strQuery = "UPDATE afiliadosplanes " +
                     "SET EstadoPlan = 'Archivado', " +
-                    "ObservacionesPlan = ObservacionesPlan + ' ' " + txbObservaciones.Text.ToString() + " " +
+                    "ObservacionesPlan = CONCAT(ObservacionesPlan, ' ', '" + txbObservaciones.Text.ToString() + "') " +
                     "WHERE IdAfiliadoPlan = " + Request.QueryString["idAfiliadoPlan"].ToString();
                 clasesglobales cg = new clasesglobales();
                 string rta = cg.TraerDatosStr(strQuery);
