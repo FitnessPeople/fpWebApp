@@ -5,11 +5,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Web.UI;
-using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Globalization;
 using System.Threading;
-using NPOI.SS.Formula.Functions;
 
 namespace fpWebApp
 {
@@ -33,6 +31,10 @@ namespace fpWebApp
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Ingresos");
+                    txbFechaIni.Attributes.Add("type", "date");
+                    txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
+                    txbFechaFin.Attributes.Add("type", "date");
+                    txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -58,10 +60,6 @@ namespace fpWebApp
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
-                            txbFechaIni.Attributes.Add("type", "date");
-                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-01").ToString();
-                            txbFechaFin.Attributes.Add("type", "date");
-                            txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             CargarPlanes();
                         }
 
@@ -321,7 +319,7 @@ namespace fpWebApp
                 FROM pagosplanafiliado ppa, CanalesVenta cv  
                 WHERE YEAR(FechaHoraPago) = " + anio.ToString() + @" 
                     AND MONTH(FechaHoraPago) = " + mes.ToString() + @" 
-                    AND idCanalVenta = " + Convert.ToInt32(Session["idCanalVenta"].ToString()) + @" 
+                    AND ppa.idCanalVenta = " + Convert.ToInt32(Session["idCanalVenta"].ToString()) + @" 
                     AND ppa.idCanalVenta = cv.idCanalVenta 
                 GROUP BY ppa.idCanalVenta 
                 ORDER BY ppa.idCanalVenta;";

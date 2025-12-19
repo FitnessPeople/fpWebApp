@@ -54,6 +54,11 @@ namespace fpWebApp
                                     " WHERE idDisponibilidad = " + Request.QueryString["deleteid"].ToString();
                                 clasesglobales cg = new clasesglobales();
                                 string mensaje = cg.TraerDatosStr(strQuery);
+
+                                if (mensaje == "OK")
+                                {
+                                    cg.InsertarLog(Session["idusuario"].ToString(), "DisponibilidadEspecialistas", "Elimina", "El usuario eliminó un nuevo espacio del especialista.", "", "");
+                                }
                             }
                             catch (SqlException ex)
                             {

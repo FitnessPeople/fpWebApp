@@ -227,9 +227,8 @@ namespace fpWebApp
 
             string cifrado = Request.QueryString["editid"];
             ViewState["cifrado"] = cifrado;
-            string base64 = cg.RestoreBase64(cifrado);
 
-            string descifrado = cg.Decrypt(base64);
+            string descifrado = cg.Decrypt(cifrado);
             ViewState["descifrado"] = descifrado;
 
             DataTable dt = cg.CargarEmpleados(descifrado);

@@ -144,7 +144,7 @@ namespace fpWebApp
             try
             {
                 string respuesta = cg.TraerDatosStr("UPDATE EmpresasFP SET ContratoMayorEdad = '" + contenidoEditor + "' WHERE idEmpresaFP = 1 ");
-                //cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
+                cg.InsertarLog(Session["idusuario"].ToString(), "EmpresasFP", "Modifica", "El usuario modificó el contenido del contrato.", "", "");
             }
             catch (Exception ex)
             {
@@ -162,7 +162,7 @@ namespace fpWebApp
             try
             {
                 string respuesta = cg.TraerDatosStr("UPDATE EmpresasFP SET ContratoMayorEdad = '" + contenidoEditor + "' WHERE idEmpresaFP = 2 ");
-                //cg.InsertarLog(Session["idusuario"].ToString(), "sedes", "Agrega", "El usuario agregó una nueva sede: " + txbSede.Text.ToString() + ".", "", "");
+                cg.InsertarLog(Session["idusuario"].ToString(), "EmpresasFP", "Modifica", "El usuario modificó el contenido del contrato.", "", "");
             }
             catch (Exception ex)
             {

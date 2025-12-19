@@ -255,6 +255,11 @@ namespace fpWebApp
                             "" + ddlSedes.SelectedItem.Value.ToString() + ", 'Activo') ";
                             clasesglobales cg = new clasesglobales();
                             string mensaje = cg.TraerDatosStr(strQuery);
+
+                            if (mensaje=="OK")
+                            {
+                                cg.InsertarLog(Session["idusuario"].ToString(), "Especialistas", "Agrega", "El usuario agregó un nuevo especialistas con documento: " + txbDocumento.Text.ToString() + ".", "", "");
+                            }
                         }
                         catch (SqlException ex)
                         {

@@ -397,12 +397,19 @@ namespace fpWebApp
 
         protected void rpTabEmpleados_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
+
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
+                    
+                    string valor = ((DataRowView)e.Item.DataItem).Row[0].ToString();
+                    string cifrado = HttpUtility.UrlEncode(cg.Encrypt(valor).Replace("+", "-").Replace("/", "_").Replace("=", ""));
+
                     HtmlAnchor btnEditarTab = (HtmlAnchor)e.Item.FindControl("btnEditarTab");
-                    btnEditarTab.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row["DocumentoEmpleado"].ToString());
+                    //btnEditarTab.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row["DocumentoEmpleado"].ToString());
+                    btnEditarTab.Attributes.Add("href", "editarempleado?editid=" + cifrado);
                     btnEditarTab.Visible = true;
 
                     HtmlAnchor btnCambiarEstado = (HtmlAnchor)e.Item.FindControl("btnCambiarEstado");
@@ -434,7 +441,7 @@ namespace fpWebApp
                     END AS Label 
                     FROM logs 
                     WHERE idUsuario = " + idUsuario.ToString() + " ORDER BY FechaHora DESC LIMIT 10 ";
-                clasesglobales cg = new clasesglobales();
+                //clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(strQuery);
 
                 Repeater rpActividades = (Repeater)e.Item.FindControl("rpActividades");

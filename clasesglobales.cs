@@ -651,27 +651,7 @@ namespace fpWebApp
         /// <returns></returns>
         public string Decrypt(string cipherText)
         {
-            string Key = ConfigurationManager.AppSettings["AES_KEY"];
-            string IV = ConfigurationManager.AppSettings["AES_IV"];
-
-            using (Aes aes = Aes.Create())
-            {
-                aes.Key = Encoding.UTF8.GetBytes(Key.PadRight(32).Substring(0, 32));
-                aes.IV = Encoding.UTF8.GetBytes(IV);
-
-                using (var decryptor = aes.CreateDecryptor())
-                using (var ms = new MemoryStream(Convert.FromBase64String(cipherText)))
-                using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
-                using (var sr = new StreamReader(cs))
-                {
-                    return sr.ReadToEnd();
-                }
-            }
-        }
-
-        public string RestoreBase64(string base64Url)
-        {
-            string base64 = base64Url
+            string base64 = cipherText
                 .Replace("-", "+")
                 .Replace("_", "/");
 
@@ -682,7 +662,22 @@ namespace fpWebApp
                 case 3: base64 += "="; break;
             }
 
-            return base64;
+            string Key = ConfigurationManager.AppSettings["AES_KEY"];
+            string IV = ConfigurationManager.AppSettings["AES_IV"];
+
+            using (Aes aes = Aes.Create())
+            {
+                aes.Key = Encoding.UTF8.GetBytes(Key.PadRight(32).Substring(0, 32));
+                aes.IV = Encoding.UTF8.GetBytes(IV);
+
+                using (var decryptor = aes.CreateDecryptor())
+                using (var ms = new MemoryStream(Convert.FromBase64String(base64)))
+                using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                using (var sr = new StreamReader(cs))
+                {
+                    return sr.ReadToEnd();
+                }
+            }
         }
 
         /// <summary>
