@@ -51,12 +51,12 @@ namespace fpWebApp
                         {
                             divBotonesLista.Visible = true;
                             CargarPlanes();
-                            //lbExportarExcel.Visible = false;
+                            lbExportarExcel.Visible = false;
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
                             divBotonesLista.Visible = true;
-                            //lbExportarExcel.Visible = true;
+                            lbExportarExcel.Visible = true;
                         }
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
