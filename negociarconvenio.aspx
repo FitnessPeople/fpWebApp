@@ -306,10 +306,8 @@
                                                     <asp:HiddenField ID="hfValorNegociacion" runat="server" />
                                                     <asp:HiddenField ID="hfModo" runat="server" />
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
-                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
-                                                        ValidationGroup="agregar"
-                                                        OnClick="btnAgregar_Click"
-                                                        OnClientClick="guardarContenidoEditor(); return obtenerSeleccionPlan();" />
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar" OnClick="btnAgregar_Click"
+                                                        OnClientClick="return validarYConfirmar();"/>
                                                 </div>
                                                 <br />
                                                 <br />
@@ -740,6 +738,58 @@
                             return true;
                         }
                     </script>
+                    <script>
+                        function confirmarEliminacion() {
+
+                            Swal.fire({
+                                title: '¿Eliminar negociación?',
+                                text: 'Esta acción no se puede deshacer.',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'Sí, eliminar',
+                                cancelButtonText: 'Cancelar',
+                                confirmButtonColor: '#d33'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+
+                                    // Redirige pasando el deleteid
+                                    window.location.href = 'negociarconvenio.aspx?deleteid=<%= Request.QueryString["editid"] %>';
+                                    }
+                                });
+
+                            return false; // 
+                        }
+                    </script>
+                    <script>
+                        function validarYConfirmar() {
+
+                            // 1️⃣ Guardar contenido
+                            guardarContenidoEditor();
+
+                            // 2️⃣ Validar selección de plan
+                            if (!obtenerSeleccionPlan()) {
+                                return false; // ❌ cancela
+                            }
+
+                            // 3️⃣ Confirmación SweetAlert
+                            Swal.fire({
+                                title: '¿Desea eliminar esta negociación?',
+                                text: 'Esta acción no se puede deshacer.',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonText: 'Sí, eliminar',
+                                cancelButtonText: 'Cancelar',
+                                confirmButtonColor: '#d33'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    __doPostBack('<%= btnAgregar.UniqueID %>', '');
+                                    }
+                                });
+                            return false; 
+                        }
+                    </script>
+
+
 
                     </form>
                     <%--Fin Contenido!!!!--%>
