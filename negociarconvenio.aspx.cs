@@ -71,17 +71,57 @@ namespace fpWebApp
                         CargarNegociaciones(Convert.ToInt32(Session["idUsuario"].ToString()));
 
                         ltTitulo.Text = "Establecer condiciones";
+                        string descifradoEdit = null;
+                        string descifradoDelete = null;
+
+                        clasesglobales cg = new clasesglobales();
+
 
                         if (Request.QueryString.Count > 0)
                         {
-                            rpNegociaciones.Visible = false;
-                            if (Request.QueryString["editid"] != null)
+                            //  Editar
+                            if (!string.IsNullOrEmpty(Request.QueryString["editid"]))
                             {
-                                //Editar
-                                clasesglobales cg = new clasesglobales();
-                                string cifrado = Request.QueryString["editid"];
-                                string descifrado = cg.Decrypt(cifrado);
-                                DataTable dt = cg.ConsultarNegociacionPorId(int.Parse(descifrado));
+                                try
+                                {
+                                    string cifrado = Request.QueryString["editid"];
+                                    descifradoEdit = cg.Decrypt(cifrado);
+                                }
+                                catch
+                                {
+                                    MostrarAlerta(
+                                        "Error",
+                                        "El enlace de edición no es válido.",
+                                        "error"
+                                    );
+                                    return;
+                                }
+                            }
+
+                            //  Eliminar
+                            if (!string.IsNullOrEmpty(Request.QueryString["deleteid"]))
+                            {
+                                try
+                                {
+                                    string cifrado1 = Request.QueryString["deleteid"];
+                                    descifradoDelete = cg.Decrypt(cifrado1);
+                                }
+                                catch
+                                {
+                                    MostrarAlerta(
+                                        "Error",
+                                        "El enlace de eliminación no es válido.",
+                                        "error"
+                                    );
+                                    return;
+                                }
+                            }
+
+                            rpNegociaciones.Visible = false;
+                            if (descifradoEdit != null)
+                            {
+                                //Editar                                
+                                DataTable dt = cg.ConsultarNegociacionPorId(int.Parse(descifradoEdit));
                                 if (dt.Rows.Count > 0)
                                 {
                                     CargarPlanes();
@@ -100,18 +140,17 @@ namespace fpWebApp
                                     txbFechaIni.Value = Convert.ToDateTime(dt.Rows[0]["FechaIni"]).ToString("yyyy-MM-dd");
                                     txbFechaFin.Value = Convert.ToDateTime(dt.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
                                     btnAgregar.Text = "Actualizar";
+                                    hfAccion.Value = "editar";
                                     ltTitulo.Text = "Actualizar negociación";
                                 }
                             }
 
-                            if (Request.QueryString["deleteid"] != null)
+                            if (descifradoDelete != null)
                             {
-                                clasesglobales cg = new clasesglobales();
-
-
+                                
                                     //Borrar
                                     DataTable dt1 = new DataTable();
-                                    dt1 = cg.ConsultarNegociacionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
+                                    dt1 = cg.ConsultarNegociacionPorId(int.Parse(descifradoDelete));
                                     if (dt1.Rows.Count > 0)
                                     {
                                         CargarPlanes();
@@ -130,6 +169,7 @@ namespace fpWebApp
                                         txbFechaFin.Value = Convert.ToDateTime(dt1.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
                                         txbFechaFin.Disabled = true;
                                         btnAgregar.Text = "Eliminar";
+                                        hfAccion.Value = "eliminar";
                                         ltTitulo.Text = "Eliminar negociación";
                                 }
                             }
@@ -330,20 +370,62 @@ namespace fpWebApp
             decimal descuento = Convert.ToDecimal(hfDescuento.Value);
             decimal valorFinal = Convert.ToDecimal(hfValorNegociacion.Value);
 
-            string valor = (Request.QueryString["editid"]);
-            string cifrado = HttpUtility.UrlEncode(cg.Encrypt(valor).Replace("+", "-").Replace("/", "_").Replace("=", ""));
+            string descifradoEdit = null;
+            string descifradoDelete = null;
+
+            //  Editar
+            if (!string.IsNullOrEmpty(Request.QueryString["editid"]))
+            {
+                try
+                {
+                    string cifrado = Request.QueryString["editid"];
+                    descifradoEdit = cg.Decrypt(cifrado);
+                }
+                catch
+                {                    
+                    MostrarAlerta(
+                        "Error",
+                        "El enlace de edición no es válido.",
+                        "error"
+                    );
+                    return;
+                }
+            }
+
+            //  Eliminar
+            if (!string.IsNullOrEmpty(Request.QueryString["deleteid"]))
+            {
+                try
+                {
+                    string cifrado1 = Request.QueryString["deleteid"];
+                    descifradoDelete = cg.Decrypt(cifrado1);
+                }
+                catch
+                {
+                    MostrarAlerta(
+                        "Error",
+                        "El enlace de eliminación no es válido.",
+                        "error"
+                    );
+                    return;
+                }
+            }
 
             if (Request.QueryString.Count > 0)
             {
-                if (Request.QueryString["editid"] != null)
+                if (descifradoEdit != null)
                 {
                     List<int> planesSeleccionados = new List<int>();
+
+                    DataTable dt1 = cg.ConsultarNegociacionPorId(int.Parse(descifradoEdit));
+                    ListaProspectos(ddlEmpresas.SelectedValue);
+                    ddlProspectos.SelectedValue = dt1.Rows[0]["idPregestion"].ToString();
 
                     string strInitData = TraerData();
                     try
                     {
-                        string respuesta = cg.ActualizarNegociacionCorporativa(Convert.ToInt32(Request.QueryString["editid"].ToString()),ddlEmpresas.SelectedItem.Value,  
-                        Convert.ToInt32(ddlProspectos.SelectedItem.Value),contenidoEditor, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, out codigo, out mensaje);
+                        string respuesta = cg.ActualizarNegociacionCorporativa(Convert.ToInt32(descifradoEdit),ddlEmpresas.SelectedItem.Value,  
+                        Convert.ToInt32(ddlProspectos.SelectedValue),contenidoEditor, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, out codigo, out mensaje);
 
                         if (codigo==1)
                         {
@@ -386,11 +468,11 @@ namespace fpWebApp
                     cg.InsertarLog(Session["idusuario"].ToString(), "negociarconvenio", "Modifica", "El usuario modificó datos a la negocición " + "" + ".", strInitData, strNewData);
 
                 }
-                if (Request.QueryString["deleteid"] != null)
+                if (descifradoDelete != null)
                 {
                     try
                     {
-                        string respuesta = cg.EliminarNegociacionCorporativa(int.Parse(Request.QueryString["deleteid"].ToString()));
+                        string respuesta = cg.EliminarNegociacionCorporativa(int.Parse(descifradoDelete));
                         string script;
                         if (respuesta == "OK")
                         {
@@ -431,6 +513,8 @@ namespace fpWebApp
             }
             else
             {
+                hfAccion.Value = "agregar";
+                btnAgregar.Text = "Agregar";
                 // 1. Buscar la FILA seleccionada
                 foreach (RepeaterItem item in rpPlanesVigentes.Items)
                 {
@@ -460,7 +544,6 @@ namespace fpWebApp
                         break; 
                     }
                 }
-
 
                 try
                 {
@@ -543,7 +626,7 @@ namespace fpWebApp
             try
             {
                 DataTable dt = cg.ConsultarNegociacionesPorUsuario(Convert.ToInt32(Session["idusuario"]));
-                string nombreArchivo = $"Sedes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                string nombreArchivo = $"{this.GetType().Name}_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {
@@ -592,15 +675,15 @@ namespace fpWebApp
 
                         HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
                         btnEditar.Attributes.Add("href", "negociarconvenio?editid=" + cifrado);
-
-                        //HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                        //btnEditar.Attributes.Add("href", "negociarconvenio?editid=" + ((DataRowView)e.Item.DataItem).Row["idNegociacion"].ToString());
                         btnEditar.Visible = true;
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
+                        string valor = ((DataRowView)e.Item.DataItem).Row[0].ToString();
+                        string cifrado = HttpUtility.UrlEncode(cg.Encrypt(valor).Replace("+", "-").Replace("/", "_").Replace("=", ""));
+
                         HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                        btnEliminar.Attributes.Add("href", "negociarconvenio?deleteid=" + ((DataRowView)e.Item.DataItem).Row["idNegociacion"].ToString());
+                        btnEliminar.Attributes.Add("href", "negociarconvenio?deleteid=" + cifrado);
                         btnEliminar.Visible = true;
                     }
                 }

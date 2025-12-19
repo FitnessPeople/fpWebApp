@@ -309,6 +309,7 @@
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar" OnClick="btnAgregar_Click"
                                                         OnClientClick="return validarYConfirmar();"/>
                                                 </div>
+                                                <asp:HiddenField ID="hfAccion" runat="server" />
                                                 <br />
                                                 <br />
 
@@ -763,31 +764,40 @@
                     <script>
                         function validarYConfirmar() {
 
-                            // 1️⃣ Guardar contenido
-                            guardarContenidoEditor();
+                            const accion = document.getElementById('<%= hfAccion.ClientID %>').value;
 
-                            // 2️⃣ Validar selección de plan
-                            if (!obtenerSeleccionPlan()) {
-                                return false; // ❌ cancela
+                        // ✔ Guardar editor siempre
+                        guardarContenidoEditor();
+
+                        // ✔ Validar plan siempre
+                        if (!obtenerSeleccionPlan()) {
+                            return false;
+                        }
+
+                        // 🟢 SI NO ES ELIMINAR → POSTBACK NORMAL
+                        if (accion !== "eliminar") {
+                            return true;
+                        }
+
+                        // 🔴 SOLO SI ES ELIMINAR
+                        Swal.fire({
+                            title: '¿Desea eliminar esta negociación?',
+                            text: 'Esta acción no se puede deshacer.',
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonText: 'Sí, eliminar',
+                            cancelButtonText: 'Cancelar',
+                            confirmButtonColor: '#d33'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                __doPostBack('<%= btnAgregar.UniqueID %>', '');
                             }
+                        });
 
-                            // 3️⃣ Confirmación SweetAlert
-                            Swal.fire({
-                                title: '¿Desea eliminar esta negociación?',
-                                text: 'Esta acción no se puede deshacer.',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonText: 'Sí, eliminar',
-                                cancelButtonText: 'Cancelar',
-                                confirmButtonColor: '#d33'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    __doPostBack('<%= btnAgregar.UniqueID %>', '');
-                                    }
-                                });
-                            return false; 
+                            return false; // ⛔ detener postback automático
                         }
                     </script>
+
 
 
 
