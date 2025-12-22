@@ -45,6 +45,8 @@ namespace fpWebApp
                         }
                     }
                     listaEmpleados();
+
+                    //Gráficos
                     CantidadGenero();
                     CantidadCiudad();
                     CantidadEstadoCivil();
@@ -53,6 +55,12 @@ namespace fpWebApp
                     CantidadTipoVivienda();
                     CantidadActividadExtra();
                     CantidadConsumoLicor();
+                    
+                    CantidadEdades();
+                    //CantidadMedioTransporte();
+                    //CantidadTipoSangre();
+                    
+
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
                 }
@@ -133,18 +141,24 @@ namespace fpWebApp
             string strGeneros = "";
             if (Session["idSede"].ToString() == "11") // Usuario administrativo
             {
-                strGeneros = @"SELECT e.idGenero, g.Genero, COUNT(*) AS cuantos  
+                //strGeneros = @"SELECT e.idGenero, g.Genero, COUNT(*) AS cuantos  
+                //    FROM empleados e 
+                //    LEFT JOIN generos g ON g.idGenero = e.idGenero 
+                //    GROUP BY e.idGenero";
+                strGeneros = @"SELECT e.idGenero, 
+                    IF(g.Genero = 'Masculino', '👨','👩') AS Genero, 
+                    COUNT(*) AS cuantos  
                     FROM empleados e 
-                    RIGHT JOIN generos g ON e.idGenero = g.idGenero 
-                    GROUP BY g.idGenero";
+                    LEFT JOIN generos g ON g.idGenero = e.idGenero 
+                    GROUP BY e.idGenero";
             }
             else
             {
                 strGeneros = @"SELECT e.idGenero, g.Genero, COUNT(*) AS cuantos  
                     FROM empleados e 
-                    RIGHT JOIN generos g ON e.idGenero = g.idGenero 
+                    LEFT JOIN generos g ON g.idGenero = e.idGenero 
                     WHERE e.idSede = " + Session["idSede"].ToString() + @" 
-                    GROUP BY g.idGenero";
+                    GROUP BY e.idGenero";
             }
             
             clasesglobales cg = new clasesglobales();
@@ -197,6 +211,7 @@ namespace fpWebApp
                 strCiudades = @"SELECT idCiudadEmpleado, NombreCiudad, COUNT(*) AS cuantos  
                     FROM empleados e, ciudades c  
                     WHERE e.idCiudadEmpleado = c.idCiudad 
+                    AND idCiudadEmpleado IS NOT NULL
                     AND idCiudadEmpleado IN (
                     SELECT idCiudadEmpleado 
                     FROM empleados 
@@ -209,6 +224,7 @@ namespace fpWebApp
                 strCiudades = @"SELECT idCiudadEmpleado, NombreCiudad, COUNT(*) AS cuantos  
                     FROM empleados e, ciudades c  
                     WHERE e.idCiudadEmpleado = c.idCiudad 
+                    AND idCiudadEmpleado IS NOT NULL 
                     AND e.idSede = " + Session["idSede"].ToString() + @" 
                     AND idCiudadEmpleado IN (
                     SELECT idCiudadEmpleado 
@@ -358,8 +374,6 @@ namespace fpWebApp
                     GROUP BY TipoContrato";
             }
 
-            
-
             clasesglobales cg = new clasesglobales();
 
             DataTable dt = cg.TraerDatos(strTipoContrato);
@@ -409,14 +423,18 @@ namespace fpWebApp
             {
                 strNivelEstudio = @"SELECT NivelEstudio, COUNT(*) AS cuantos  
                     FROM empleados e 
-                    GROUP BY NivelEstudio";
+                    WHERE NivelEstudio IS NOT NULL
+                    GROUP BY NivelEstudio
+                    ORDER BY NivelEstudio";
             }
             else
             {
                 strNivelEstudio = @"SELECT NivelEstudio, COUNT(*) AS cuantos  
                     FROM empleados e 
-                    WHERE e.idSede = " + Session["idSede"].ToString() + @" 
-                    GROUP BY NivelEstudio";
+                    WHERE NivelEstudio IS NOT NULL
+                    AND e.idSede = " + Session["idSede"].ToString() + @" 
+                    GROUP BY NivelEstudio
+                    ORDER BY NivelEstudio";
             }
 
             clasesglobales cg = new clasesglobales();
@@ -468,13 +486,15 @@ namespace fpWebApp
             {
                 strTipoVivienda = @"SELECT TipoVivienda, COUNT(*) AS cuantos  
                     FROM empleados e 
+                    WHERE TipoVivienda IS NOT NULL
                     GROUP BY TipoVivienda";
             }
             else
             {
                 strTipoVivienda = @"SELECT TipoVivienda, COUNT(*) AS cuantos  
                     FROM empleados e 
-                    WHERE e.idSede = " + Session["idSede"].ToString() + @" 
+                    WHERE TipoVivienda IS NOT NULL 
+                    AND e.idSede = " + Session["idSede"].ToString() + @" 
                     GROUP BY TipoVivienda";
             }
 
@@ -527,13 +547,15 @@ namespace fpWebApp
             {
                 strActividadExtra = @"SELECT ActividadExtra, COUNT(*) AS cuantos  
                     FROM empleados e 
+                    WHERE ActividadExtra IS NOT NULL 
                     GROUP BY ActividadExtra";
             }
             else
             {
                 strActividadExtra = @"SELECT ActividadExtra, COUNT(*) AS cuantos  
                     FROM empleados e 
-                    WHERE e.idSede = " + Session["idSede"].ToString() + @" 
+                    WHERE ActividadExtra IS NOT NULL 
+                    AND e.idSede = " + Session["idSede"].ToString() + @" 
                     GROUP BY ActividadExtra";
             }
 
@@ -586,13 +608,15 @@ namespace fpWebApp
             {
                 strConsumeLicor = @"SELECT ConsumeLicor, COUNT(*) AS cuantos  
                     FROM empleados e 
+                    WHERE ConsumeLicor IS NOT NULL 
                     GROUP BY ConsumeLicor";
             }
             else
             {
                 strConsumeLicor = @"SELECT ConsumeLicor, COUNT(*) AS cuantos  
                     FROM empleados e 
-                    WHERE e.idSede = " + Session["idSede"].ToString() + @" 
+                    WHERE ConsumeLicor IS NOT NULL 
+                    AND e.idSede = " + Session["idSede"].ToString() + @" 
                     GROUP BY ConsumeLicor";
             }
 
@@ -631,6 +655,78 @@ namespace fpWebApp
                     this.GetType(),
                     "dataChart8",
                     $"var nombres8 = {nombresJson}; var cantidades8 = {cantidadesJson}; var colores8 = {coloresJson};",
+                    true
+                );
+            }
+
+            dt.Dispose();
+        }
+
+        private void CantidadEdades()
+        {
+            string strEdades = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strEdades = @"SELECT 
+                    CASE 
+                        WHEN TIMESTAMPDIFF(YEAR, e.FechaNacEmpleado, CURDATE()) < 25 THEN '<25 años'
+                        WHEN TIMESTAMPDIFF(YEAR, e.FechaNacEmpleado, CURDATE()) BETWEEN 25 AND 35 THEN '25–35 años'
+                        WHEN TIMESTAMPDIFF(YEAR, e.FechaNacEmpleado, CURDATE()) BETWEEN 36 AND 45 THEN '36–45 años'
+                        WHEN TIMESTAMPDIFF(YEAR, e.FechaNacEmpleado, CURDATE()) BETWEEN 46 AND 60 THEN '46–60 años'
+                        ELSE '>60 años'
+                    END AS RangoEdad,
+                    COUNT(*) AS cuantos 
+                    FROM Empleados e 
+                    WHERE e.FechaNacEmpleado IS NOT NULL
+                    GROUP BY RangoEdad;";
+            }
+            else
+            {
+                strEdades = @"SELECT 
+                    CASE 
+                        WHEN TIMESTAMPDIFF(YEAR, e.FechaNacEmpleado, CURDATE()) < 25 THEN '<25 años'
+                        WHEN TIMESTAMPDIFF(YEAR, e.FechaNacEmpleado, CURDATE()) BETWEEN 25 AND 35 THEN '25–35 años'
+                        WHEN TIMESTAMPDIFF(YEAR, e.FechaNacEmpleado, CURDATE()) BETWEEN 36 AND 45 THEN '36–45 años'
+                        WHEN TIMESTAMPDIFF(YEAR, e.FechaNacEmpleado, CURDATE()) BETWEEN 46 AND 60 THEN '46–60 años'
+                        ELSE '>60 años'
+                    END AS RangoEdad,
+                    COUNT(*) AS cuantos 
+                    FROM Empleados e 
+                    WHERE e.FechaNacEmpleado IS NOT NULL 
+                    AND e.idSede = " + Session["idSede"].ToString() + @" 
+                    GROUP BY RangoEdad;";
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.TraerDatos(strEdades);
+
+            if (dt.Rows.Count > 0)
+            {
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+                int cuantos = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    cuantos += 1;
+                    nombres.Add(row["RangoEdad"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+                    colores.Add(color);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart9",
+                    $"var nombres9 = {nombresJson}; var cantidades9 = {cantidadesJson}; var colores9 = {coloresJson};",
                     true
                 );
             }

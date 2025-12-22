@@ -399,7 +399,7 @@
                         </div>
                     </div>
 
-                    <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px 10px 0px;">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="ibox float-e-margins">
@@ -409,19 +409,19 @@
                                     <div class="ibox-content">
                                         <div class="row text-center">
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart1" width="250" height="150" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart1" height="150"></canvas>
                                                 <h5>Géneros</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart2" width="250" height="150" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart2" height="150"></canvas>
                                                 <h5>Ciudades</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart3" width="250" height="150" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart3" height="150"></canvas>
                                                 <h5>Estado civil</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart4" width="250" height="150" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart4" height="150"></canvas>
                                                 <h5>Tipo de contrato</h5>
                                             </div>
                                         </div>
@@ -431,7 +431,7 @@
                         </div>
                     </div>
 
-                    <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px 10px 0px;">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="ibox float-e-margins">
@@ -441,19 +441,19 @@
                                     <div class="ibox-content">
                                         <div class="row text-center">
                                             <div class="col-lg-3">
-                                                <canvas id="barChart" height="140"></canvas>
+                                                <canvas id="barChart" height="150"></canvas>
                                                 <h5>Nivel estudio</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart6" width="250" height="150" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart6" height="150"></canvas>
                                                 <h5>Tipo de vivienda</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart7" width="250" height="150" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart7" height="150"></canvas>
                                                 <h5>Actividad extra</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart8" width="250" height="150" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart8" height="150"></canvas>
                                                 <h5>Consumo licor</h5>
                                             </div>
                                         </div>
@@ -489,14 +489,8 @@
     <!-- jQuery UI -->
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
-    <!-- Gráficas -->
     <!-- ChartJS-->
     <script src="js/plugins/chartJs/Chart.min.js"></script>
-    <script src="js/demo/chartjs-demo.js"></script>
-
-    <!-- d3 and c3 charts -->
-    <script src="js/plugins/d3/d3.min.js"></script>
-    <script src="js/plugins/c3/c3.min.js"></script>
 
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
@@ -515,61 +509,281 @@
             var doughnutOptions = {
                 responsive: false,
                 legend: {
-                    display: false
+                    display: true
                 }
             };
 
 
             // Grafica Generos
-            var doughnutData = {
+            //var doughnutData = {
+            //    labels: nombres1,
+            //    datasets: [{
+            //        data: cantidades1,
+            //        backgroundColor: colores1
+            //    }]
+            //};
+
+            //var ctx4 = document.getElementById("doughnutChart1").getContext("2d");
+            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+            var barData = {
                 labels: nombres1,
-                datasets: [{
-                    data: cantidades1,
-                    backgroundColor: colores1
-                }]
+                datasets: [
+                    {
+                        label: "Empleados",
+                        backgroundColor: colores1,
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: cantidades1
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x, bar._model.y);
+                            });
+                        });
+                    }
+                }
             };
 
             var ctx4 = document.getElementById("doughnutChart1").getContext("2d");
-            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            new Chart(ctx4, { type: 'bar', data: barData, options: barOptions });
 
 
             // Grafica Ciudades
-            var doughnutData = {
+            //var doughnutData = {
+            //    labels: nombres2,
+            //    datasets: [{
+            //        data: cantidades2,
+            //        backgroundColor: colores2
+            //    }]
+            //};
+
+            //var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
+            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+
+            var barData = {
                 labels: nombres2,
-                datasets: [{
-                    data: cantidades2,
-                    backgroundColor: colores2
-                }]
+                datasets: [
+                    {
+                        label: "Empleados",
+                        backgroundColor: colores2,
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: cantidades2
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x + 10, bar._model.y + 8);
+                            });
+                        });
+                    }
+                }
             };
 
             var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
-            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
+
 
 
             // Grafica Estado civil
-            var doughnutData = {
+            //var doughnutData = {
+            //    labels: nombres3,
+            //    datasets: [{
+            //        data: cantidades3,
+            //        backgroundColor: colores3
+            //    }]
+            //};
+
+            //var ctx4 = document.getElementById("doughnutChart3").getContext("2d");
+            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+
+            var barData = {
                 labels: nombres3,
-                datasets: [{
-                    data: cantidades3,
-                    backgroundColor: colores3
-                }]
+                datasets: [
+                    {
+                        label: "Empleados",
+                        backgroundColor: colores3,
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: cantidades3
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
+                            });
+                        });
+                    }
+                }
             };
 
             var ctx4 = document.getElementById("doughnutChart3").getContext("2d");
-            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
 
 
             // Grafica TipoContrato
-            var doughnutData = {
+            //var doughnutData = {
+            //    labels: nombres4,
+            //    datasets: [{
+            //        data: cantidades4,
+            //        backgroundColor: colores4
+            //    }]
+            //};
+
+            //var ctx4 = document.getElementById("doughnutChart4").getContext("2d");
+            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+
+            var barData = {
                 labels: nombres4,
-                datasets: [{
-                    data: cantidades4,
-                    backgroundColor: colores4
-                }]
+                datasets: [
+                    {
+                        label: "Empleados",
+                        backgroundColor: colores4,
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: cantidades4
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
+                            });
+                        });
+                    }
+                }
             };
 
             var ctx4 = document.getElementById("doughnutChart4").getContext("2d");
-            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
 
 
             // Gráfica Nivel de Estudio
@@ -598,50 +812,238 @@
                             beginAtZero: true
                         }
                     }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
+                            });
+                        });
+                    }
                 }
             };
 
             var ctx4 = document.getElementById("barChart").getContext("2d");
-            new Chart(ctx4, { type: 'bar', data: barData, options: barOptions });
+            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
 
 
             // Gráfica Tipo de Vivienda
-            var doughnutData = {
+            //var doughnutData = {
+            //    labels: nombres6,
+            //    datasets: [{
+            //        data: cantidades6,
+            //        backgroundColor: colores6
+            //    }]
+            //};
+
+            //var ctx4 = document.getElementById("doughnutChart6").getContext("2d");
+            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+
+            var barData = {
                 labels: nombres6,
-                datasets: [{
-                    data: cantidades6,
-                    backgroundColor: colores6
-                }]
+                datasets: [
+                    {
+                        label: "Empleados",
+                        backgroundColor: colores6,
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: cantidades6
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
+                            });
+                        });
+                    }
+                }
             };
 
             var ctx4 = document.getElementById("doughnutChart6").getContext("2d");
-            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
 
 
             // Gráfica Actividad Extra
-            var doughnutData = {
+            //var doughnutData = {
+            //    labels: nombres7,
+            //    datasets: [{
+            //        data: cantidades7,
+            //        backgroundColor: colores7
+            //    }]
+            //};
+
+            //var ctx4 = document.getElementById("doughnutChart7").getContext("2d");
+            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+
+            var barData = {
                 labels: nombres7,
-                datasets: [{
-                    data: cantidades7,
-                    backgroundColor: colores7
-                }]
+                datasets: [
+                    {
+                        label: "Empleados",
+                        backgroundColor: colores7,
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: cantidades7
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
+                            });
+                        });
+                    }
+                }
             };
 
             var ctx4 = document.getElementById("doughnutChart7").getContext("2d");
-            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
 
 
             // Gráfica Consume Licor
-            var doughnutData = {
+            //var doughnutData = {
+            //    labels: nombres8,
+            //    datasets: [{
+            //        data: cantidades8,
+            //        backgroundColor: colores8
+            //    }]
+            //};
+
+            //var ctx4 = document.getElementById("doughnutChart8").getContext("2d");
+            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+
+            var barData = {
                 labels: nombres8,
-                datasets: [{
-                    data: cantidades8,
-                    backgroundColor: colores8
-                }]
+                datasets: [
+                    {
+                        label: "Empleados",
+                        backgroundColor: colores8,
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: cantidades8
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
+                            });
+                        });
+                    }
+                }
             };
 
             var ctx4 = document.getElementById("doughnutChart8").getContext("2d");
-            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
         });
 
     </script>
