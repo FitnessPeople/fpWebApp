@@ -11,6 +11,7 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using DocumentFormat.OpenXml.Presentation;
+using Microsoft.Ajax.Utilities;
 using NPOI.SS.Formula.Functions;
 
 namespace fpWebApp
@@ -76,7 +77,7 @@ namespace fpWebApp
                         }
                     }
 
-                    ListaEmpresasCRM();
+                    listaEmpresasAfiliadas();
                     ListaEstadosCRM();
                     rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
                     ListaContactosPorUsuario();
@@ -418,17 +419,53 @@ namespace fpWebApp
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
-        private void ListaEmpresasCRM()
+        //private void ListaEmpresasCRM()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    try
+        //    {
+
+        //        DataTable dt = cg.ConsultarEmpresasCRM();
+        //        ddlEmpresa.DataSource = dt;
+        //        ddlEmpresa.DataBind();
+
+        //        dt.Dispose();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+        //    }
+        //}
+
+        private void listaEmpresasAfiliadas()
         {
             clasesglobales cg = new clasesglobales();
             try
             {
-               
-                DataTable dt = cg.ConsultarEmpresasCRM();
+                DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
+
                 ddlEmpresa.DataSource = dt;
+                ddlEmpresa.DataValueField = "DocumentoEmpresa";
+                ddlEmpresa.DataTextField = "NombreEmpresa";
                 ddlEmpresa.DataBind();
 
-                dt.Dispose();
+               // ddlEmpresas.Items.Insert(0, new ListItem("Seleccione", ""));
+
+                foreach (ListItem item in ddlEmpresa.Items)
+                {
+                    if (!string.IsNullOrEmpty(item.Value))
+                    {
+
+                        DataRow[] row = dt.Select($"DocumentoEmpresa = '{item.Value}'");
+
+                        if (row.Length > 0)
+                        {
+                            string estado = row[0]["Origen"].ToString();
+                            item.Text = $"{item.Text} ({estado})";
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -1615,6 +1652,7 @@ namespace fpWebApp
 
                     dt1 = cg.ConsultarTipoAfiliadoBasico();
 
+
                     try
                     {
                         if (dt.Rows.Count > 0)
@@ -1648,7 +1686,23 @@ namespace fpWebApp
 
                             CargarPlanesAfiliadPregestion(dt.Rows[0]["idAfiliado"].ToString());
                         }
-                        dt.Dispose();
+                        else
+                        { //consultar prospectos asignados
+                            DataTable dt2 = cg.ConsultarProspectosCRM();
+
+                           
+                            if (Convert.ToInt32(dt2.Rows[0]["idAsesor"].ToString()) != 0)
+                            {
+                                txbDocumento.Text = documento.ToString();
+                                //ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+
+                            }
+
+
+                        }
+                            dt.Dispose();
+                         
+
                     }
                     catch (Exception ex)
                     {

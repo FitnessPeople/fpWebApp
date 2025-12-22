@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -29,6 +30,7 @@ namespace fpWebApp
                         {
                             ListaClienteCorporativo();
                             listaEmpresasAfiliadas();
+                            CargarCanalesAsesores();
                         }
                         if (ViewState["Exportar"].ToString() == "1")
                         {
@@ -84,10 +86,35 @@ namespace fpWebApp
         private void ListaClienteCorporativo()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarProspectosCRM();
-            gvProspectos.DataSource = dt;
-            gvProspectos.DataBind();
-            dt.Dispose();
+            try
+            {                
+                DataTable dt = cg.ConsultarProspectosCRM();
+                gvProspectos.DataSource = dt;
+                gvProspectos.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+
+        }
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+            Swal.hideLoading();
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
 
 
@@ -101,9 +128,7 @@ namespace fpWebApp
                 ddlEmpresas.DataSource = dt;
                 ddlEmpresas.DataValueField = "DocumentoEmpresa";  // Ahora SÍ existe
                 ddlEmpresas.DataTextField = "NombreEmpresa";
-                ddlEmpresas.DataBind();
-
-                ddlEmpresas.Items.Insert(0, new ListItem("Seleccione", ""));
+                ddlEmpresas.DataBind();             
 
             }
             catch (Exception ex)
@@ -375,6 +400,99 @@ namespace fpWebApp
             }
         }
 
+        private void CargarCanalesAsesores()
+        {
+            int idPerfil = Convert.ToInt32(Session["idPerfil"].ToString());
+            int idCanalVenta = Convert.ToInt32(Session["idCanalVenta"].ToString());
+
+            //CargarCanalesVentaSedes();
+            if (idPerfil == 1 || idPerfil == 18 || idPerfil == 21 || idPerfil == 37) // Usuario Directivo
+            {
+                CargarAsesoresPorSede(idCanalVenta);
+               // listaAfiliados("Todas");
+            }
+            else
+            {
+                CargarAsesoresPorSede(idCanalVenta);
+                if (idCanalVenta == 12 || idCanalVenta == 13 || idCanalVenta == 14)
+                {
+                   // listaAfiliados("Todas");
+                }
+               // listaAfiliados(idCanalVenta.ToString());
+            }
+        }
+
+        private void CargarAsesoresPorSede(int idCanalVenta)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            ddlAsesores.Items.Clear();
+            try
+            {
+                int idSede = Convert.ToInt32(Session["idSede"].ToString());
+                DataTable dt = cg.ConsultaCargarAsesoresPorSede(idSede);
+
+                if (idCanalVenta > 0)
+                {
+                    var filteredRows = dt.AsEnumerable()
+                                         .Where(r => r.Field<int>("idCanalVenta") == idCanalVenta);
+
+                    if (filteredRows.Any())
+                    {
+                        dt = filteredRows.CopyToDataTable();
+                    }
+                    else
+                    {
+                        dt = dt.Clone();
+                    }
+                }
+                ddlAsesores.DataSource = dt;
+                ddlAsesores.DataTextField = "NombreUsuario";
+                ddlAsesores.DataValueField = "idUsuario";
+                ddlAsesores.DataBind();
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                string mensaje = ex.Message.ToString();
+            }
+        }
+
+        //private void CargarCanalesVentaSedes()
+        //{
+        //    ddlCanalVenta.Items.Clear();
+        //    System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem("Seleccione", "");
+        //    ddlCanalVenta.Items.Add(li);
+
+        //    try
+        //    {
+        //        clasesglobales cg = new clasesglobales();
+        //        DataTable dt = new DataTable();
+
+        //        if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
+        //        {
+        //            dt = cg.ConsultarCanalesVentaSedes();
+        //        }
+        //        else
+        //        {
+        //            dt = cg.ConsultarCanalesVentaSedesPorId(Convert.ToInt32(Session["idSede"].ToString()));
+        //        }
+
+        //        ddlCanalVenta.DataTextField = "NombreCanalVenta";
+        //        ddlCanalVenta.DataValueField = "idCanalVenta";
+        //        ddlCanalVenta.DataSource = dt;
+        //        ddlCanalVenta.DataBind();
+
+        //        dt.Dispose();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        string mensaje = ex.Message.ToString();
+        //    }
+
+        //}
+
         protected void gvProspectos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -416,6 +534,74 @@ namespace fpWebApp
         {
             get { return ViewState["SortDirection"] as string ?? "ASC"; }
             set { ViewState["SortDirection"] = value; }
+        }
+
+        protected void lnkAsignar_Click(object sender, EventArgs e)
+        {
+            string mensaje = string.Empty;
+            string asesor = ddlAsesores.SelectedItem.Value;
+            bool haySeleccionados = false;
+            int totalAgregados = 0;
+            int totalErrores = 0;
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                foreach (GridViewRow row in gvProspectos.Rows)
+                {
+                    if (row.RowType == DataControlRowType.DataRow)
+                    {
+                        var chk = row.FindControl("chkSeleccionar") as System.Web.UI.WebControls.CheckBox;
+
+                        if (chk != null && chk.Checked)
+                        {
+                            haySeleccionados = true;
+
+                            string idPregestion = gvProspectos.DataKeys[row.RowIndex]["idPregestion"].ToString();    
+
+                            
+                            string respuesta = cg.ActualizarAsesorPregestionCorporativo( Convert.ToInt32(idPregestion), Convert.ToInt32(asesor));
+
+                            if (respuesta == "OK")
+                                totalAgregados++;
+                            else
+                                totalErrores++;
+                        }
+                    }
+                }
+
+                if (!haySeleccionados)
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Selecciona un registro',
+                            text: 'Debes elegir al menos uno para poder asignarlo a un asesor.',
+                            icon: 'warning'
+                        });
+                    ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "SeleccioneUno", script, true);
+                    return;
+                }
+
+                string scriptOk = $@"
+                    Swal.fire({{
+                        title: '¡Registros asignados!',
+                        text: 'Se agregaron {totalAgregados} registros correctamente.',
+                        icon: 'success',
+                        timer: 3000,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }}).then(() => {{
+                        window.location.href = 'clientecorporativo';
+                    }});
+                ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", scriptOk, true);
+            }
+
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
     }
 }

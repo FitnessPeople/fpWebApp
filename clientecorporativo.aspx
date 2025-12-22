@@ -142,7 +142,7 @@
                             </Scripts>
                         </asp:ScriptManager>
                         <div class="row" id="divContenido" runat="server">
-                            
+
                             <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
                             <div class="col-lg-5">
                                 <div class="ibox float-e-margins">
@@ -357,7 +357,7 @@
                                                                 </a>
                                                                 <asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
                                                                     CssClass="btn btn-primary pull-right dim m-l-md" Visible="false"
-                                                                    CausesValidation="true" ValidationGroup="asignar">
+                                                                     OnClick="lnkAsignar_Click" CausesValidation="true" ValidationGroup="asignar">
                                                                     <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
                                                                 </asp:LinkButton>
                                                             </div>
@@ -389,7 +389,7 @@
                                                     OnRowCreated="gvProspectos_RowCreated"
                                                     OnRowDataBound="gvProspectos_RowDataBound"
                                                     CssClass="table table-striped list-group-item-text"
-                                                    DataKeyNames="idPregestion,NombreContacto,ApellidoContacto,DocumentoContacto,idTipoDocumentoContacto,CelularContacto,hacecuanto"
+                                                    DataKeyNames="idPregestion,NombreContacto,ApellidoContacto,DocumentoContacto,idTipoDocumentoContacto,CelularContacto,hacecuanto,EstadoNegociacion"
                                                     BorderStyle="None" GridLines="None"
                                                     PagerSettings-Mode="NumericFirstLast"
                                                     PagerSettings-FirstPageText="«"
@@ -408,7 +408,7 @@
                                                         </asp:TemplateField>
                                                         <asp:BoundField DataField="idPregestion" HeaderText="ID" Visible="false" />
                                                         <asp:BoundField DataField="DocumentoEmpresa" HeaderText="DocumentoEmpresa" Visible="false" />
-                                                          <%--<asp:BoundField DataField="NombreEmpresa" HeaderText="Empresa"
+                                                        <%--<asp:BoundField DataField="NombreEmpresa" HeaderText="Empresa"
                                                             SortExpression="NombreEmpresa" />--%>
                                                         <asp:BoundField DataField="NombreContacto" HeaderText="Nombres"
                                                             SortExpression="NombreContacto" />
@@ -420,8 +420,10 @@
                                                             SortExpression="idTipoDocumentoContacto" Visible="False" />
                                                         <asp:BoundField DataField="CelularContacto" HeaderText="Celular"
                                                             SortExpression="CelularContacto" />
-                                                        <%--<asp:BoundField DataField="EstadoEmpresa" HeaderText="Tipo emp."
-                                                            SortExpression="EstadoEmpresa" />--%>
+                                                        <asp:BoundField DataField="EstadoNegociacion" HeaderText="Estado Negociación"
+                                                            SortExpression="EstadoNegociacion" />
+                                                        <asp:BoundField DataField="NombreEmpresa" HeaderText="Empresa"
+                                                            SortExpression="NombreEmpresa" />
                                                     </Columns>
                                                 </asp:GridView>
 

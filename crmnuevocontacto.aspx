@@ -439,7 +439,7 @@
                                                                             <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM"
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                                <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>
+                                                                                <asp:ListItem Text="N/A" Value="0"></asp:ListItem>
                                                                             </asp:DropDownList>
                                                                             <asp:RequiredFieldValidator ID="rfvEmpresa" runat="server" ControlToValidate="ddlEmpresa"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
