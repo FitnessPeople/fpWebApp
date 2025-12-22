@@ -445,15 +445,15 @@
                                                 <h5>Nivel estudio</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart6" width="150" height="80" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart6" width="250" height="150" style="margin: 18px auto 0"></canvas>
                                                 <h5>Tipo de vivienda</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart7" width="150" height="80" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart7" width="250" height="150" style="margin: 18px auto 0"></canvas>
                                                 <h5>Actividad extra</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart8" width="150" height="80" style="margin: 18px auto 0"></canvas>
+                                                <canvas id="doughnutChart8" width="250" height="150" style="margin: 18px auto 0"></canvas>
                                                 <h5>Consumo licor</h5>
                                             </div>
                                         </div>
@@ -572,33 +572,76 @@
             new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
 
 
+            // Gráfica Nivel de Estudio
             var barData = {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: nombres5,
                 datasets: [
                     {
-                        label: "Data 1",
-                        backgroundColor: 'rgba(220, 220, 220, 0.5)',
-                        pointBorderColor: "#fff",
-                        data: [65, 59, 80, 81, 56, 55, 40]
-                    },
-                    {
-                        label: "Data 2",
-                        backgroundColor: 'rgba(26,179,148,0.5)',
+                        label: "Empleados",
+                        backgroundColor: colores5,
                         borderColor: "rgba(26,179,148,0.7)",
                         pointBackgroundColor: "rgba(26,179,148,1)",
                         pointBorderColor: "#fff",
-                        data: [28, 48, 40, 19, 86, 27, 90]
+                        data: cantidades5
                     }
                 ]
             };
 
             var barOptions = {
-                responsive: true
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
             };
 
+            var ctx4 = document.getElementById("barChart").getContext("2d");
+            new Chart(ctx4, { type: 'bar', data: barData, options: barOptions });
 
-            var ctx2 = document.getElementById("barChart").getContext("2d");
-            new Chart(ctx2, { type: 'bar', data: barData, options: barOptions });
+
+            // Gráfica Tipo de Vivienda
+            var doughnutData = {
+                labels: nombres6,
+                datasets: [{
+                    data: cantidades6,
+                    backgroundColor: colores6
+                }]
+            };
+
+            var ctx4 = document.getElementById("doughnutChart6").getContext("2d");
+            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+
+            // Gráfica Actividad Extra
+            var doughnutData = {
+                labels: nombres7,
+                datasets: [{
+                    data: cantidades7,
+                    backgroundColor: colores7
+                }]
+            };
+
+            var ctx4 = document.getElementById("doughnutChart7").getContext("2d");
+            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+
+
+            // Gráfica Consume Licor
+            var doughnutData = {
+                labels: nombres8,
+                datasets: [{
+                    data: cantidades8,
+                    backgroundColor: colores8
+                }]
+            };
+
+            var ctx4 = document.getElementById("doughnutChart8").getContext("2d");
+            new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
         });
 
     </script>

@@ -49,6 +49,10 @@ namespace fpWebApp
                     CantidadCiudad();
                     CantidadEstadoCivil();
                     CantidadTipoContrato();
+                    CantidadNivelEstudio();
+                    CantidadTipoVivienda();
+                    CantidadActividadExtra();
+                    CantidadConsumoLicor();
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
                 }
@@ -126,10 +130,22 @@ namespace fpWebApp
 
         private void CantidadGenero()
         {
-            string strGeneros = @"SELECT e.idGenero, g.Genero, COUNT(*) AS cuantos  
-                FROM empleados e 
-                RIGHT JOIN generos g ON e.idGenero = g.idGenero 
-                GROUP BY g.idGenero";
+            string strGeneros = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strGeneros = @"SELECT e.idGenero, g.Genero, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    RIGHT JOIN generos g ON e.idGenero = g.idGenero 
+                    GROUP BY g.idGenero";
+            }
+            else
+            {
+                strGeneros = @"SELECT e.idGenero, g.Genero, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    RIGHT JOIN generos g ON e.idGenero = g.idGenero 
+                    WHERE e.idSede = " + Session["idSede"].ToString() + @" 
+                    GROUP BY g.idGenero";
+            }
             
             clasesglobales cg = new clasesglobales();
             
@@ -175,15 +191,32 @@ namespace fpWebApp
 
         private void CantidadCiudad()
         {
-            string strCiudades = @"SELECT idCiudadEmpleado, NombreCiudad, COUNT(*) AS cuantos  
-                FROM empleados e, ciudades c  
-                WHERE e.idCiudadEmpleado = c.idCiudad 
-                AND idCiudadEmpleado IN (
-                SELECT idCiudadEmpleado 
-                FROM empleados 
-                WHERE idCiudadEmpleado IS NOT NULL 
-                GROUP BY idCiudadEmpleado) 
-                GROUP BY idCiudadEmpleado";
+            string strCiudades = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strCiudades = @"SELECT idCiudadEmpleado, NombreCiudad, COUNT(*) AS cuantos  
+                    FROM empleados e, ciudades c  
+                    WHERE e.idCiudadEmpleado = c.idCiudad 
+                    AND idCiudadEmpleado IN (
+                    SELECT idCiudadEmpleado 
+                    FROM empleados 
+                    WHERE idCiudadEmpleado IS NOT NULL 
+                    GROUP BY idCiudadEmpleado) 
+                    GROUP BY idCiudadEmpleado";
+            }
+            else
+            {
+                strCiudades = @"SELECT idCiudadEmpleado, NombreCiudad, COUNT(*) AS cuantos  
+                    FROM empleados e, ciudades c  
+                    WHERE e.idCiudadEmpleado = c.idCiudad 
+                    AND e.idSede = " + Session["idSede"].ToString() + @" 
+                    AND idCiudadEmpleado IN (
+                    SELECT idCiudadEmpleado 
+                    FROM empleados 
+                    WHERE idCiudadEmpleado IS NOT NULL 
+                    GROUP BY idCiudadEmpleado) 
+                    GROUP BY idCiudadEmpleado";
+            }
 
             clasesglobales cg = new clasesglobales();
 
@@ -229,15 +262,32 @@ namespace fpWebApp
 
         private void CantidadEstadoCivil()
         {
-            string strEstadoCivil = @"SELECT e.idEstadoCivil, EstadoCivil, COUNT(*) AS cuantos  
-                FROM empleados e, EstadoCivil ec  
-                WHERE e.idEstadoCivil = ec.idEstadoCivil 
-                AND e.idEstadoCivil IN (
-                SELECT idEstadoCivil 
-                FROM empleados 
-                WHERE idEstadoCivil IS NOT NULL 
-                GROUP BY idEstadoCivil) 
-                GROUP BY idEstadoCivil";
+            string strEstadoCivil = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strEstadoCivil = @"SELECT e.idEstadoCivil, EstadoCivil, COUNT(*) AS cuantos  
+                    FROM empleados e, EstadoCivil ec  
+                    WHERE e.idEstadoCivil = ec.idEstadoCivil 
+                    AND e.idEstadoCivil IN (
+                    SELECT idEstadoCivil 
+                    FROM empleados 
+                    WHERE idEstadoCivil IS NOT NULL 
+                    GROUP BY idEstadoCivil) 
+                    GROUP BY idEstadoCivil";
+            }
+            else
+            {
+                strEstadoCivil = @"SELECT e.idEstadoCivil, EstadoCivil, COUNT(*) AS cuantos  
+                    FROM empleados e, EstadoCivil ec  
+                    WHERE e.idEstadoCivil = ec.idEstadoCivil 
+                    AND e.idSede = " + Session["idSede"].ToString() + @" 
+                    AND e.idEstadoCivil IN (
+                    SELECT idEstadoCivil 
+                    FROM empleados 
+                    WHERE idEstadoCivil IS NOT NULL 
+                    GROUP BY idEstadoCivil) 
+                    GROUP BY idEstadoCivil";
+            }
 
             clasesglobales cg = new clasesglobales();
 
@@ -283,14 +333,32 @@ namespace fpWebApp
 
         private void CantidadTipoContrato()
         {
-            string strTipoContrato = @"SELECT TipoContrato, COUNT(*) AS cuantos  
-                FROM empleados e  
-                WHERE TipoContrato IN (
-                SELECT TipoContrato 
-                FROM empleados 
-                WHERE TipoContrato IS NOT NULL 
-                GROUP BY TipoContrato) 
-                GROUP BY TipoContrato";
+            string strTipoContrato = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strTipoContrato = @"SELECT TipoContrato, COUNT(*) AS cuantos  
+                    FROM empleados e  
+                    WHERE TipoContrato IN (
+                    SELECT TipoContrato 
+                    FROM empleados 
+                    WHERE TipoContrato IS NOT NULL 
+                    GROUP BY TipoContrato) 
+                    GROUP BY TipoContrato";
+            }
+            else
+            {
+                strTipoContrato = @"SELECT TipoContrato, COUNT(*) AS cuantos  
+                    FROM empleados e  
+                    WHERE TipoContrato IN (
+                    SELECT TipoContrato 
+                    FROM empleados 
+                    WHERE TipoContrato IS NOT NULL 
+                    AND e.idSede = " + Session["idSede"].ToString() + @" 
+                    GROUP BY TipoContrato) 
+                    GROUP BY TipoContrato";
+            }
+
+            
 
             clasesglobales cg = new clasesglobales();
 
@@ -327,6 +395,242 @@ namespace fpWebApp
                     this.GetType(),
                     "dataChart4",
                     $"var nombres4 = {nombresJson}; var cantidades4 = {cantidadesJson}; var colores4 = {coloresJson};",
+                    true
+                );
+            }
+
+            dt.Dispose();
+        }
+
+        private void CantidadNivelEstudio()
+        {
+            string strNivelEstudio = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strNivelEstudio = @"SELECT NivelEstudio, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    GROUP BY NivelEstudio";
+            }
+            else
+            {
+                strNivelEstudio = @"SELECT NivelEstudio, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    WHERE e.idSede = " + Session["idSede"].ToString() + @" 
+                    GROUP BY NivelEstudio";
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.TraerDatos(strNivelEstudio);
+
+            if (dt.Rows.Count > 0)
+            {
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+                int cuantos = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    cuantos += 1;
+                    nombres.Add(row["NivelEstudio"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+
+                    //Random random = new Random();
+                    //int randomInt = random.Next(0x1000000);
+                    //string hexColor = String.Format("#{0:X6}", randomInt);
+                    //colores.Add(hexColor);
+                    colores.Add(color);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart5",
+                    $"var nombres5 = {nombresJson}; var cantidades5 = {cantidadesJson}; var colores5 = {coloresJson};",
+                    true
+                );
+            }
+
+            dt.Dispose();
+        }
+
+        private void CantidadTipoVivienda()
+        {
+            string strTipoVivienda = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strTipoVivienda = @"SELECT TipoVivienda, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    GROUP BY TipoVivienda";
+            }
+            else
+            {
+                strTipoVivienda = @"SELECT TipoVivienda, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    WHERE e.idSede = " + Session["idSede"].ToString() + @" 
+                    GROUP BY TipoVivienda";
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.TraerDatos(strTipoVivienda);
+
+            if (dt.Rows.Count > 0)
+            {
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+                int cuantos = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    cuantos += 1;
+                    nombres.Add(row["TipoVivienda"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+
+                    //Random random = new Random();
+                    //int randomInt = random.Next(0x1000000);
+                    //string hexColor = String.Format("#{0:X6}", randomInt);
+                    //colores.Add(hexColor);
+                    colores.Add(color);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart6",
+                    $"var nombres6 = {nombresJson}; var cantidades6 = {cantidadesJson}; var colores6 = {coloresJson};",
+                    true
+                );
+            }
+
+            dt.Dispose();
+        }
+
+        private void CantidadActividadExtra()
+        {
+            string strActividadExtra = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strActividadExtra = @"SELECT ActividadExtra, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    GROUP BY ActividadExtra";
+            }
+            else
+            {
+                strActividadExtra = @"SELECT ActividadExtra, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    WHERE e.idSede = " + Session["idSede"].ToString() + @" 
+                    GROUP BY ActividadExtra";
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.TraerDatos(strActividadExtra);
+
+            if (dt.Rows.Count > 0)
+            {
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+                int cuantos = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    cuantos += 1;
+                    nombres.Add(row["ActividadExtra"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+
+                    //Random random = new Random();
+                    //int randomInt = random.Next(0x1000000);
+                    //string hexColor = String.Format("#{0:X6}", randomInt);
+                    //colores.Add(hexColor);
+                    colores.Add(color);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart7",
+                    $"var nombres7 = {nombresJson}; var cantidades7 = {cantidadesJson}; var colores7 = {coloresJson};",
+                    true
+                );
+            }
+
+            dt.Dispose();
+        }
+
+        private void CantidadConsumoLicor()
+        {
+            string strConsumeLicor = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strConsumeLicor = @"SELECT ConsumeLicor, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    GROUP BY ConsumeLicor";
+            }
+            else
+            {
+                strConsumeLicor = @"SELECT ConsumeLicor, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    WHERE e.idSede = " + Session["idSede"].ToString() + @" 
+                    GROUP BY ConsumeLicor";
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.TraerDatos(strConsumeLicor);
+
+            if (dt.Rows.Count > 0)
+            {
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+                int cuantos = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    cuantos += 1;
+                    nombres.Add(row["ConsumeLicor"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+
+                    //Random random = new Random();
+                    //int randomInt = random.Next(0x1000000);
+                    //string hexColor = String.Format("#{0:X6}", randomInt);
+                    //colores.Add(hexColor);
+                    colores.Add(color);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart8",
+                    $"var nombres8 = {nombresJson}; var cantidades8 = {cantidadesJson}; var colores8 = {coloresJson};",
                     true
                 );
             }

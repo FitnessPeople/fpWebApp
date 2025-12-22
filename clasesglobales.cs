@@ -622,25 +622,32 @@ namespace fpWebApp
             if (string.IsNullOrEmpty(Key) || string.IsNullOrEmpty(IV))
                 throw new Exception("AES_KEY o AES_IV no configurados");
 
-            using (Aes aes = Aes.Create())
+            try
             {
-                aes.Key = Encoding.UTF8.GetBytes(Key);
-                aes.IV = Encoding.UTF8.GetBytes(IV);
-                aes.Mode = CipherMode.CBC;
-                aes.Padding = PaddingMode.PKCS7;
-
-                using (var ms = new MemoryStream())
-                using (var encryptor = aes.CreateEncryptor())
-                using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                using (Aes aes = Aes.Create())
                 {
-                    byte[] data = Encoding.UTF8.GetBytes(plainText);
-                    cs.Write(data, 0, data.Length);
+                    aes.Key = Encoding.UTF8.GetBytes(Key);
+                    aes.IV = Encoding.UTF8.GetBytes(IV);
+                    aes.Mode = CipherMode.CBC;
+                    aes.Padding = PaddingMode.PKCS7;
 
-                    // 🔑 ESTA LÍNEA ES LA CLAVE
-                    cs.FlushFinalBlock();
+                    using (var ms = new MemoryStream())
+                    using (var encryptor = aes.CreateEncryptor())
+                    using (var cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+                    {
+                        byte[] data = Encoding.UTF8.GetBytes(plainText);
+                        cs.Write(data, 0, data.Length);
 
-                    return Convert.ToBase64String(ms.ToArray());
+                        // 🔑 ESTA LÍNEA ES LA CLAVE
+                        cs.FlushFinalBlock();
+
+                        return Convert.ToBase64String(ms.ToArray());
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
             }
         }
 
@@ -665,18 +672,25 @@ namespace fpWebApp
             string Key = ConfigurationManager.AppSettings["AES_KEY"];
             string IV = ConfigurationManager.AppSettings["AES_IV"];
 
-            using (Aes aes = Aes.Create())
+            try
             {
-                aes.Key = Encoding.UTF8.GetBytes(Key.PadRight(32).Substring(0, 32));
-                aes.IV = Encoding.UTF8.GetBytes(IV);
-
-                using (var decryptor = aes.CreateDecryptor())
-                using (var ms = new MemoryStream(Convert.FromBase64String(base64)))
-                using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
-                using (var sr = new StreamReader(cs))
+                using (Aes aes = Aes.Create())
                 {
-                    return sr.ReadToEnd();
+                    aes.Key = Encoding.UTF8.GetBytes(Key.PadRight(32).Substring(0, 32));
+                    aes.IV = Encoding.UTF8.GetBytes(IV);
+
+                    using (var decryptor = aes.CreateDecryptor())
+                    using (var ms = new MemoryStream(Convert.FromBase64String(base64)))
+                    using (var cs = new CryptoStream(ms, decryptor, CryptoStreamMode.Read))
+                    using (var sr = new StreamReader(cs))
+                    {
+                        return sr.ReadToEnd();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
             }
         }
 
@@ -688,9 +702,14 @@ namespace fpWebApp
         /// <returns></returns>
         public string GenerateColor(int index, int total)
         {
-            double hue = (index * 360.0) / Math.Max(1, total);
-            double s = 0.65;
-            double l = 0.55;
+            //double hue = (index * 360.0) / Math.Max(1, total);
+            //double s = 0.65;
+            //double l = 0.55;
+
+            double hue = (index * 137.508) % 360;
+
+            double s = 0.6 + (index % 2) * 0.15;   // 0.6 o 0.75
+            double l = 0.45 + (index % 3) * 0.1;
 
             double c = (1 - Math.Abs(2 * l - 1)) * s;
             double hPrime = hue / 60.0;

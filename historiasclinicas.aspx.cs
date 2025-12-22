@@ -75,7 +75,7 @@ namespace fpWebApp
         private void ListaHistorias()
         {
             string strQuery = "SELECT *, " +
-                "IF(g.idGenero=1,'<i class=\"fa fa-mars\"></i>',IF(g.idGenero=2,'<i class=\"fa fa-venus\"></i>','<i class=\"fa fa-venus-mars\"></i>')) AS iconGenero, " +
+                "IF(g.idGenero=1,'<i class=\"fa fa-mars text-success\"></i>',IF(g.idGenero=2,'<i class=\"fa fa-venus text-danger\"></i>','<i class=\"fa fa-venus-mars text-warning\"></i>')) AS iconGenero, " +
                 "IF(TIMESTAMPDIFF(YEAR, a.FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, a.FechaNacAfiliado, CURDATE()),'') AS edad, " +
                 "IF(Tabaquismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS fuma, " +
                 "IF(Alcoholismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS toma, " +
@@ -86,7 +86,8 @@ namespace fpWebApp
                 "IF(HTA=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(HTA=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS hipertenso " +
                 "FROM HistoriasClinicas hc " +
                 "LEFT JOIN Afiliados a ON hc.idAfiliado = a.idAfiliado " +
-                "LEFT JOIN Generos g ON a.idGenero = g.idGenero ";
+                "LEFT JOIN Generos g ON a.idGenero = g.idGenero " +
+                "ORDER BY FechaHora DESC";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 

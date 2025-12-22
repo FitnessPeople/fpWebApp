@@ -303,7 +303,6 @@
                 title: titulo,
                 text: mensaje,
                 icon: tipo,
-                background: '#3C3C3C',
                 showCloseButton: true,
                 confirmButtonText: 'Aceptar',
                 ...opcionesExtras
@@ -319,7 +318,6 @@
                 title: "¿Confirmar cobro?",
                 text: "¿Deseas realizar el cobro recurrente a este afiliado?",
                 icon: "question", 
-                background: '#3C3C3C',
                 showCancelButton: true,
                 confirmButtonText: "Sí, realizar cobro",
                 cancelButtonText: "Cancelar",

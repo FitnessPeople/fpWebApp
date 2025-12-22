@@ -232,160 +232,189 @@ namespace fpWebApp
             ViewState["descifrado"] = descifrado;
 
             DataTable dt = cg.CargarEmpleados(descifrado);
-            txbDocumento.Text = dt.Rows[0]["DocumentoEmpleado"].ToString();
 
-            if (dt.Rows[0]["idTipoDocumento"].ToString() != "")
+            if (descifrado.Length < 20)
             {
-                ddlTipoDocumento.SelectedIndex = Convert.ToInt16(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+                txbDocumento.Text = dt.Rows[0]["DocumentoEmpleado"].ToString();
+
+                if (dt.Rows[0]["idTipoDocumento"].ToString() != "")
+                {
+                    ddlTipoDocumento.SelectedIndex = Convert.ToInt16(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+                }
+                else
+                {
+                    ddlTipoDocumento.SelectedItem.Value = "0";
+                }
+
+                txbNombre.Text = dt.Rows[0]["NombreEmpleado"].ToString();
+                ltNombre.Text = dt.Rows[0]["NombreEmpleado"].ToString();
+                txbTelefono.Text = dt.Rows[0]["TelefonoEmpleado"].ToString();
+                txbTelefonoCorp.Text = dt.Rows[0]["TelefonoCorporativo"].ToString();
+                ltTelefono.Text = dt.Rows[0]["TelefonoEmpleado"].ToString();
+                txbEmail.Text = dt.Rows[0]["EmailEmpleado"].ToString();
+                txbEmailCorp.Text = dt.Rows[0]["EmailCorporativo"].ToString();
+                txbDireccion.Text = dt.Rows[0]["DireccionEmpleado"].ToString();
+                ddlCiudadEmpleado.SelectedIndex = Convert.ToInt32(ddlCiudadEmpleado.Items.IndexOf(ddlCiudadEmpleado.Items.FindByValue(dt.Rows[0]["idCiudadEmpleado"].ToString())));
+                DateTime dt14 = DateTime.Now.AddYears(-14);
+                DateTime dt80 = DateTime.Now.AddYears(-80);
+                txbFechaNac.Attributes.Add("min", dt80.Year.ToString() + "-" + String.Format("{0:MM}", dt80) + "-" + String.Format("{0:dd}", dt80));
+                txbFechaNac.Attributes.Add("max", dt14.Year.ToString() + "-" + String.Format("{0:MM}", dt14) + "-" + String.Format("{0:dd}", dt14));
+
+                DateTime dtFecha = new DateTime();
+                if (dt.Rows[0]["FechaNacEmpleado"].ToString() != "")
+                {
+                    dtFecha = Convert.ToDateTime(dt.Rows[0]["FechaNacEmpleado"].ToString());
+                }
+                txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
+                txbCargo.Text = dt.Rows[0]["Cargo"].ToString();
+                txbProfesion.Text = dt.Rows[0]["Profesion"].ToString();
+                if (dt.Rows[0]["NivelEstudio"].ToString() != "")
+                {
+                    ddlNivelEstudio.SelectedIndex = Convert.ToInt16(ddlNivelEstudio.Items.IndexOf(ddlNivelEstudio.Items.FindByText(dt.Rows[0]["NivelEstudio"].ToString())));
+                }
+                ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
+                if (dt.Rows[0]["FotoEmpleado"].ToString() != "")
+                {
+                    imgFoto.Src = "img/empleados/" + dt.Rows[0]["FotoEmpleado"].ToString();
+                    ViewState["FotoEmpleado"] = dt.Rows[0]["FotoEmpleado"].ToString();
+                }
+                else
+                {
+                    imgFoto.Src = "img/empleados/nofoto.png";
+                }
+                txbEstratoSocioeconomico.Text = dt.Rows[0]["EstratoSocioeconomico"].ToString();
+                if (dt.Rows[0]["TipoVivienda"].ToString() != "")
+                {
+                    ddlTipoVivienda.SelectedIndex = Convert.ToInt16(ddlTipoVivienda.Items.IndexOf(ddlTipoVivienda.Items.FindByText(dt.Rows[0]["TipoVivienda"].ToString())));
+                }
+                txbNroPersonasNucleo.Text = dt.Rows[0]["PersonasNucleoFamiliar"].ToString();
+                if (dt.Rows[0]["ActividadExtra"].ToString() != "")
+                {
+                    ddlActividadExtra.SelectedIndex = Convert.ToInt16(ddlActividadExtra.Items.IndexOf(ddlActividadExtra.Items.FindByText(dt.Rows[0]["ActividadExtra"].ToString())));
+                }
+                if (dt.Rows[0]["ConsumeLicor"].ToString() != "")
+                {
+                    ddlConsumoLicor.SelectedIndex = Convert.ToInt16(ddlConsumoLicor.Items.IndexOf(ddlConsumoLicor.Items.FindByText(dt.Rows[0]["ConsumeLicor"].ToString())));
+                }
+                if (dt.Rows[0]["MedioTransporte"].ToString() != "")
+                {
+                    ddlMedioTransporte.SelectedIndex = Convert.ToInt16(ddlMedioTransporte.Items.IndexOf(ddlMedioTransporte.Items.FindByText(dt.Rows[0]["MedioTransporte"].ToString())));
+                }
+                txbContrato.Text = dt.Rows[0]["NroContrato"].ToString();
+                if (dt.Rows[0]["TipoContrato"].ToString() != "")
+                {
+                    ddlTipoContrato.SelectedIndex = Convert.ToInt16(ddlTipoContrato.Items.IndexOf(ddlTipoContrato.Items.FindByText(dt.Rows[0]["TipoContrato"].ToString())));
+                }
+                if (dt.Rows[0]["TipoSangre"].ToString() != "")
+                {
+                    ddlTipoSangre.SelectedIndex = Convert.ToInt16(ddlTipoSangre.Items.IndexOf(ddlTipoSangre.Items.FindByText(dt.Rows[0]["TipoSangre"].ToString())));
+                }
+                //DateTime dtFechaIni = Convert.ToDateTime(dt.Rows[0]["FechaInicio"].ToString());
+
+                DateTime dtFechaIni = dt.Rows[0]["FechaInicio"] == DBNull.Value
+                    ? DateTime.MinValue
+                    : Convert.ToDateTime(dt.Rows[0]["FechaInicio"]);
+
+                txbFechaInicio.Text = dtFechaIni.ToString("yyyy-MM-dd");
+                string strFechaFin = string.IsNullOrEmpty(dt.Rows[0]["FechaFinal"]?.ToString())
+                    ? "2001-01-01"
+                    : dt.Rows[0]["FechaFinal"].ToString();
+                DateTime dtFechaFin = Convert.ToDateTime(strFechaFin);
+                txbFechaFinal.Text = dtFechaFin.ToString("yyyy-MM-dd");
+                ddlSedes.SelectedIndex = Convert.ToInt32(ddlSedes.Items.IndexOf(ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString())));
+                int sueldo = (dt.Rows[0]["Sueldo"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["Sueldo"]) : 0;
+                txbSueldo.Text = sueldo.ToString("C0", new CultureInfo("es-CO"));
+
+                if (dt.Rows[0]["GrupoNomina"].ToString() != "")
+                {
+                    ddlGrupo.SelectedIndex = Convert.ToInt16(ddlGrupo.Items.IndexOf(ddlGrupo.Items.FindByValue(dt.Rows[0]["GrupoNomina"].ToString())));
+                }
+                if (dt.Rows[0]["idEps"].ToString() != "")
+                {
+                    ddlEps.SelectedIndex = Convert.ToInt16(ddlEps.Items.IndexOf(ddlEps.Items.FindByValue(dt.Rows[0]["idEps"].ToString())));
+                }
+
+                if (dt.Rows[0]["idFondoPension"].ToString() != "")
+                {
+                    ddlFondoPension.SelectedIndex = Convert.ToInt16(ddlFondoPension.Items.IndexOf(ddlFondoPension.Items.FindByValue(dt.Rows[0]["idFondoPension"].ToString())));
+                }
+
+                if (dt.Rows[0]["idArl"].ToString() != "")
+                {
+                    ddlArl.SelectedIndex = Convert.ToInt16(ddlArl.Items.IndexOf(ddlArl.Items.FindByValue(dt.Rows[0]["idArl"].ToString())));
+                }
+
+                if (dt.Rows[0]["idCajaComp"].ToString() != "")
+                {
+                    ddlCajaComp.SelectedIndex = Convert.ToInt16(ddlCajaComp.Items.IndexOf(ddlCajaComp.Items.FindByValue(dt.Rows[0]["idCajaComp"].ToString())));
+                }
+
+                if (dt.Rows[0]["idCesantias"].ToString() != "")
+                {
+                    ddlCesantias.SelectedIndex = Convert.ToInt16(ddlCesantias.Items.IndexOf(ddlCesantias.Items.FindByValue(dt.Rows[0]["idCesantias"].ToString())));
+                }
+
+                rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
+
+                if (dt.Rows[0]["idCanalVenta"].ToString() != "")
+                {
+                    ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
+                }
+
+                rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
+
+                if (dt.Rows[0]["idEmpresaFP"].ToString() != "")
+                {
+                    ddlEmpresasFP.SelectedIndex = Convert.ToInt16(ddlEmpresasFP.Items.IndexOf(ddlEmpresasFP.Items.FindByValue(dt.Rows[0]["idEmpresaFP"].ToString())));
+                }
+
+                if (dt.Rows[0]["idEstadoCivil"].ToString() != "")
+                {
+                    ddlEstadoCivil.SelectedIndex = Convert.ToInt16(ddlEstadoCivil.Items.IndexOf(ddlEstadoCivil.Items.FindByValue(dt.Rows[0]["idEstadoCivil"].ToString())));
+                }
+
+                if (dt.Rows[0]["idGenero"].ToString() != "")
+                {
+                    ddlGenero.SelectedIndex = Convert.ToInt16(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
+                }
+
+                if (dt.Rows[0]["idCargo"].ToString() != "")
+                {
+                    ddlCargo.SelectedIndex = Convert.ToInt32(ddlCargo.Items.IndexOf(ddlCargo.Items.FindByValue(dt.Rows[0]["idCargo"].ToString())));
+                }
+
+                if (dt.Rows[0]["idProfesion"].ToString() != "")
+                {
+                    ddlProfesion.SelectedIndex = Convert.ToInt32(ddlProfesion.Items.IndexOf(ddlProfesion.Items.FindByValue(dt.Rows[0]["idProfesion"].ToString())));
+                }
+
+                dt.Dispose();
             }
             else
             {
-                ddlTipoDocumento.SelectedItem.Value = "0";
+                MostrarAlertaRedireccion("Error", "Empleado no encontrado.", "error", "empleados");
             }
+        }
 
-            txbNombre.Text = dt.Rows[0]["NombreEmpleado"].ToString();
-            ltNombre.Text = dt.Rows[0]["NombreEmpleado"].ToString();
-            txbTelefono.Text = dt.Rows[0]["TelefonoEmpleado"].ToString();
-            txbTelefonoCorp.Text = dt.Rows[0]["TelefonoCorporativo"].ToString();
-            ltTelefono.Text = dt.Rows[0]["TelefonoEmpleado"].ToString();
-            txbEmail.Text = dt.Rows[0]["EmailEmpleado"].ToString();
-            txbEmailCorp.Text = dt.Rows[0]["EmailCorporativo"].ToString();
-            txbDireccion.Text = dt.Rows[0]["DireccionEmpleado"].ToString();
-            ddlCiudadEmpleado.SelectedIndex = Convert.ToInt32(ddlCiudadEmpleado.Items.IndexOf(ddlCiudadEmpleado.Items.FindByValue(dt.Rows[0]["idCiudadEmpleado"].ToString())));
-            DateTime dt14 = DateTime.Now.AddYears(-14);
-            DateTime dt80 = DateTime.Now.AddYears(-80);
-            txbFechaNac.Attributes.Add("min", dt80.Year.ToString() + "-" + String.Format("{0:MM}", dt80) + "-" + String.Format("{0:dd}", dt80));
-            txbFechaNac.Attributes.Add("max", dt14.Year.ToString() + "-" + String.Format("{0:MM}", dt14) + "-" + String.Format("{0:dd}", dt14));
+        private void MostrarAlertaRedireccion(string titulo, string mensaje, string tipo, string urlRedirect)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+            Swal.hideLoading();
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar', 
+            }}).then((result) => {{
+                if (result.isConfirmed) {{
+                    window.location.replace('{urlRedirect}');
+                }}
+            }});";
 
-            DateTime dtFecha = new DateTime();
-            if (dt.Rows[0]["FechaNacEmpleado"].ToString() != "")
-            {
-                dtFecha = Convert.ToDateTime(dt.Rows[0]["FechaNacEmpleado"].ToString());
-            }
-            txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
-            txbCargo.Text = dt.Rows[0]["Cargo"].ToString();
-            txbProfesion.Text = dt.Rows[0]["Profesion"].ToString();
-            if (dt.Rows[0]["NivelEstudio"].ToString() != "")
-            {
-                ddlNivelEstudio.SelectedIndex = Convert.ToInt16(ddlNivelEstudio.Items.IndexOf(ddlNivelEstudio.Items.FindByText(dt.Rows[0]["NivelEstudio"].ToString())));
-            }
-            ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
-            if (dt.Rows[0]["FotoEmpleado"].ToString() != "")
-            {
-                imgFoto.Src = "img/empleados/" + dt.Rows[0]["FotoEmpleado"].ToString();
-                ViewState["FotoEmpleado"] = dt.Rows[0]["FotoEmpleado"].ToString();
-            }
-            else
-            {
-                imgFoto.Src = "img/empleados/nofoto.png";
-            }
-            txbEstratoSocioeconomico.Text = dt.Rows[0]["EstratoSocioeconomico"].ToString();
-            if (dt.Rows[0]["TipoVivienda"].ToString() != "")
-            {
-                ddlTipoVivienda.SelectedIndex = Convert.ToInt16(ddlTipoVivienda.Items.IndexOf(ddlTipoVivienda.Items.FindByText(dt.Rows[0]["TipoVivienda"].ToString())));
-            }
-            txbNroPersonasNucleo.Text = dt.Rows[0]["PersonasNucleoFamiliar"].ToString();
-            if (dt.Rows[0]["ActividadExtra"].ToString() != "")
-            {
-                ddlActividadExtra.SelectedIndex = Convert.ToInt16(ddlActividadExtra.Items.IndexOf(ddlActividadExtra.Items.FindByText(dt.Rows[0]["ActividadExtra"].ToString())));
-            }
-            if (dt.Rows[0]["ConsumeLicor"].ToString() != "")
-            {
-                ddlConsumoLicor.SelectedIndex = Convert.ToInt16(ddlConsumoLicor.Items.IndexOf(ddlConsumoLicor.Items.FindByText(dt.Rows[0]["ConsumeLicor"].ToString())));
-            }
-            if (dt.Rows[0]["MedioTransporte"].ToString() != "")
-            {
-                ddlMedioTransporte.SelectedIndex = Convert.ToInt16(ddlMedioTransporte.Items.IndexOf(ddlMedioTransporte.Items.FindByText(dt.Rows[0]["MedioTransporte"].ToString())));
-            }
-            txbContrato.Text = dt.Rows[0]["NroContrato"].ToString();
-            if (dt.Rows[0]["TipoContrato"].ToString() != "")
-            {
-                ddlTipoContrato.SelectedIndex = Convert.ToInt16(ddlTipoContrato.Items.IndexOf(ddlTipoContrato.Items.FindByText(dt.Rows[0]["TipoContrato"].ToString())));
-            }
-            if (dt.Rows[0]["TipoSangre"].ToString() != "")
-            {
-                ddlTipoSangre.SelectedIndex = Convert.ToInt16(ddlTipoSangre.Items.IndexOf(ddlTipoSangre.Items.FindByText(dt.Rows[0]["TipoSangre"].ToString())));
-            }
-            //DateTime dtFechaIni = Convert.ToDateTime(dt.Rows[0]["FechaInicio"].ToString());
-
-            DateTime dtFechaIni = dt.Rows[0]["FechaInicio"] == DBNull.Value
-                ? DateTime.MinValue
-                : Convert.ToDateTime(dt.Rows[0]["FechaInicio"]);
-
-            txbFechaInicio.Text = dtFechaIni.ToString("yyyy-MM-dd");
-            string strFechaFin = string.IsNullOrEmpty(dt.Rows[0]["FechaFinal"]?.ToString())
-                ? "2001-01-01" 
-                : dt.Rows[0]["FechaFinal"].ToString();
-            DateTime dtFechaFin = Convert.ToDateTime(strFechaFin);
-            txbFechaFinal.Text = dtFechaFin.ToString("yyyy-MM-dd");
-            ddlSedes.SelectedIndex = Convert.ToInt32(ddlSedes.Items.IndexOf(ddlSedes.Items.FindByValue(dt.Rows[0]["idSede"].ToString())));
-            int sueldo = (dt.Rows[0]["Sueldo"].ToString() != "") ? Convert.ToInt32(dt.Rows[0]["Sueldo"]) : 0;
-            txbSueldo.Text = sueldo.ToString("C0", new CultureInfo("es-CO"));
-
-            if (dt.Rows[0]["GrupoNomina"].ToString() != "")
-            {
-                ddlGrupo.SelectedIndex = Convert.ToInt16(ddlGrupo.Items.IndexOf(ddlGrupo.Items.FindByValue(dt.Rows[0]["GrupoNomina"].ToString())));
-            }
-            if (dt.Rows[0]["idEps"].ToString() != "")
-            {
-                ddlEps.SelectedIndex = Convert.ToInt16(ddlEps.Items.IndexOf(ddlEps.Items.FindByValue(dt.Rows[0]["idEps"].ToString())));
-            }
-
-            if (dt.Rows[0]["idFondoPension"].ToString() != "")
-            {
-                ddlFondoPension.SelectedIndex = Convert.ToInt16(ddlFondoPension.Items.IndexOf(ddlFondoPension.Items.FindByValue(dt.Rows[0]["idFondoPension"].ToString())));
-            }
-
-            if (dt.Rows[0]["idArl"].ToString() != "")
-            {
-                ddlArl.SelectedIndex = Convert.ToInt16(ddlArl.Items.IndexOf(ddlArl.Items.FindByValue(dt.Rows[0]["idArl"].ToString())));
-            }
-
-            if (dt.Rows[0]["idCajaComp"].ToString() != "")
-            {
-                ddlCajaComp.SelectedIndex = Convert.ToInt16(ddlCajaComp.Items.IndexOf(ddlCajaComp.Items.FindByValue(dt.Rows[0]["idCajaComp"].ToString())));
-            }
-
-            if (dt.Rows[0]["idCesantias"].ToString() != "")
-            {
-                ddlCesantias.SelectedIndex = Convert.ToInt16(ddlCesantias.Items.IndexOf(ddlCesantias.Items.FindByValue(dt.Rows[0]["idCesantias"].ToString())));
-            }
-
-            rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
-
-            if (dt.Rows[0]["idCanalVenta"].ToString() != "")
-            {
-                ddlCanalVenta.SelectedIndex = Convert.ToInt16(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
-            }
-
-            rblEstado.Items.FindByValue(dt.Rows[0]["Estado"].ToString()).Selected = true;
-
-            if (dt.Rows[0]["idEmpresaFP"].ToString() != "")
-            {
-                ddlEmpresasFP.SelectedIndex = Convert.ToInt16(ddlEmpresasFP.Items.IndexOf(ddlEmpresasFP.Items.FindByValue(dt.Rows[0]["idEmpresaFP"].ToString())));
-            }
-
-            if (dt.Rows[0]["idEstadoCivil"].ToString() != "")
-            {
-                ddlEstadoCivil.SelectedIndex = Convert.ToInt16(ddlEstadoCivil.Items.IndexOf(ddlEstadoCivil.Items.FindByValue(dt.Rows[0]["idEstadoCivil"].ToString())));
-            }
-
-            if (dt.Rows[0]["idGenero"].ToString() != "")
-            {
-                ddlGenero.SelectedIndex = Convert.ToInt16(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
-            }
-
-            if (dt.Rows[0]["idCargo"].ToString() != "")
-            {
-                ddlCargo.SelectedIndex = Convert.ToInt32(ddlCargo.Items.IndexOf(ddlCargo.Items.FindByValue(dt.Rows[0]["idCargo"].ToString())));
-            }
-
-            if (dt.Rows[0]["idProfesion"].ToString() != "")
-            {
-                ddlProfesion.SelectedIndex = Convert.ToInt32(ddlProfesion.Items.IndexOf(ddlProfesion.Items.FindByValue(dt.Rows[0]["idProfesion"].ToString())));
-            }
-
-            dt.Dispose();
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
 
         protected void btnActualizar_Click(object sender, EventArgs e)
