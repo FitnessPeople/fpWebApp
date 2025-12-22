@@ -512,7 +512,8 @@ namespace fpWebApp
 
         private async Task ProcesarPagoExitosoAsync(int idAfiliadoPlan)
         {
-            string urlRedirect = $"planesAfiliado?id=" + Request.QueryString["id"].ToString();
+            string idAfiliado = Request.QueryString["id"].ToString();
+            string urlRedirect = $"planesAfiliado?id={idAfiliado}";
 
             try
             {
@@ -525,6 +526,23 @@ namespace fpWebApp
                     "SandboxSiigoApi"
                 );
 
+                clasesglobales cg = new clasesglobales();
+                DataTable dtAfi = cg.ConsultarAfiliadoPorId(Convert.ToInt32(idAfiliado));
+
+                if (dtAfi.Rows.Count == 0) return;
+
+                // Obtener datos del afiliado
+                string nroDoc = dtAfi.Rows[0]["DocumentoAfiliado"].ToString();
+                string strNombre = dtAfi.Rows[0]["NombreAfiliado"].ToString();
+                string strApellido = dtAfi.Rows[0]["ApellidoAfiliado"].ToString();
+                string strCelular = dtAfi.Rows[0]["CelularAfiliado"].ToString();
+                string strEmail = dtAfi.Rows[0]["EmailAfiliado"].ToString();
+                dtAfi.Dispose();
+
+                await siigoClient.ManageCustomerAsync(nroDoc, strNombre, strApellido, strCelular, strEmail);
+
+
+
                 // TODO: NO ELIMINAR ESTO, SE USA EN LA CREACIÓN DE LA FACTURA
                 // ESTÁ COMENTADO PARA PRUEBAS LOCALES
                 //string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
@@ -534,26 +552,31 @@ namespace fpWebApp
                 //    int.Parse(Session["valorPlan"].ToString())
                 //);
 
-                // Siigo Pruebas
-                //int idTipoDocumento = 28006;
-                //int costCenterDefault = 621;
-                //int idVendedor = 856;
-                //int idPayment = 9438;
+
                 int idSede = Session["idSede"] != null ? Convert.ToInt32(Session["idSede"].ToString()) : 0;
-                string codSiigoPlan = ViewState["codSiigoPlan"].ToString();
-                string nombrePlan = ViewState["nombrePlan"].ToString();
+
+                // Siigo Producción
+                //string codSiigoPlan = ViewState["codSiigoPlan"].ToString();
+                //string nombrePlan = ViewState["nombrePlan"].ToString();
                 //int precioPlanSiigo = Convert.ToInt32(txbTotal.Text.ToString());
-                int precioPlanSiigo = Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", ""));
+                //int precioPlanSiigo = Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", ""));
+
+
+                // Siigo Pruebas
+                string codSiigoPlan = "COD2433";
+                string nombrePlan = "Pago de suscripción";
+                int precioPlanSiigo = 10000;
+
+
                 string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
                     //ViewState["DocumentoAfiliado"].ToString(),
-                    "1005137101",
+                    nroDoc,
                     codSiigoPlan,
                     nombrePlan,
                     precioPlanSiigo,
                     idSede
                 );
 
-                clasesglobales cg = new clasesglobales();
 
                 // 3. Registro de afiliación en la base de datos (AfiliadoPlan)
                 //cg.InsertarAfiliadoPlan(
