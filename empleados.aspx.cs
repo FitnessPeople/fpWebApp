@@ -146,7 +146,7 @@ namespace fpWebApp
                 //    LEFT JOIN generos g ON g.idGenero = e.idGenero 
                 //    GROUP BY e.idGenero";
                 strGeneros = @"SELECT e.idGenero, 
-                    IF(g.Genero = 'Masculino', '👨','👩') AS Genero, 
+                    IF(g.Genero = 'Masculino', '🕺','💃') AS Genero, 
                     COUNT(*) AS cuantos  
                     FROM empleados e 
                     LEFT JOIN generos g ON g.idGenero = e.idGenero 
