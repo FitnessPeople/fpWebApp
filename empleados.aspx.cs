@@ -57,8 +57,8 @@ namespace fpWebApp
                     CantidadConsumoLicor();
                     
                     CantidadEdades();
-                    //CantidadMedioTransporte();
-                    //CantidadTipoSangre();
+                    CantidadMedioTransporte();
+                    CantidadTipoSangre();
                     
 
                     //ActualizarEstadoxFechaFinal();
@@ -727,6 +727,122 @@ namespace fpWebApp
                     this.GetType(),
                     "dataChart9",
                     $"var nombres9 = {nombresJson}; var cantidades9 = {cantidadesJson}; var colores9 = {coloresJson};",
+                    true
+                );
+            }
+
+            dt.Dispose();
+        }
+
+        private void CantidadMedioTransporte()
+        {
+            string strMedioTransporte = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strMedioTransporte = @"SELECT MedioTransporte, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    WHERE MedioTransporte IS NOT NULL 
+                    GROUP BY MedioTransporte
+                    ORDER BY MedioTransporte";
+            }
+            else
+            {
+                strMedioTransporte = @"SELECT MedioTransporte, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    WHERE MedioTransporte IS NOT NULL 
+                    AND e.idSede = " + Session["idSede"].ToString() + @" 
+                    GROUP BY MedioTransporte
+                    ORDER BY MedioTransporte";
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.TraerDatos(strMedioTransporte);
+
+            if (dt.Rows.Count > 0)
+            {
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+                int cuantos = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    cuantos += 1;
+                    nombres.Add(row["MedioTransporte"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+                    colores.Add(color);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart10",
+                    $"var nombres10 = {nombresJson}; var cantidades10 = {cantidadesJson}; var colores10 = {coloresJson};",
+                    true
+                );
+            }
+
+            dt.Dispose();
+        }
+
+        private void CantidadTipoSangre()
+        {
+            string strTipoSangre = "";
+            if (Session["idSede"].ToString() == "11") // Usuario administrativo
+            {
+                strTipoSangre = @"SELECT TipoSangre, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    WHERE TipoSangre IS NOT NULL 
+                    GROUP BY TipoSangre
+                    ORDER BY TipoSangre";
+            }
+            else
+            {
+                strTipoSangre = @"SELECT TipoSangre, COUNT(*) AS cuantos  
+                    FROM empleados e 
+                    WHERE TipoSangre IS NOT NULL 
+                    AND e.idSede = " + Session["idSede"].ToString() + @" 
+                    GROUP BY TipoSangre
+                    ORDER BY TipoSangre";
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.TraerDatos(strTipoSangre);
+
+            if (dt.Rows.Count > 0)
+            {
+                List<string> nombres = new List<string>();
+                List<int> cantidades = new List<int>();
+                List<string> colores = new List<string>();
+                int cuantos = 0;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    cuantos += 1;
+                    nombres.Add(row["TipoSangre"].ToString());
+                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
+
+                    string color = cg.GenerateColor(cuantos, Math.Max(1, Convert.ToInt32(row["cuantos"])));
+                    colores.Add(color);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                string nombresJson = serializer.Serialize(nombres);
+                string cantidadesJson = serializer.Serialize(cantidades);
+                string coloresJson = serializer.Serialize(colores);
+
+                ClientScript.RegisterStartupScript(
+                    this.GetType(),
+                    "dataChart11",
+                    $"var nombres11 = {nombresJson}; var cantidades11 = {cantidadesJson}; var colores11 = {coloresJson};",
                     true
                 );
             }

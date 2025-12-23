@@ -462,6 +462,38 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px 10px 0px;">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Estadísticas</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="row text-center">
+                                            <div class="col-lg-3">
+                                                <canvas id="barChart9" height="150"></canvas>
+                                                <h5>Edades</h5>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <canvas id="barChart10" height="150"></canvas>
+                                                <h5>Medio de transporte</h5>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <canvas id="barChart11" height="150"></canvas>
+                                                <h5>Tipo de Sangre</h5>
+                                            </div>
+                                            <%--<div class="col-lg-3">
+                                                <canvas id="doughnutChart8" height="150"></canvas>
+                                                <h5>Consumo licor</h5>
+                                            </div>--%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
@@ -1043,6 +1075,174 @@
             };
 
             var ctx4 = document.getElementById("doughnutChart8").getContext("2d");
+            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
+
+
+            // Gráfico de edades
+            var barData = {
+                labels: nombres9,
+                datasets: [
+                    {
+                        label: "Empleados",
+                        backgroundColor: colores9,
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: cantidades9
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
+                            });
+                        });
+                    }
+                }
+            };
+
+            var ctx4 = document.getElementById("barChart9").getContext("2d");
+            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
+
+
+            // Gráfico de Medio de Transporte
+            var barData = {
+                labels: nombres10,
+                datasets: [
+                    {
+                        label: "Empleados",
+                        backgroundColor: colores10,
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: cantidades10
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
+                            });
+                        });
+                    }
+                }
+            };
+
+            var ctx4 = document.getElementById("barChart10").getContext("2d");
+            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
+
+
+            // Gráfico de Tipo de Sangre
+            var barData = {
+                labels: nombres11,
+                datasets: [
+                    {
+                        label: "Empleados",
+                        backgroundColor: colores11,
+                        borderColor: "rgba(26,179,148,0.7)",
+                        pointBackgroundColor: "rgba(26,179,148,1)",
+                        pointBorderColor: "#fff",
+                        data: cantidades11
+                    }
+                ]
+            };
+
+            var barOptions = {
+                responsive: true,
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    onComplete: function () {
+                        var chartInstance = this.chart;
+                        var ctx = chartInstance.ctx;
+
+                        ctx.font = Chart.helpers.fontString(
+                            Chart.defaults.global.defaultFontSize,
+                            Chart.defaults.global.defaultFontStyle,
+                            Chart.defaults.global.defaultFontFamily
+                        );
+                        ctx.fillStyle = "#000";
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "bottom";
+
+                        this.data.datasets.forEach(function (dataset, i) {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
+                            });
+                        });
+                    }
+                }
+            };
+
+            var ctx4 = document.getElementById("barChart11").getContext("2d");
             new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
         });
 
