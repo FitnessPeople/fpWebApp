@@ -22,6 +22,9 @@ namespace fpWebApp
         {
             if (!IsPostBack)
             {
+                ListaMediosDePago();
+                CargarPlanes();
+                
                 txbDocumento.Attributes.Add("autocomplete", "off");
                 txbNombreContacto.Attributes.Add("autocomplete", "off");
                 txbApellidoContacto.Attributes.Add("autocomplete", "off");
@@ -81,12 +84,10 @@ namespace fpWebApp
                     ListaEstadosCRM();
                     rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
                     ListaContactosPorUsuario();
-                    ConsultarTipoAfiliado();
-                    CargarPlanes();
+                    ConsultarTipoAfiliado();                    
                     ListaCanalesMarketingCRM();
                     ListaObjetivosfiliadoCRM();
-                    CargarTipoDocumento();
-                    ListaMediosDePago();
+                    CargarTipoDocumento();                   
                     CargarPregestion();
                     CargarGeneros();
                     CargarEstadosVentas();
@@ -401,6 +402,7 @@ namespace fpWebApp
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
+
         private void ListaMediosDePago()
         {
             clasesglobales cg = new clasesglobales();
@@ -410,33 +412,23 @@ namespace fpWebApp
                 DataTable dt = cg.ConsultarMediosDePago();
 
                 ddlTipoPago.DataSource = dt;
+                ddlTipoPago.DataTextField = "NombreMedioPago";
+                ddlTipoPago.DataValueField = "idMedioPago"; 
                 ddlTipoPago.DataBind();
+
+                ddlTipoPago.Items.Insert(0, new ListItem("Seleccione", ""));
+
                 dt.Dispose();
             }
             catch (Exception ex)
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+                MostrarAlerta("Error de proceso",
+                    "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog,
+                    "error");
             }
         }
-        //private void ListaEmpresasCRM()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    try
-        //    {
 
-        //        DataTable dt = cg.ConsultarEmpresasCRM();
-        //        ddlEmpresa.DataSource = dt;
-        //        ddlEmpresa.DataBind();
-
-        //        dt.Dispose();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-        //    }
-        //}
 
         private void listaEmpresasAfiliadas()
         {
@@ -1687,20 +1679,58 @@ namespace fpWebApp
                             CargarPlanesAfiliadPregestion(dt.Rows[0]["idAfiliado"].ToString());
                         }
                         else
-                        { //consultar prospectos asignados
-                            DataTable dt2 = cg.ConsultarProspectosCRM();
+                        {                          
 
-                           
-                            if (Convert.ToInt32(dt2.Rows[0]["idAsesor"].ToString()) != 0)
+                            DataTable dt2 = cg.ConsultarProspectosCRMAsignados();
+                            DataRow[] filas = dt2.Select($"DocumentoContacto = {documento}");
+
+                            if (filas.Length > 0)
                             {
-                                txbDocumento.Text = documento.ToString();
-                                //ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+                                DataRow row = filas[0];
 
+                                if (Convert.ToInt32(row["idAsesor"]) != 0)
+                                {
+                                    ViewState["Cargando"] = true;
+
+                                    txbDocumento.Text = documento.ToString();
+                                    ddlTipoDocumento.SelectedValue = row["idTipoDocumentoContacto"].ToString();
+                                    txbNombreContacto.Text = row["NombreContacto"].ToString();
+                                    txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
+                                    txbTelefonoContacto.Value = row["CelularContacto"].ToString();
+                                    ddlCanalesMarketing.SelectedValue = "15";
+                                    ddlEmpresa.SelectedValue = row["DocumentoEmpresa"].ToString();
+                                    if (ddlTipoPago.Items.FindByValue("7") != null)
+                                    {
+                                        ddlTipoPago.ClearSelection();
+                                        ddlTipoPago.SelectedValue = "7";
+                                    }
+
+                                    string idPlan = row["idPlan"].ToString().Trim();
+
+                                    if (ddlPlanes.Items.FindByValue(idPlan) == null)
+                                    {
+                                        ddlPlanes.Items.Add(new ListItem("Plan negociación", idPlan));
+                                    }
+                                    ddlPlanes.SelectedValue = idPlan;
+
+                                    int ValorPropuesta = Convert.ToInt32(row["ValorNegociacion"]);
+                                    txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+                                    
+                                    txaObservaciones.InnerText = row["EstadoNegociacion"] +
+                                                                 " Descuento: " + row["Descuento"] + "% " +
+                                                                 row["Descripcion"];
+
+                                    ViewState.Remove("Cargando");
+                                    upPlanes.Update();
+
+
+                                }
                             }
 
 
+
                         }
-                            dt.Dispose();
+                        dt.Dispose();
                          
 
                     }
