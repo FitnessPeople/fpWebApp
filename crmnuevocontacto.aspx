@@ -1382,7 +1382,7 @@
         });
     </script>
 
-    <script>
+<%--    <script>
         $(document).ready(function () {
             $('#txbDocumento').on('change blur', function () {
                 var documento = $(this).val().trim();
@@ -1430,7 +1430,63 @@
                 });
             });
         });
+    </script>--%>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#txbDocumento').on('change blur', function () {
+
+                var documento = $(this).val().trim();
+                if (documento.length === 0) return;
+
+                var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/' + documento;
+
+                // Limpia primero los campos (NO se toca)
+                $('#txbNombreContacto').val('');
+                $('#txbApellidoContacto').val('');
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function (data) {
+
+                        // ===== EXISTENTE (NO SE TOCA) =====
+                        var nombreCompleto = [data.nombre, data.s_nombre].filter(Boolean).join(' ').toUpperCase();
+                        var apellidoCompleto = [data.apellido, data.s_apellido].filter(Boolean).join(' ').toUpperCase();
+
+                        $('#txbNombreContacto').val(nombreCompleto);
+                        $('#txbApellidoContacto').val(apellidoCompleto);
+                        $('#txbEdad').val((data.edad != null ? data.edad + ' años' : ''));
+                        $('#txbFecNac').val((data.fecha_nacimiento));
+                        $('#ddlGenero').val(data.sexo);
+
+                        // ===== NUEVO (PASIVO, NO ROMPE NADA) =====
+
+                        // Genero oculto
+                        if (data.sexo !== null && data.sexo !== undefined) {
+                            $('#hfGenero').val(data.sexo);
+                        }
+
+                        // Fecha nacimiento oculta (formato limpio)
+                        if (data.fecha_nacimiento) {
+                            $('#hfFechaNacimiento').val(data.fecha_nacimiento.split('T')[0]);
+                        }
+
+                        // Edad oculta
+                        if (data.edad !== null && data.edad !== undefined) {
+                            $('#hfEdad').val(data.edad);
+                        }
+                    },
+                    error: function () {
+                        $('#txaObservaciones').val('Error al consultar la información.');
+                    }
+                });
+            });
+
+        });
     </script>
+
 
     <script type="text/javascript">
         var idUsuario = '<%= Session["idUsuario"] %>';

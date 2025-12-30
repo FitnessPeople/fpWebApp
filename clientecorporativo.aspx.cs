@@ -536,72 +536,182 @@ namespace fpWebApp
             set { ViewState["SortDirection"] = value; }
         }
 
+        //protected void lnkAsignar_Click(object sender, EventArgs e)
+        //{
+        //    string mensaje = string.Empty;
+        //    string asesor = ddlAsesores.SelectedItem.Value;
+        //    bool haySeleccionados = false;
+        //    int totalAgregados = 0;
+        //    int totalErrores = 0;
+        //    clasesglobales cg = new clasesglobales();
+        //    try
+        //    {
+        //        DataTable dtCorporativo = new DataTable();
+        //        dtCorporativo = cg.ConsultarClientecorporativo(.ToString());
+
+        //        foreach (GridViewRow row in gvProspectos.Rows)
+        //        {
+        //            if (row.RowType == DataControlRowType.DataRow)
+        //            {
+        //                var chk = row.FindControl("chkSeleccionar") as System.Web.UI.WebControls.CheckBox;
+
+        //                if (chk != null && chk.Checked)
+        //                {
+        //                    haySeleccionados = true;
+
+        //                    string idPregestion = gvProspectos.DataKeys[row.RowIndex]["idPregestion"].ToString();    
+
+        //                    string respuesta = cg.ActualizarAsesorPregestionCorporativo( Convert.ToInt32(idPregestion), Convert.ToInt32(asesor));
+
+        //                    if (respuesta == "OK")
+        //                        totalAgregados++;
+        //                    else
+        //                        totalErrores++;
+        //                }
+        //            }
+        //        }
+
+        //        if (!haySeleccionados)
+        //        {
+        //            string script = @"
+        //                Swal.fire({
+        //                    title: 'Selecciona un registro',
+        //                    text: 'Debes elegir al menos uno para poder asignarlo a un asesor.',
+        //                    icon: 'warning'
+        //                });
+        //            ";
+        //            ScriptManager.RegisterStartupScript(this, GetType(), "SeleccioneUno", script, true);
+        //            return;
+        //        }
+
+        //        string scriptOk = $@"
+        //            Swal.fire({{
+        //                title: '¡Registros asignados!',
+        //                text: 'Se agregaron {totalAgregados} registros correctamente.',
+        //                icon: 'success',
+        //                timer: 3000,
+        //                showConfirmButton: false,
+        //                timerProgressBar: true
+        //            }}).then(() => {{
+        //                window.location.href = 'clientecorporativo';
+        //            }});
+        //        ";
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", scriptOk, true);
+        //    }
+
+        //    catch (Exception ex)
+        //    {
+        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+        //    }
+        //}
+
         protected void lnkAsignar_Click(object sender, EventArgs e)
         {
-            string mensaje = string.Empty;
             string asesor = ddlAsesores.SelectedItem.Value;
             bool haySeleccionados = false;
+            bool haySinAcuerdo = false;
+
             int totalAgregados = 0;
             int totalErrores = 0;
+
             clasesglobales cg = new clasesglobales();
+
             try
             {
                 foreach (GridViewRow row in gvProspectos.Rows)
                 {
                     if (row.RowType == DataControlRowType.DataRow)
                     {
-                        var chk = row.FindControl("chkSeleccionar") as System.Web.UI.WebControls.CheckBox;
+                        CheckBox chk = row.FindControl("chkSeleccionar") as CheckBox;
 
                         if (chk != null && chk.Checked)
                         {
                             haySeleccionados = true;
 
-                            string idPregestion = gvProspectos.DataKeys[row.RowIndex]["idPregestion"].ToString();    
+                            // 🔑 Obtener valores desde DataKeys
+                            string idPregestion = gvProspectos.DataKeys[row.RowIndex]["idPregestion"].ToString();
+                            string estadoNegociacion = gvProspectos.DataKeys[row.RowIndex]["EstadoNegociacion"].ToString();
 
-                            
-                            string respuesta = cg.ActualizarAsesorPregestionCorporativo( Convert.ToInt32(idPregestion), Convert.ToInt32(asesor));
-
-                            if (respuesta == "OK")
-                                totalAgregados++;
-                            else
-                                totalErrores++;
+                            // 🔴 VALIDACIÓN DE ACUERDO
+                            if (string.IsNullOrEmpty(estadoNegociacion) || estadoNegociacion != "ACUERDO")
+                            {
+                                haySinAcuerdo = true;
+                                break;
+                            }
                         }
                     }
                 }
 
+                // ⚠️ No seleccionó nada
                 if (!haySeleccionados)
                 {
-                    string script = @"
-                        Swal.fire({
-                            title: 'Selecciona un registro',
-                            text: 'Debes elegir al menos uno para poder asignarlo a un asesor.',
-                            icon: 'warning'
-                        });
-                    ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "SeleccioneUno", script, true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "SeleccioneUno", @"
+                Swal.fire({
+                    title: 'Selecciona un registro',
+                    text: 'Debes elegir al menos uno para poder asignarlo.',
+                    icon: 'warning'
+                });
+            ", true);
                     return;
                 }
 
-                string scriptOk = $@"
+                // 🚫 Tiene registros sin acuerdo
+                if (haySinAcuerdo)
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "SinAcuerdo", @"
+                Swal.fire({
+                    title: 'Sin negociación',
+                    text: 'Uno o más registros no tienen acuerdo. Debe realizar una negociación para poder asignar.',
+                    icon: 'info'
+                });
+            ", true);
+                    return;
+                }
+
+                // ✅ ASIGNACIÓN (solo si todos cumplen)
+                foreach (GridViewRow row in gvProspectos.Rows)
+                {
+                    CheckBox chk = row.FindControl("chkSeleccionar") as CheckBox;
+
+                    if (chk != null && chk.Checked)
+                    {
+                        string idPregestion = gvProspectos.DataKeys[row.RowIndex]["idPregestion"].ToString();
+
+                        string respuesta = cg.ActualizarAsesorPregestionCorporativo(
+                            Convert.ToInt32(idPregestion),
+                            Convert.ToInt32(asesor)
+                        );
+
+                        if (respuesta == "OK")
+                            totalAgregados++;
+                        else
+                            totalErrores++;
+                    }
+                }
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", $@"
                     Swal.fire({{
                         title: '¡Registros asignados!',
                         text: 'Se agregaron {totalAgregados} registros correctamente.',
                         icon: 'success',
                         timer: 3000,
-                        showConfirmButton: false,
-                        timerProgressBar: true
+                        showConfirmButton: false
                     }}).then(() => {{
                         window.location.href = 'clientecorporativo';
                     }});
-                ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", scriptOk, true);
-            }
-
+                ", true);
+                    }
             catch (Exception ex)
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+                MostrarAlerta(
+                    "Error de proceso",
+                    "Ocurrió un inconveniente. Código de error: " + idLog,
+                    "error"
+                );
             }
         }
+
     }
 }

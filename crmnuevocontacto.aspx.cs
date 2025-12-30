@@ -1,8 +1,12 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Presentation;
+using Microsoft.Ajax.Utilities;
+using NPOI.SS.Formula.Functions;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -10,9 +14,6 @@ using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using DocumentFormat.OpenXml.Presentation;
-using Microsoft.Ajax.Utilities;
-using NPOI.SS.Formula.Functions;
 
 namespace fpWebApp
 {
@@ -633,9 +634,6 @@ namespace fpWebApp
             }
         }
 
-
-
-
         private void CargarPlanesAfiliadPregestion(string strIdAfiliado)
         {
             clasesglobales cg = new clasesglobales();
@@ -1027,6 +1025,9 @@ namespace fpWebApp
                     DateTime fechaHora = fecha.Date + hora;
                     string fechaHoraMySQL = fechaHora.ToString("yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
                     TimeSpan tiempo = TimeSpan.Zero;
+                    string observaciones = Request.Unvalidated.Form["txaObservaciones"];
+                    observaciones = Regex.Replace(observaciones, "<.*?>", string.Empty);
+
 
                     if (int.TryParse(hfContador.Value, out segundosPasados))
                     {
@@ -1624,6 +1625,7 @@ namespace fpWebApp
                 {
                     DataTable dt = new DataTable();
                     DataTable dt1 = new DataTable();
+                    DataTable dtCorporativo = new DataTable();
 
                     var map = ViewState["DocToIdPreg"] as Dictionary<string, int>;
                     if (map != null && map.TryGetValue(ddlAfiliadoOrigen.SelectedValue, out int idPregestion))
@@ -1643,47 +1645,136 @@ namespace fpWebApp
                     }
 
                     dt1 = cg.ConsultarTipoAfiliadoBasico();
+                    dtCorporativo = cg.ConsultarClientecorporativo(documento.ToString());
+
+                    DataTable dt2 = cg.ConsultarProspectosCRMAsignados();
+                    DataRow[] filas = dt2.Select($"DocumentoContacto = '{documento}'");
 
 
                     try
                     {
                         if (dt.Rows.Count > 0)
                         {
-                            esAfiliado = true;
-                            Session["esAfiliado"] = esAfiliado.ToString();
-                            txbDocumento.Text = documento.ToString();
-                            ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
-                            txbNombreContacto.Text = dt.Rows[0]["NombreAfiliado"].ToString();
-                            txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
-                            if (dt.Rows[0]["idGenero"].ToString() != "")
-                                ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
-                            else
-                                ddlGenero.SelectedItem.Value = "0";
-
-                            DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]);
-                            DateTime hoy = DateTime.Today;
-
-                            int edad = hoy.Year - fechaNacimiento.Year;
-                            if (fechaNacimiento.Date > hoy.AddYears(-edad))
+                            if(dtCorporativo.Rows.Count > 0)
                             {
-                                edad--;
+
+                                if (filas.Length > 0)
+                                {
+                                    DataRow row = filas[0];
+
+                                    if (Convert.ToInt32(row["idAsesor"]) != 0)
+                                    {
+                                        ViewState["Cargando"] = true;
+
+                                        txbDocumento.Text = documento.ToString();
+
+                                        ddlTipoDocumento.SelectedValue = row["idTipoDocumentoContacto"].ToString();
+                                        txbNombreContacto.Text = row["NombreContacto"].ToString();
+                                        txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
+                                        txbTelefonoContacto.Value = row["CelularContacto"].ToString();
+
+                                        string genero;
+                                        DateTime? fechaNacimiento;
+                                        int? edad;
+
+                                        ConsultarApiAdres(documento, out genero, out fechaNacimiento, out edad);
+
+                                        if (!string.IsNullOrEmpty(genero) && ddlGenero.Items.FindByValue(genero) != null)
+                                        {
+                                            ddlGenero.SelectedValue = genero;
+                                        }
+
+                                        if (fechaNacimiento.HasValue)
+                                        {
+                                            txbFecNac.Text = fechaNacimiento.Value.ToString("yyyy-MM-dd");
+                                        }
+
+                                        if (edad.HasValue)
+                                        {
+                                            txbEdad.Text = edad.Value + " años";
+                                        }
+
+                                        ddlCanalesMarketing.SelectedValue = "15";
+                                        ddlEmpresa.SelectedValue = row["DocumentoEmpresa"].ToString();
+                                        if (ddlTipoPago.Items.FindByValue("7") != null)
+                                        {
+                                            ddlTipoPago.ClearSelection();
+                                            ddlTipoPago.SelectedValue = "7";
+                                        }
+                                        ddlEstrategia.SelectedValue = "0";
+                                        ddlStatusLead.SelectedValue = "2";
+                                        ddlEstadoVenta.SelectedValue = "1";
+                                        //Correo
+                                        txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
+
+                                        string idPlan = row["idPlan"].ToString().Trim();
+
+                                        if (ddlPlanes.Items.FindByValue(idPlan) == null)
+                                        {
+                                            ddlPlanes.Items.Add(new ListItem("Plan negociación", idPlan));
+                                        }
+                                        ddlPlanes.SelectedValue = idPlan;
+
+                                        int valorPropuesta = 0;
+
+                                        if (row["ValorNegociacion"] != DBNull.Value)
+                                        {
+                                            int.TryParse(row["ValorNegociacion"].ToString(), out valorPropuesta);
+                                        }
+
+                                        txbValorPropuesta.Text = valorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+
+                                        //int ValorPropuesta = Convert.ToInt32(row["ValorNegociacion"]);
+                                        //txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
+
+                                        txaObservaciones.Value = row["EstadoNegociacion"] +
+                                                                     " Descuento: " + row["Descuento"] + "% " +
+                                                                     row["Descripcion"];
+
+                                        // Elimina todas las etiquetas HTML
+                                        txaObservaciones.Value = Regex.Replace(txaObservaciones.Value, "<.*?>", string.Empty);
+
+                                        ViewState.Remove("Cargando");
+                                        upPlanes.Update();
+                                    }
+                                }
+
                             }
+                            else
+                            {
+                                esAfiliado = true;
+                                Session["esAfiliado"] = esAfiliado.ToString();
+                                txbDocumento.Text = documento.ToString();
+                                ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
+                                txbNombreContacto.Text = dt.Rows[0]["NombreAfiliado"].ToString();
+                                txbApellidoContacto.Value = dt.Rows[0]["ApellidoAfiliado"].ToString();
+                                if (dt.Rows[0]["idGenero"].ToString() != "")
+                                    ddlGenero.SelectedIndex = Convert.ToInt32(ddlGenero.Items.IndexOf(ddlGenero.Items.FindByValue(dt.Rows[0]["idGenero"].ToString())));
+                                else
+                                    ddlGenero.SelectedItem.Value = "0";
 
-                            txbFecNac.Text = fechaNacimiento.ToString("dd/MM/yyyy");
-                            txbEdad.Text = edad.ToString() + " años";
-                            txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
-                            txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
-                            ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
-                            ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
+                                DateTime fechaNacimiento = Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]);
+                                DateTime hoy = DateTime.Today;
 
-                            CargarPlanesAfiliadPregestion(dt.Rows[0]["idAfiliado"].ToString());
+                                int edad = hoy.Year - fechaNacimiento.Year;
+                                if (fechaNacimiento.Date > hoy.AddYears(-edad))
+                                {
+                                    edad--;
+                                }
+
+                                txbFecNac.Text = fechaNacimiento.ToString("dd/MM/yyyy");
+                                txbEdad.Text = edad.ToString() + " años";
+                                txbTelefonoContacto.Value = dt.Rows[0]["CelularAfiliado"].ToString();
+                                txbCorreoContacto.Value = dt.Rows[0]["EmailAfiliado"].ToString();
+
+                                ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(dt.Rows[0]["idEmpresaAfil"].ToString())));
+                                ddlTiposAfiliado.SelectedValue = "2";//Afiliado en renovación
+
+                                CargarPlanesAfiliadPregestion(dt.Rows[0]["idAfiliado"].ToString());
+                            }
                         }
-                        else
-                        {                          
-
-                            DataTable dt2 = cg.ConsultarProspectosCRMAsignados();
-                            DataRow[] filas = dt2.Select($"DocumentoContacto = {documento}");
-
+                        else //si no es afiliado
+                        { 
                             if (filas.Length > 0)
                             {
                                 DataRow row = filas[0];
@@ -1693,10 +1784,33 @@ namespace fpWebApp
                                     ViewState["Cargando"] = true;
 
                                     txbDocumento.Text = documento.ToString();
+
                                     ddlTipoDocumento.SelectedValue = row["idTipoDocumentoContacto"].ToString();
                                     txbNombreContacto.Text = row["NombreContacto"].ToString();
                                     txbApellidoContacto.Value = row["ApellidoContacto"].ToString();
                                     txbTelefonoContacto.Value = row["CelularContacto"].ToString();
+
+                                    string genero;
+                                    DateTime? fechaNacimiento;
+                                    int? edad;
+
+                                    ConsultarApiAdres(documento, out genero, out fechaNacimiento, out edad);
+
+                                    if (!string.IsNullOrEmpty(genero) && ddlGenero.Items.FindByValue(genero) != null)
+                                    {
+                                        ddlGenero.SelectedValue = genero;
+                                    }
+
+                                    if (fechaNacimiento.HasValue)
+                                    {
+                                        txbFecNac.Text = fechaNacimiento.Value.ToString("yyyy-MM-dd");
+                                    }
+
+                                    if (edad.HasValue)
+                                    {
+                                        txbEdad.Text = edad.Value + " años";
+                                    }
+
                                     ddlCanalesMarketing.SelectedValue = "15";
                                     ddlEmpresa.SelectedValue = row["DocumentoEmpresa"].ToString();
                                     if (ddlTipoPago.Items.FindByValue("7") != null)
@@ -1704,6 +1818,10 @@ namespace fpWebApp
                                         ddlTipoPago.ClearSelection();
                                         ddlTipoPago.SelectedValue = "7";
                                     }
+                                    ddlEstrategia.SelectedValue = "0";
+                                    ddlStatusLead.SelectedValue = "2";
+                                    ddlEstadoVenta.SelectedValue = "1";                                
+
 
                                     string idPlan = row["idPlan"].ToString().Trim();
 
@@ -1716,19 +1834,17 @@ namespace fpWebApp
                                     int ValorPropuesta = Convert.ToInt32(row["ValorNegociacion"]);
                                     txbValorPropuesta.Text = ValorPropuesta.ToString("C0", new CultureInfo("es-CO"));
                                     
-                                    txaObservaciones.InnerText = row["EstadoNegociacion"] +
+                                    txaObservaciones.Value = row["EstadoNegociacion"] +
                                                                  " Descuento: " + row["Descuento"] + "% " +
                                                                  row["Descripcion"];
 
+                                    // Elimina todas las etiquetas HTML
+                                    txaObservaciones.Value = Regex.Replace(txaObservaciones.Value, "<.*?>", string.Empty);
+
                                     ViewState.Remove("Cargando");
                                     upPlanes.Update();
-
-
                                 }
                             }
-
-
-
                         }
                         dt.Dispose();
                          
@@ -1747,6 +1863,45 @@ namespace fpWebApp
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
+
+        private void ConsultarApiAdres(int documento, out string genero, out DateTime? fechaNacimiento, out int? edad )
+        {
+            genero = null;
+            fechaNacimiento = null;
+            edad = null;
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(10);
+
+                    var response = client.GetAsync(
+                        $"https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/{documento}"
+                    ).Result;
+
+                    if (!response.IsSuccessStatusCode)
+                        return;
+
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+
+                    if (data.sexo != null)
+                        genero = data.sexo.ToString();
+
+                    if (data.fecha_nacimiento != null)
+                        fechaNacimiento = Convert.ToDateTime(data.fecha_nacimiento.ToString());
+
+                    if (data.edad != null)
+                        edad = Convert.ToInt32(data.edad);
+                }
+            }
+            catch
+            {
+                // 
+            }
+        }
+
 
         public class RespuestaContacto
         {
