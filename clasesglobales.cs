@@ -11338,6 +11338,36 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public DataTable ConsultarClientecorporativo(string documento)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CLIENTE_CORPORATIVO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento", documento);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
 
         #endregion
 
@@ -12692,6 +12722,37 @@ namespace fpWebApp
                 System.Diagnostics.Debug.WriteLine($"[ObtenerValorPlanConPromocion] Error: {ex.Message}");
                 return 0;
             }
+        }
+
+        public DataTable ConsultarCobrosRecurrentes()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_AFILIADOS_PLANES_POR_COBRAR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
         }
 
         public int InsertarPagoPlanAfiliadoWebYDevolverId(int idAfiliadoPlan, int valor, int idMedioPago, string idReferencia, string banco, int idUsuario, string estado, string idSiigoFactura, string idDataToken, string idDataFuente, string idDataTransaccion, string codDatafono, string idTransaccionRRN, string numFacturaDatafono)
