@@ -49,6 +49,11 @@ namespace fpWebApp
                             lnkAsignar.Visible = true;
                         }
                     }
+                    if (Request.QueryString["id"] != null)
+                    {
+                        int idPregestion = Convert.ToInt32(Request.QueryString["id"]);
+                        CargarClienteParaEdicion(idPregestion);
+                    }
 
                     CargarTipoDocumento();
 
@@ -152,45 +157,125 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        //protected void btnAgregar_Click(object sender, EventArgs e)
+        //{
+
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt1 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
+        //    DataTable dt2 = cg.ConsultarContactosCRMPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
+        //    DataTable dt3 = cg.ConsultarPregestionCRMPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
+
+
+        //    string nombre = txbNombreContacto.Text.ToString();
+        //    string apellido = txbApellidoContacto.Text.ToString();
+        //    string documento = txbDocumento.Text.ToString();
+        //    int idTipoDocumento = Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString());
+        //    string celular = txbCelular.Text.ToString();
+        //    int tipoGestion = 4;
+
+        //    string rta = cg.InsertarPregestionAsesorCRM(nombre, apellido, documento, Convert.ToInt32(idTipoDocumento), celular, Convert.ToInt32(tipoGestion),
+        //                       Convert.ToInt32(Session["idCanalVenta"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 0, "Pendiente", ddlEmpresas.SelectedValue.ToString());
+
+        //    if (rta == "OK")
+        //    {
+        //        string script = @"
+        //                        Swal.fire({
+        //                            title: '¡Registro exitoso!',
+        //                            text: 'Registrado en la tabla PregestionCRM.',
+        //                            icon: 'success',
+        //                            timer: 3000, // 3 segundos
+        //                            showConfirmButton: false,
+        //                            timerProgressBar: true
+        //                        }).then(() => {
+        //                            window.location.href = 'clientecorporativo';
+        //                        });
+        //                        ";
+        //        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+        //    }
+
+        //}
+
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-
             clasesglobales cg = new clasesglobales();
-            DataTable dt1 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
-            DataTable dt2 = cg.ConsultarContactosCRMPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
-            DataTable dt3 = cg.ConsultarPregestionCRMPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
-
-
-            string nombre = txbNombreContacto.Text.ToString();
-            string apellido = txbApellidoContacto.Text.ToString();
-            string documento = txbDocumento.Text.ToString();
-            int idTipoDocumento = Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString());
-            string celular = txbCelular.Text.ToString();
+            string nombre = txbNombreContacto.Text.Trim();
+            string apellido = txbApellidoContacto.Text.Trim();
+            string documento = txbDocumento.Text.Trim();
+            int idTipoDocumento = Convert.ToInt32(ddlTipoDocumento.SelectedValue);
+            string celular = txbCelular.Text.Trim();
             int tipoGestion = 4;
+            string rta = string.Empty;          
 
-            string rta = cg.InsertarPregestionAsesorCRM(nombre, apellido, documento, Convert.ToInt32(idTipoDocumento), celular, Convert.ToInt32(tipoGestion),
-                               Convert.ToInt32(Session["idCanalVenta"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 0, "Pendiente", ddlEmpresas.SelectedValue.ToString());
+          
+            if (ViewState["idPregestion"] != null)
+            {
+                int idPregestion = Convert.ToInt32(ViewState["idPregestion"]);
 
+                var respuesta = cg.ActualizarClienteCorporativo(idPregestion, documento, idTipoDocumento, nombre,  apellido, celular, ddlEmpresas.SelectedValue );
+                if (respuesta.salida == 1)
+                {
+                    string script = $@"
+                        Swal.fire({{
+                            title: '¡Proceso exitoso!',
+                            text: '{respuesta.mensaje}',
+                            icon: 'success',
+                            timer: 3000,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }}).then(() => {{
+                            window.location.href = 'clientecorporativo';
+                        }});
+                    ";
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+
+                }
+                else
+                {
+                    string script = $@"
+                        Swal.fire({{
+                            title: '¡Ha ocurrido un error!',
+                            text: '{respuesta.mensaje}',
+                            icon: 'warning',
+                            timer: 3000,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }}).then(() => {{
+                            window.location.href = 'clientecorporativo';
+                        }});
+                    ";
+                }
+            }
+
+            else
+            {
+                rta = cg.InsertarPregestionAsesorCRM(nombre, apellido, documento, idTipoDocumento, celular, tipoGestion, Convert.ToInt32(Session["idCanalVenta"]), Convert.ToInt32(Session["idUsuario"]),
+                    0, "Pendiente", ddlEmpresas.SelectedValue );
+            }
+            
             if (rta == "OK")
             {
-                string script = @"
-                                Swal.fire({
-                                    title: '¡Registro exitoso!',
-                                    text: 'Registrado en la tabla PregestionCRM.',
-                                    icon: 'success',
-                                    timer: 3000, // 3 segundos
-                                    showConfirmButton: false,
-                                    timerProgressBar: true
-                                }).then(() => {
-                                    window.location.href = 'clientecorporativo';
-                                });
-                                ";
+                string mensaje = ViewState["idPregestion"] != null
+                    ? "Datos actualizados correctamente."
+                    : "Registrado en la tabla PregestionCRM.";
+
+                string script = $@"
+                        Swal.fire({{
+                            title: '¡Proceso exitoso!',
+                            text: '{mensaje}',
+                            icon: 'success',
+                            timer: 3000,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }}).then(() => {{
+                            window.location.href = 'clientecorporativo';
+                        }});
+                    ";
+
                 ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
             }
-            //}
-            //}
-            //}
         }
+
 
         protected void gvProspectos_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
@@ -549,7 +634,7 @@ namespace fpWebApp
                     {
                         string script = @"
                                 Swal.fire({
-                                    title: '¡eliminado correctamente!',
+                                    title: '¡Eliminado correctamente!',
                                     text: '',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
@@ -591,7 +676,7 @@ namespace fpWebApp
         private void CargarClienteParaEdicion(int idPregestion)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPregestionCRMPorDocumento(idPregestion);
+            DataTable dt = cg.ConsultarPregestionCRMPorId(idPregestion);
 
             if (dt.Rows.Count > 0)
             {

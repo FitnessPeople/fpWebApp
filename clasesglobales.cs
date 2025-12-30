@@ -11436,7 +11436,44 @@ namespace fpWebApp
         }
 
 
+        public (int salida, string mensaje) ActualizarClienteCorporativo(int idPregestion, string documento, int tipoDoc, string nombre, string apellido, string celular, string docEmpresa)
+        {
+            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
 
+            using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+            {
+                mysqlConexion.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_CLIENTE_CORPORATIVO", mysqlConexion))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Parámetro de entrada
+                    cmd.Parameters.AddWithValue("p_id_pregestion", idPregestion);
+                    cmd.Parameters.AddWithValue("p_documento", documento);
+                    cmd.Parameters.AddWithValue("p_tipo_doc", tipoDoc);
+                    cmd.Parameters.AddWithValue("p_nombre", nombre);
+                    cmd.Parameters.AddWithValue("p_apellido", apellido);
+                    cmd.Parameters.AddWithValue("p_celular", celular);
+                    cmd.Parameters.AddWithValue("p_doc_empresa", docEmpresa);
+
+
+                    // Parámetros de salida
+                    cmd.Parameters.Add("p_salida", MySqlDbType.Int32);
+                    cmd.Parameters["p_salida"].Direction = ParameterDirection.Output;
+
+                    cmd.Parameters.Add("p_mensaje", MySqlDbType.VarChar, 255);
+                    cmd.Parameters["p_mensaje"].Direction = ParameterDirection.Output;
+
+                    cmd.ExecuteNonQuery();
+
+                    int salida = Convert.ToInt32(cmd.Parameters["p_salida"].Value);
+                    string mensaje = cmd.Parameters["p_mensaje"].Value.ToString();
+
+                    return (salida, mensaje);
+                }
+            }
+        }
         #endregion
 
         #region GymPass
