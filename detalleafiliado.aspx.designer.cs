@@ -276,6 +276,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltCRM;
 
         /// <summary>
+        /// Control rpDocumentos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpDocumentos;
+
+        /// <summary>
+        /// Control ltPublicUrl.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltPublicUrl;
+
+        /// <summary>
         /// Control btnVolver.
         /// </summary>
         /// <remarks>

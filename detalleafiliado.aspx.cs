@@ -1,15 +1,20 @@
-﻿using Newtonsoft.Json;
+﻿using fpWebApp.Services;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NPOI.OpenXmlFormats.Spreadsheet;
+using NPOI.OpenXmlFormats.Wordprocessing;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Services.Description;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using static fpWebApp.editarafiliado;
 
@@ -54,15 +59,18 @@ namespace fpWebApp
                                 if (dt1.Rows.Count > 0)
                                 {
                                     string strQuery = "SELECT * " +
-                                       "FROM AfiliadosPlanes ap, PagosPlanAfiliado ppa " +
+                                       "FROM AfiliadosPlanes ap, PagosPlanAfiliado ppa, afiliados a " +
                                        "WHERE ap.idAfiliado = " + dt1.Rows[0]["idAfiliado"].ToString() + " " +
                                        "AND ap.idAfiliadoPlan = ppa.idAfiliadoPlan " +
-                                       "AND ppa.EstadoPago = 'Aprobado'";
+                                       "AND ppa.EstadoPago = 'Aprobado' " +
+                                       "AND ap.idAfiliado = a.idAfiliado";
                                     DataTable dt2 = cg.TraerDatos(strQuery);
 
                                     if (dt2.Rows.Count > 0)
                                     {
                                         idcrm = dt2.Rows[0]["idContacto"].ToString();
+                                        rpDocumentos.DataSource = dt2;
+                                        rpDocumentos.DataBind();
                                     }
 
                                     if (!string.IsNullOrEmpty(idcrm)) ltCRM.Text = "No existen registros de CRM";
@@ -88,6 +96,33 @@ namespace fpWebApp
                     Response.Redirect("logout");
                 }
             }
+        }
+
+        private async Task<string> ConsultarFactura(string strFactura)
+        {
+            string public_url = "";
+            
+            // Pruebas
+            //var siigoClient = new SiigoClient(
+            //    new HttpClient(),
+            //    "https://api.siigo.com/",
+            //    "sandbox@siigoapi.com",
+            //    "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=",
+            //    "SandboxSiigoApi"
+            //);
+
+            //Produccion
+            var siigoClient = new SiigoClient(
+                new HttpClient(),
+                "https://api.siigo.com/",
+                "contabilidad@fitnesspeoplecmd.com",
+                "NWFjNTQzN2QtNjkwZi00MTJiLWFiYTktZmU1ZTBkMmZkZGY4OnJ7WTU0LnVlY08=",
+                "ProductionSiigoApi"
+            );
+
+            public_url = await siigoClient.ManageInvoiceAsync(strFactura);
+            
+            return public_url.ToString();
         }
 
         private void ValidarPermisos(string strPagina)
@@ -483,6 +518,20 @@ namespace fpWebApp
 
                 string url = "https://aone.armaturacolombia.co/api/person/add/?access_token=D2BCF6E6BD09DECAA1266D9F684FFE3F5310AD447D107A29974F71E1989AABDB";
                 string rta = EnviarPeticion(url, contenido);
+            }
+        }
+
+        protected void rpDocumentos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                if (ViewState["CrearModificar"].ToString() == "1")
+                {
+                    HtmlAnchor lnkVerFactura = (HtmlAnchor)e.Item.FindControl("lnkVerFactura");
+                    var public_url = ConsultarFactura(((DataRowView)e.Item.DataItem).Row["idSiigoFactura"].ToString());
+                    lnkVerFactura.Attributes.Add("href", public_url.ToString());
+                    lnkVerFactura.Visible = true;
+                }
             }
         }
     }

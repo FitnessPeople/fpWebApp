@@ -338,8 +338,8 @@
                                                         <asp:ListItem Text="B-" Value="B-"></asp:ListItem>
                                                         <asp:ListItem Text="AB+" Value="AB+"></asp:ListItem>
                                                         <asp:ListItem Text="AB-" Value="AB-"></asp:ListItem>
-                                                        <asp:ListItem Text="0+" Value="O+"></asp:ListItem>
-                                                        <asp:ListItem Text="0-" Value="O-"></asp:ListItem>
+                                                        <asp:ListItem Text="O+" Value="O+"></asp:ListItem>
+                                                        <asp:ListItem Text="O-" Value="O-"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -666,6 +666,9 @@
                     required: true
                 },
                 ddlCesantias: {
+                    required: true
+                },
+                ddlTipoSangre: {
                     required: true
                 },
             },
