@@ -269,10 +269,10 @@ namespace fpWebApp
 
                 if (valorPromocion > 0) valorPlan = valorPromocion;
 
-                if (idPlan == 12) valorPlan = valorPlan == 2000 ? 87000 : 89000;
+                if (idPlan == 12) valorPlan = 89000;
 
                 // DESCOMENTAR EL DÍA - 14-11-2025
-                if (documentoAfiliado == "13568255") valorPlan = 87000;
+                if (documentoAfiliado == "1102388406") valorPlan = 79100;
 
                 int monto = valorPlan * 100;
                 string moneda = "COP";
