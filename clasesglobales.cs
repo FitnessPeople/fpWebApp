@@ -8497,6 +8497,37 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ConsultarPregestionCRMPorId(int idPregestion)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PREGESTION_CRM_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_pregestion", idPregestion);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
         public DataTable ConsultarEmpresasCRM()
         {
             DataTable dt = new DataTable();
@@ -11050,6 +11081,10 @@ namespace fpWebApp
             return dt;
         }
 
+        #endregion
+
+        #region Corporativo
+
         public DataTable ConsultarProspectoClienteCorporativo(string doc_empresa)
         {
             DataTable dt = new DataTable();
@@ -11367,6 +11402,39 @@ namespace fpWebApp
 
             return dt;
         }
+
+        public (int salida, string mensaje) EliminarClienteCorporativo(int idPregestion)
+        {
+            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+            using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+            {
+                mysqlConexion.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand("Pa_ELIMINAR_CLIENTE_CORPORATIVO", mysqlConexion))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Parámetro de entrada
+                    cmd.Parameters.AddWithValue("p_idPregestion", idPregestion);
+
+                    // Parámetros de salida
+                    cmd.Parameters.Add("p_salida", MySqlDbType.Int32);
+                    cmd.Parameters["p_salida"].Direction = ParameterDirection.Output;
+
+                    cmd.Parameters.Add("p_mensaje", MySqlDbType.VarChar, 255);
+                    cmd.Parameters["p_mensaje"].Direction = ParameterDirection.Output;
+
+                    cmd.ExecuteNonQuery();
+
+                    int salida = Convert.ToInt32(cmd.Parameters["p_salida"].Value);
+                    string mensaje = cmd.Parameters["p_mensaje"].Value.ToString();
+
+                    return (salida, mensaje);
+                }
+            }
+        }
+
 
 
         #endregion

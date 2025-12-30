@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -40,7 +42,7 @@ namespace fpWebApp
                         {
                             ListaClienteCorporativo();
                             btnAgregar.Visible = true;
-                          
+
                         }
                         if (ViewState["Borrar"].ToString() == "1")
                         {
@@ -87,7 +89,7 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             try
-            {                
+            {
                 DataTable dt = cg.ConsultarProspectosCRM();
                 gvProspectos.DataSource = dt;
                 gvProspectos.DataBind();
@@ -128,7 +130,7 @@ namespace fpWebApp
                 ddlEmpresas.DataSource = dt;
                 ddlEmpresas.DataValueField = "DocumentoEmpresa";  // Ahora SÍ existe
                 ddlEmpresas.DataTextField = "NombreEmpresa";
-                ddlEmpresas.DataBind();             
+                ddlEmpresas.DataBind();
 
             }
             catch (Exception ex)
@@ -138,32 +140,6 @@ namespace fpWebApp
                 lblMensaje.CssClass = "text-danger";
             }
         }
-
-        //private void listaEmpresasAfiliadas()
-        //{
-        //    try
-        //    {
-        //        clasesglobales cg = new clasesglobales();
-        //        DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
-
-        //        ddlEmpresas.DataSource = dt;
-
-        //        ddlEmpresas.DataValueField = "DocumentoEmpresa";  // ← Valor que necesitas insertar
-        //        ddlEmpresas.DataTextField = "NombreEmpresa";      // ← Nombre visible
-
-        //        ddlEmpresas.DataBind();
-
-        //        ddlEmpresas.Items.Insert(0, new ListItem("Seleccione", "")); // opcional
-
-        //        dt.Dispose();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        lblMensaje.Visible = true;
-        //        lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente. " + ex.ToString();
-        //        lblMensaje.CssClass = "text-danger";
-        //    }
-        //}
 
         private void CargarTipoDocumento()
         {
@@ -178,82 +154,26 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-          
+
             clasesglobales cg = new clasesglobales();
             DataTable dt1 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
-
-            //if (dt1.Rows.Count > 0)
-            //{
-            //    string script = @"
-            //        Swal.fire({
-            //            title: 'Mensaje',
-            //            text: 'Ya existe un afiliado registrado con este documento.',
-            //            icon: 'error'
-            //        }).then((result) => {
-            //            if (result.isConfirmed) {
-                                            
-            //            }
-            //        });
-            //        ";
-            //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-            //}
-            //else
-            //{
-                // Consultar si el prospecto existe en la tabla ContactosCRM.
-                DataTable dt2 = cg.ConsultarContactosCRMPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
-
-                //if (dt2.Rows.Count > 0)
-                //{
-                //    string script = @"
-                //        Swal.fire({
-                //            title: 'Mensaje',
-                //            text: 'Ya existe un contacto en el CRM registrado con este documento.',
-                //            icon: 'error'
-                //        }).then((result) => {
-                //            if (result.isConfirmed) {
-                                            
-                //            }
-                //        });
-                //        ";
-                //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                //}
-                //else
-                //{
-                    // Consultar si el prospecto existe en la tabla PregestionCRM.
-                    DataTable dt3 = cg.ConsultarPregestionCRMPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
-
-                    //if (dt3.Rows.Count > 0)
-                    //{
-                    //    string script = @"
-                    //    Swal.fire({
-                    //        title: 'Mensaje',
-                    //        text: 'Ya existe este documento en PregestionCRM.',
-                    //        icon: 'error'
-                    //    }).then((result) => {
-                    //        if (result.isConfirmed) {
-                                            
-                    //        }
-                    //    });
-                    //    ";
-                    //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                    //}
-                    //else
-                    //{
-                        string nombre = txbNombreContacto.Text.ToString();
-                        string apellido = txbApellidoContacto.Text.ToString();
-                        string documento = txbDocumento.Text.ToString();
-                        int idTipoDocumento = Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString());
-                        string celular = txbCelular.Text.ToString();
-                        int tipoGestion = 4;
+            DataTable dt2 = cg.ConsultarContactosCRMPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
+            DataTable dt3 = cg.ConsultarPregestionCRMPorDocumento(Convert.ToInt32(txbDocumento.Text.ToString()));
 
 
+            string nombre = txbNombreContacto.Text.ToString();
+            string apellido = txbApellidoContacto.Text.ToString();
+            string documento = txbDocumento.Text.ToString();
+            int idTipoDocumento = Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString());
+            string celular = txbCelular.Text.ToString();
+            int tipoGestion = 4;
 
-                        string rta = cg.InsertarPregestionAsesorCRM(nombre, apellido, documento, Convert.ToInt32(idTipoDocumento), celular, Convert.ToInt32(tipoGestion),
-                                           Convert.ToInt32(Session["idCanalVenta"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 0, "Pendiente", ddlEmpresas.SelectedValue.ToString());
+            string rta = cg.InsertarPregestionAsesorCRM(nombre, apellido, documento, Convert.ToInt32(idTipoDocumento), celular, Convert.ToInt32(tipoGestion),
+                               Convert.ToInt32(Session["idCanalVenta"].ToString()), Convert.ToInt32(Session["idUsuario"].ToString()), 0, "Pendiente", ddlEmpresas.SelectedValue.ToString());
 
             if (rta == "OK")
-                        {
-                            string script = @"
+            {
+                string script = @"
                                 Swal.fire({
                                     title: '¡Registro exitoso!',
                                     text: 'Registrado en la tabla PregestionCRM.',
@@ -265,10 +185,10 @@ namespace fpWebApp
                                     window.location.href = 'clientecorporativo';
                                 });
                                 ";
-                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        }
-                    //}
-                //}
+                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+            }
+            //}
+            //}
             //}
         }
 
@@ -315,7 +235,7 @@ namespace fpWebApp
             if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
             {
                 //listaAfiliados("Todas");
-            }   
+            }
             else
             {
                 //listaAfiliados(Session["idSede"].ToString());
@@ -331,7 +251,7 @@ namespace fpWebApp
             {
                 SortExpression = e.SortExpression;
                 SortDirection = "ASC";
-            } 
+            }
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarProspectosCRM();
@@ -409,16 +329,16 @@ namespace fpWebApp
             if (idPerfil == 1 || idPerfil == 18 || idPerfil == 21 || idPerfil == 37) // Usuario Directivo
             {
                 CargarAsesoresPorSede(idCanalVenta);
-               // listaAfiliados("Todas");
+                // listaAfiliados("Todas");
             }
             else
             {
                 CargarAsesoresPorSede(idCanalVenta);
                 if (idCanalVenta == 12 || idCanalVenta == 13 || idCanalVenta == 14)
                 {
-                   // listaAfiliados("Todas");
+                    // listaAfiliados("Todas");
                 }
-               // listaAfiliados(idCanalVenta.ToString());
+                // listaAfiliados(idCanalVenta.ToString());
             }
         }
 
@@ -459,47 +379,13 @@ namespace fpWebApp
             }
         }
 
-        //private void CargarCanalesVentaSedes()
-        //{
-        //    ddlCanalVenta.Items.Clear();
-        //    System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem("Seleccione", "");
-        //    ddlCanalVenta.Items.Add(li);
-
-        //    try
-        //    {
-        //        clasesglobales cg = new clasesglobales();
-        //        DataTable dt = new DataTable();
-
-        //        if (Session["idSede"].ToString() == "11") // Usuario de Sede Administrativa (11)
-        //        {
-        //            dt = cg.ConsultarCanalesVentaSedes();
-        //        }
-        //        else
-        //        {
-        //            dt = cg.ConsultarCanalesVentaSedesPorId(Convert.ToInt32(Session["idSede"].ToString()));
-        //        }
-
-        //        ddlCanalVenta.DataTextField = "NombreCanalVenta";
-        //        ddlCanalVenta.DataValueField = "idCanalVenta";
-        //        ddlCanalVenta.DataSource = dt;
-        //        ddlCanalVenta.DataBind();
-
-        //        dt.Dispose();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        string mensaje = ex.Message.ToString();
-        //    }
-
-        //}
-
         protected void gvProspectos_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
 
                 e.Row.Attributes["onclick"] = "seleccionarCheckbox(this, event)";
-           
+
                 e.Row.Attributes["style"] = "cursor:pointer;";
             }
 
@@ -535,76 +421,6 @@ namespace fpWebApp
             get { return ViewState["SortDirection"] as string ?? "ASC"; }
             set { ViewState["SortDirection"] = value; }
         }
-
-        //protected void lnkAsignar_Click(object sender, EventArgs e)
-        //{
-        //    string mensaje = string.Empty;
-        //    string asesor = ddlAsesores.SelectedItem.Value;
-        //    bool haySeleccionados = false;
-        //    int totalAgregados = 0;
-        //    int totalErrores = 0;
-        //    clasesglobales cg = new clasesglobales();
-        //    try
-        //    {
-        //        DataTable dtCorporativo = new DataTable();
-        //        dtCorporativo = cg.ConsultarClientecorporativo(.ToString());
-
-        //        foreach (GridViewRow row in gvProspectos.Rows)
-        //        {
-        //            if (row.RowType == DataControlRowType.DataRow)
-        //            {
-        //                var chk = row.FindControl("chkSeleccionar") as System.Web.UI.WebControls.CheckBox;
-
-        //                if (chk != null && chk.Checked)
-        //                {
-        //                    haySeleccionados = true;
-
-        //                    string idPregestion = gvProspectos.DataKeys[row.RowIndex]["idPregestion"].ToString();    
-
-        //                    string respuesta = cg.ActualizarAsesorPregestionCorporativo( Convert.ToInt32(idPregestion), Convert.ToInt32(asesor));
-
-        //                    if (respuesta == "OK")
-        //                        totalAgregados++;
-        //                    else
-        //                        totalErrores++;
-        //                }
-        //            }
-        //        }
-
-        //        if (!haySeleccionados)
-        //        {
-        //            string script = @"
-        //                Swal.fire({
-        //                    title: 'Selecciona un registro',
-        //                    text: 'Debes elegir al menos uno para poder asignarlo a un asesor.',
-        //                    icon: 'warning'
-        //                });
-        //            ";
-        //            ScriptManager.RegisterStartupScript(this, GetType(), "SeleccioneUno", script, true);
-        //            return;
-        //        }
-
-        //        string scriptOk = $@"
-        //            Swal.fire({{
-        //                title: '¡Registros asignados!',
-        //                text: 'Se agregaron {totalAgregados} registros correctamente.',
-        //                icon: 'success',
-        //                timer: 3000,
-        //                showConfirmButton: false,
-        //                timerProgressBar: true
-        //            }}).then(() => {{
-        //                window.location.href = 'clientecorporativo';
-        //            }});
-        //        ";
-        //        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", scriptOk, true);
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-        //    }
-        //}
 
         protected void lnkAsignar_Click(object sender, EventArgs e)
         {
@@ -701,7 +517,7 @@ namespace fpWebApp
                         window.location.href = 'clientecorporativo';
                     }});
                 ", true);
-                    }
+            }
             catch (Exception ex)
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
@@ -711,6 +527,92 @@ namespace fpWebApp
                     "error"
                 );
             }
+        }
+
+        protected void gvProspectos_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                int idPregestion = Convert.ToInt32(e.CommandArgument);
+
+                if (e.CommandName == "Editar")
+                {
+                    Response.Redirect($"clientecorporativo.aspx?id={idPregestion}");
+                }
+                else if (e.CommandName == "Eliminar")
+                {
+
+                    var resultado = cg.EliminarClienteCorporativo(idPregestion);
+
+                    if (resultado.salida == 1)
+                    {
+                        string script = @"
+                                Swal.fire({
+                                    title: '¡eliminado correctamente!',
+                                    text: '',
+                                    icon: 'success',
+                                    timer: 3000, // 3 segundos
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href = 'clientecorporativo';
+                                });
+                                ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    }
+                    else
+                    {
+                        string script = @"
+                                Swal.fire({
+                                title: 'Error',
+                                text: '" + resultado.mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: true
+                            }).then(() => {
+                                Response.Redirect(Request.RawUrl);
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+
+                    }
+                    ListaClienteCorporativo();
+                }
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+        }
+
+        private void CargarClienteParaEdicion(int idPregestion)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarPregestionCRMPorDocumento(idPregestion);
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+
+                txbNombreContacto.Text = row["NombreContacto"].ToString();
+                txbApellidoContacto.Text = row["ApellidoContacto"].ToString();
+                txbDocumento.Text = row["DocumentoContacto"].ToString();
+                ddlTipoDocumento.SelectedValue = row["idTipoDocumentoContacto"].ToString();
+                txbCelular.Text = row["CelularContacto"].ToString();
+                ddlEmpresas.SelectedValue = row["DocumentoEmpresa"].ToString();
+
+                // Guardar ID en ViewState
+                ViewState["idPregestion"] = idPregestion;
+
+                // UI modo edición
+                btnAgregar.Text = "Actualizar";
+                ltTitulo.Text = "Editar cliente corporativo";
+            }
+
+            dt.Dispose();
         }
 
     }

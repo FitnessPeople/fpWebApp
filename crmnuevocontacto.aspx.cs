@@ -935,33 +935,33 @@ namespace fpWebApp
                                     string tipoMensaje = respuesta ? "Fitness People" : "Error";
                                     string tipoIcono = respuesta ? "success" : "error";
                                     string script = @"
-                                Swal.fire({
-                                    title: '" + tipoMensaje + @"',
-                                    text: '" + mensaje + @"',
-                                    icon: '" + tipoIcono + @"'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        window.location.href = 'crmnuevocontacto';
-                                    }
-                                });
-                            ";
+                                        Swal.fire({
+                                            title: '" + tipoMensaje + @"',
+                                            text: '" + mensaje + @"',
+                                            icon: '" + tipoIcono + @"'
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                window.location.href = 'crmnuevocontacto';
+                                            }
+                                        });
+                                    ";
 
                                     ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
                                 }
                                 else
                                 {
                                     string script = @"
-                                Swal.fire({
-                                title: 'Error',
-                                text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'error',
-                                timer: 3000,
-                                timerProgressBar: true,
-                                showConfirmButton: true
-                            }).then(() => {
-                                Response.Redirect(Request.RawUrl);
-                            });
-                        ";
+                                            Swal.fire({
+                                            title: 'Error',
+                                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                                            icon: 'error',
+                                            timer: 3000,
+                                            timerProgressBar: true,
+                                            showConfirmButton: true
+                                        }).then(() => {
+                                            Response.Redirect(Request.RawUrl);
+                                        });
+                                    ";
                                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
 
                                 }
