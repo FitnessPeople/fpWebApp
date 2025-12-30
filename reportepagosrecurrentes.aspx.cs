@@ -149,43 +149,11 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        //private void CargarPlanes()
-        //{
-        //    ddlPlanes.Items.Clear();
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarPlanesWeb();
-
-        //    ddlPlanes.DataSource = dt;
-        //    ddlPlanes.DataBind();
-        //    dt.Dispose();
-        //}
-
         private void listaTransacciones()
         {
             clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCobrosRecurrentes();
 
-            string query = @"SELECT 
-                                ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago, 
-                                ap.fechaProximoCobro, ap.idAfiliadoPlan, 
-                                a.DocumentoAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, a.idSede, 
-                                u.idUsuario, 
-                                p.idPlan, p.NombrePlan, p.CodSiigoPlan
-                            FROM PagosPlanAfiliado ppa
-                            INNER JOIN (
-                                SELECT idAfiliadoPlan, MAX(idPago) AS idPagoUltimo
-                                FROM PagosPlanAfiliado
-                                GROUP BY idAfiliadoPlan
-                            ) ult ON ult.idPagoUltimo = ppa.idPago
-                            INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
-                            INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
-                            INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
-                            INNER JOIN Planes p ON p.idPlan = ap.idPlan 
-                            WHERE ap.estadoPlan <> 'Archivado'
-                              AND ap.fechaProximoCobro <= CURDATE() 
-                            ORDER BY ap.fechaProximoCobro DESC;";
-
-            DataTable dt = cg.TraerDatos(query);
-            
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
             dt.Dispose();
@@ -195,28 +163,9 @@ namespace fpWebApp
         {
             try
             {
-                string query = @"SELECT 
-                                    ppa.idPago, ppa.Valor, ppa.DataIdFuente, ppa.FechaHoraPago, 
-                                    ap.fechaProximoCobro, ap.idAfiliadoPlan, 
-                                    a.DocumentoAfiliado, a.NombreAfiliado, a.ApellidoAfiliado, a.EmailAfiliado, a.idSede, 
-                                    u.idUsuario, 
-                                    p.idPlan, p.NombrePlan, p.CodSiigoPlan
-                                FROM PagosPlanAfiliado ppa
-                                INNER JOIN (
-                                    SELECT idAfiliadoPlan, MAX(idPago) AS idPagoUltimo
-                                    FROM PagosPlanAfiliado
-                                    GROUP BY idAfiliadoPlan
-                                ) ult ON ult.idPagoUltimo = ppa.idPago
-                                INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
-                                INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
-                                INNER JOIN Usuarios u ON u.idUsuario = ppa.idUsuario  
-                                INNER JOIN Planes p ON p.idPlan = ap.idPlan 
-                                WHERE ap.estadoPlan <> 'Archivado'
-                                  AND ap.fechaProximoCobro <= CURDATE() 
-                                ORDER BY ap.fechaProximoCobro DESC;";
-
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos(query);
+                DataTable dt = cg.ConsultarCobrosRecurrentes();
+
                 string nombreArchivo = $"PagosRecurrentes_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
