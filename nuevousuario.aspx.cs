@@ -88,7 +88,6 @@ namespace fpWebApp
 
             if (idPerfil == 2 || idPerfil == 11 || idPerfil == 36)
             {
-
                 var perfilesPermitidos = dt.AsEnumerable()
                                            .Where(r => perfilesRestringidos.Contains(Convert.ToInt32(r["IdPerfil"])));
 
@@ -97,7 +96,6 @@ namespace fpWebApp
                 else
                     dt = dt.Clone(); 
             }
-  
 
             ddlPerfiles.DataSource = dt;
             ddlPerfiles.DataBind();

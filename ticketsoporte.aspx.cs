@@ -172,7 +172,6 @@ namespace fpWebApp
                 ddlUsuarios.Enabled = true;
                 CargarTecnicos();
             }
-
         }
 
         private void CargarTecnicos()
@@ -297,6 +296,8 @@ namespace fpWebApp
                 "VALUES (" + ViewState["idTicket"].ToString() + ", " + strResponsable + ", NOW())";
             clasesglobales cg = new clasesglobales();
             cg.TraerDatosStr(strQuery);
+
+            cg.InsertarLog(Session["idusuario"].ToString(), "asignaciones tickets", "Agrega", "El usuario agregó una asignación al ticket: " + strResponsable + ".", "", "");
 
             // Actualiza el estado del ticket en la tabla TicketSoporte
             strQuery = "UPDATE TicketSoporte SET EstadoTicket = 'En Proceso' WHERE idTicketSoporte = " + ViewState["idTicket"].ToString();

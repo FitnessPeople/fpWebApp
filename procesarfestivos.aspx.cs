@@ -180,7 +180,6 @@ namespace fpWebApp
 
                 await ActualizarFestivos(ano);
 
-
                 string mensaje = $"Festivos del año {ano} actualizados correctamente.";
                 string scriptSuccess = $@"
                 Swal.fire({{

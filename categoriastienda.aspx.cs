@@ -176,9 +176,15 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
+                string strInitData = TraerData();
                 if (Request.QueryString["editid"] != null)
                 {
                     string respuesta = cg.ActualizarCategoria(int.Parse(Request.QueryString["editid"].ToString()), txbCategoria.Text.ToString().Trim());
+                    if (respuesta == "OK")
+                    {
+                        string strNewData = TraerData();
+                        cg.InsertarLog(Session["idusuario"].ToString(), "categorias tienda", "Modifica", "El usuario modificó la categoría de la tienda: " + txbCategoria.Text.ToString() + ".", strInitData, strNewData);
+                    }
                 }
                 if (Request.QueryString["deleteid"] != null)
                 {
@@ -193,6 +199,8 @@ namespace fpWebApp
                     try
                     {
                         string respuesta = cg.InsertarCategoria(txbCategoria.Text.ToString().Trim());
+
+                        cg.InsertarLog(Session["idusuario"].ToString(), "categorias tienda", "Agrega", "El usuario agregó una nueva categoría de la tienda: " + txbCategoria.Text.ToString() + ".", "", "");
                     }
                     catch (Exception ex)
                     {
@@ -220,13 +228,29 @@ namespace fpWebApp
             }
         }
 
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCategoriaPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
+        }
+
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             try
             {
-                string consultaSQL = @"SELECT NombreCat AS 'Nombre de Categoría'
-	                                   FROM Categorias 
-	                                   ORDER BY NombreCat;";
+                string consultaSQL = @"
+                    SELECT NombreCat AS 'Nombre de Categoría'
+	                FROM Categorias 
+	                ORDER BY NombreCat;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);

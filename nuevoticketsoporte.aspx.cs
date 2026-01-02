@@ -107,7 +107,6 @@ namespace fpWebApp
             ddlSedes.DataValueField = "idSede";
             ddlSedes.DataTextField = "NombreSedeCiudad";
             ddlSedes.DataBind();
-
         }
 
         private void CargarCategorias()
@@ -125,7 +124,6 @@ namespace fpWebApp
             ddlCategoriasActivos.DataValueField = "idCategoriaActivo";
             ddlCategoriasActivos.DataTextField = "NombreCategoriaActivo";
             ddlCategoriasActivos.DataBind();
-
         }
 
         private void CargarActivos()
@@ -158,8 +156,9 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             cg.TraerDatosStr(strQuery);
 
-            Response.Redirect("nuevoticketsoporte");
+            cg.InsertarLog(Session["idusuario"].ToString(), "ticket soporte", "Agrega", "El usuario agregó un nuevo ticket de soporte: " + descripcion + ".", "", "");
 
+            Response.Redirect("nuevoticketsoporte");
         }
 
         protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)

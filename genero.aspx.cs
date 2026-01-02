@@ -156,9 +156,7 @@ namespace fpWebApp
                     btnEliminar.Visible = true;
                 }
             }
-
         }
-
 
         private bool ValidarGenero(string strNombre)
         {
@@ -233,9 +231,10 @@ namespace fpWebApp
         {
             try
             {
-                string consultaSQL = @"SELECT Genero AS 'Géneros'
-	                                   FROM generos 
-	                                   ORDER BY Genero;";
+                string consultaSQL = @"
+                    SELECT Genero AS 'Géneros'
+	                FROM generos 
+	                ORDER BY Genero;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
