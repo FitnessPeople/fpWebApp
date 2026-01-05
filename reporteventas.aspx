@@ -310,6 +310,7 @@
                                                     CssClass="form-control input-sm">
                                                     <%--<asp:ListItem Text="Seleccione" Value=""></asp:ListItem>--%>
                                                     <asp:ListItem Text="2025" Value="2025"></asp:ListItem>
+                                                    <asp:ListItem Text="2026" Value="2026" Selected="True"></asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                             <%--<div class="col-lg-2">

@@ -17,21 +17,18 @@
     <title>Fitness People | Estados CRM</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
-
-    <%-- <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />--%>
 
     <link href="css/plugins/dataTables/datatables.min.css" rel="stylesheet" />
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
     <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
-        <!-- Sweet Alert -->
+    <!-- Sweet Alert -->
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
     <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+    
     <!-- Sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -306,7 +303,6 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
@@ -319,19 +315,6 @@
         $('.footable').footable();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <%--    <script>        
-        $(".select2_demo_1").select2();
-        function formatText(icon) {
-            return $('<span><i class="fa ' + $(icon.element).data('icon') + '" style="color: ' + $(icon.element).data('color') + '"></i> ' + icon.text + '</span>');
-        };
-        $(document).ready(function () {
-            $('#ddlColor').select2({
-                width: '100%',
-                templateSelection: formatText,
-                templateResult: formatText
-            });
-        });
-    </script>--%>
 
     <script>
         $(document).ready(function () {

@@ -28,6 +28,9 @@
     <!-- FooTable -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
+    <!-- Select2 -->
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
+
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
@@ -159,7 +162,7 @@
                                                                 <label class="col-lg-3 control-label">Estado</label>
                                                                 <div class="col-lg-9">
                                                                     <asp:DropDownList ID="ddlEstado" runat="server" AutoPostBack="true"
-                                                                        OnSelectedIndexChanged="ddlEstado_SelectedIndexChanged" CssClass="form-control input-sm">
+                                                                        OnSelectedIndexChanged="ddlEstado_SelectedIndexChanged" CssClass="form-control input-sm select3">
                                                                         <asp:ListItem Text="Todos" Value="" />
                                                                         <asp:ListItem Text="Pendiente" Value="Pendiente" />
                                                                         <asp:ListItem Text="En Proceso" Value="En Proceso" />
@@ -175,7 +178,7 @@
                                                                 <div class="col-lg-8">
                                                                     <asp:DropDownList ID="ddlFiltroPrioridad" runat="server" AutoPostBack="true"
                                                                         OnSelectedIndexChanged="ddlFiltroPrioridad_SelectedIndexChanged" 
-                                                                        CssClass="form-control input-sm">
+                                                                        CssClass="form-control input-sm select2">
                                                                         <asp:ListItem Text="Todas" Value="" />
                                                                         <asp:ListItem Text="Alta" Value="Alta" />
                                                                         <asp:ListItem Text="Media" Value="Media" />
@@ -191,7 +194,7 @@
                                                                     <asp:DropDownList ID="ddlSedes" runat="server" AutoPostBack="true" 
                                                                         OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged" 
                                                                         CssClass="form-control input-sm" AppendDataBoundItems="true">
-                                                                        <asp:ListItem Text="Todas" Value="" />
+                                                                        <asp:ListItem Text="Todas" Value="0" />
                                                                     </asp:DropDownList>
                                                                 </div>
                                                             </div>
@@ -359,9 +362,72 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- Select2 -->
+    <script src="js/plugins/select2/select2.full.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
+
+        function initSelect2() {
+            $('.select2').select2({
+                width: '100%',
+                minimumResultsForSearch: Infinity, // 👈 Quita el buscador
+                templateResult: formatPrioridad,
+                templateSelection: formatPrioridad,
+                escapeMarkup: function (markup) { return markup; }
+            });
+        }
+
+        function initSelect3() {
+            $('.select3').select2({
+                width: '100%',
+                minimumResultsForSearch: Infinity, // 👈 Quita el buscador
+                templateResult: formatPrioridad,
+                templateSelection: formatPrioridad,
+                escapeMarkup: function (markup) { return markup; }
+            });
+        }
+
+        function formatPrioridad(option) {
+            if (!option.id) {
+                return option.text;
+            }
+
+            let icon = '';
+            switch (option.text) {
+                case 'Alta':
+                    icon = "<i class='fa fa-circle text-danger'></i>";
+                    break;
+                case 'Media':
+                    icon = "<i class='fa fa-circle text-warning'></i>";
+                    break;
+                case 'Baja':
+                    icon = "<i class='fa fa-circle text-info'></i>";
+                    break;
+                case 'Pendiente':
+                    icon = "<i class='fa fa-circle text-warning'></i>";
+                    break;
+                case 'En Proceso':
+                    icon = "<i class='fa fa-circle text-info'></i>";
+                    break;
+                case 'Resuelto':
+                    icon = "<i class='fa fa-circle text-navy'></i>";
+                    break;
+                case 'Cancelado':
+                    icon = "<i class='fa fa-circle text-success'></i>";
+                    break;
+                default:
+                    icon = "<i class='fa fa-circle text-muted'></i>";
+            }
+
+            return "<span>" + icon + " " + option.text + "</span>";
+        }
+
+        $(document).ready(function () {
+            initSelect2();
+            initSelect3();
+        });
     </script>
 
 </body>
