@@ -528,14 +528,12 @@ namespace fpWebApp
 
                         if (chk != null && chk.Checked)
                         {
-                            haySeleccionados = true;
-
-                            // 🔑 Obtener valores desde DataKeys
+                            haySeleccionados = true;                           
                             string idPregestion = gvProspectos.DataKeys[row.RowIndex]["idPregestion"].ToString();
                             string estadoNegociacion = gvProspectos.DataKeys[row.RowIndex]["EstadoNegociacion"].ToString();
 
                             // 🔴 VALIDACIÓN DE ACUERDO
-                            if (string.IsNullOrEmpty(estadoNegociacion) || estadoNegociacion != "ACUERDO")
+                            if (string.IsNullOrEmpty(estadoNegociacion) || estadoNegociacion != "Acuerdo OK")
                             {
                                 haySinAcuerdo = true;
                                 break;
