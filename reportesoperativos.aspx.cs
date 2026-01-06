@@ -250,13 +250,13 @@ namespace fpWebApp
                     dt = cg.ConsultarRankingAsesoresPorFecha(fechaIni, fechaFin);
                     break;
 
-                //case 2:
-                //    dt = cg.ReporteVentasPorSede(fechaIni, fechaFin);
-                //    break;
+                case 2:
+                    dt = cg.ConsultarRankingCanalesDeVentaPorFecha(fechaIni, fechaFin);
+                    break;
 
-                //case 3:
-                //    dt = cg.ReporteVentasTotales(fechaIni, fechaFin);
-                //    break;
+                    //case 3:
+                    //    dt = cg.ReporteVentasTotales(fechaIni, fechaFin);
+                    //    break;
 
                     // agrega los demás casos aquí
             }

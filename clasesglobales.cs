@@ -445,8 +445,9 @@ namespace fpWebApp
 
             for (int i = 0; i < dt.Columns.Count; i++)
             {
-                sheet.AutoSizeColumn(i);
+                sheet.SetColumnWidth(i, 20 * 256); 
             }
+
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -968,8 +969,6 @@ namespace fpWebApp
             }
         }
 
-
-
         public void ExportarPDFGen(DataTable dt, string nombreArchivo)
         {
             if (dt == null || dt.Rows.Count == 0)
@@ -982,21 +981,33 @@ namespace fpWebApp
                 PdfWriter writer = PdfWriter.GetInstance(doc, ms);
                 doc.Open();
 
-                // ===== FUENTES (iTextSharp ONLY) =====
+                // ===== FUENTES (iTextSharp ONLY - SIN ERRORES) =====
                 iTextSharp.text.Font fontTitulo =
-                    FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14);
+                    new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.BOLD);
 
                 iTextSharp.text.Font fontHeader =
-                    FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 9);
+                    new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 9, iTextSharp.text.Font.BOLD);
 
                 iTextSharp.text.Font fontCell =
-                    FontFactory.GetFont(FontFactory.HELVETICA, 8);
+                    new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL);
+
+                iTextSharp.text.Font fontFecha =
+                    new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.ITALIC, BaseColor.DARK_GRAY);
 
                 // ===== TITULO =====
-                Paragraph titulo = new Paragraph("Reporte", fontTitulo);
+                Paragraph titulo = new Paragraph("Reporte ventas", fontTitulo);
                 titulo.Alignment = Element.ALIGN_CENTER;
-                titulo.SpacingAfter = 15;
+                titulo.SpacingAfter = 5;
                 doc.Add(titulo);
+
+                // ===== FECHA Y HORA =====
+                Paragraph fecha = new Paragraph(
+                    $"Generado el: {DateTime.Now:dd/MM/yyyy HH:mm:ss}",
+                    fontFecha
+                );
+                fecha.Alignment = Element.ALIGN_CENTER;
+                fecha.SpacingAfter = 15;
+                doc.Add(fecha);
 
                 // ===== TABLA =====
                 PdfPTable tabla = new PdfPTable(dt.Columns.Count);
@@ -1005,7 +1016,7 @@ namespace fpWebApp
                 float[] widths = Enumerable.Repeat(1f, dt.Columns.Count).ToArray();
                 tabla.SetWidths(widths);
 
-                // ---- ENCABEZADOS ----
+                // ---- ENCABEZADOS (solo línea inferior) ----
                 foreach (DataColumn col in dt.Columns)
                 {
                     PdfPCell cell = new PdfPCell(
@@ -1013,11 +1024,15 @@ namespace fpWebApp
                     );
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     cell.Padding = 5;
-                    cell.BackgroundColor = BaseColor.LIGHT_GRAY;
+
+                    cell.Border = iTextSharp.text.Rectangle.BOTTOM_BORDER;
+                    cell.BorderWidthBottom = 1f;
+                    cell.BorderColorBottom = BaseColor.BLACK;
+
                     tabla.AddCell(cell);
                 }
 
-                // ---- FILAS ----
+                // ---- FILAS (sin bordes) ----
                 foreach (DataRow row in dt.Rows)
                 {
                     foreach (object item in row.ItemArray)
@@ -1027,6 +1042,8 @@ namespace fpWebApp
                         );
                         cell.HorizontalAlignment = Element.ALIGN_CENTER;
                         cell.Padding = 4;
+                        cell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+
                         tabla.AddCell(cell);
                     }
                 }
@@ -1049,7 +1066,6 @@ namespace fpWebApp
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
             }
         }
-
 
 
 
@@ -10187,6 +10203,39 @@ namespace fpWebApp
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
                     using (MySqlCommand cmd = new MySqlCommand("Pa_REPORTE_RANKING_ASESORES_POR_FECHA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_fecha_ini", FechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", FechaFin);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarRankingCanalesDeVentaPorFecha(DateTime FechaIni, DateTime FechaFin)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_REPORTE_RANKING_CANALES_VENTA_POR_FECHA", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_fecha_ini", FechaIni);

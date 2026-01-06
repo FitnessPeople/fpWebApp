@@ -111,7 +111,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-sack-dollar text-success m-r-sm"></i>Reportes operativos</h2>
+                    <h2><i class="fas fa-sheet-plastic text-success m-r-sm"></i>Reportes operativos</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Reportes</li>
