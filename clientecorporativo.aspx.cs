@@ -532,7 +532,7 @@ namespace fpWebApp
                             string idPregestion = gvProspectos.DataKeys[row.RowIndex]["idPregestion"].ToString();
                             string estadoNegociacion = gvProspectos.DataKeys[row.RowIndex]["EstadoNegociacion"].ToString();
 
-                            // 🔴 VALIDACIÓN DE ACUERDO
+                            // VALIDACIÓN DE ACUERDO
                             if (string.IsNullOrEmpty(estadoNegociacion) || estadoNegociacion != "Acuerdo OK")
                             {
                                 haySinAcuerdo = true;

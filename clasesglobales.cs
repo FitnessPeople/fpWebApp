@@ -20,14 +20,18 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Configuration;
+using System.Drawing.Configuration;
 using System.Web.Services.Description;
 using System.Web.UI;
+
+
 
 namespace fpWebApp
 {
@@ -441,8 +445,9 @@ namespace fpWebApp
 
             for (int i = 0; i < dt.Columns.Count; i++)
             {
-                sheet.AutoSizeColumn(i);
+                sheet.SetColumnWidth(i, 20 * 256); 
             }
+
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -949,6 +954,7 @@ namespace fpWebApp
 
                 // ❌ NO CERRAR EL DOCUMENTO AQUÍ
                  doc.Close(); //  
+                writer.Close();
 
 
 
@@ -962,6 +968,106 @@ namespace fpWebApp
                 HttpContext.Current.ApplicationInstance.CompleteRequest();
             }
         }
+
+        public void ExportarPDFGen(DataTable dt, string nombreArchivo)
+        {
+            if (dt == null || dt.Rows.Count == 0)
+                return;
+
+            Document doc = new Document(PageSize.A4, 25, 25, 50, 40);
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                PdfWriter writer = PdfWriter.GetInstance(doc, ms);
+                doc.Open();
+
+                // ===== FUENTES (iTextSharp ONLY - SIN ERRORES) =====
+                iTextSharp.text.Font fontTitulo =
+                    new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.BOLD);
+
+                iTextSharp.text.Font fontHeader =
+                    new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 9, iTextSharp.text.Font.BOLD);
+
+                iTextSharp.text.Font fontCell =
+                    new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL);
+
+                iTextSharp.text.Font fontFecha =
+                    new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.ITALIC, BaseColor.DARK_GRAY);
+
+                // ===== TITULO =====
+                Paragraph titulo = new Paragraph("Reporte ventas", fontTitulo);
+                titulo.Alignment = Element.ALIGN_CENTER;
+                titulo.SpacingAfter = 5;
+                doc.Add(titulo);
+
+                // ===== FECHA Y HORA =====
+                Paragraph fecha = new Paragraph(
+                    $"Generado el: {DateTime.Now:dd/MM/yyyy HH:mm:ss}",
+                    fontFecha
+                );
+                fecha.Alignment = Element.ALIGN_CENTER;
+                fecha.SpacingAfter = 15;
+                doc.Add(fecha);
+
+                // ===== TABLA =====
+                PdfPTable tabla = new PdfPTable(dt.Columns.Count);
+                tabla.WidthPercentage = 100;
+
+                float[] widths = Enumerable.Repeat(1f, dt.Columns.Count).ToArray();
+                tabla.SetWidths(widths);
+
+                // ---- ENCABEZADOS (solo línea inferior) ----
+                foreach (DataColumn col in dt.Columns)
+                {
+                    PdfPCell cell = new PdfPCell(
+                        new Phrase(col.ColumnName, fontHeader)
+                    );
+                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                    cell.Padding = 5;
+
+                    cell.Border = iTextSharp.text.Rectangle.BOTTOM_BORDER;
+                    cell.BorderWidthBottom = 1f;
+                    cell.BorderColorBottom = BaseColor.BLACK;
+
+                    tabla.AddCell(cell);
+                }
+
+                // ---- FILAS (sin bordes) ----
+                foreach (DataRow row in dt.Rows)
+                {
+                    foreach (object item in row.ItemArray)
+                    {
+                        PdfPCell cell = new PdfPCell(
+                            new Phrase(item?.ToString() ?? string.Empty, fontCell)
+                        );
+                        cell.HorizontalAlignment = Element.ALIGN_CENTER;
+                        cell.Padding = 4;
+                        cell.Border = iTextSharp.text.Rectangle.NO_BORDER;
+
+                        tabla.AddCell(cell);
+                    }
+                }
+
+                doc.Add(tabla);
+
+                // ===== CIERRE =====
+                doc.Close();
+                writer.Close();
+
+                // ===== DESCARGA =====
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.ContentType = "application/pdf";
+                HttpContext.Current.Response.AddHeader(
+                    "Content-Disposition",
+                    $"attachment; filename={nombreArchivo}.pdf"
+                );
+                HttpContext.Current.Response.BinaryWrite(ms.ToArray());
+                HttpContext.Current.Response.Flush();
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            }
+        }
+
+
 
         public string InsertarLogError(string pagima, string descripcion, int idusuario, out int _idLogErrorQ)
         {
@@ -10069,6 +10175,72 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_RANKING_ASESORES_MES_VIGENTE_CRM", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarRankingAsesoresPorFecha(DateTime FechaIni, DateTime FechaFin)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_REPORTE_RANKING_ASESORES_POR_FECHA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_fecha_ini", FechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", FechaFin);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarRankingCanalesDeVentaPorFecha(DateTime FechaIni, DateTime FechaFin)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_REPORTE_RANKING_CANALES_VENTA_POR_FECHA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_fecha_ini", FechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", FechaFin);
+
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
                             mysqlConexion.Open();
