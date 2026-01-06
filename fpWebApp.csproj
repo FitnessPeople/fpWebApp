@@ -996,6 +996,7 @@
     <Content Include="reportepagosmulticanal.aspx" />
     <Content Include="reportepagosrechazados.aspx" />
     <Content Include="reportepagosrecurrentes.aspx" />
+    <Content Include="reportesoperativos.aspx" />
     <Content Include="reporteventas.aspx" />
     <Content Include="reporteventasasesor.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
@@ -2164,6 +2165,13 @@
     </Compile>
     <Compile Include="reportepagosrecurrentes.aspx.designer.cs">
       <DependentUpon>reportepagosrecurrentes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="reportesoperativos.aspx.cs">
+      <DependentUpon>reportesoperativos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reportesoperativos.aspx.designer.cs">
+      <DependentUpon>reportesoperativos.aspx</DependentUpon>
     </Compile>
     <Compile Include="reporteventas.aspx.cs">
       <DependentUpon>reporteventas.aspx</DependentUpon>
