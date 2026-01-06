@@ -61,18 +61,23 @@ namespace fpWebApp
                     TimeSpan diferencia = fechaDestino - hoy;
                     _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
 
-                    Control ctrInicio = new Control();
+                    Control ctrIndicadores = new Control();
+                    Control ctrGraficos = new Control();
 
-                    if (Session["idPerfil"].ToString() == "1")
+                    switch (Session["Perfil"].ToString())
                     {
-                        ctrInicio = LoadControl("controles/indicadores01.ascx");
-                    }
-                    else
-                    {
-                        ctrInicio = LoadControl("controles/indicadores02.ascx");
+                        case "CEO":
+                            ctrIndicadores = LoadControl("controles/indicadoresCEO.ascx");
+                            ctrGraficos = LoadControl("controles/graficosCEO.ascx");
+                            break;
+                        default:
+                            ctrIndicadores = LoadControl("controles/indicadores02.ascx");
+                            ctrGraficos = LoadControl("controles/graficosCEO.ascx");
+                            break;
                     }
 
-                    phIndicadores.Controls.Add(ctrInicio);
+                    phIndicadores.Controls.Add(ctrIndicadores);
+                    phGraficos.Controls.Add(ctrGraficos);
 
                 }
                 else

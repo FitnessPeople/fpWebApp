@@ -67,8 +67,6 @@ namespace fpWebApp
                             Response.Redirect("agenda");
                         }
                     }
-
-                    //indicadores01.Visible = false;
                 }
                 else
                 {

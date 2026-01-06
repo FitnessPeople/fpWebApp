@@ -4,7 +4,7 @@
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
-<%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
+<%@ Register Src="~/controles/indicadoresCEO.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
 <!DOCTYPE html>
@@ -396,7 +396,7 @@
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Gráficos
-                                            <asp:Literal ID="ltMes5" runat="server"></asp:Literal>:</h5>
+                                            <asp:Literal ID="ltMes5" runat="server"></asp:Literal></h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>

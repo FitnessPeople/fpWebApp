@@ -30,7 +30,6 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
-                    //indicadores01.Visible = false;
                 }
                 else
                 {

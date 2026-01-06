@@ -62,8 +62,6 @@ namespace fpWebApp
                             Response.Redirect("agenda");
                         }
                     }
-
-                    //indicadores01.Visible = false;
                 }
                 else
                 {
@@ -210,7 +208,7 @@ namespace fpWebApp
             catch (Exception ex)
             {
                 lblMensaje.Visible = true;               
-                lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente.";
+                lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente. " + ex.Message.ToString();
                 lblMensaje.CssClass = "text-danger";
             }
 

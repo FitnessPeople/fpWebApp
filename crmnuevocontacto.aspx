@@ -3,7 +3,7 @@
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
-<%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
+<%@ Register Src="~/controles/indicadoresCEO.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 <%@ Register Src="~/controles/indicadoresusucrm.ascx" TagPrefix="uc2" TagName="indicadoresusucrm" %>
 <%@ Register Src="~/controles/indicadoresusucrm2.ascx" TagPrefix="uc1" TagName="indicadoresusucrm2" %>

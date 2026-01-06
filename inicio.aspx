@@ -47,6 +47,8 @@
         }
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         function changeClass() {
             var element = document.querySelector("#inicio");
@@ -94,6 +96,8 @@
                         <%--Inicio Contenido!!!!--%>
                         <asp:PlaceHolder ID="phIndicadores" runat="server"></asp:PlaceHolder>
                         <%--<uc1:indicadores02 runat="server" ID="indicadores02" />--%>
+
+                        <asp:PlaceHolder ID="phGraficos" runat="server"></asp:PlaceHolder>
 
                         <uc1:grafico01 runat="server" ID="grafico01" />
 

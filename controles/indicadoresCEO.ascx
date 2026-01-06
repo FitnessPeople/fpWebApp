@@ -1,11 +1,11 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="indicadores01.ascx.cs" Inherits="fpWebApp.controles.indicadores01" %>
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="indicadoresCEO.ascx.cs" Inherits="fpWebApp.controles.indicadoresCEO" %>
 <%--
     ****************
     Indicadores: 
-        Empleados Activos
-        Empleados Fijos
-        Empleados OPS
-        Empleados Aprendices
+        Ingresos totales del mes
+        Utilidad neta
+        Crecimiento vs mes anterior (%)
+        Tasa de retención
     ****************
 --%>
 <div class="row">
@@ -13,10 +13,10 @@
         <div class="widget style1 bg-success">
             <div class="row">
                 <div class="col-xs-4">
-                    <i class="fa fa-user-tie fa-5x"></i>
+                    <i class="fa fa-hand-holding-dollar fa-5x"></i>
                 </div>
                 <div class="col-xs-8 text-right">
-                    <span>Empleados activos</span>
+                    <span>Ingresos totales del mes</span>
                     <h2 class="font-bold">
                         <asp:Literal ID="ltCuantos1" runat="server"></asp:Literal></h2>
                 </div>
@@ -27,10 +27,10 @@
         <div class="widget style1 lazur-bg">
             <div class="row">
                 <div class="col-xs-4">
-                    <i class="fa fa-user-check fa-5x"></i>
+                    <i class="fa fa-money-bill-trend-up fa-5x"></i>
                 </div>
                 <div class="col-xs-8 text-right">
-                    <span>Fijos</span>
+                    <span>Utilidad neta</span>
                     <h2 class="font-bold">
                         <asp:Literal ID="ltCuantos2" runat="server"></asp:Literal>
                     </h2>
@@ -42,10 +42,10 @@
         <div class="widget style1 yellow-bg">
             <div class="row">
                 <div class="col-xs-4">
-                    <i class="fa fa-user-tag fa-5x"></i>
+                    <i class="fa fa-arrow-trend-up fa-5x"></i>
                 </div>
                 <div class="col-xs-8 text-right">
-                    <span>OPS</span>
+                    <span>Crecimiento vs mes anterior (%)</span>
                     <h2 class="font-bold">
                         <asp:Literal ID="ltCuantos3" runat="server"></asp:Literal>
                     </h2>
@@ -57,10 +57,10 @@
         <div class="widget style1 navy-bg">
             <div class="row">
                 <div class="col-xs-4">
-                    <i class="fa fa-user-ninja fa-5x"></i>
+                    <i class="fa fa-person-walking-arrow-right fa-5x"></i>
                 </div>
                 <div class="col-xs-8 text-right">
-                    <span>Aprendiz </span>
+                    <span>Tasa de retención </span>
                     <h2 class="font-bold">
                         <asp:Literal ID="ltCuantos4" runat="server"></asp:Literal></h2>
                 </div>
