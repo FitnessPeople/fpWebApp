@@ -17,6 +17,7 @@ namespace fpWebApp.controles
         protected void Page_Load(object sender, EventArgs e)
         {
             CrearGrafico1();
+            CrearGrafico2();
         }
 
         private void CrearGrafico1()
@@ -100,31 +101,23 @@ namespace fpWebApp.controles
             Grafico1 = JsonConvert.SerializeObject(datos);
         }
 
-        private void CrearGrafico2(string fechaIni, string annio)
+        private void CrearGrafico2()
         {
             //Comparativo de Ventas y Cantidad por Usuario
             clasesglobales cg = new clasesglobales();
             //int anio = Convert.ToDateTime(fechaIni).Year;
             //int mes = Convert.ToDateTime(fechaIni).Month;
 
-            int anio = Convert.ToInt32(annio);
-            int mes = Convert.ToInt32(fechaIni);
+            //int anio = Convert.ToInt32(annio);
+            //int mes = Convert.ToInt32(fechaIni);
 
             string query = @"
-                SELECT 
-                    ppa.idUsuario, u.NombreUsuario, 
-                    COUNT(*) AS cuantos,
-                    SUM(ppa.valor) AS sumatoria
-                FROM pagosplanafiliado ppa  
-                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-                INNER JOIN Usuarios u ON ppa.idUsuario = u.idUsuario 
-                WHERE ((ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21)) OR (ppa.idUsuario NOT IN (156) AND ap.idPlan IN (1,17,20,21))) 
-	                AND (ppa.idMedioPago = 4)    
-                    AND MONTH(ppa.FechaHoraPago) = " + mes.ToString() + @" 
-                    AND YEAR(ap.FechaInicioPlan) = " + anio.ToString() + @" 
-                    AND MONTH(ap.FechaInicioPlan) = " + mes.ToString() + @" 
-                GROUP BY ppa.idUsuario 
-                ORDER BY ppa.idUsuario;";
+                SELECT s.NombreSede, COUNT(a.idAfiliado) AS cuantos 
+                FROM afiliados a 
+                INNER JOIN sedes s ON s.idSede = a.idSede 
+                WHERE EstadoAfiliado = 'Activo' 
+                GROUP BY a.idSede 
+                ORDER BY s.NombreSede;";
 
             DataTable dt = cg.TraerDatos(query);
 
@@ -135,8 +128,8 @@ namespace fpWebApp.controles
 
             foreach (DataRow row in dt.Rows)
             {
-                labels.Add((row["NombreUsuario"]).ToString());
-                ventas.Add(Convert.ToDecimal(row["sumatoria"]));
+                labels.Add((row["NombreSede"]).ToString());
+                //ventas.Add(Convert.ToDecimal(row["sumatoria"]));
                 cantidad.Add(Convert.ToDecimal(row["cuantos"]));
             }
 

@@ -120,36 +120,32 @@
     });
 
 
-    // Grafico de Ventas y Cantidad por Usuario
+    // Grafico de Afiliados por Sede
     const datos2 = <%= Grafico2 %>;
 
     const ctx2 = document.getElementById('miGrafico2');
 
-    const maxVentas2 = Math.max(...datos2.ventas);
+    //const maxVentas2 = Math.max(...datos2.ventas);
     const maxCantidad2 = Math.max(...datos2.cantidad);
 
-    const maxY21 = redondearSuperior(maxVentas2 * 1.1, 100000);
+    //const maxY21 = redondearSuperior(maxVentas2 * 1.1, 100000);
     const maxY22 = Math.ceil(maxCantidad2 * 1.2);
 
+    const colores2 = datos2.cantidad.map((_, index) => {
+        const hue = (index * 360) / datos2.cantidad.length;
+        return `hsla(${hue}, 70%, 55%, 0.7)`;
+    });
+
     const data2 = {
-        labels: datos2.labels, // nombres de canal
+        labels: datos2.labels, 
         datasets: [
             {
-                type: 'bar',                // Tipo: Barras
-                label: 'Ventas',
-                data: datos2.ventas,
-                yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgb(54, 162, 235)',
-                borderWidth: 1
-            },
-            {
-                type: 'line',               // Tipo: Línea
-                label: 'Cantidad',
+                type: 'bar',               // Tipo: Barra
+                label: 'Afiliados',
                 data: datos2.cantidad,
                 yAxisID: 'y2',              // Asociado al eje Y derecho
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                backgroundColor: colores2,
+                borderColor: colores2.map(c => c.replace('0.7', '1')),
                 tension: 0,
                 fill: false
             }
@@ -166,27 +162,19 @@
             },
             stacked: false,
             scales: {
-                y1: {
+                y2: {
                     type: 'linear',
                     position: 'left',
                     min: 0,
-                    max: maxY21,
-                    title: { display: true, text: 'Ventas' },
-                    grid: { drawOnChartArea: true }
-                },
-                y2: {
-                    type: 'linear',
-                    position: 'right',
-                    min: 0,
                     max: maxY22,
-                    title: { display: true, text: 'Cantidad' },
+                    title: { display: true, text: 'Afiliados' },
                     grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
                 }
             },
             plugins: {
                 title: {
                     display: true,
-                    text: 'Comparativo de Ventas y Cantidad por Usuario'
+                    text: 'Afiliados activos por sede'
                 }
             }
         }
@@ -206,7 +194,7 @@
     const maxY32 = Math.ceil(maxCantidad3 * 1.2);
 
     const data3 = {
-        labels: datos3.labels, // nombres de canal
+        labels: datos3.labels, 
         datasets: [
             {
                 type: 'bar',                // Tipo: Barras
