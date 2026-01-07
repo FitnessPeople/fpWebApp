@@ -141,7 +141,10 @@ namespace fpWebApp
                     break; 
                 case 4:
                     dt = cg.ConsultarRankingPlanesPorFecha(fechaIni, fechaFin);
-                    break; 
+                    break;
+                case 5:
+                    dt = cg.ConsultarUsuariosPlanesPorFecha(fechaIni, fechaFin);
+                    break;
                     // agrega los demás casos aquí
             }
 
@@ -228,6 +231,11 @@ namespace fpWebApp
                         tituloReporte = $"Reporte Planes desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
                         nombreArchivo = $"Reporte_Planes_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
                         break;
+                    case 5:
+                        dt = cg.ConsultarRankingPlanesPorFecha(fechaIni, fechaFin);
+                        tituloReporte = $"Reporte Usuarios Planes desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
+                        nombreArchivo = $"Reporte_Usuarios_Planes_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
+                        break;
 
                     default:
                         MostrarAlerta("Info", "Este reporte aún no tiene exportación PDF.", "info");
@@ -294,6 +302,11 @@ namespace fpWebApp
                         dt = cg.ConsultarRankingPlanesPorFecha(fechaIni, fechaFin);
                         tituloReporte = $"Reporte Planes desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
                         nombreArchivo = $"Reporte_Planes_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
+                        break;
+                    case 5:
+                        dt = cg.ConsultarRankingPlanesPorFecha(fechaIni, fechaFin);
+                        tituloReporte = $"Reporte Usuarios Planes desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
+                        nombreArchivo = $"Reporte_Usuarios_Planes_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
                         break;
 
                     default:
