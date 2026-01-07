@@ -65,12 +65,27 @@
         var barOptions = {
             responsive: true,
             legend: {
-                display: true
+                display: true,
+                labels: {
+                    usePointStyle: true
+                }
             },
             tooltips: {
                 enabled: true,
                 mode: 'index',
-                intersect: true
+                intersect: false,
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var value = tooltipItem.yLabel;
+
+                        if (dataset.type === 'bar') {
+                            return 'Ventas: $ ' + value.toLocaleString('es-CO');
+                        } else {
+                            return 'Cantidad: ' + value;
+                        }
+                    }
+                }
             },
             scales: {
                 yAxes: [
@@ -102,7 +117,8 @@
                 ]
             },
             animation: {
-                onComplete: function () {
+                duration: 1,
+                onProgress: function () {
                     var chartInstance = this.chart;
                     var ctx = chartInstance.ctx;
 
@@ -112,12 +128,30 @@
                     ctx.textBaseline = "bottom";
 
                     this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+
+                        // 🔵 BARRAS (Ventas)
                         if (dataset.type === 'bar') {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
                             meta.data.forEach(function (bar, index) {
                                 var value = dataset.data[index];
-                                var valorFormateado = '$ ' + value.toLocaleString('es-CO');
-                                ctx.fillText(valorFormateado, bar._model.x, bar._model.y - 5);
+                                var yPos = bar._model.y - 5;
+                                if (yPos < 15) yPos = 15;
+
+                                var texto = '$ ' + value.toLocaleString('es-CO');
+                                ctx.fillText(texto, bar._model.x, yPos);
+                            });
+                        }
+
+                        // 🔴 LÍNEA (Cantidad)
+                        if (dataset.type === 'line') {
+                            meta.data.forEach(function (point, index) {
+                                var value = dataset.data[index];
+                                var yPos = point._model.y - 8;
+
+                                // Evitar que se salga por arriba
+                                if (yPos < 15) yPos = 15;
+
+                                ctx.fillText(value, point._model.x, yPos);
                             });
                         }
                     });
@@ -163,7 +197,7 @@
                 }]
             },
             animation: {
-                onComplete: function () {
+                onProgress: function () {
                     var chartInstance = this.chart;
                     var ctx = chartInstance.ctx;
 

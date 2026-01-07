@@ -37,7 +37,7 @@ namespace fpWebApp.controles
                     )
                     AND ppa.idMedioPago = 4
                     -- 🔥 Últimos 3 meses (mes actual + 2 anteriores)
-                    AND ppa.FechaHoraPago >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 2 MONTH), '%Y-%m-01')
+                    AND ppa.FechaHoraPago >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%Y-%m-01')
                     AND ppa.FechaHoraPago <  DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
                 GROUP BY DATE_FORMAT(ppa.FechaHoraPago, '%Y-%m'), DATE_FORMAT(ppa.FechaHoraPago, '%Y %M')  
                 ORDER BY DATE_FORMAT(ppa.FechaHoraPago, '%Y-%m');";

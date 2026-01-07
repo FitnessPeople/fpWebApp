@@ -542,7 +542,6 @@ namespace fpWebApp
                 //await siigoClient.ManageCustomerAsync(nroDoc, strNombre, strApellido, strCelular, strEmail);
 
 
-
                 // TODO: NO ELIMINAR ESTO, SE USA EN LA CREACIÓN DE LA FACTURA
                 // ESTÁ COMENTADO PARA PRUEBAS LOCALES
                 //string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
