@@ -24,233 +24,166 @@
 </div>
 
 <script>
-    function redondearSuperior(valor, base = 1000) {
-        return Math.ceil(valor / base) * base;
-    }
+    $(function () {
 
-    // Grafico de Ventas y Cantidad Diaria x mes
-    const datos1 = <%= Grafico1 %>;
+        // Gráfico de Ventas y Cantidades últimos 3 meses
+        const colores1 = sumatoria1.map((_, index) => {
+            const hue = (index * 360) / sumatoria1.length;
+            return `hsla(${hue}, 70%, 55%, 0.7)`;
 
-    const ctx1 = document.getElementById('miGrafico1');
+        });
 
-    const maxVentas1 = Math.max(...datos1.ventas_web, ...datos1.ventas_counter);
-    const maxCantidad1 = Math.max(...datos1.cantidad_web, ...datos1.cantidad_counter);
-
-    const maxY11 = redondearSuperior(maxVentas1 * 1.1, 100000);
-    const maxY12 = Math.ceil(maxCantidad1 * 1.2);
-
-    const data1 = {
-        labels: datos1.labels, 
-        datasets: [
-            {
-                type: 'bar',                // Tipo: Barras
-                label: 'Ventas Web',
-                data: datos1.ventas_web,
-                yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgb(54, 162, 235)',
-                borderWidth: 1
-            },
-            {
-                type: 'bar',                // Tipo: Barras
-                label: 'Ventas Counter',
-                data: datos1.ventas_counter,
-                yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                backgroundColor: 'rgba(255, 206, 86, 0.6)',
-                borderColor: 'rgb(255, 206, 86)',
-                borderWidth: 1
-            },
-            {
-                type: 'line',               // Tipo: Línea
-                label: 'Cantidad Web',
-                data: datos1.cantidad_web,
-                yAxisID: 'y2',              // Asociado al eje Y derecho
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                tension: 0,
-                fill: false
-            },
-            {
-                type: 'line',               // Tipo: Línea
-                label: 'Cantidad Counter',
-                data: datos1.cantidad_counter,
-                yAxisID: 'y2',              // Asociado al eje Y derecho
-                borderColor: 'rgb(75, 192, 192)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                tension: 0,
-                fill: false
-            }
-        ]
-    };
-
-    new Chart(ctx1, {
-        data: data1,
-        options: {
-            responsive: true,
-            interaction: {
-                mode: 'index',
-                intersect: false
-            },
-            stacked: false,
-            scales: {
-                y1: {
-                    type: 'linear',
-                    position: 'left',
-                    min: 0,
-                    max: maxY11,
-                    title: { display: true, text: 'Ventas' },
-                    grid: { drawOnChartArea: true }
+        var barData = {
+            labels: nombres1,
+            datasets: [
+                {
+                    yAxisID: 'y-bar',
+                    type: 'bar',
+                    label: "Ventas",
+                    backgroundColor: colores1,
+                    borderColor: "rgba(26,179,148,0.7)",
+                    pointBackgroundColor: "rgba(26,179,148,1)",
+                    pointBorderColor: "#fff",
+                    data: sumatoria1
                 },
-                y2: {
-                    type: 'linear',
-                    position: 'right',
-                    min: 0,
-                    max: maxY12,
-                    title: { display: true, text: 'Cantidad' },
-                    grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
+                {
+                    yAxisID: 'y-line',
+                    type: 'line',
+                    label: "Cantidad",
+                    data: cantidades1,
+                    borderColor: "rgba(255,99,132,1)",
+                    backgroundColor: "rgba(255,99,132,0.1)",
+                    fill: false,
+                    lineTension: 0.3,
+                    pointRadius: 4,
+                    pointBackgroundColor: "rgba(255,99,132,1)",
+                    pointBorderColor: "#fff"
                 }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Ventas totales últimos 3 meses'
-                }
-            }
-        }
-    });
+            ]
+        };
 
-
-    // Grafico de Afiliados por Sede
-    const datos2 = <%= Grafico2 %>;
-
-    const ctx2 = document.getElementById('miGrafico2');
-
-    //const maxVentas2 = Math.max(...datos2.ventas);
-    const maxCantidad2 = Math.max(...datos2.cantidad);
-
-    //const maxY21 = redondearSuperior(maxVentas2 * 1.1, 100000);
-    const maxY22 = Math.ceil(maxCantidad2 * 1.2);
-
-    const colores2 = datos2.cantidad.map((_, index) => {
-        const hue = (index * 360) / datos2.cantidad.length;
-        return `hsla(${hue}, 70%, 55%, 0.7)`;
-    });
-
-    const data2 = {
-        labels: datos2.labels, 
-        datasets: [
-            {
-                type: 'bar',               // Tipo: Barra
-                label: 'Afiliados',
-                data: datos2.cantidad,
-                yAxisID: 'y2',              // Asociado al eje Y derecho
-                backgroundColor: colores2,
-                borderColor: colores2.map(c => c.replace('0.7', '1')),
-                tension: 0,
-                fill: false
-            }
-        ]
-    };
-
-    new Chart(ctx2, {
-        data: data2,
-        options: {
+        var barOptions = {
             responsive: true,
-            interaction: {
+            legend: {
+                display: true
+            },
+            tooltips: {
+                enabled: true,
                 mode: 'index',
-                intersect: false
+                intersect: true
             },
-            stacked: false,
             scales: {
-                y2: {
-                    type: 'linear',
-                    position: 'left',
-                    min: 0,
-                    max: maxY22,
-                    title: { display: true, text: 'Afiliados' },
-                    grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
-                }
+                yAxes: [
+                    {
+                        id: 'y-bar',
+                        position: 'left',
+                        ticks: {
+                            beginAtZero: true,
+                            suggestedMax: Math.max(...sumatoria1) * 1.2,
+                            callback: function (value) {
+                                return '$ ' + value.toLocaleString('es-CO');
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Ventas'
+                        }
+                    },
+                    {
+                        id: 'y-line',
+                        position: 'right',
+                        ticks: { beginAtZero: true },
+                        gridLines: { drawOnChartArea: false },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Cantidad'
+                        }
+                    }
+                ]
             },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Afiliados activos por sede'
+            animation: {
+                onComplete: function () {
+                    var chartInstance = this.chart;
+                    var ctx = chartInstance.ctx;
+
+                    ctx.font = "10px Arial";
+                    ctx.fillStyle = "#000";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "bottom";
+
+                    this.data.datasets.forEach(function (dataset, i) {
+                        if (dataset.type === 'bar') {
+                            var meta = chartInstance.controller.getDatasetMeta(i);
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                var valorFormateado = '$ ' + value.toLocaleString('es-CO');
+                                ctx.fillText(valorFormateado, bar._model.x, bar._model.y - 5);
+                            });
+                        }
+                    });
                 }
             }
-        }
-    });
+        };
+
+        var ctx1 = document.getElementById("miGrafico1").getContext("2d");
+        new Chart(ctx1, { type: 'bar', data: barData, options: barOptions });
 
 
+        // Gráfico de Afiliados Activos por Sede
+        const colores2 = cantidades2.map((_, index) => {
+            const hue = (index * 360) / cantidades2.length;
+            return `hsla(${hue}, 70%, 55%, 0.7)`;
 
-    // Grafico de Ventas y Cantidad por Canal de Venta
-    const datos3 = <%= Grafico3 %>;
+        });
 
-    const ctx3 = document.getElementById('miGrafico3');
+        var barData = {
+            labels: nombres2,
+            datasets: [
+                {
+                    label: "Afiliados",
+                    backgroundColor: colores2,
+                    borderColor: "rgba(26,179,148,0.7)",
+                    pointBackgroundColor: "rgba(26,179,148,1)",
+                    pointBorderColor: "#fff",
+                    data: cantidades2
+                }
+            ]
+        };
 
-    const maxVentas3 = Math.max(...datos3.ventas);
-    const maxCantidad3 = Math.max(...datos3.cantidad);
-
-    const maxY31 = redondearSuperior(maxVentas3 * 1.1, 100000);
-    const maxY32 = Math.ceil(maxCantidad3 * 1.2);
-
-    const data3 = {
-        labels: datos3.labels, 
-        datasets: [
-            {
-                type: 'bar',                // Tipo: Barras
-                label: 'Ventas',
-                data: datos3.ventas,
-                yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                borderColor: 'rgb(54, 162, 235)',
-                borderWidth: 1
-            },
-            {
-                type: 'line',               // Tipo: Línea
-                label: 'Cantidad',
-                data: datos3.cantidad,
-                yAxisID: 'y2',              // Asociado al eje Y derecho
-                borderColor: 'rgb(255, 99, 132)',
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                tension: 0,
-                fill: false
-            }
-        ]
-    };
-
-    new Chart(ctx3, {
-        data: data3,
-        options: {
+        var barOptions = {
             responsive: true,
-            interaction: {
-                mode: 'index',
-                intersect: false
+            legend: {
+                display: false
             },
-            stacked: false,
             scales: {
-                y1: {
-                    type: 'linear',
-                    position: 'left',
-                    min: 0,
-                    max: maxY31,
-                    title: { display: true, text: 'Ventas' },
-                    grid: { drawOnChartArea: true }
-                },
-                y2: {
-                    type: 'linear',
-                    position: 'right',
-                    min: 0,
-                    max: maxY32,
-                    title: { display: true, text: 'Cantidad' },
-                    grid: { drawOnChartArea: false } // Evita duplicar líneas de cuadrícula
-                }
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
             },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Comparativo de Ventas y Cantidad por Canal de Venta'
+            animation: {
+                onComplete: function () {
+                    var chartInstance = this.chart;
+                    var ctx = chartInstance.ctx;
+
+                    ctx.font = "10px Arial";
+                    ctx.fillStyle = "#000";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "bottom";
+
+                    this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+                        meta.data.forEach(function (bar, index) {
+                            var value = dataset.data[index];
+                            ctx.fillText(value, bar._model.x, bar._model.y - 5);
+                        });
+                    });
                 }
             }
-        }
+        };
+
+        var ctx1 = document.getElementById("miGrafico2").getContext("2d");
+        new Chart(ctx1, { type: 'bar', data: barData, options: barOptions });
     });
 </script>

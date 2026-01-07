@@ -311,7 +311,7 @@
 
                                                                 <div class="feed-element">
                                                                     <div>
-                                                                        <strong><i class="fa fa-file m-r-xs"></i>Tipo de contrato</strong>
+                                                                        <strong><i class="fa fa-file-lines m-r-xs"></i>Tipo de contrato</strong>
                                                                         <div class="text-info"><%# Eval("TipoContrato") %></div>
                                                                     </div>
                                                                 </div>
@@ -409,20 +409,20 @@
                                     <div class="ibox-content">
                                         <div class="row text-center">
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart1" height="150"></canvas>
-                                                <h5>Géneros</h5>
+                                                <canvas id="barChart1" height="150"></canvas>
+                                                <h5><i class="fa fa-venus-mars fa-2x text-navy m-r-xs"></i>Géneros</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart2" height="150"></canvas>
-                                                <h5>Ciudades</h5>
+                                                <canvas id="barChart2" height="150"></canvas>
+                                                <h5><i class="fa fa-city text-navy fa-2x m-r-xs"></i>Ciudades</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart3" height="150"></canvas>
-                                                <h5>Estado civil</h5>
+                                                <canvas id="barChart3" height="150"></canvas>
+                                                <h5><i class="fa fa-ring text-navy fa-2x m-r-xs"></i>Estado civil</h5>
                                             </div>
                                             <div class="col-lg-3">
-                                                <canvas id="doughnutChart4" height="150"></canvas>
-                                                <h5>Tipo de contrato</h5>
+                                                <canvas id="barChart4" height="150"></canvas>
+                                                <h5><i class="fa fa-file-lines fa-2x text-navy m-r-xs"></i>Tipo de contrato</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -442,19 +442,19 @@
                                         <div class="row text-center">
                                             <div class="col-lg-3">
                                                 <canvas id="barChart" height="150"></canvas>
-                                                <h5>Nivel estudio</h5>
+                                                <h5><i class="fa fa-graduation-cap fa-2x text-navy m-r-xs"></i>Nivel de estudio</h5>
                                             </div>
                                             <div class="col-lg-3">
                                                 <canvas id="doughnutChart6" height="150"></canvas>
-                                                <h5>Tipo de vivienda</h5>
+                                                <h5><i class="fa fa-house fa-2x text-navy m-r-xs"></i>Tipo de vivienda</h5>
                                             </div>
                                             <div class="col-lg-3">
                                                 <canvas id="doughnutChart7" height="150"></canvas>
-                                                <h5>Actividad extra</h5>
+                                                <h5><i class="fa fa-person-rays fa-2x text-navy m-r-xs"></i>Actividad extra</h5>
                                             </div>
                                             <div class="col-lg-3">
                                                 <canvas id="doughnutChart8" height="150"></canvas>
-                                                <h5>Consumo licor</h5>
+                                                <h5><i class="fa fa-martini-glass fa-2x text-navy m-r-xs"></i>Consumo de licor</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -474,15 +474,15 @@
                                         <div class="row text-center">
                                             <div class="col-lg-3">
                                                 <canvas id="barChart9" height="150"></canvas>
-                                                <h5>Edades</h5>
+                                                <h5><i class="fa fa-person-cane fa-2x text-navy m-r-xs"></i>Edades</h5>
                                             </div>
                                             <div class="col-lg-3">
                                                 <canvas id="barChart10" height="150"></canvas>
-                                                <h5>Medio de transporte</h5>
+                                                <h5><i class="fa fa-car fa-2x text-navy m-r-xs"></i>Medio de transporte</h5>
                                             </div>
                                             <div class="col-lg-3">
                                                 <canvas id="barChart11" height="150"></canvas>
-                                                <h5>Tipo de Sangre</h5>
+                                                <h5><i class="fa fa-droplet fa-2x text-navy m-r-xs"></i>Tipo de sangre</h5>
                                             </div>
                                             <%--<div class="col-lg-3">
                                                 <canvas id="doughnutChart8" height="150"></canvas>
@@ -535,28 +535,15 @@
     </script>
 
     <script>
+        // Gráfico de Géneros
 
         $(function () {
 
-            var doughnutOptions = {
-                responsive: false,
-                legend: {
-                    display: true
-                }
-            };
+            const colores1 = cantidades1.map((_, index) => {
+                const hue = (index * 360) / cantidades1.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
 
-
-            // Grafica Generos
-            //var doughnutData = {
-            //    labels: nombres1,
-            //    datasets: [{
-            //        data: cantidades1,
-            //        backgroundColor: colores1
-            //    }]
-            //};
-
-            //var ctx4 = document.getElementById("doughnutChart1").getContext("2d");
-            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            });
 
             var barData = {
                 labels: nombres1,
@@ -589,11 +576,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
@@ -602,29 +585,24 @@
                             var meta = chartInstance.controller.getDatasetMeta(i);
                             meta.data.forEach(function (bar, index) {
                                 var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x, bar._model.y);
+                                ctx.fillText(value, bar._model.x, bar._model.y - 5);
                             });
                         });
                     }
                 }
             };
 
-            var ctx4 = document.getElementById("doughnutChart1").getContext("2d");
+            var ctx4 = document.getElementById("barChart1").getContext("2d");
             new Chart(ctx4, { type: 'bar', data: barData, options: barOptions });
 
 
             // Grafica Ciudades
-            //var doughnutData = {
-            //    labels: nombres2,
-            //    datasets: [{
-            //        data: cantidades2,
-            //        backgroundColor: colores2
-            //    }]
-            //};
 
-            //var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
-            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            const colores2 = cantidades2.map((_, index) => {
+                const hue = (index * 360) / cantidades2.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
 
+            });
 
             var barData = {
                 labels: nombres2,
@@ -657,11 +635,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
@@ -677,23 +651,18 @@
                 }
             };
 
-            var ctx4 = document.getElementById("doughnutChart2").getContext("2d");
+            var ctx4 = document.getElementById("barChart2").getContext("2d");
             new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
 
 
 
             // Grafica Estado civil
-            //var doughnutData = {
-            //    labels: nombres3,
-            //    datasets: [{
-            //        data: cantidades3,
-            //        backgroundColor: colores3
-            //    }]
-            //};
 
-            //var ctx4 = document.getElementById("doughnutChart3").getContext("2d");
-            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            const colores3 = cantidades3.map((_, index) => {
+                const hue = (index * 360) / cantidades3.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
 
+            });
 
             var barData = {
                 labels: nombres3,
@@ -726,11 +695,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
@@ -746,22 +711,17 @@
                 }
             };
 
-            var ctx4 = document.getElementById("doughnutChart3").getContext("2d");
+            var ctx4 = document.getElementById("barChart3").getContext("2d");
             new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
 
 
             // Grafica TipoContrato
-            //var doughnutData = {
-            //    labels: nombres4,
-            //    datasets: [{
-            //        data: cantidades4,
-            //        backgroundColor: colores4
-            //    }]
-            //};
 
-            //var ctx4 = document.getElementById("doughnutChart4").getContext("2d");
-            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            const colores4 = cantidades4.map((_, index) => {
+                const hue = (index * 360) / cantidades4.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
 
+            });
 
             var barData = {
                 labels: nombres4,
@@ -794,11 +754,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
@@ -814,11 +770,18 @@
                 }
             };
 
-            var ctx4 = document.getElementById("doughnutChart4").getContext("2d");
+            var ctx4 = document.getElementById("barChart4").getContext("2d");
             new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
 
 
             // Gráfica Nivel de Estudio
+
+            const colores5 = cantidades5.map((_, index) => {
+                const hue = (index * 360) / cantidades5.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
+
+            });
+
             var barData = {
                 labels: nombres5,
                 datasets: [
@@ -850,11 +813,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
@@ -875,18 +834,13 @@
 
 
             // Gráfica Tipo de Vivienda
-            //var doughnutData = {
-            //    labels: nombres6,
-            //    datasets: [{
-            //        data: cantidades6,
-            //        backgroundColor: colores6
-            //    }]
-            //};
 
-            //var ctx4 = document.getElementById("doughnutChart6").getContext("2d");
-            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            const colores6 = cantidades6.map((_, index) => {
+                const hue = (index * 360) / cantidades6.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
 
-
+            });
+            
             var barData = {
                 labels: nombres6,
                 datasets: [
@@ -918,11 +872,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
@@ -943,18 +893,13 @@
 
 
             // Gráfica Actividad Extra
-            //var doughnutData = {
-            //    labels: nombres7,
-            //    datasets: [{
-            //        data: cantidades7,
-            //        backgroundColor: colores7
-            //    }]
-            //};
 
-            //var ctx4 = document.getElementById("doughnutChart7").getContext("2d");
-            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            const colores7 = cantidades7.map((_, index) => {
+                const hue = (index * 360) / cantidades7.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
 
-
+            });
+            
             var barData = {
                 labels: nombres7,
                 datasets: [
@@ -986,11 +931,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
@@ -1011,18 +952,13 @@
 
 
             // Gráfica Consume Licor
-            //var doughnutData = {
-            //    labels: nombres8,
-            //    datasets: [{
-            //        data: cantidades8,
-            //        backgroundColor: colores8
-            //    }]
-            //};
 
-            //var ctx4 = document.getElementById("doughnutChart8").getContext("2d");
-            //new Chart(ctx4, { type: 'doughnut', data: doughnutData, options: doughnutOptions });
+            const colores8 = cantidades8.map((_, index) => {
+                const hue = (index * 360) / cantidades8.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
 
-
+            });
+            
             var barData = {
                 labels: nombres8,
                 datasets: [
@@ -1054,11 +990,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
@@ -1079,6 +1011,13 @@
 
 
             // Gráfico de edades
+
+            const colores9 = cantidades9.map((_, index) => {
+                const hue = (index * 360) / cantidades9.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
+
+            });
+
             var barData = {
                 labels: nombres9,
                 datasets: [
@@ -1110,11 +1049,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
@@ -1135,6 +1070,13 @@
 
 
             // Gráfico de Medio de Transporte
+
+            const colores10 = cantidades10.map((_, index) => {
+                const hue = (index * 360) / cantidades10.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
+
+            });
+
             var barData = {
                 labels: nombres10,
                 datasets: [
@@ -1166,11 +1108,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
@@ -1191,6 +1129,13 @@
 
 
             // Gráfico de Tipo de Sangre
+
+            const colores11 = cantidades11.map((_, index) => {
+                const hue = (index * 360) / cantidades11.length;
+                return `hsla(${hue}, 70%, 55%, 0.7)`;
+
+            });
+
             var barData = {
                 labels: nombres11,
                 datasets: [
@@ -1222,11 +1167,7 @@
                         var chartInstance = this.chart;
                         var ctx = chartInstance.ctx;
 
-                        ctx.font = Chart.helpers.fontString(
-                            Chart.defaults.global.defaultFontSize,
-                            Chart.defaults.global.defaultFontStyle,
-                            Chart.defaults.global.defaultFontFamily
-                        );
+                        ctx.font = "10px Arial";
                         ctx.fillStyle = "#000";
                         ctx.textAlign = "center";
                         ctx.textBaseline = "bottom";
