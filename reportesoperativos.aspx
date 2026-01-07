@@ -261,7 +261,7 @@
                                                         <asp:ListItem Text="Ventas por Sede" Value="2"></asp:ListItem>
                                                         <asp:ListItem Text="Ventas totales" Value="3"></asp:ListItem>
                                                         <asp:ListItem Text="Ventas por Planes" Value="4"></asp:ListItem>
-                                                        <asp:ListItem Text="Ventas corportativo" Value="5"></asp:ListItem>
+                                                        <asp:ListItem Text="Ventas Usuarios planes" Value="5"></asp:ListItem>
                                                         <asp:ListItem Text="Ventas por CRM" Value="6"></asp:ListItem>
                                                         <asp:ListItem Text="Clientes activos/inactivos" Value="7"></asp:ListItem>
                                                         <asp:ListItem Text="Clientes corporativos" Value="8"></asp:ListItem>
