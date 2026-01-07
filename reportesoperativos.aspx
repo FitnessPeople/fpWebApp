@@ -4,7 +4,7 @@
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
-<%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
+<%@ Register Src="~/controles/indicadoresCEO.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
 <!DOCTYPE html>
@@ -239,11 +239,19 @@
                                     </div>
                                     <div class="ibox-content">
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
+
                                             <div class="col-lg-2">
+                                                <div class="form-group">
+                                                    <input type="text" id="txtBuscarGrid" class="form-control input-sm" placeholder="Buscar en el reporte..."
+                                                        onkeyup="filtrarGridView()" />
+                                                </div>
+                                            </div>
+
+<%--                                            <div class="col-lg-2">
                                                 <div class="form-group">
                                                     <div class="form-group" id="filter-form-container"></div>
                                                 </div>
-                                            </div>
+                                            </div>--%>
 
                                             <div class="col-lg-2">
                                                 <div class="form-group">
@@ -419,6 +427,35 @@
         });
 
     </script>
+
+    <script type="text/javascript">
+        function filtrarGridView() {
+            var input = document.getElementById("txtBuscarGrid");
+            var filtro = input.value.toLowerCase();
+
+            var grid = document.getElementById("<%= gvReporte.ClientID %>");
+            if (!grid) return;
+
+            var filas = grid.getElementsByTagName("tr");
+
+            // Recorre filas (saltando encabezado)
+            for (var i = 1; i < filas.length; i++) {
+                var celdas = filas[i].getElementsByTagName("td");
+                var mostrar = false;
+
+                for (var j = 0; j < celdas.length; j++) {
+                    var texto = celdas[j].textContent || celdas[j].innerText;
+                    if (texto.toLowerCase().indexOf(filtro) > -1) {
+                        mostrar = true;
+                        break;
+                    }
+                }
+
+                filas[i].style.display = mostrar ? "" : "none";
+            }
+        }
+    </script>
+
 </body>
 
 </html>
