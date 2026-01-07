@@ -22,6 +22,9 @@
     <!-- FooTable -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
+    <!-- Select2 -->
+    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
+
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
@@ -150,10 +153,10 @@
                                                         <div class="form-group" style="margin-left: 0px;">
                                                             <label class="col-lg-2 control-label">Prioridad:</label>
                                                             <div class="col-lg-10">
-                                                                <asp:DropDownList ID="ddlPrioridad" runat="server" CssClass="form-control input-sm">
-                                                                    <asp:ListItem Text="Baja" Value="Baja" />
-                                                                    <asp:ListItem Text="Media" Value="Media" Selected="True" />
-                                                                    <asp:ListItem Text="Alta" Value="Alta" />
+                                                                <asp:DropDownList ID="ddlPrioridad" runat="server" CssClass="form-control input-sm select2">
+                                                                    <asp:ListItem Value="Baja" Text="Baja" />
+                                                                    <asp:ListItem Value="Media" Text="Media" Selected="True" />
+                                                                    <asp:ListItem Value="Alta" Text="Alta" />
                                                                 </asp:DropDownList>
                                                             </div>
                                                         </div>
@@ -229,7 +232,7 @@
                                                                 <label class="col-lg-3 control-label">Estado</label>
                                                                 <div class="col-lg-9">
                                                                     <asp:DropDownList ID="ddlEstado" runat="server" AutoPostBack="true"
-                                                                        OnSelectedIndexChanged="ddlEstado_SelectedIndexChanged" CssClass="form-control input-sm">
+                                                                        OnSelectedIndexChanged="ddlEstado_SelectedIndexChanged" CssClass="form-control input-sm select3">
                                                                         <asp:ListItem Text="Todos" Value="" />
                                                                         <asp:ListItem Text="Pendiente" Value="Pendiente" />
                                                                         <asp:ListItem Text="En Proceso" Value="En Proceso" />
@@ -244,7 +247,7 @@
                                                                 <label class="col-lg-4 control-label">Prioridad</label>
                                                                 <div class="col-lg-8">
                                                                     <asp:DropDownList ID="ddlFiltroPrioridad" runat="server" AutoPostBack="true"
-                                                                        OnSelectedIndexChanged="ddlFiltroPrioridad_SelectedIndexChanged" CssClass="form-control input-sm">
+                                                                        OnSelectedIndexChanged="ddlFiltroPrioridad_SelectedIndexChanged" CssClass="form-control input-sm select2">
                                                                         <asp:ListItem Text="Todas" Value="" />
                                                                         <asp:ListItem Text="Alta" Value="Alta" />
                                                                         <asp:ListItem Text="Media" Value="Media" />
@@ -341,11 +344,76 @@
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
+    <!-- Select2 -->
+    <script src="js/plugins/select2/select2.full.min.js"></script>
+
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
         $('.footable').footable();
+
+
+        function initSelect2() {
+            $('.select2').select2({
+                width: '100%',
+                minimumResultsForSearch: Infinity, // 👈 Quita el buscador
+                templateResult: formatPrioridad,
+                templateSelection: formatPrioridad,
+                escapeMarkup: function (markup) { return markup; }
+            });
+        }
+
+        function initSelect3() {
+            $('.select3').select2({
+                width: '100%',
+                minimumResultsForSearch: Infinity, // 👈 Quita el buscador
+                templateResult: formatPrioridad,
+                templateSelection: formatPrioridad,
+                escapeMarkup: function (markup) { return markup; }
+            });
+        }
+
+        function formatPrioridad(option) {
+            if (!option.id) {
+                return option.text;
+            }
+
+            let icon = '';
+            switch (option.text) {
+                case 'Alta':
+                    icon = "<i class='fa fa-circle text-danger'></i>";
+                    break;
+                case 'Media':
+                    icon = "<i class='fa fa-circle text-warning'></i>";
+                    break;
+                case 'Baja':
+                    icon = "<i class='fa fa-circle text-info'></i>";
+                    break;
+                case 'Pendiente':
+                    icon = "<i class='fa fa-circle text-warning'></i>";
+                    break;
+                case 'En Proceso':
+                    icon = "<i class='fa fa-circle text-info'></i>";
+                    break;
+                case 'Resuelto':
+                    icon = "<i class='fa fa-circle text-navy'></i>";
+                    break;
+                case 'Cancelado':
+                    icon = "<i class='fa fa-circle text-success'></i>";
+                    break;
+                default:
+                    icon = "<i class='fa fa-circle text-muted'></i>";
+            }
+
+            return "<span>" + icon + " " + option.text + "</span>";
+        }
+
+        $(document).ready(function () {
+            initSelect2();
+            initSelect3();
+        });
+
     </script>
 
 </body>

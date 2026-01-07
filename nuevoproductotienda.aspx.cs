@@ -136,9 +136,6 @@ namespace fpWebApp
                 cg.InsertarLog(Session["idusuario"].ToString(), "productos", "Nuevo", "El usuario creó un nuevo producto con código: " + txbCodigo.Text.ToString() + ".", "", "");
 
             }
-
-            
-
         }
     }
 }

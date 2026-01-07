@@ -73,20 +73,8 @@ namespace fpWebApp
             string estado = ddlEstado.SelectedValue;
             string prioridad = ddlFiltroPrioridad.SelectedValue;
 
-            string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, af.CodigoInterno, t.DescripcionTicket, " +
-                "t.EstadoTicket, t.PrioridadTicket, t.FechaCreacionTicket, u1.NombreUsuario as Responsable, " +
-                "IF(t.EstadoTicket='Pendiente','warning',IF(t.EstadoTicket='En proceso','info',IF(t.EstadoTicket='Resuelto','primary','default'))) AS badge, " +
-                "IF(t.PrioridadTicket='Baja','info',IF(t.PrioridadTicket='Media','warning','danger')) AS badge2 " +
-                "FROM TicketSoporte t " +
-                "INNER JOIN ActivosFijos af ON t.idActivoFijo = af.idActivoFijo " +
-                "INNER JOIN Usuarios u ON u.idUsuario = t.idReportadoPor AND u.idUsuario = " + Session["idUsuario"].ToString() + " " +
-                "LEFT JOIN AsignacionesTickets at ON at.idTicket = t.idTicketSoporte " +
-                "LEFT JOIN Usuarios u1 ON at.idTecnico = u1.idUsuario " +
-                "WHERE('" + estado + "' = '' OR t.EstadoTicket = '" + estado + "') " +
-                "AND('" + prioridad + "' = '' OR t.PrioridadTicket = '" + prioridad + "') " +
-                "ORDER BY t.FechaCreacionTicket DESC";
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.CargarTickets(estado, prioridad, Convert.ToInt32(Session["idUsuario"].ToString()));
 
             rpTickets.DataSource = dt;
             rpTickets.DataBind();
@@ -97,17 +85,16 @@ namespace fpWebApp
         private void CargarSedes()
         {
             clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT s.idSede, CONCAT(s.NombreSede, ' - ', cs.NombreCiudadSede) AS NombreSedeCiudad " +
-                "FROM Sedes s, CiudadesSedes cs " +
-                "WHERE s.idCiudadSede = cs.idCiudadSede ";
+            DataTable dt = cg.ConsultarSedes();
 
-            DataTable dt = cg.TraerDatos(strQuery);
+            dt.Columns.Add("NombreSedeCiudad", typeof(string), "'🏣 ' + NombreSede + ' ◾ ' + NombreCiudadSede");
 
             ddlSedes.DataSource = dt;
             ddlSedes.DataValueField = "idSede";
             ddlSedes.DataTextField = "NombreSedeCiudad";
             ddlSedes.DataBind();
 
+            dt.Dispose();
         }
 
         private void CargarCategorias()
@@ -116,33 +103,27 @@ namespace fpWebApp
             ListItem li = new ListItem("Seleccione", "");
             ddlCategoriasActivos.Items.Add(li);
             clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT idCategoriaActivo, NombreCategoriaActivo " +
-                "FROM CategoriasActivos ";
-
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarCategoriasActivos();
 
             ddlCategoriasActivos.DataSource = dt;
             ddlCategoriasActivos.DataValueField = "idCategoriaActivo";
             ddlCategoriasActivos.DataTextField = "NombreCategoriaActivo";
             ddlCategoriasActivos.DataBind();
 
+            dt.Dispose();
         }
 
         private void CargarActivos()
         {
             clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT idActivoFijo, CONCAT(NombreActivoFijo, ' ◾ ', CodigoInterno) AS NombreActivoFijo " +
-                "FROM ActivosFijos " +
-                "WHERE idSede = " + ddlSedes.SelectedItem.Value.ToString() + " " +
-                "AND idCategoriaActivo = " + ddlCategoriasActivos.SelectedItem.Value.ToString();
-
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarActivoPorSedeYPorCategoria(Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), Convert.ToInt32(ddlCategoriasActivos.SelectedItem.Value.ToString()));
 
             ddlActivosFijos.DataSource = dt;
             ddlActivosFijos.DataValueField = "idActivoFijo";
             ddlActivosFijos.DataTextField = "NombreActivoFijo";
             ddlActivosFijos.DataBind();
 
+            dt.Dispose();
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
@@ -150,7 +131,7 @@ namespace fpWebApp
             string descripcion = txtDescripcion.Text;
             int idActivoFijo = int.Parse(ddlActivosFijos.SelectedValue);
             string prioridad = ddlPrioridad.SelectedValue;
-            string idUsuario = Session["idUsuario"].ToString(); // Aquí usarías el ID del usuario logueado
+            string idUsuario = Session["idUsuario"].ToString(); // Aquí se usa el ID del usuario logueado
             string strQuery = "INSERT INTO TicketSoporte " +
                 "(idActivoFijo, idReportadoPor, FechaCreacionTicket, DescripcionTicket, PrioridadTicket) " +
                 "VALUES (" + idActivoFijo + ", " + idUsuario + ", NOW(), '" + descripcion + "', '" + prioridad + "')";
@@ -158,8 +139,9 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             cg.TraerDatosStr(strQuery);
 
-            Response.Redirect("nuevoticketsoporte");
+            cg.InsertarLog(Session["idusuario"].ToString(), "ticket soporte", "Agrega", "El usuario agregó un nuevo ticket de soporte: " + descripcion + ".", "", "");
 
+            Response.Redirect("nuevoticketsoporte");
         }
 
         protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)

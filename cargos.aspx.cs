@@ -158,8 +158,6 @@ namespace fpWebApp
             }
         }
 
-
-
         private bool ValidarCargos(string strNombre)
         {
             bool bExiste = false;

@@ -16,7 +16,7 @@
                             <asp:Label ID="lblNombreSede" runat="server" Text="Label"></asp:Label>
                             <b class="caret"></b></span></span></a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="micuenta?mandatory=1">Mi cuenta</a></li>
+                        <li><a href="micuenta?token=qu3rty">Mi cuenta</a></li>
                         <li><a href="contactos">Contactos</a></li>
                         <li><a href="mensajes">Mensajes</a></li>
                         <li class="divider"></li>

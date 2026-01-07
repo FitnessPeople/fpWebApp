@@ -357,7 +357,7 @@
                                                                 </a>
                                                                 <asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
                                                                     CssClass="btn btn-primary pull-right dim m-l-md" Visible="false"
-                                                                     OnClick="lnkAsignar_Click" CausesValidation="true" ValidationGroup="asignar">
+                                                                    OnClick="lnkAsignar_Click" CausesValidation="true" ValidationGroup="asignar">
                                                                     <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
                                                                 </asp:LinkButton>
                                                             </div>
@@ -394,7 +394,8 @@
                                                     PagerSettings-Mode="NumericFirstLast"
                                                     PagerSettings-FirstPageText="«"
                                                     PagerSettings-LastPageText="»"
-                                                    PagerStyle-CssClass="paginador">
+                                                    PagerStyle-CssClass="paginador"
+                                                    OnRowCommand="gvProspectos_RowCommand">
                                                     <Columns>
                                                         <%--Columna de CheckBox--%>
                                                         <asp:TemplateField HeaderText="Seleccionar">
@@ -424,6 +425,36 @@
                                                             SortExpression="EstadoNegociacion" />
                                                         <asp:BoundField DataField="NombreEmpresa" HeaderText="Empresa"
                                                             SortExpression="NombreEmpresa" />
+
+                                                        <asp:TemplateField HeaderText="Editar">
+                                                            <ItemTemplate>
+                                                                <asp:LinkButton
+                                                                    ID="btnEditar"
+                                                                    runat="server"
+                                                                    ToolTip ="Editar"
+                                                                    CssClass="btn btn-sm btn-primary pull-right m-t-n-xs m-l-md"
+                                                                    CommandName="Editar"
+                                                                    CommandArgument='<%# Eval("idPregestion") %>'>
+                                                                    <i class="fa fa-edit"></i> 
+                                                                </asp:LinkButton>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+
+                                                        <asp:TemplateField HeaderText="Eliminar">
+                                                            <ItemTemplate>
+                                                                <asp:LinkButton
+                                                                    ID="btnEliminar"
+                                                                    runat="server"
+                                                                    ToolTip ="Eliminar"
+                                                                    CssClass="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md"
+                                                                    CommandName="Eliminar"
+                                                                    CommandArgument='<%# Eval("idPregestion") %>'
+                                                                    OnClientClick="return confirm('¿Está seguro de eliminar este registro?');">
+                                                                    <i class="fa fa-trash"></i> 
+                                                                </asp:LinkButton>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+
                                                     </Columns>
                                                 </asp:GridView>
 

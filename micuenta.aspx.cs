@@ -215,7 +215,7 @@ namespace fpWebApp
             txbDireccion.Text = dt.Rows[0]["DireccionEmpleado"].ToString();
             if (dt.Rows[0]["idCiudadEmpleado"].ToString() != "")
             {
-                ddlCiudadEmpleado.SelectedIndex = Convert.ToInt16(ddlCiudadEmpleado.Items.IndexOf(ddlCiudadEmpleado.Items.FindByText(dt.Rows[0]["idCiudadEmpleado"].ToString())));
+                ddlCiudadEmpleado.SelectedIndex = Convert.ToInt32(ddlCiudadEmpleado.Items.IndexOf(ddlCiudadEmpleado.Items.FindByValue(dt.Rows[0]["idCiudadEmpleado"].ToString())));
             }
             DateTime dt14 = DateTime.Now.AddYears(-14);
             DateTime dt80 = DateTime.Now.AddYears(-80);

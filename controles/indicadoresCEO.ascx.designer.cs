@@ -11,7 +11,7 @@ namespace fpWebApp.controles
 {
 
 
-    public partial class indicadores01
+    public partial class indicadoresCEO
     {
 
         /// <summary>

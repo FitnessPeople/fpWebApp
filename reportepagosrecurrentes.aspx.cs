@@ -321,6 +321,8 @@ namespace fpWebApp
                         idCostCenter
                     );
 
+                    cg.InsertarLog(Session["idusuario"].ToString(), "PagoPlanAfiliado", "Agrega", "El usuario agregó pago.", "", "");
+
                     cg.EliminarHistorialCobrosRechazados(idAfiliadoPlan);
 
                     MostrarAlerta("Éxito", "El cobro recurrente se procesó correctamente.", "success");

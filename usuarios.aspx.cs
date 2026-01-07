@@ -127,18 +127,19 @@ namespace fpWebApp
         {
             try
             {
-                string consultaSQL = @"SELECT NombreUsuario AS 'Nombre de Usuario', EmailUsuario AS 'Correo de Usuario', ClaveUsuario AS 'Contraseña', 
-                                       CargoUsuario AS 'Cargo de Usuario', EstadoUsuario AS 'Estado de Usuario', DocumentoEmpleado AS 'Nro. de Documento', 
-                                       IF(NombreEmpleado IS NULL, '-Sin asociar-', NombreEmpleado) AS 'Nombre de Empleado', TelefonoEmpleado AS 'Celular', EmailEmpleado AS 'Correo de Empleado',
-                                       FechaNacEmpleado AS 'Fecha de Nacimiento', DireccionEmpleado AS 'Dirección de Residencia', NombreCiudad AS 'Ciudad', 
-                                       NroContrato AS 'Nro. de Contrato', TipoContrato AS 'Tipo de Contrato', CargoEmpleado AS 'Cargo de Empleado', 
-                                       FechaInicio AS 'Fecha de Inicio', FechaFinal AS 'Fecha de Terminación',
-                                       Sueldo, GrupoNomina AS 'Grupo de Nómina', Estado, Perfil 
-                                       FROM Usuarios u 
-                                       LEFT JOIN Empleados e ON u.idEmpleado = e.DocumentoEmpleado 
-				                       LEFT JOIN Ciudades c ON c.idCiudad = e.idCiudadEmpleado                                       
-                                       INNER JOIN Perfiles pf ON u.idPerfil = pf.idPerfil 
-                                       ORDER BY NombreUsuario;";
+                string consultaSQL = @"
+                    SELECT NombreUsuario AS 'Nombre de Usuario', EmailUsuario AS 'Correo de Usuario', ClaveUsuario AS 'Contraseña', 
+                    CargoUsuario AS 'Cargo de Usuario', EstadoUsuario AS 'Estado de Usuario', DocumentoEmpleado AS 'Nro. de Documento', 
+                    IF(NombreEmpleado IS NULL, '-Sin asociar-', NombreEmpleado) AS 'Nombre de Empleado', TelefonoEmpleado AS 'Celular', EmailEmpleado AS 'Correo de Empleado',
+                    FechaNacEmpleado AS 'Fecha de Nacimiento', DireccionEmpleado AS 'Dirección de Residencia', NombreCiudad AS 'Ciudad', 
+                    NroContrato AS 'Nro. de Contrato', TipoContrato AS 'Tipo de Contrato', CargoEmpleado AS 'Cargo de Empleado', 
+                    FechaInicio AS 'Fecha de Inicio', FechaFinal AS 'Fecha de Terminación',
+                    Sueldo, GrupoNomina AS 'Grupo de Nómina', Estado, Perfil 
+                    FROM Usuarios u 
+                    LEFT JOIN Empleados e ON u.idEmpleado = e.DocumentoEmpleado 
+				    LEFT JOIN Ciudades c ON c.idCiudad = e.idCiudadEmpleado                                       
+                    INNER JOIN Perfiles pf ON u.idPerfil = pf.idPerfil 
+                    ORDER BY NombreUsuario;";
 
                 clasesglobales cg = new clasesglobales();
                 System.Data.DataTable dt = cg.TraerDatos(consultaSQL);

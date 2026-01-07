@@ -35,7 +35,6 @@ namespace fpWebApp
                     {
                         
                     }
-                    //indicadores01.Visible = false;
                 }
                 else
                 {

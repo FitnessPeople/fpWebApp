@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="detalleafiliado.aspx.cs" Inherits="fpWebApp.detalleafiliado" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="detalleafiliado.aspx.cs" Inherits="fpWebApp.detalleafiliado" Async="true" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -466,14 +466,21 @@
 
                                 <div class="ibox">
                                     <div class="ibox-content">
-                                        <h3><i class="fa fa-folder-open m-r-xs"></i>Documentos</h3>
+                                        <h3><i class="fa fa-folder-open m-r-xs"></i>Facturas</h3>
                                         <ul class="list-unstyled file-list">
-                                            <li><a href=""><i class="fa fa-file m-r-xs"></i>Project_document.docx</a></li>
+                                            <asp:Repeater ID="rpDocumentos" runat="server" OnItemDataBound="rpDocumentos_ItemDataBound">
+                                                <ItemTemplate>
+                                                    <li><a href="#" runat="server" id="lnkVerFactura"><i class="fa fa-file m-r-xs"></i><%# Eval("idSiigoFactura") %></a></li>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+                                            <li><a href="#"><i class="fa fa-file m-r-xs"></i>
+                                                <asp:Literal ID="ltPublicUrl" runat="server"></asp:Literal></a></li>
+                                            <%--<li><a href=""><i class="fa fa-file m-r-xs"></i>Project_document.docx</a></li>
                                             <li><a href=""><i class="fa fa-file-image m-r-xs"></i>Logo_zender_company.jpg</a></li>
                                             <li><a href=""><i class="fab fa-stack-exchange m-r-xs"></i>Email_from_Alex.mln</a></li>
                                             <li><a href=""><i class="fa fa-file m-r-xs"></i>Contract_20_11_2014.docx</a></li>
                                             <li><a href=""><i class="fa fa-file-powerpoint m-r-xs"></i>Presentation.pptx</a></li>
-                                            <li><a href=""><i class="fa fa-file m-r-xs"></i>10_08_2015.docx</a></li>
+                                            <li><a href=""><i class="fa fa-file m-r-xs"></i>10_08_2015.docx</a></li>--%>
                                         </ul>
                                     </div>
                                 </div>

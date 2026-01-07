@@ -39,7 +39,6 @@ namespace fpWebApp
                         }
                     }
                     listaPersonas();
-                    //indicadores01.Visible = false;
                 }
                 else
                 {

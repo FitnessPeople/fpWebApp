@@ -305,12 +305,12 @@ namespace fpWebApp
             //CrearGrafico5(txbFechaIni.Value.ToString());
             //CrearGrafico6(txbFechaIni.Value.ToString());
 
-            CrearGrafico1(ddlMes.SelectedItem.Value);
-            CrearGrafico2(ddlMes.SelectedItem.Value);
-            CrearGrafico3(ddlMes.SelectedItem.Value);
-            CrearGrafico4(ddlMes.SelectedItem.Value);
-            CrearGrafico5(ddlMes.SelectedItem.Value);
-            CrearGrafico6(ddlMes.SelectedItem.Value);
+            CrearGrafico1(ddlMes.SelectedItem.Value, ddlAnnio.SelectedItem.Value);
+            CrearGrafico2(ddlMes.SelectedItem.Value, ddlAnnio.SelectedItem.Value);
+            CrearGrafico3(ddlMes.SelectedItem.Value, ddlAnnio.SelectedItem.Value);
+            CrearGrafico4(ddlMes.SelectedItem.Value, ddlAnnio.SelectedItem.Value);
+            CrearGrafico5(ddlMes.SelectedItem.Value, ddlAnnio.SelectedItem.Value);
+            CrearGrafico6(ddlMes.SelectedItem.Value, ddlAnnio.SelectedItem.Value);
         }
 
         private void CalcularTotalesVentas()
@@ -396,13 +396,13 @@ namespace fpWebApp
             ltRegistros4.Text = sumatoriaRegistros.ToString();
         }
 
-        private void CrearGrafico1(string fechaIni)
+        private void CrearGrafico1(string fechaIni, string annio)
         {
             //Comparativo de Ventas y Cantidad Diario
             //int anio = Convert.ToDateTime(fechaIni).Year;
             //int mes = Convert.ToDateTime(fechaIni).Month;
 
-            int anio = 2025;
+            int anio = Convert.ToInt32(annio);
             int mes = Convert.ToInt32(fechaIni);
 
             string query = @"
@@ -458,14 +458,14 @@ namespace fpWebApp
             Grafico1 = JsonConvert.SerializeObject(datos);
         }
 
-        private void CrearGrafico2(string fechaIni)
+        private void CrearGrafico2(string fechaIni, string annio)
         {
             //Comparativo de Ventas y Cantidad por Usuario
             clasesglobales cg = new clasesglobales();
             //int anio = Convert.ToDateTime(fechaIni).Year;
             //int mes = Convert.ToDateTime(fechaIni).Month;
 
-            int anio = 2025;
+            int anio = Convert.ToInt32(annio);
             int mes = Convert.ToInt32(fechaIni);
 
             string query = @"
@@ -511,14 +511,14 @@ namespace fpWebApp
             Grafico2 = JsonConvert.SerializeObject(datos);
         }
 
-        private void CrearGrafico3(string fechaIni)
+        private void CrearGrafico3(string fechaIni, string annio)
         {
             //Comparativo de Ventas y Cantidad por Canal de Venta
             clasesglobales cg = new clasesglobales();
             //int anio = Convert.ToDateTime(fechaIni).Year;
             //int mes = Convert.ToDateTime(fechaIni).Month;
 
-            int anio = 2025;
+            int anio = Convert.ToInt32(annio);
             int mes = Convert.ToInt32(fechaIni);
 
             string query = @"
@@ -564,14 +564,14 @@ namespace fpWebApp
             Grafico3 = JsonConvert.SerializeObject(datos);
         }
 
-        private void CrearGrafico4(string fechaIni)
+        private void CrearGrafico4(string fechaIni, string annio)
         {
             //Comparativo de Ventas y Cantidad por Banco
             clasesglobales cg = new clasesglobales();
             //int anio = Convert.ToDateTime(fechaIni).Year;
             //int mes = Convert.ToDateTime(fechaIni).Month;
 
-            int anio = 2025;
+            int anio = Convert.ToInt32(annio);
             int mes = Convert.ToInt32(fechaIni);
 
             string query = @"
@@ -616,14 +616,14 @@ namespace fpWebApp
             Grafico4 = JsonConvert.SerializeObject(datos);
         }
 
-        private void CrearGrafico5(string fechaIni)
+        private void CrearGrafico5(string fechaIni, string annio)
         {
             //Comparativo de Ventas y Cantidad por Medio de Pago
             clasesglobales cg = new clasesglobales();
             //int anio = Convert.ToDateTime(fechaIni).Year;
             //int mes = Convert.ToDateTime(fechaIni).Month;
 
-            int anio = 2025;
+            int anio = Convert.ToInt32(annio);
             int mes = Convert.ToInt32(fechaIni);
 
             string query = @"
@@ -669,14 +669,14 @@ namespace fpWebApp
             Grafico5 = JsonConvert.SerializeObject(datos);
         }
 
-        private void CrearGrafico6(string fechaIni)
+        private void CrearGrafico6(string fechaIni, string annio)
         {
             //Comparativo de Ventas y Cantidad por Plan
             clasesglobales cg = new clasesglobales();
             //int anio = Convert.ToDateTime(fechaIni).Year;
             //int mes = Convert.ToDateTime(fechaIni).Month;
 
-            int anio = 2025;
+            int anio = Convert.ToInt32(annio);
             int mes = Convert.ToInt32(fechaIni);
 
             string query = @"

@@ -41,7 +41,7 @@ namespace fpWebApp
                             divAsignacion.Visible = false;
 
                             CargarSedes();
-                            CargarTickets();
+                            CargarTodosTickets();
 
                             if (Request.QueryString.Count > 0)
                             {
@@ -92,31 +92,15 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarTickets()
+        private void CargarTodosTickets()
         {
             string estado = ddlEstado.SelectedValue;
             string prioridad = ddlFiltroPrioridad.SelectedValue;
             string sede = ddlSedes.SelectedValue;
             //string activo = ddlActivos.SelectedValue;
 
-            string strQuery = "SELECT t.idTicketSoporte, af.NombreActivoFijo, af.CodigoInterno, af.ImagenActivo, " +
-                "t.DescripcionTicket, t.EstadoTicket, t.PrioridadTicket, t.FechaCreacionTicket, ca.NombreCategoriaActivo, " +
-                "u.NombreUsuario, s.NombreSede, u1.NombreUsuario as Responsable, " +
-                "IF(t.EstadoTicket='Pendiente','warning',IF(t.EstadoTicket='En proceso','info',IF(t.EstadoTicket='Resuelto','primary','default'))) AS badge, " +
-                "IF(t.PrioridadTicket='Baja','info',IF(t.PrioridadTicket='Media','warning','danger')) AS badge2 " +
-                "FROM TicketSoporte t " +
-                "INNER JOIN ActivosFijos af ON t.idActivoFijo = af.idActivoFijo " +
-                "INNER JOIN CategoriasActivos ca ON af.idCategoriaActivo = ca.idCategoriaActivo " +
-                "INNER JOIN Usuarios u ON t.idReportadoPor = u.idUsuario " +
-                "INNER JOIN Sedes s ON af.idSede = s.idSede " +
-                "LEFT JOIN AsignacionesTickets at ON at.idTicket = t.idTicketSoporte " +
-                "LEFT JOIN Usuarios u1 ON at.idTecnico = u1.idUsuario " +
-                "WHERE ('" + estado + "' = '' OR t.EstadoTicket = '" + estado + "') " +
-                "AND ('" + prioridad + "' = '' OR t.PrioridadTicket = '" + prioridad + "') " +
-                "AND ('" + sede + "' = '' OR af.idSede = '" + sede + "') " +
-                "ORDER BY t.FechaCreacionTicket DESC";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.CargarTodosTickets(estado, prioridad, sede);
 
             rpTickets.DataSource = dt;
             rpTickets.DataBind();   
@@ -127,16 +111,16 @@ namespace fpWebApp
         private void CargarSedes()
         {
             clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT s.idSede, CONCAT(s.NombreSede, ' - ', cs.NombreCiudadSede) AS NombreSedeCiudad " +
-                "FROM Sedes s, CiudadesSedes cs " +
-                "WHERE s.idCiudadSede = cs.idCiudadSede ";
+            DataTable dt = cg.ConsultarSedes();
 
-            DataTable dt = cg.TraerDatos(strQuery);
+            dt.Columns.Add("NombreSedeCiudad", typeof(string), "'🏣 ' + NombreSede + ' ◾ ' + NombreCiudadSede");
 
             ddlSedes.DataSource = dt;
             ddlSedes.DataValueField = "idSede";
             ddlSedes.DataTextField = "NombreSedeCiudad";
             ddlSedes.DataBind();
+
+            dt.Dispose();
         }
 
         private void CargarAsignacion(bool mostrarResponsable, string idTicketSoporte)
@@ -172,7 +156,6 @@ namespace fpWebApp
                 ddlUsuarios.Enabled = true;
                 CargarTecnicos();
             }
-
         }
 
         private void CargarTecnicos()
@@ -298,6 +281,8 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             cg.TraerDatosStr(strQuery);
 
+            cg.InsertarLog(Session["idusuario"].ToString(), "asignaciones tickets", "Agrega", "El usuario agregó una asignación al ticket: " + strResponsable + ".", "", "");
+
             // Actualiza el estado del ticket en la tabla TicketSoporte
             strQuery = "UPDATE TicketSoporte SET EstadoTicket = 'En Proceso' WHERE idTicketSoporte = " + ViewState["idTicket"].ToString();
             cg.TraerDatosStr(strQuery);
@@ -307,17 +292,17 @@ namespace fpWebApp
 
         protected void ddlEstado_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CargarTickets();
+            CargarTodosTickets();
         }
 
         protected void ddlFiltroPrioridad_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CargarTickets();
+            CargarTodosTickets();
         }
 
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CargarTickets();
+            CargarTodosTickets();
         }
     }
 }

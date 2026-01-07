@@ -79,7 +79,9 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultaCargarSedesPorId(Convert.ToInt32(idSede), clase);
-            
+
+            dt.Columns.Add("NombreSedeCiudad", typeof(string), "'🏣 ' + NomSede + ' ◾ ' + NombreCiudadSede");
+
             if (clase == "Todas")
             {
                 ListItem li = new ListItem("Todas", "Todas");

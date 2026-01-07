@@ -233,7 +233,6 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             string mensaje = string.Empty;
-
             string strFechaIngreseso = "2000-01-01";
 
             if (txbFechaIngreso.Text.ToString() != "")
@@ -251,20 +250,47 @@ namespace fpWebApp
             }
 
             clasesglobales cg = new clasesglobales();
-
-            try
+            if (Request.QueryString.Count > 0)
             {
-                mensaje = cg.InsertarActivo(Convert.ToInt32(ddlSede.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCategoria.SelectedItem.Value.ToString()), 
-                    txbActivo.Text.ToString(), "Activo", txbCodigoInterno.Text.ToString(), txbMarca.Text.ToString(), 
-                    txbProveedor.Text.ToString(), strFechaIngreseso, strFilename);
+                string strInitData = TraerData();
 
-                if (mensaje == "OK")
+                if (Request.QueryString["editid"] != null)
                 {
-                    cg.InsertarLog(Session["idusuario"].ToString(), "activosfijos", "Nuevo",
-                        "El usuario creó un nuevo activo fijo: " + txbActivo.Text.ToString() + " - " + txbCodigoInterno.Text.ToString(), "", "");
+                    string respuesta = cg.ActualizarActivo(Convert.ToInt32(Request.QueryString["editid"].ToString()), 
+                        Convert.ToInt32(ddlSede.SelectedItem.Value.ToString()), 
+                        Convert.ToInt32(ddlCategoria.SelectedItem.Value.ToString()), 
+                        txbActivo.Text.ToString(), 
+                        "Activo", 
+                        txbCodigoInterno.Text.ToString(), 
+                        txbMarca.Text.ToString(), 
+                        txbProveedor.Text.ToString(), 
+                        strFechaIngreseso, 
+                        strFilename);
 
-                    string script = @"
+                    string strNewData = TraerData();
+                    cg.InsertarLog(Session["idusuario"].ToString(), "activos fijos", "Modifica", "El usuario modificó el activo fijo: " + txbActivo.Text.ToString() + ".", strInitData, strNewData);
+                }
+                if (Request.QueryString["deleteid"] != null)
+                {
+                    string respuesta = cg.EliminarArl(int.Parse(Request.QueryString["deleteid"].ToString()));
+                }
+                Response.Redirect("arl");
+            }
+            else
+            {
+                try
+                {
+                    mensaje = cg.InsertarActivo(Convert.ToInt32(ddlSede.SelectedItem.Value.ToString()),
+                        Convert.ToInt32(ddlCategoria.SelectedItem.Value.ToString()),
+                        txbActivo.Text.ToString(), "Activo", txbCodigoInterno.Text.ToString(), txbMarca.Text.ToString(),
+                        txbProveedor.Text.ToString(), strFechaIngreseso, strFilename);
+
+                    if (mensaje == "OK")
+                    {
+                        cg.InsertarLog(Session["idusuario"].ToString(), "activosfijos", "Nuevo",
+                            "El usuario creó un nuevo activo fijo: " + txbActivo.Text.ToString() + " - " + txbCodigoInterno.Text.ToString(), "", "");
+
+                        string script = @"
                         Swal.fire({
                             title: 'Activo registrado',
                             text: '',
@@ -276,31 +302,47 @@ namespace fpWebApp
                             window.location.href = 'activosfijos';
                         });
                     ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                }
-                else
-                {
-                    string script = @"
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    }
+                    else
+                    {
+                        string script = @"
                         Swal.fire({
                             title: 'Error',
                             text: 'No se pudo registrar. Detalle: " + mensaje.Replace("'", "\\'") + @"',
                             icon: 'error'
                         });
                     ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                string script = @"
+                catch (Exception ex)
+                {
+                    string script = @"
                     Swal.fire({
                         title: 'Error',
                         text: 'Ocurrió un error inesperado. Detalle: " + ex.Message.Replace("'", "\\'") + @"',
                         icon: 'error'
                     });
                 ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                }
             }
+        }
+
+        private string TraerData()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarActivoPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            string strData = "";
+            foreach (DataColumn column in dt.Columns)
+            {
+                strData += column.ColumnName + ": " + dt.Rows[0][column] + "\r\n";
+            }
+            dt.Dispose();
+
+            return strData;
         }
     }
 }

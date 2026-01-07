@@ -95,7 +95,6 @@ namespace fpWebApp
                     {
                         //btnAsignar.Visible = true;
                     }
-                    //indicadores01.Visible = false;
                 }
                 else
                 {

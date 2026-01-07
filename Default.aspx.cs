@@ -106,6 +106,7 @@ namespace fpWebApp
                         Session["CargoUsuario"] = dt.Rows[0]["NombreCargo"].ToString();
                         Session["Foto"] = dt.Rows[0]["FotoEmpleado"].ToString();
                         Session["idPerfil"] = dt.Rows[0]["idPerfil"].ToString();
+                        Session["Perfil"] = dt.Rows[0]["Perfil"].ToString();
                         Session["emailUsuario"] = dt.Rows[0]["EmailUsuario"].ToString();
                         //Session["idSede"] = dt.Rows[0]["idSede"].ToString();
                         Session["fechaNac"] = string.IsNullOrEmpty(dt.Rows[0]["FechaNacEmpleado"]?.ToString())

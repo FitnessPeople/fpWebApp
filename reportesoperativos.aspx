@@ -1,10 +1,10 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reporteventasasesor.aspx.cs" Inherits="fpWebApp.reporteventasasesor" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reportesoperativos.aspx.cs" Inherits="fpWebApp.reportesoperativos" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
-<%@ Register Src="~/controles/indicadoresCEO.ascx" TagPrefix="uc1" TagName="indicadores01" %>
+<%@ Register Src="~/controles/indicadores01.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
 <!DOCTYPE html>
@@ -35,7 +35,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#reporteventasasesor");
+            var element1 = document.querySelector("#reportesoperativos");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#reportes");
             element2.classList.remove("collapse");
@@ -111,41 +111,43 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-sack-dollar text-success m-r-sm"></i>Mis ventas</h2>
+                    <h2><i class="fas fa-sheet-plastic text-success m-r-sm"></i>Reportes operativos</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Reportes</li>
-                        <li class="active"><strong>Mis ventas</strong></li>
+                        <li class="active"><strong>Reportes operativos</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
                 </div>
                 <%--Fin Breadcrumb!!!--%>
             </div>
-            <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="row animated fadeInDown">
-                    <%--Inicio Contenido!!!!--%>
 
-                    <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
-                        <div class="p-xs">
-                            <div class="pull-left m-r-md">
-                                <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
+
+            <form id="form" runat="server">
+                <asp:ScriptManager ID="ScriptManager1" runat="server" />
+
+                <!-- Modal de Ver Detalle -->
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row animated fadeInDown">
+                        <%--Inicio Contenido!!!!--%>
+
+                        <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
+                            <div class="p-xs">
+                                <div class="pull-left m-r-md">
+                                    <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
+                                </div>
+                                <h2>Acceso Denegado</h2>
+                                <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
                             </div>
-                            <h2>Acceso Denegado</h2>
-                            <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                    </div>
+                        <div class="form-group">
+                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                        </div>
 
-                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+                        <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form id="form1" runat="server">
-                        <asp:ScriptManager ID="ScriptManager1" runat="server" />
-
-                        <!-- Modal de Ver Detalle -->
                         <div class="modal fade" id="ModalDetalle" tabindex="-1" aria-labelledby="miModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content animated bounceInRight">
@@ -169,7 +171,7 @@
                             <div class="col-lg-12">
 
                                 <div class="row">
-                                    <div class="col-lg-3">
+                                    <%--                                    <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title text-success">
 
@@ -220,7 +222,7 @@
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>--%>
                                 </div>
 
                                 <!-- INDICADORES FINAL -->
@@ -245,15 +247,27 @@
 
                                             <div class="col-lg-2">
                                                 <div class="form-group">
-                                                    <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
-                                                        DataTextField="TipoDocumento" DataValueField="idTipoDoc" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Todos los medios de pago" Value="0" Selected="True"></asp:ListItem>
-                                                        <asp:ListItem Text="Efectivo" Value="1"></asp:ListItem>
-                                                        <asp:ListItem Text="Transferencia" Value="2"></asp:ListItem>
-                                                        <asp:ListItem Text="Datafono" Value="3"></asp:ListItem>
-                                                        <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
+                                                    <asp:DropDownList ID="ddlTipoReporte" runat="server" AppendDataBoundItems="true"
+                                                        DataTextField="TipoDocumento" DataValueField="idTipoRep" CssClass="form-control input-sm">
+                                                        <asp:ListItem Text="Ventas por Asesor" Value="1" Selected="True"></asp:ListItem>
+                                                        <asp:ListItem Text="Ventas por Sede" Value="2"></asp:ListItem>
+                                                        <asp:ListItem Text="Ventas totales" Value="3"></asp:ListItem>
+                                                        <asp:ListItem Text="Ventas por Planes" Value="4"></asp:ListItem>
+                                                        <asp:ListItem Text="Ventas corportativo" Value="5"></asp:ListItem>
+                                                        <asp:ListItem Text="Ventas por CRM" Value="6"></asp:ListItem>
+                                                        <asp:ListItem Text="Clientes activos/inactivos" Value="7"></asp:ListItem>
+                                                        <asp:ListItem Text="Clientes corporativos" Value="8"></asp:ListItem>
+                                                        <asp:ListItem Text="Negociaciones por cliente" Value="9"></asp:ListItem>
+                                                        <asp:ListItem Text="Estado de cuenta por cliente" Value="10"></asp:ListItem>
+                                                        <asp:ListItem Text="Estado de cuenta general" Value="11"></asp:ListItem>
+                                                        <asp:ListItem Text="Gestión diaria de asesores" Value="12"></asp:ListItem>
+                                                        <asp:ListItem Text="Tiempos de respuesta" Value="13"></asp:ListItem>
+                                                        <asp:ListItem Text="Negociaciones creadas / eliminadas" Value="14"></asp:ListItem>
+                                                        <asp:ListItem Text="Empresas con mayor facturación" Value="15"></asp:ListItem>
+                                                        <asp:ListItem Text="Estado de contratos empresariales" Value="16"></asp:ListItem>
+                                                        <asp:ListItem Text="Usuarios activos / inactivos" Value="17"></asp:ListItem>
+                                                        <asp:ListItem Text="Roles y permisos" Value="18"></asp:ListItem>
                                                         <%--<asp:ListItem Text="Financiación" Value="5"></asp:ListItem>--%>
-
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -282,86 +296,27 @@
                                                 </asp:LinkButton>
                                             </div>
                                             <div class="col-lg-1">
-                                                <asp:LinkButton ID="lbExportarPdf" runat="server"
+                                                <asp:LinkButton
+                                                    ID="lbExportarPdf"
+                                                    runat="server"
                                                     CausesValidation="false"
-                                                    CssClass="btn btn-success pull-right dim m-l-md" Style="font-size: 12px;"
+                                                    CssClass="btn btn-success pull-right dim m-l-md"
+                                                    Style="font-size: 12px;"
                                                     OnClick="lbExportarPdf_Click">
                                                     <i class="fa fa-file-pdf"></i> PDF
                                                 </asp:LinkButton>
+
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
-                                            data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" data-paging-limit="10"
-                                            data-filtering="true" data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
-                                            <thead>
-                                                <tr>
-                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
-                                                    <th>Documento</th>
-                                                    <th>Afiliado</th>
-                                                    <th data-breakpoints="xs sm md">Valor total</th>
-                                                    <%--<th data-breakpoints="xs sm md">Tipo Pago</th>--%>
-                                                    <%--<th data-breakpoints="xs sm md">Referencia</th>--%>
-                                                    <th data-breakpoints="xs sm md">Fecha</th>
-                                                    <th data-breakpoints="xs sm md">Estado</th>
-                                                    <th data-breakpoints="xs sm md">Plan</th>
-                                                    <th data-breakpoints="xs sm md">Cod. Siigo</th>
-                                                    <th data-breakpoints="all" data-title="Detalle"></th>
-                                                    <%--<th data-breakpoints="xs sm md">Usuario</th>--%>
-                                                    <%--<th data-breakpoints="xs sm md">Canal</th>--%>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <asp:Repeater ID="rpPagos" runat="server" OnItemDataBound="rpPagos_ItemDataBound">
-                                                    <ItemTemplate>
-                                                        <tr class="feed-element">
-                                                            <td><%# Eval("idAfilPlan") %></td>
-                                                            <td><%# Eval("Documento") %></td>
-                                                            <td><%# Eval("Afiliado") %></td>
-                                                            <td><%# Eval("Sumatoria", "{0:C0}") %></td>
-                                                            <%--<td><%# Eval("Medio de pago") %></td>--%>
-                                                            <%--<td><%# Eval("Ref") %></td>--%>
-                                                            <td><%# Eval("FechaHora", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                            <td><%# Eval("Est") %></td>
-                                                            <td><%# Eval("Plan") %></td>
-                                                            <td><%# Eval("idSiigo") %></td>
-                                                            <%--<td><%# Eval("Usu") %></td>--%>
-                                                            <%--<td><%# Eval("CanalV") %></td>--%>
-                                                            <td>
-                                                                <asp:Repeater ID="rpDetallesPago" runat="server">
-                                                                    <HeaderTemplate>
-                                                                        <table class="table table-striped list-group-item-text">
-                                                                            <tr>
-                                                                                <td class="font-bold">Pago</td>
-                                                                                <td class="font-bold">Referencia</td>
-                                                                                <td class="font-bold">Valor</td>
-                                                                                <td class="font-bold">Medio de Pago</td>
-                                                                                <td class="font-bold">Fecha</td>
-                                                                            </tr>
-                                                                    </HeaderTemplate>
+                                        <asp:GridView
+                                            ID="gvReporte"
+                                            runat="server"
+                                            CssClass="table table-striped table-bordered"
+                                            AutoGenerateColumns="true"
+                                            EmptyDataText="No hay información para mostrar">
+                                        </asp:GridView>
 
-                                                                    <ItemTemplate>
-                                                                        <tr>
-                                                                            <td><%# Eval("Pago") %></td>
-                                                                            <td><%# Eval("Ref") %></td>
-                                                                            <td><%# Eval("Valor", "{0:C0}") %></td>
-                                                                            <td><%# Eval("Medio de pago") %></td>
-                                                                            <td><%# Eval("Fecha") %></td>
-                                                                        </tr>
-                                                                    </ItemTemplate>
-
-                                                                    <FooterTemplate>
-                                                                        </table>
-                                                                    </FooterTemplate>
-                                                                </asp:Repeater>
-                                                            </td>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
 
@@ -410,14 +365,14 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
-                    <%--Fin Contenido!!!!--%>
-                </div>
-            </div>
-            <uc1:footer runat="server" ID="footer" />
+            </form>
+            <%--Fin Contenido!!!!--%>
         </div>
-        <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
+    <uc1:footer runat="server" ID="footer" />
+
+    <uc1:rightsidebar runat="server" ID="rightsidebar" />
+
 
 
 
@@ -467,3 +422,4 @@
 </body>
 
 </html>
+

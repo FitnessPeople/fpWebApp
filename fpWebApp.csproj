@@ -286,8 +286,9 @@
     <Content Include="contratoafiliado.aspx" />
     <Content Include="controles\footer.ascx" />
     <Content Include="controles\grafico01.ascx" />
+    <Content Include="controles\graficosCEO.ascx" />
     <Content Include="controles\header.ascx" />
-    <Content Include="controles\indicadores01.ascx" />
+    <Content Include="controles\indicadoresCEO.ascx" />
     <Content Include="controles\indicadores02.ascx" />
     <Content Include="controles\indicadores03.ascx" />
     <Content Include="controles\indicadores04.ascx" />
@@ -996,6 +997,7 @@
     <Content Include="reportepagosmulticanal.aspx" />
     <Content Include="reportepagosrechazados.aspx" />
     <Content Include="reportepagosrecurrentes.aspx" />
+    <Content Include="reportesoperativos.aspx" />
     <Content Include="reporteventas.aspx" />
     <Content Include="reporteventasasesor.aspx" />
     <Content Include="respuestaautorizacion.aspx" />
@@ -1323,6 +1325,13 @@
       <DependentUpon>grafico01.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="controles\graficosCEO.ascx.cs">
+      <DependentUpon>graficosCEO.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\graficosCEO.ascx.designer.cs">
+      <DependentUpon>graficosCEO.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controles\header.ascx.cs">
       <DependentUpon>header.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1330,12 +1339,12 @@
     <Compile Include="controles\header.ascx.designer.cs">
       <DependentUpon>header.ascx</DependentUpon>
     </Compile>
-    <Compile Include="controles\indicadores01.ascx.cs">
-      <DependentUpon>indicadores01.ascx</DependentUpon>
+    <Compile Include="controles\indicadoresCEO.ascx.cs">
+      <DependentUpon>indicadoresCEO.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="controles\indicadores01.ascx.designer.cs">
-      <DependentUpon>indicadores01.ascx</DependentUpon>
+    <Compile Include="controles\indicadoresCEO.ascx.designer.cs">
+      <DependentUpon>indicadoresCEO.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadores02.ascx.cs">
       <DependentUpon>indicadores02.ascx</DependentUpon>
@@ -2164,6 +2173,13 @@
     </Compile>
     <Compile Include="reportepagosrecurrentes.aspx.designer.cs">
       <DependentUpon>reportepagosrecurrentes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="reportesoperativos.aspx.cs">
+      <DependentUpon>reportesoperativos.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="reportesoperativos.aspx.designer.cs">
+      <DependentUpon>reportesoperativos.aspx</DependentUpon>
     </Compile>
     <Compile Include="reporteventas.aspx.cs">
       <DependentUpon>reporteventas.aspx</DependentUpon>

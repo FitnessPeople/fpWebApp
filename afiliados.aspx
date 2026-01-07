@@ -185,7 +185,7 @@
                                             <label class="col-lg-2 control-label">Sede:</label>
                                             <div class="col-lg-10">
                                                 <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true"
-                                                    DataTextField="NombreSede" DataValueField="idSede"
+                                                    DataTextField="NombreSedeCiudad" DataValueField="idSede"
                                                     CssClass="form-control input-sm m-b" OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
                                                     AutoPostBack="true">
                                                 </asp:DropDownList>

@@ -39,7 +39,6 @@ namespace fpWebApp
                         }
                     }
                     listaDispositivos();
-                    //indicadores01.Visible = false;
                 }
                 else
                 {
