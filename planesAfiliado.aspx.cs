@@ -1,4 +1,5 @@
-﻿using fpWebApp.Services;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using fpWebApp.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -16,11 +17,19 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using WebPage.Services;
+using static fpWebApp.Services.SiigoClient;
 
 namespace fpWebApp
 {
     public partial class planesAfiliado : System.Web.UI.Page
     {
+        // PRUEBAS
+        static int idIntegracionSiigo = 3; // SIIGO
+
+
+        // PRODUCCIÓN
+        //static int idIntegracionSiigo = 6; // SIIGO
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ScriptManager.RegisterClientScriptInclude(this, this.GetType(),
@@ -517,16 +526,31 @@ namespace fpWebApp
 
             try
             {
+                string fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
+
+                clasesglobales cg = new clasesglobales();
+
+                DataTable dtIntegracion = cg.ConsultarIntegracionPorId(idIntegracionSiigo);
+                string url = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["url"].ToString() : null;
+                string username = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["username"].ToString() : null;
+                string accessKey = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["accessKey"].ToString() : null;
+                string partnerId = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["partnerId"].ToString() : null;
+
+                int idDocumentType = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idDocumentType"].ToString()) : 0;
+                int idSellerUser = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idSellerUser"].ToString()) : 0;
+                int idPayment = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idPayment"].ToString()) : 0;
+                dtIntegracion.Dispose();
+
+                
                 // 1. Creación de factura en Siigo
                 var siigoClient = new SiigoClient(
                     new HttpClient(),
-                    "https://api.siigo.com/",
-                    "sandbox@siigoapi.com",
-                    "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=",
-                    "SandboxSiigoApi"
+                    url,
+                    username,
+                    accessKey,
+                    partnerId
                 );
 
-                clasesglobales cg = new clasesglobales();
                 DataTable dtAfi = cg.ConsultarAfiliadoPorId(Convert.ToInt32(idAfiliado));
 
                 if (dtAfi.Rows.Count == 0) return;
@@ -537,45 +561,65 @@ namespace fpWebApp
                 string strApellido = dtAfi.Rows[0]["ApellidoAfiliado"].ToString();
                 string strCelular = dtAfi.Rows[0]["CelularAfiliado"].ToString();
                 string strEmail = dtAfi.Rows[0]["EmailAfiliado"].ToString();
+                int idSede = Convert.ToInt32(dtAfi.Rows[0]["idSede"].ToString());
                 dtAfi.Dispose();
 
-                //await siigoClient.ManageCustomerAsync(nroDoc, strNombre, strApellido, strCelular, strEmail);
+                DataTable dtCodSiigoDocumento = cg.ConsultarCodigoSiigoPorDocumento(nroDoc);
+                string idTipoDocSiigo = dtCodSiigoDocumento.Rows[0]["CodSiigo"].ToString();
+                dtCodSiigoDocumento.Dispose();
+
+                DataTable dtSede = cg.ConsultarSedePorId(idSede);
+                string direccion = dtSede.Rows[0]["DireccionSede"].ToString();
+                int idCiudad = Convert.ToInt32(dtSede.Rows[0]["idCiudadSede"].ToString());
+                dtSede.Dispose();
+
+                DataTable dtCiudad = cg.ConsultarCiudadSedeSiigoPorId(idCiudad);
+                string codEstado = dtCiudad.Rows[0]["CodigoEstado"].ToString();
+                string codCiudad = dtCiudad.Rows[0]["CodigoCiudad"].ToString();
+                dtCiudad.Dispose();
+
+                await siigoClient.ManageCustomerAsync(idTipoDocSiigo, nroDoc, strNombre, strApellido, direccion, codEstado, codCiudad, strCelular, strEmail);
+
+                DataTable dtSedeCostCenter = cg.ConsultarSedePorId(idSede);
+                int idCostCenter = dtSedeCostCenter != null && dtSedeCostCenter.Rows.Count > 0 ? Convert.ToInt32(dtSedeCostCenter.Rows[0]["idCostCenterSiigo"].ToString()) : 0;
+                dtSedeCostCenter.Dispose();
 
 
-
+                // PRODUCCIÓN
                 // TODO: NO ELIMINAR ESTO, SE USA EN LA CREACIÓN DE LA FACTURA
                 // ESTÁ COMENTADO PARA PRUEBAS LOCALES
                 //string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
-                //    Session["documentoAfiliado"].ToString(), 
-                //    Session["codSiigoPlan"].ToString(), 
+                //    nroDoc,
+                //    Session["codSiigoPlan"].ToString(),
                 //    Session["nombrePlan"].ToString(),
-                //    int.Parse(Session["valorPlan"].ToString())
+                //    int.Parse(Session["valorPlan"].ToString()),
+                //    idSellerUser,
+                //    idDocumentType,
+                //    fechaActual,
+                //    idCostCenter,
+                //    idPayment
                 //);
 
 
-                int idSede = Session["idSede"] != null ? Convert.ToInt32(Session["idSede"].ToString()) : 0;
+                // PRUEBAS
+                if (idIntegracionSiigo == 3) idCostCenter = 621;
 
-                // Siigo Producción
-                //string codSiigoPlan = ViewState["codSiigoPlan"].ToString();
-                //string nombrePlan = ViewState["nombrePlan"].ToString();
-                //int precioPlanSiigo = Convert.ToInt32(txbTotal.Text.ToString());
-                //int precioPlanSiigo = Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", ""));
-
-
-                // Siigo Pruebas
                 string codSiigoPlan = "COD2433";
                 string nombrePlan = "Pago de suscripción";
-                int precioPlanSiigo = 10000;
+                int precioPlan = 10000;
+                string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
+                    nroDoc,
+                    codSiigoPlan,
+                    nombrePlan,
+                    precioPlan,
+                    idSellerUser,
+                    idDocumentType,
+                    fechaActual,
+                    idCostCenter,
+                    idPayment
+                );
 
 
-                //string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
-                //    //ViewState["DocumentoAfiliado"].ToString(),
-                //    nroDoc,
-                //    codSiigoPlan,
-                //    nombrePlan,
-                //    precioPlanSiigo,
-                //    idSede
-                //);
 
 
                 // 3. Registro de afiliación en la base de datos (AfiliadoPlan)
