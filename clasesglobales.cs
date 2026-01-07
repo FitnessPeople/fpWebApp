@@ -769,8 +769,7 @@ namespace fpWebApp
                     HorizontalAlignment = Element.ALIGN_LEFT
                 };
                 encabezado.AddCell(colLogo);
-
-                // Fecha reporte
+                
                 PdfPCell colFecha = new PdfPCell(new Phrase(
                     "Fecha reporte: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                     FontFactory.GetFont(FontFactory.HELVETICA, 8)))
@@ -829,6 +828,7 @@ namespace fpWebApp
                 );
             }
         }
+
 
         public void ExportarPDF(DataTable dt, DataTable dtTotales, string nombreArchivo)
         {
@@ -969,7 +969,7 @@ namespace fpWebApp
             }
         }
 
-        public void ExportarPDFGen(DataTable dt, string nombreArchivo)
+        public void ExportarPDFGen(DataTable dt, string nombreArchivo, string tituloReporte)
         {
             if (dt == null || dt.Rows.Count == 0)
                 return;
@@ -995,19 +995,10 @@ namespace fpWebApp
                     new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.ITALIC, BaseColor.DARK_GRAY);
 
                 // ===== TITULO =====
-                Paragraph titulo = new Paragraph("Reporte ventas", fontTitulo);
+                Paragraph titulo = new Paragraph(tituloReporte, fontTitulo);
                 titulo.Alignment = Element.ALIGN_CENTER;
                 titulo.SpacingAfter = 5;
                 doc.Add(titulo);
-
-                // ===== FECHA Y HORA =====
-                Paragraph fecha = new Paragraph(
-                    $"Generado el: {DateTime.Now:dd/MM/yyyy HH:mm:ss}",
-                    fontFecha
-                );
-                fecha.Alignment = Element.ALIGN_CENTER;
-                fecha.SpacingAfter = 15;
-                doc.Add(fecha);
 
                 // ===== TABLA =====
                 PdfPTable tabla = new PdfPTable(dt.Columns.Count);
@@ -1019,9 +1010,7 @@ namespace fpWebApp
                 // ---- ENCABEZADOS (solo línea inferior) ----
                 foreach (DataColumn col in dt.Columns)
                 {
-                    PdfPCell cell = new PdfPCell(
-                        new Phrase(col.ColumnName, fontHeader)
-                    );
+                    PdfPCell cell = new PdfPCell(new Phrase(col.ColumnName, fontHeader));
                     cell.HorizontalAlignment = Element.ALIGN_CENTER;
                     cell.Padding = 5;
 
@@ -1037,9 +1026,7 @@ namespace fpWebApp
                 {
                     foreach (object item in row.ItemArray)
                     {
-                        PdfPCell cell = new PdfPCell(
-                            new Phrase(item?.ToString() ?? string.Empty, fontCell)
-                        );
+                        PdfPCell cell = new PdfPCell( new Phrase(item?.ToString() ?? string.Empty, fontCell));
                         cell.HorizontalAlignment = Element.ALIGN_CENTER;
                         cell.Padding = 4;
                         cell.Border = iTextSharp.text.Rectangle.NO_BORDER;
@@ -1049,6 +1036,17 @@ namespace fpWebApp
                 }
 
                 doc.Add(tabla);
+                // ===== FECHA Y HORA (PIE DEL REPORTE) =====
+                iTextSharp.text.Font fontFechaPie =
+                FontFactory.GetFont(FontFactory.HELVETICA, 7, BaseColor.GRAY);
+
+                Paragraph fechaPie = new Paragraph($"Generado el: {DateTime.Now:dd/MM/yyyy HH:mm:ss}",fontFechaPie);
+
+
+                fechaPie.Alignment = Element.ALIGN_CENTER;
+                fechaPie.SpacingBefore = 15;   // Espacio antes (separarlo de la tabla)
+                fechaPie.SpacingAfter = 0;
+                doc.Add(fechaPie);
 
                 // ===== CIERRE =====
                 doc.Close();
@@ -1067,6 +1065,83 @@ namespace fpWebApp
             }
         }
 
+        public void ExportarExcelGen( DataTable dt, string nombreArchivo, string tituloReporte, string usuario)
+        {
+            if (dt == null || dt.Rows.Count == 0)
+                return;
+
+            // 🔑 Licencia EPPlus
+            OfficeOpenXml.ExcelPackage.LicenseContext =
+                OfficeOpenXml.LicenseContext.NonCommercial;
+
+            using (var package = new OfficeOpenXml.ExcelPackage())
+            {
+                var ws = package.Workbook.Worksheets.Add("Reporte");
+                int fila = 1;
+
+                // ===== TITULO =====
+                ws.Cells[fila, 1].Value = tituloReporte;
+                ws.Cells[fila, 1, fila, dt.Columns.Count].Merge = true;
+                ws.Cells[fila, 1].Style.Font.Bold = true;
+                ws.Cells[fila, 1].Style.Font.Size = 14;
+                ws.Cells[fila, 1].Style.HorizontalAlignment =
+                    OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                fila += 2;
+
+                // ===== USUARIO / FECHA =====
+                ws.Cells[fila, 1].Value = $"Usuario: {usuario}";
+                ws.Cells[fila + 1, 1].Value =
+                    $"Generado el: {DateTime.Now:dd/MM/yyyy HH:mm:ss}";
+                fila += 2;
+
+                // ===== ENCABEZADOS =====
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    ws.Cells[fila, i + 1].Value = dt.Columns[i].ColumnName;
+                    ws.Cells[fila, i + 1].Style.Font.Bold = true;
+                    ws.Cells[fila, i + 1].Style.Border.Bottom.Style =
+                        OfficeOpenXml.Style.ExcelBorderStyle.Thin;
+                }
+
+                fila++;
+
+                // ===== DATOS =====
+                foreach (DataRow row in dt.Rows)
+                {
+                    for (int col = 0; col < dt.Columns.Count; col++)
+                    {
+                        ws.Cells[fila, col + 1].Value = row[col];
+                    }
+                    fila++;
+                }
+
+                ws.Cells.AutoFitColumns();
+
+                // ===== EXPORTAR CORRECTAMENTE =====
+                byte[] bytes = package.GetAsByteArray();
+
+                HttpContext.Current.Response.Clear();
+                HttpContext.Current.Response.ClearHeaders();
+                HttpContext.Current.Response.ClearContent();
+                HttpContext.Current.Response.Buffer = true;
+                HttpContext.Current.Response.Charset = "";
+
+                HttpContext.Current.Response.ContentType =
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                HttpContext.Current.Response.AddHeader(
+                    "Content-Disposition",
+                    $"attachment; filename={nombreArchivo}.xlsx"
+                );
+
+                HttpContext.Current.Response.BinaryWrite(bytes);
+                HttpContext.Current.Response.Flush();
+
+                // 🚨 CLAVE EN WEBFORMS
+                HttpContext.Current.Response.SuppressContent = true;
+                HttpContext.Current.ApplicationInstance.CompleteRequest();
+            }
+        }
 
 
         public string InsertarLogError(string pagima, string descripcion, int idusuario, out int _idLogErrorQ)
@@ -10236,6 +10311,72 @@ namespace fpWebApp
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
                     using (MySqlCommand cmd = new MySqlCommand("Pa_REPORTE_RANKING_CANALES_VENTA_POR_FECHA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_fecha_ini", FechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", FechaFin);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarRankingVentasTotalesPorFecha(DateTime FechaIni, DateTime FechaFin)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_REPORTE_VENTAS_TOTALES_POR_FECHA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_fecha_ini", FechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", FechaFin);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarRankingPlanesPorFecha(DateTime FechaIni, DateTime FechaFin)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_REPORTE_PLANES_MAS_VENDIDOS_POR_FECHA", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_fecha_ini", FechaIni);
