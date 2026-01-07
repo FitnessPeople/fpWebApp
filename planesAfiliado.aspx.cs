@@ -539,7 +539,7 @@ namespace fpWebApp
                 string strEmail = dtAfi.Rows[0]["EmailAfiliado"].ToString();
                 dtAfi.Dispose();
 
-                await siigoClient.ManageCustomerAsync(nroDoc, strNombre, strApellido, strCelular, strEmail);
+                //await siigoClient.ManageCustomerAsync(nroDoc, strNombre, strApellido, strCelular, strEmail);
 
 
 
@@ -568,14 +568,14 @@ namespace fpWebApp
                 int precioPlanSiigo = 10000;
 
 
-                string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
-                    //ViewState["DocumentoAfiliado"].ToString(),
-                    nroDoc,
-                    codSiigoPlan,
-                    nombrePlan,
-                    precioPlanSiigo,
-                    idSede
-                );
+                //string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
+                //    //ViewState["DocumentoAfiliado"].ToString(),
+                //    nroDoc,
+                //    codSiigoPlan,
+                //    nombrePlan,
+                //    precioPlanSiigo,
+                //    idSede
+                //);
 
 
                 // 3. Registro de afiliación en la base de datos (AfiliadoPlan)
@@ -605,7 +605,7 @@ namespace fpWebApp
                 string codDatafono = Session["codDatafono"].ToString();
 
                 // 5. Registro de pago en la base de datos (PagosPlanAfiliado)
-                cg.ActualizarIdSiigoFacturaDePagoPlanAfiliadoxIdPlanAfiliado(idAfiliadoPlan, idSiigoFactura);
+                //cg.ActualizarIdSiigoFacturaDePagoPlanAfiliadoxIdPlanAfiliado(idAfiliadoPlan, idSiigoFactura);
                 //cg.InsertarPagoPlanAfiliadoWeb(
                 //    idAfiliadoPlan,
                 //    int.Parse(Session["valorPlan"].ToString()),

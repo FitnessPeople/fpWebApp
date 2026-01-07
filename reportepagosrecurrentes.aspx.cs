@@ -1,29 +1,36 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using fpWebApp.Services;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using NPOI.POIFS.Crypt.Agile;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Net.Http;
+using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.Routing;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
-using System.Globalization;
-using NPOI.POIFS.Crypt.Agile;
-using System.Net.Http;
-using System.Security.Policy;
-using System.Threading.Tasks;
-using System.Web.Routing;
-using System.Security.Cryptography;
-using fpWebApp.Services;
+using static fpWebApp.Services.SiigoClient;
 
 namespace fpWebApp
 {
 	public partial class reportepagosrecurrentes : System.Web.UI.Page
 	{
-        //static int idIntegracion = 1; // Pruebas
-        static int idIntegracion = 4; // Producción
+        // PRUEBAS
+        //static int idIntegracionWompi = 1; // WOMPI
+        //static int idIntegracionSiigo = 3; // SIIGO
+
+
+        // PRODUCCIÓN
+        static int idIntegracionWompi = 4; // WOMPI
+        static int idIntegracionSiigo = 6; // SIIGO
 
         protected string EstadoCobroRechazado
         {
@@ -31,7 +38,7 @@ namespace fpWebApp
             set { ViewState["MensajeEstadoCobroRechazado"] = value; }
         }
 
-        protected string Url
+        protected string UrlWompi
         {
             get { return ViewState["urlWompi"]?.ToString(); }
             set { ViewState["urlWompi"] = value; }
@@ -63,6 +70,52 @@ namespace fpWebApp
             set { ViewState["dataIdTransaccion"] = value; }
         }
 
+        // Siigo
+
+        protected string UrlSiigo
+        {
+            get { return ViewState["urlSiigo"]?.ToString(); }
+            set { ViewState["urlSiigo"] = value; }
+        }
+
+        protected string UserName
+        {
+            get { return ViewState["username"]?.ToString(); }
+            set { ViewState["username"] = value; }
+        }
+
+        protected string AccessKey
+        {
+            get { return ViewState["accessKey"]?.ToString(); }
+            set { ViewState["accessKey"] = value; }
+        }
+
+        protected string PartnerId
+        {
+            get { return ViewState["partnerId"]?.ToString(); }
+            set { ViewState["partnerId"] = value; }
+        }
+
+        //
+
+        protected int IdDocumentType
+        {
+            get { return ViewState["idDocumentType"] != null ? (int)ViewState["idDocumentType"] : 0; }
+            set { ViewState["idDocumentType"] = value; }
+        }
+
+        protected int IdSellerUser
+        {
+            get { return ViewState["idSellerUser"] != null ? (int)ViewState["idSellerUser"] : 0; }
+            set { ViewState["idSellerUser"] = value; }
+        }
+
+        protected int IdPayment
+        {
+            get { return ViewState["idPayment"] != null ? (int)ViewState["idPayment"] : 0; }
+            set { ViewState["idPayment"] = value; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
 		{
             CultureInfo culture = new CultureInfo("es-CO");
@@ -74,7 +127,7 @@ namespace fpWebApp
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Pagos recurrentes");
-                    ConsultarDatosWompi();
+                    ConsultarIntegracion();
 
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
@@ -113,17 +166,27 @@ namespace fpWebApp
             }
         }
 
-        private void ConsultarDatosWompi()
+        private void ConsultarIntegracion()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dtIntegracionWompi = cg.ConsultarIntegracionWompi(idIntegracion);
 
-            Url = dtIntegracionWompi != null && dtIntegracionWompi.Rows.Count > 0 ? dtIntegracionWompi.Rows[0]["urlTest"].ToString() : null;
+            DataTable dtIntegracionWompi = cg.ConsultarIntegracionPorId(idIntegracionWompi);
+            UrlWompi = dtIntegracionWompi != null && dtIntegracionWompi.Rows.Count > 0 ? dtIntegracionWompi.Rows[0]["url"].ToString() : null;
             IntegritySecret = dtIntegracionWompi != null && dtIntegracionWompi.Rows.Count > 0 ? dtIntegracionWompi.Rows[0]["integrity_secret"].ToString() : null;
             KeyPub = dtIntegracionWompi != null && dtIntegracionWompi.Rows.Count > 0 ? dtIntegracionWompi.Rows[0]["keyPub"].ToString() : null;
             KeyPriv = dtIntegracionWompi != null && dtIntegracionWompi.Rows.Count > 0 ? dtIntegracionWompi.Rows[0]["keyPriv"].ToString() : null;
-
             dtIntegracionWompi.Dispose();
+
+            DataTable dtIntegracionSiigo = cg.ConsultarIntegracionPorId(idIntegracionSiigo);
+            UrlSiigo = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? dtIntegracionSiigo.Rows[0]["url"].ToString() : null;
+            UserName = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? dtIntegracionSiigo.Rows[0]["username"].ToString() : null;
+            AccessKey = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? dtIntegracionSiigo.Rows[0]["accessKey"].ToString() : null;
+            PartnerId = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? dtIntegracionSiigo.Rows[0]["partnerId"].ToString() : null;
+
+            IdDocumentType = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? Convert.ToInt32(dtIntegracionSiigo.Rows[0]["idDocumentType"].ToString()) : 0;
+            IdSellerUser = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? Convert.ToInt32(dtIntegracionSiigo.Rows[0]["idSellerUser"].ToString()) : 0;
+            IdPayment = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? Convert.ToInt32(dtIntegracionSiigo.Rows[0]["idPayment"].ToString()) : 0;
+            dtIntegracionSiigo.Dispose();
         }
 
         private void ValidarPermisos(string strPagina)
@@ -214,14 +277,15 @@ namespace fpWebApp
 
                 clasesglobales cg = new clasesglobales();
 
+                DataTable dtSede = cg.ConsultarSedePorId(idSede);
+                int idCostCenter = dtSede != null && dtSede.Rows.Count > 0 ? Convert.ToInt32(dtSede.Rows[0]["idCostCenterSiigo"].ToString()) : 0;
+                dtSede.Dispose();
+
                 int valorPromocion = cg.ObtenerValorPlanConPromocion(idPlan, idAfiliadoPlan);
 
                 if (valorPromocion > 0) valorPlan = valorPromocion;
 
                 if (idPlan == 12) valorPlan = 89000;
-
-                // DESCOMENTAR EL DÍA - 14-11-2025
-                if (documentoAfiliado == "1102388406") valorPlan = 79100;
 
                 int monto = valorPlan * 100;
                 string moneda = "COP";
@@ -253,7 +317,8 @@ namespace fpWebApp
                         referencia,
                         idVendedor,
                         fuentePago, 
-                        idSede
+                        idSede,
+                        idCostCenter
                     );
 
                     cg.EliminarHistorialCobrosRechazados(idAfiliadoPlan);
@@ -296,13 +361,11 @@ namespace fpWebApp
             }
         }
 
-        private async void RegistrarPago(int idAfiliadoPlan, string documentoAfiliado, string codSiigoPlan, string nombrePlan, int valor, string referencia, int idVendedor, string idFuentePago, int idSede)
+        private async void RegistrarPago(int idAfiliadoPlan, string documentoAfiliado, string codSiigoPlan, string nombrePlan, int valor, string referencia, int idVendedor, string idFuentePago, int idSede, int idCostCenter)
         {
             try
             {
                 clasesglobales cg = new clasesglobales();
-
-                string idSiigoFactura = null;
 
                 int idPago = cg.InsertarPagoPlanAfiliadoWebYDevolverId(
                     idAfiliadoPlan,
@@ -312,7 +375,7 @@ namespace fpWebApp
                     "Wompi",
                     idVendedor, 
                     "Aprobado",
-                    idSiigoFactura,
+                    null,
                     null,
                     idFuentePago,
                     DataIdTransaccion,
@@ -325,46 +388,79 @@ namespace fpWebApp
 
                 try
                 {
-                    DataTable dtIntegracion = cg.ConsultarIntegracion(idSede);
-                    string url = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["urlTest"].ToString() : "0";
-                    string username = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["username"].ToString() : "0";
-                    string accessKey = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["accessKey"].ToString() : "0";
-                    string partnerId = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["partnerId"].ToString() : "0";
-                    dtIntegracion.Dispose();
-
-                    // PRUEBAS
-                    //string url = "https://api.siigo.com/";
-                    //string username = "sandbox@siigoapi.com";
-                    //string accessKey = "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=";
-                    //string partnerId = "SandboxSiigoApi";
+                    string fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
 
                     // Creación de factura
                     var siigoClient = new SiigoClient(
                         new HttpClient(),
-                        url,
-                        username,
-                        accessKey,
-                        partnerId
+                        UrlSiigo,
+                        UserName,
+                        AccessKey,
+                        PartnerId
                     );
 
-                    idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
+
+                    // COMENTADO HASTA NUEVO AVISO
+
+                    DataTable dtAfi = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(documentoAfiliado));
+                    // Obtener datos del afiliado
+                    string strNombre = dtAfi.Rows[0]["NombreAfiliado"].ToString();
+                    string strApellido = dtAfi.Rows[0]["ApellidoAfiliado"].ToString();
+                    string strTelefono = dtAfi.Rows[0]["CelularAfiliado"].ToString();
+                    string strCorreo = dtAfi.Rows[0]["EmailAfiliado"].ToString();
+                    dtAfi.Dispose();
+
+                    DataTable dtCodSiigo = cg.ConsultarCodigoSiigoPorDocumento(documentoAfiliado);
+                    string idTipoDocSiigo = dtCodSiigo.Rows[0]["CodSiigo"].ToString();
+                    dtCodSiigo.Dispose();
+
+                    DataTable dtSede = cg.ConsultarSedePorId(idSede);
+                    string strDireccion = dtSede.Rows[0]["DireccionSede"].ToString();
+                    int idCiudad = Convert.ToInt32(dtSede.Rows[0]["idCiudadSede"].ToString());
+                    dtSede.Dispose();
+
+                    DataTable dtCiudad = cg.ConsultarCiudadSedeSiigoPorId(idCiudad);
+                    string codEstado = dtCiudad.Rows[0]["CodigoEstado"].ToString();
+                    string codCiudad = dtCiudad.Rows[0]["CodigoCiudad"].ToString();
+                    dtCiudad.Dispose();
+
+                    await siigoClient.ManageCustomerAsync(idTipoDocSiigo, documentoAfiliado, strNombre, strApellido, strDireccion, codEstado, codCiudad, strTelefono, strCorreo);
+
+                    // COMENTADO HASTA NUEVO AVISO
+
+
+                    // PRODUCCIÓN
+                    // TODO: NO ELIMINAR ESTO, SE USA EN LA CREACIÓN DE LA FACTURA
+                    // ESTÁ COMENTADO PARA PRUEBAS LOCALES
+                    string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
                         documentoAfiliado,
                         codSiigoPlan,
                         nombrePlan,
                         valor,
-                        idSede
+                        IdSellerUser,
+                        IdDocumentType,
+                        fechaActual,
+                        idCostCenter,
+                        IdPayment
                     );
 
+
                     // PRUEBAS
-                    //string codSiigoPlanPruebas = "COD2433";
-                    //string nombrePlanPruebas = "Pago de suscripción";
+                    //if (idIntegracionSiigo == 3) idCostCenter = 621;
+
+                    //codSiigoPlan = "COD2433";
+                    //nombrePlan = "Pago de suscripción";
                     //int precioPlan = 10000;
-                    //idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
+                    //string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
                     //    documentoAfiliado,
-                    //    codSiigoPlanPruebas,
-                    //    nombrePlanPruebas,
+                    //    codSiigoPlan,
+                    //    nombrePlan,
                     //    precioPlan,
-                    //    idSede
+                    //    IdSellerUser,
+                    //    IdDocumentType,
+                    //    fechaActual,
+                    //    idCostCenter,
+                    //    IdPayment
                     //);
 
                     // Actualizar pago con id de factura
@@ -389,7 +485,7 @@ namespace fpWebApp
         {
             try
             {
-                string url = $"{Url}transactions";
+                string url = $"{UrlWompi}transactions";
 
                 var transaccion = new
                 {
@@ -400,10 +496,7 @@ namespace fpWebApp
                     reference = reference,
                     description = description,
                     payment_source_id = payment_source_id, 
-                    payment_method = new
-                    {
-                        installments = 1
-                    }
+                    payment_method = new { installments = 1 }
                 };
 
                 string json = JsonConvert.SerializeObject(transaccion);
@@ -509,7 +602,7 @@ namespace fpWebApp
         // ==============================
         public async Task<string> GetPostConsultaTransaccionAsync(string idReferencia)
         {
-            string url = $"{Url}transactions?reference={idReferencia}";
+            string url = $"{UrlWompi}transactions?reference={idReferencia}";
 
             using (HttpClient client = new HttpClient())
             {
