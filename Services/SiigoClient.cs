@@ -87,6 +87,42 @@ namespace fpWebApp.Services
             }
         }
 
+        public async Task<string> ManageInvoiceAsync(string idSiigoFactura)
+        {
+            // 1. Obtener token
+            string token = await GetTokenAsync();
+
+            // 2. Consultar si la factura existe
+            string public_url = await InvoiceExistsAsync(idSiigoFactura, token);
+
+            return public_url;
+        }
+
+        public async Task<string> InvoiceExistsAsync(string idSiigoFactura, string token)
+        {
+            var url = $"{_baseUrl}v1/invoices/{idSiigoFactura}";
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            request.Headers.Add("Partner-Id", _partnerId);
+
+            var response = await _httpClient.SendAsync(request);
+            var content = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception($"Error al consultar la factura: {content}");
+            }
+
+            dynamic obj = JsonConvert.DeserializeObject(content);
+
+            if (obj?.public_url == null)
+            {
+                throw new Exception("La factura existe, pero no contiene public_url.");
+            }
+
+            return obj.public_url.ToString();
+        }
+
         public async Task<(bool, string)> CustomerExistsAsync(string documento, string token)
         {
             var url = $"{_baseUrl}v1/customers?identification={documento}";
