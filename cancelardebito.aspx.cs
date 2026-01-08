@@ -105,12 +105,18 @@ namespace fpWebApp
         {
             if (txbObservaciones.Text.ToString() != "")
             {
+                int idAfiliadoPlan = Convert.ToInt32(Request.QueryString["idAfiliadoPlan"].ToString());
+
                 string strQuery = "UPDATE afiliadosplanes " +
                     "SET EstadoPlan = 'Archivado', " +
-                    "ObservacionesPlan = CONCAT(ObservacionesPlan, ' ', '" + txbObservaciones.Text.ToString() + "') " +
-                    "WHERE IdAfiliadoPlan = " + Request.QueryString["idAfiliadoPlan"].ToString();
+                    "ObservacionesPlan = CONCAT(ObservacionesPlan, ', ', '" + txbObservaciones.Text.ToString() + "') " +
+                    "WHERE IdAfiliadoPlan = " + idAfiliadoPlan;
                 clasesglobales cg = new clasesglobales();
                 string rta = cg.TraerDatosStr(strQuery);
+
+
+                // Eliminar los cobros rechazados asociados al plan
+                cg.EliminarHistorialCobrosRechazados(idAfiliadoPlan);
 
                 Response.Redirect("reportepagos");
             }
