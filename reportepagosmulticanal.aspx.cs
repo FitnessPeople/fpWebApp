@@ -189,7 +189,7 @@ namespace fpWebApp
                 .Replace("{order}", "DESC")
                 .Trim('"');
 
-            string url = dti.Rows[0]["urlTest"].ToString() + "transactions" +  parametro;
+            string url = dti.Rows[0]["url"].ToString() + "transactions" +  parametro;
             string mensaje;
             string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
 

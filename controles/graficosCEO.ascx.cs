@@ -19,59 +19,86 @@ namespace fpWebApp.controles
 
         private void CrearGrafico1()
         {
+            clasesglobales cg = new clasesglobales();
 
             string query = @"
                 SELECT 
-                    DATE_FORMAT(ppa.FechaHoraPago, '%Y-%m') AS periodo_orden, 
+                    DATE_FORMAT(ppa.FechaHoraPago, '%Y-%m') AS periodo_orden,
                     DATE_FORMAT(ppa.FechaHoraPago, '%Y %M') AS periodo,
-                    COUNT(DISTINCT ppa.idAfiliadoPlan) AS cuantos,
-                    SUM(ppa.valor) AS sumatoria 
+                    SUM(ppa.Valor) AS ventas_nuevas_da
                 FROM PagosPlanAfiliado ppa
-                INNER JOIN AfiliadosPlanes ap 
-                    ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan
+                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan
+                INNER JOIN Planes p ON ap.idPlan = p.idPlan
                 WHERE
-                    (
-                        (ppa.idUsuario = 156 AND ap.idPlan IN (18,19,20,21)) 
-                        OR 
-                        (ppa.idUsuario <> 156 AND ap.idPlan IN (1,17,20,21))
-                    )
-                    AND ppa.idMedioPago = 4
-                    -- 🔥 Últimos 3 meses (mes actual + 2 anteriores)
+                    ppa.idUsuario NOT IN (156) 
+                    AND ap.idPlan IN (1, 17, 20, 21)
+                    -- Solo ventas nuevas
+                    AND DATE_FORMAT(ppa.FechaHoraPago, '%Y-%m') = DATE_FORMAT(ap.FechaInicioPlan, '%Y-%m')
+                    -- Últimos 6 meses
                     AND ppa.FechaHoraPago >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%Y-%m-01')
                     AND ppa.FechaHoraPago <  DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
-                GROUP BY DATE_FORMAT(ppa.FechaHoraPago, '%Y-%m'), DATE_FORMAT(ppa.FechaHoraPago, '%Y %M')  
-                ORDER BY DATE_FORMAT(ppa.FechaHoraPago, '%Y-%m');";
+                GROUP BY periodo_orden, periodo
+                ORDER BY periodo_orden;";
 
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(query);
+            DataTable dt1 = cg.TraerDatos(query);
 
-            if (dt.Rows.Count > 0)
+            query = @"
+                SELECT 
+                    DATE_FORMAT(ppa.FechaHoraPago, '%Y-%m') AS periodo_orden,
+                    DATE_FORMAT(ppa.FechaHoraPago, '%Y %M') AS periodo,
+                    SUM(ppa.Valor) AS ventas_nuevas_da
+                FROM PagosPlanAfiliado ppa
+                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan
+                INNER JOIN Planes p ON ap.idPlan = p.idPlan
+                WHERE
+                    ppa.idUsuario = 156 
+                    AND ap.idPlan IN (18, 19, 20, 21)
+                    -- Solo ventas nuevas
+                    AND DATE_FORMAT(ppa.FechaHoraPago, '%Y-%m') = DATE_FORMAT(ap.FechaInicioPlan, '%Y-%m')
+                    -- Últimos 6 meses
+                    AND ppa.FechaHoraPago >= DATE_FORMAT(DATE_SUB(CURDATE(), INTERVAL 5 MONTH), '%Y-%m-01')
+                    AND ppa.FechaHoraPago <  DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 MONTH), '%Y-%m-01')
+                GROUP BY periodo_orden, periodo
+                ORDER BY periodo_orden;";
+
+            DataTable dt2 = cg.TraerDatos(query);
+
+
+            if (dt1.Rows.Count > 0)
             {
                 List<string> nombres = new List<string>();
-                List<int> cantidades = new List<int>();
+                //List<int> cantidades = new List<int>();
                 List<int> sumatoria = new List<int>();
 
-                foreach (DataRow row in dt.Rows)
+                for (int i = 0; i < dt1.Rows.Count; i++)
                 {
-                    nombres.Add(row["periodo"].ToString());
-                    cantidades.Add(Convert.ToInt32(row["cuantos"]));
-                    sumatoria.Add(Convert.ToInt32(row["sumatoria"]));
+                    nombres.Add(dt1.Rows[i]["periodo"].ToString());
+                    int sumatorias = Convert.ToInt32(dt1.Rows[i]["ventas_nuevas_da"].ToString()) + Convert.ToInt32(dt2.Rows[i]["ventas_nuevas_da"].ToString());
+                    sumatoria.Add(sumatorias);
                 }
+
+                //foreach (DataRow row in dt1.Rows)
+                //{
+                //    nombres.Add(row["periodo"].ToString());
+                //    //cantidades.Add(Convert.ToInt32(row["cuantos"]));
+                //    sumatoria.Add(Convert.ToInt32(row["ventas_nuevas_da"]));
+                //}
 
                 var serializer = new JavaScriptSerializer();
                 string nombresJson = serializer.Serialize(nombres);
-                string cantidadesJson = serializer.Serialize(cantidades);
+                //string cantidadesJson = serializer.Serialize(cantidades);
                 string sumatoriaJson = serializer.Serialize(sumatoria);
 
                 Page.ClientScript.RegisterStartupScript(
                     this.GetType(),
                     "dataChart1",
-                    $"var nombres1 = {nombresJson}; var cantidades1 = {cantidadesJson}; var sumatoria1 = {sumatoriaJson};",
+                    $"var nombres1 = {nombresJson}; var sumatoria1 = {sumatoriaJson};",
                     true
                 );
             }
 
-            dt.Dispose();
+            dt1.Dispose();
+            dt2.Dispose();
 
             //// Convertir los datos a listas para Chart.js
             //var labels = new System.Collections.Generic.List<string>();

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.Odbc;
 using System.IO;
 using System.Net;
 using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace fpWebApp
 {
@@ -357,13 +353,25 @@ namespace fpWebApp
             {
                 clasesglobales cg = new clasesglobales();
 
-                mensaje = cg.ActualizarAfiliado(Convert.ToInt32(Request.QueryString["editid"]), Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value),
-                    txbNombre.Text.Trim().Replace("'", "").Replace("<", "").Replace(">", ""), txbApellido.Text.Trim(),
-                    txbTelefono.Text.Trim(), txbEmail.Text.Trim(), txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadAfiliado.SelectedItem.Value),
-                    txbFechaNac.Text.Trim(), strFilename, Convert.ToInt32(ddlGenero.SelectedItem.Value),
-                    Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value), Convert.ToInt32(ddlProfesiones.SelectedItem.Value),
-                    Convert.ToInt32(ddlEmpresaConvenio.SelectedItem.Value.ToString()), Convert.ToInt32(ddlEps.SelectedItem.Value), Convert.ToInt32(ddlSedes.SelectedItem.Value),
-                    txbResponsable.Text.Trim(), ddlParentesco.SelectedItem.Value.Trim(), txbTelefonoContacto.Text.Trim()
+                mensaje = cg.ActualizarAfiliado(
+                    Convert.ToInt32(Request.QueryString["editid"]), 
+                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value),
+                    txbNombre.Text.Trim().Replace("'", "").Replace("<", "").Replace(">", ""), 
+                    txbApellido.Text.Trim(),
+                    txbTelefono.Text.Trim(), 
+                    txbEmail.Text.Trim(), 
+                    txbDireccion.Text.Trim(), 
+                    Convert.ToInt32(ddlCiudadAfiliado.SelectedItem.Value),
+                    txbFechaNac.Text.Trim(), 
+                    strFilename, Convert.ToInt32(ddlGenero.SelectedItem.Value),
+                    Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value), 
+                    Convert.ToInt32(ddlProfesiones.SelectedItem.Value),
+                    Convert.ToInt32(ddlEmpresaConvenio.SelectedItem.Value.ToString()), 
+                    Convert.ToInt32(ddlEps.SelectedItem.Value), 
+                    Convert.ToInt32(ddlSedes.SelectedItem.Value),
+                    txbResponsable.Text.Trim(), 
+                    ddlParentesco.SelectedItem.Value.Trim(), 
+                    txbTelefonoContacto.Text.Trim()
                 );
 
                 if (mensaje == "OK")
@@ -382,32 +390,32 @@ namespace fpWebApp
                     }
 
                     string script = @"
-                                    Swal.fire({
-                                        title: '¡Afiliado actualizado correctamente!',
-                                        text: '',
-                                        icon: 'success',
-                                        timer: 3000, // 3 segundos
-                                        showConfirmButton: false,
-                                        timerProgressBar: true
-                                    }).then(() => {
-                                        window.location.href = 'afiliados';
-                                    });
-                                    ";
+                        Swal.fire({
+                            title: '¡Afiliado actualizado correctamente!',
+                            text: '',
+                            icon: 'success',
+                            timer: 3000, // 3 segundos
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = 'afiliados';
+                        });
+                        ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
                 }
                 else
                 {
                     string script = @"
-                                    Swal.fire({
-                                        title: 'Error',
-                                        text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
-                                        icon: 'error'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                            icon: 'error'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
                                             
-                                        }
-                                    });
-                                ";
+                            }
+                        });
+                        ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                 }
             }
@@ -416,14 +424,14 @@ namespace fpWebApp
             {
                 mensaje = ex.Message;
                 string script = @"
-                                Swal.fire({
-                                    title: 'Error',
-                                    text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
-                                    icon: 'error'
-                                }).then(() => {
-                                    window.location.href = 'editarafiliado';
-                                });
-                            ";
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Por favor contáctese con Sistemas Fitness People. Detalle: " + mensaje.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    }).then(() => {
+                        window.location.href = 'editarafiliado';
+                    });
+                    ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
             }
         }

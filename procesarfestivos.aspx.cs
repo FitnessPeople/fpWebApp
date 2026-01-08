@@ -118,7 +118,7 @@ namespace fpWebApp
 
                 DataTable dt = cg.ConsultarUrl(7);
 
-                urlBase = dt.Rows[0]["urlTest"].ToString();
+                urlBase = dt.Rows[0]["url"].ToString();
                 url = urlBase + ano;
 
                 using (HttpClient client = new HttpClient())

@@ -230,7 +230,7 @@ namespace fpWebApp
             int idempresa = 2; //2 Armatura tabla integraciones
             string parametro = string.Empty;
             DataTable dti = cg.ConsultarUrl(idempresa);
-            string urlServicio = dti.Rows[0]["urlTest"].ToString() + parametro;
+            string urlServicio = dti.Rows[0]["url"].ToString() + parametro;
             if (dt.Rows.Count > 0)
             {
                 parametro = dti.Rows[0]["urlServicioAd1"].ToString();
@@ -398,7 +398,7 @@ namespace fpWebApp
                 parametro = dt.Rows[0]["IdReferencia"].ToString();
             }
 
-            string url = dti.Rows[0]["urlTest"].ToString() + parametro;
+            string url = dti.Rows[0]["url"].ToString() + parametro;
             string[] rta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
             JToken token = JToken.Parse(rta[0]);
             string prettyJson = token.ToString(Formatting.Indented);

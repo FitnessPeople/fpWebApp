@@ -80,7 +80,7 @@ namespace fpWebApp
             {
                 string strQuery = @"
                     SELECT ap.idAfiliadoPlan, a.DocumentoAfiliado, CONCAT(a.NombreAfiliado, "" "", a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
-                    COUNT(a.idAfiliado) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, 
+                    COUNT(a.idAfiliado) AS Intentos, MIN(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, p.PrecioBase 
                     a.CelularAfiliado AS Celular, a.EmailAfiliado As Email 
                     FROM HistorialCobrosRechazados AS hcr 
                     INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
@@ -117,7 +117,8 @@ namespace fpWebApp
                 INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
                 INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
                 INNER JOIN Planes AS p ON p.idPlan = ap.idPlan 
-                GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado";
+                GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado 
+                ORDER BY Intentos ASC";
 
 
             DataTable dt = cg.TraerDatos(strQuery);

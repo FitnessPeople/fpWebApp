@@ -744,7 +744,7 @@ namespace fpWebApp
                             nomAfiliado = dt.Rows[0]["NombreAfiliado"].ToString();
                         }
 
-                        string url = dti.Rows[0]["urlTest"].ToString() + "/transactions/" + parametro;
+                        string url = dti.Rows[0]["url"].ToString() + "/transactions/" + parametro;
                         string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
                         JToken token = JToken.Parse(respuesta[0]);
                         string prettyJson = token.ToString(Formatting.Indented);

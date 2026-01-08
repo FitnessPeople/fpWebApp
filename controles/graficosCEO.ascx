@@ -45,19 +45,6 @@
                     pointBackgroundColor: "rgba(26,179,148,1)",
                     pointBorderColor: "#fff",
                     data: sumatoria1
-                },
-                {
-                    yAxisID: 'y-line',
-                    type: 'line',
-                    label: "Cantidad",
-                    data: cantidades1,
-                    borderColor: "rgba(255,99,132,1)",
-                    backgroundColor: "rgba(255,99,132,0.1)",
-                    fill: false,
-                    lineTension: 0.3,
-                    pointRadius: 4,
-                    pointBackgroundColor: "rgba(255,99,132,1)",
-                    pointBorderColor: "#fff"
                 }
             ]
         };
@@ -81,8 +68,6 @@
 
                         if (dataset.type === 'bar') {
                             return 'Ventas: $ ' + value.toLocaleString('es-CO');
-                        } else {
-                            return 'Cantidad: ' + value;
                         }
                     }
                 }
@@ -102,16 +87,6 @@
                         scaleLabel: {
                             display: true,
                             labelString: 'Ventas'
-                        }
-                    },
-                    {
-                        id: 'y-line',
-                        position: 'right',
-                        ticks: { beginAtZero: true },
-                        gridLines: { drawOnChartArea: false },
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Cantidad'
                         }
                     }
                 ]
@@ -139,19 +114,6 @@
 
                                 var texto = '$ ' + value.toLocaleString('es-CO');
                                 ctx.fillText(texto, bar._model.x, yPos);
-                            });
-                        }
-
-                        // 🔴 LÍNEA (Cantidad)
-                        if (dataset.type === 'line') {
-                            meta.data.forEach(function (point, index) {
-                                var value = dataset.data[index];
-                                var yPos = point._model.y - 8;
-
-                                // Evitar que se salga por arriba
-                                if (yPos < 15) yPos = 15;
-
-                                ctx.fillText(value, point._model.x, yPos);
                             });
                         }
                     });
