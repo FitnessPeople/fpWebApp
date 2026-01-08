@@ -258,7 +258,8 @@ namespace fpWebApp
             //parametro = "?from_date=2025-01-01&until_date=2025-03-11&page=1&page_size=50&order_by=created_at&order=DESC";
             parametro = "?from_date=" + strFechaHoy + "&until_date=" + strFechaHoy + "&page=1&page_size=50&order_by=created_at&order=DESC";
 
-            string url = dti.Rows[0]["urlTest"].ToString() + "transactions" + parametro + "&reference=" + ViewState["DocumentoAfiliado"].ToString();
+            //string url = dti.Rows[0]["urlTest"].ToString() + "transactions" + parametro + "&reference=" + ViewState["DocumentoAfiliado"].ToString();
+            string url = dti.Rows[0]["url"].ToString() + "transactions" + parametro + "&reference=" + ViewState["DocumentoAfiliado"].ToString();
             string[] respuesta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
             JToken token = JToken.Parse(respuesta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
