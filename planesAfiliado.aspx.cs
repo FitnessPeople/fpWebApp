@@ -519,9 +519,11 @@ namespace fpWebApp
             }
         }
 
-        private async Task ProcesarPagoExitosoAsync(int idAfiliadoPlan)
+        private async Task<(bool ok, string idSiigoFactura)> ProcesarPagoExitosoAsync(int idAfiliadoPlan)
+
         {
-            string idAfiliado = Request.QueryString["id"].ToString();
+            //string idAfiliado = Request.QueryString["id"].ToString();
+            string idAfiliado = Session["IdAfiliado"].ToString();
             string urlRedirect = $"planesAfiliado?id={idAfiliado}";
 
             try
@@ -553,7 +555,7 @@ namespace fpWebApp
 
                 DataTable dtAfi = cg.ConsultarAfiliadoPorId(Convert.ToInt32(idAfiliado));
 
-                if (dtAfi.Rows.Count == 0) return;
+                if (dtAfi.Rows.Count == 0) return (false, null);
 
                 // Obtener datos del afiliado
                 string nroDoc = dtAfi.Rows[0]["DocumentoAfiliado"].ToString();
@@ -618,7 +620,7 @@ namespace fpWebApp
                     idCostCenter,
                     idPayment
                 );
-
+                return (true, idSiigoFactura);
 
 
 
@@ -667,13 +669,16 @@ namespace fpWebApp
                 //    Session["numReciboDatafono"].ToString()
                 //);
 
-                LimpiarTodo();
-                MostrarAlerta("Pago Aprobado", "La transacción fue realizada exitosamente.", "success");
+              //  LimpiarTodo();
+             //   MostrarAlerta("Pago Aprobado", "La transacción fue realizada exitosamente.", "success");
+
+
             }
             catch (Exception ex)
             {
-                MostrarAlerta("Error", "El pago fue aprobado, pero ocurrió un error en el registro interno. Por favor, comunicarse con el área de sistemas.", "error");
+                //MostrarAlerta("Error", "El pago fue aprobado, pero ocurrió un error en el registro interno. Por favor, comunicarse con el área de sistemas.", "error");
                 System.Diagnostics.Debug.WriteLine("Error en ProcesarPagoExitosoAsync: " + ex.ToString());
+                return (false, null);
             }
         }
 
@@ -874,34 +879,6 @@ namespace fpWebApp
             ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
 
-        //private void btn_Click(object sender, CommandEventArgs e)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarPlanPorId(Convert.ToInt32(e.CommandArgument));
-
-        //    ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
-        //    ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
-        //    ViewState["codSiigoPlan"] = dt.Rows[0]["CodSiigoPlan"].ToString();
-        //    ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
-        //    ViewState["precioMinimo"] = Convert.ToInt32(dt.Rows[0]["PrecioMinimo"].ToString());
-        //    ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
-        //    ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
-        //    ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());
-
-        //    ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
-        //    ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
-
-        //    CalculoPrecios();
-        //    ActivarCortesia(ViewState["mesesCortesia"].ToString());
-
-        //    ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
-        //    ltNombrePlan.Text = "<b>" + ViewState["nombrePlan"].ToString() + "</b>";
-        //}
-
-        /// <summary>
-        /// Calcula y muestra los precios finales del plan, incluyendo descuento, ahorro, valor por mes,
-        /// tipo de pago y observaciones. También genera y muestra el enlace de pago Wompi.
-        /// </summary>
         private void CalculoPrecios()
         {
             double intPrecio = Convert.ToInt32(ViewState["precioTotal"]);
@@ -975,18 +952,7 @@ namespace fpWebApp
             }
         }
 
-        /// <summary>
-        /// Acorta una URL larga utilizando el servicio de TinyURL.
-        /// </summary>
-        /// <param name="url">La URL original que se desea acortar.</param>
-        /// <returns>
-        /// Una versión acortada de la URL si el proceso es exitoso. 
-        /// Si la URL ya es corta (menos de 30 caracteres) o ocurre un error en la solicitud, se retorna la URL original.
-        /// </returns>
-        /// <remarks>
-        /// Usa una solicitud HTTP al endpoint público para obtener la versión reducida de la URL.
-        /// Si el servicio no está disponible o se produce una excepción, se maneja silenciosamente y se retorna la URL original.
-        /// </remarks>
+
         public static string AcortarURL(string url)
         {
             try
@@ -1101,6 +1067,197 @@ namespace fpWebApp
             ltCortesias.Text = "<b>Cortesía: </b>90 días adicionales al plan.<br />";
             ViewState["DiasCortesia"] = 90;
         }
+        private bool ValidarSesion()
+        {
+            return Session["IdAfiliado"] != null &&
+                   Session["idcrm"] != null &&
+                   Session["idusuario"] != null;
+        }
+
+
+        protected async void lbAgregarPlan_Click(object sender, EventArgs e)
+        {
+            if (!ValidarSesion())
+            {
+                Response.Redirect("Login.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+                return;
+            }
+
+            if (ViewState["nombrePlan"] == null)
+            {
+                MostrarAlerta("Validación", "Debes seleccionar un tipo de plan para continuar.", "warning");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txbFechaInicio.Text))
+            {
+                MostrarAlerta("Validación", "Por favor, selecciona la fecha de inicio del plan.", "error");
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txbTotal.Text))
+            {
+                MostrarAlerta("Error", "El valor total no puede estar vacío.", "error");
+                return;
+            }
+
+            int totalIngresado = Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", ""));
+            int precioMax = Convert.ToInt32(ViewState["precioTotal"]);
+            int precioMin = Convert.ToInt32(ViewState["precioMinimo"]);
+
+            if (totalIngresado > precioMax || totalIngresado < precioMin)
+            {
+                MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error");
+                return;
+            }
+
+            if (Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")) > 0 && !ValidarBanco())
+            {
+                return;
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+            int idAfiliado = Convert.ToInt32(Session["IdAfiliado"]);
+            int idUsuario = Convert.ToInt32(Session["idusuario"]);
+            int idcrm = Convert.ToInt32(Session["idcrm"]);
+            string valorPagadoTexto = txbTotal.Text.Trim();
+            string valorLimpio = Regex.Replace(valorPagadoTexto, @"[^\d]", "");
+            int valorPagado;
+            int.TryParse(valorLimpio, out valorPagado);
+
+
+
+            DataTable dtEstado = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+            if (dtEstado.Rows.Count > 0 && dtEstado.Rows[0]["EstadoPlan"].ToString() == "Activo")
+            {
+                string fechaFinal = Convert.ToDateTime(dtEstado.Rows[0]["FechaFinalPlan"]).ToString("dd MMM yyyy");
+                MostrarAlerta("Plan activo", $"El afiliado ya tiene un plan activo hasta el {fechaFinal}.", "warning");
+                return;
+            }
+
+            string estadoPago = cbPagaCounter.Checked ? "Pendiente" : "Activo";
+
+            DateTime fechaInicio = Convert.ToDateTime(txbFechaInicio.Text);
+            DateTime fechaFinalPlan = fechaInicio
+                .AddMonths(Convert.ToInt32(ViewState["meses"]))
+                .AddDays(Convert.ToInt32(ViewState["DiasCortesia"]));
+
+            string rta = cg.InsertarAfiliadoPlan(idAfiliado, Convert.ToInt32(ViewState["idPlan"]), fechaInicio.ToString("yyyy-MM-dd"), fechaFinalPlan.ToString("yyyy-MM-dd"), Convert.ToInt32(ViewState["meses"]),
+                Convert.ToInt32(ViewState["precioTotal"]), ViewState["observaciones"].ToString(), estadoPago);
+
+            if (!rta.StartsWith("OK"))
+            {
+                MostrarAlerta("Error", $"No se pudo registrar. Detalle: {rta}", "error");
+                return;
+            }
+
+            if (estadoPago == "Pendiente")
+            {
+                MostrarMensajeCounter(idcrm, idAfiliado);
+                return;
+            }
+
+            int idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
+
+            int idCanalVenta = 0;
+            DataTable dtCanal = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
+            if (dtCanal.Rows.Count > 0)
+                idCanalVenta = Convert.ToInt32(dtCanal.Rows[0]["idCanalVenta"]);
+
+            DataTable mediosPago = cg.ConsultarMediosDePago();
+            DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(idAfiliado);
+            string docAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();           
+
+            try
+            {
+
+                var resultado = await ProcesarPagoExitosoAsync(idAfiliadoPlan);
+                 
+
+                if (!resultado.ok)
+                {
+                    MostrarAlerta( "Error", "No se pudo obtener la información del afiliado.", "error");
+                    return;
+                }
+
+                string idSiigoFactura = resultado.idSiigoFactura;
+                DataTable dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+                string rtaCRM = cg.ActualizarEstadoCRMPagoPlan(idcrm, dtActivo.Rows[0]["NombrePlan"].ToString(), valorPagado, idUsuario, 3);
+                cg.InsertarLog(idUsuario.ToString(), "afiliadosplanes", "Agrega", $"El usuario agregó un nuevo plan al afiliado con documento: {docAfiliado}.", "", "");
+                RegistrarPagos(cg, mediosPago, idAfiliadoPlan, idUsuario, idCanalVenta, idcrm, idSiigoFactura);
+                MostrarMensajeExito(docAfiliado, idcrm);
+
+            }
+            catch (Exception ex)
+            {
+                new clasesglobales().InsertarLog(Session["idusuario"]?.ToString() ?? "0", "ASYNC", "ERROR", ex.ToString(), "", "");
+
+                    MostrarAlerta("Error", "No se pudo actualizar el CRM.", "error");                    
+                return;
+          
+
+
+            } 
+        }
+
+        public class ResultadoPago
+        {
+            public bool Exitoso { get; set; }
+            public string Mensaje { get; set; }
+        }
+
+
+
+        private void RegistrarPagos(clasesglobales cg, DataTable medios,int idAfiliadoPlan, int idUsuario, int idCanalVenta, int idcrm, string idSiigoFactura)
+        {
+            ProcesarMedio(cg, medios.Rows[3], txbWompi.Text, idAfiliadoPlan, idUsuario, "Wompi", idCanalVenta, idcrm, idSiigoFactura);
+            ProcesarMedio(cg, medios.Rows[2], txbDatafono.Text, idAfiliadoPlan, idUsuario, "", idCanalVenta, idcrm, txbNroAprobacion.Text, idSiigoFactura);
+            ProcesarMedio(cg, medios.Rows[0], txbEfectivo.Text, idAfiliadoPlan, idUsuario, "", idCanalVenta, idcrm, idSiigoFactura);
+            ProcesarMedio(cg, medios.Rows[1], txbTransferencia.Text, idAfiliadoPlan, idUsuario,ViewState["Banco"]?.ToString() ?? "Ninguno", idCanalVenta, idcrm, idSiigoFactura);
+        }
+
+        private void ProcesarMedio( clasesglobales cg, DataRow medio, string valorText, int idAfiliadoPlan, int idUsuario, string banco,  int idCanalVenta, int idcrm, string idSiigoFactura, string referencia = "" )
+        {
+            int valor = Convert.ToInt32(Regex.Replace(valorText, @"[^\d]", ""));
+            if (valor <= 0) return;
+
+            cg.InsertarPagoPlanAfiliado( idAfiliadoPlan, valor, Convert.ToInt32(medio["idMedioPago"]), referencia, banco, idUsuario, "Aprobado", idSiigoFactura, idCanalVenta, idcrm );
+        }
+
+
+        private void MostrarMensajeExito(string doc, int idcrm)
+        {
+            string script = $@"
+                Swal.fire({{
+                    title: '¡Venta registrada con éxito!',
+                    text: 'Hemos enviado un correo al comprador.',
+                    icon: 'success',
+                    timer: 5000,
+                    showConfirmButton: false
+                }}).then(() => {{
+                    window.location.href = 'detalleafiliado?search={doc}&idcrm={idcrm}';
+                }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "Exito", script, true);
+        }
+
+        private void MostrarMensajeCounter(int idcrm, int idAfiliado)
+        {
+            string script = $@"
+                Swal.fire({{
+                    title: 'Paga en counter',
+                    text: 'El afiliado realiza el pago en counter.',
+                    icon: 'info'
+                }}).then(() => {{
+                    window.location.href = 'detalleafiliado?idcrm={idcrm}';
+                }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "Counter", script, true);
+        }
+
+
 
         /// <summary>
         /// Evento que se dispara al hacer clic en el botón "Agregar Plan".
@@ -1124,861 +1281,870 @@ namespace fpWebApp
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        protected async void lbAgregarPlan_Click(object sender, EventArgs e)
-        {
-            int idAfiliado = Convert.ToInt32(Session["IdAfiliado"].ToString());
-            int idCanalVenta = 0;
-            if (ViewState["nombrePlan"] != null)
-            {
-                if (txbFechaInicio.Text != "")
-                {
-                    clasesglobales cg = new clasesglobales();
-                    DataTable dt = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
-                    if (dt.Rows.Count > 0)
-                    {
-                        // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
-                        if (dt.Rows[0]["EstadoPlan"].ToString() == "Activo")
-                        {
-                            string fechaFinal = string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]);
-                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                            MostrarAlerta("Plan activo", "El afiliado ya tiene un plan activo hasta el " + fechaFinal + ". Modifique la fecha de inicio para continuar.", "warning");
-                        }
-                        else
-                        {
-                            if (txbTotal.Text.ToString() == "")
-                            {
-                                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                MostrarAlerta("Error", "El valor total no puede estar vacío.", "error");
-                            }
-                            else
-                            {
-                                if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
-                                    Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
-                                {
-                                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                    MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error");
-                                }
-                                else
-                                {
-                                    if (Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")) > 0)
-                                    {
-                                        if (ValidarBanco())
-                                        {
-                                            try
-                                            {
-                                                string DocAfiliado = string.Empty;
-                                                string EstadoPago = "Activo";
-                                                string idcrm = Session["idcrm"].ToString();
-                                                DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
-                                                DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
-                                                fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
-                                                int idAfiliadoPlan = 0;
-
-                                                if (cbPagaCounter.Checked)
-                                                {
-                                                    EstadoPago = "Pendiente";
-                                                }
-
-                                                string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()),
-                                                    Convert.ToInt32(ViewState["idPlan"].ToString()),
-                                                    txbFechaInicio.Text.ToString(),
-                                                    String.Format("{0:yyyy-MM-dd}", fechafinal),
-                                                    Convert.ToInt32(ViewState["meses"].ToString()),
-                                                    Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                                    ViewState["observaciones"].ToString(),
-                                                    EstadoPago);
-
-                                                if (rta.StartsWith("OK"))
-                                                {
-                                                    if (EstadoPago != "Pendiente")
-                                                    {
-                                                        idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
-                                                        //DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
-
-                                                        //if (dt1.Rows.Count > 0) idAfiliadoPlan = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
-                                                        DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"].ToString()));
-                                                        if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
-
-                                                        //Consultamos los medios de pago
-                                                        DataTable dt2 = cg.ConsultarMediosDePago();
-
-                                                        string strTipoPago = string.Empty;
-                                                        string strReferencia = string.Empty;
-                                                        string strBanco = string.Empty;
-                                                        string respuesta = string.Empty;
-
-                                                        if (txbWompi.Text.ToString() != "$0")
-                                                        {
-                                                            strTipoPago = dt2.Rows[3]["idMedioPago"].ToString(); //Pago en linea - Wompi
-
-                                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                                Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")),
-                                                                Convert.ToInt32(strTipoPago),
-                                                                strReferencia,
-                                                                "Wompi",
-                                                                Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                                "Aprobado",
-                                                                "",
-                                                                idCanalVenta,
-                                                                Convert.ToInt32(Session["idcrm"]));
-                                                        }
-
-                                                        if (txbDatafono.Text.ToString() != "$0")
-                                                        {
-                                                            strTipoPago = dt2.Rows[2]["idMedioPago"].ToString(); //Pago con Datafono Tarjeta Debito
-                                                            strReferencia = txbNroAprobacion.Text.ToString();
-
-                                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                                Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")),
-                                                                Convert.ToInt32(strTipoPago),
-                                                                strReferencia,
-                                                                strBanco,
-                                                                Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                                "Aprobado",
-                                                                "",
-                                                                idCanalVenta,
-                                                                Convert.ToInt32(Session["idcrm"]));
-                                                            strReferencia = "";
-                                                        }
-
-                                                        if (txbEfectivo.Text.ToString() != "$0")
-                                                        {
-                                                            strTipoPago = dt2.Rows[0]["idMedioPago"].ToString();  //Pago con Efectivo
-
-                                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                                Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")),
-                                                                Convert.ToInt32(strTipoPago),
-                                                                strReferencia,
-                                                                strBanco,
-                                                                Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                                "Aprobado",
-                                                                "",
-                                                                idCanalVenta,
-                                                                Convert.ToInt32(Session["idcrm"]));
-                                                        }
-
-                                                        if (txbTransferencia.Text.ToString() != "$0")
-                                                        {
-                                                            strTipoPago = dt2.Rows[1]["idMedioPago"].ToString();  //Pago con Transferencia
-                                                            if (ViewState["Banco"] == null)
-                                                            {
-                                                                strBanco = "Ninguno";
-                                                            }
-                                                            else
-                                                            {
-                                                                strBanco = ViewState["Banco"].ToString();
-                                                            }
-
-                                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                                Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")),
-                                                                Convert.ToInt32(strTipoPago),
-                                                                strReferencia,
-                                                                strBanco,
-                                                                Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                                "Aprobado",
-                                                                "",
-                                                                idCanalVenta,
-                                                                Convert.ToInt32(Session["idcrm"]));
-                                                        }
-
-                                                        await ProcesarPagoExitosoAsync(idAfiliadoPlan);
-
-                                                        //string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                        //    Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                                        //    Convert.ToInt32(strTipoPago), 
-                                                        //    strReferencia, 
-                                                        //    strBanco, 
-                                                        //    Convert.ToInt32(Session["idUsuario"].ToString()), 
-                                                        //    "Aprobado", 
-                                                        //    "", 
-                                                        //    idCanalVenta, 
-                                                        //    Convert.ToInt32(Session["idcrm"]));
-
-                                                        DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(int.Parse(Session["IdAfiliado"].ToString()));
-                                                        string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()),
-                                                            dt3.Rows[0]["NombrePlan"].ToString(),
-                                                            Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()),
-                                                            Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                            3);
-                                                        dt3.Dispose();
-
-                                                        if (respuesta == "OK" && respuesta1 == "OK")
-                                                        {
-                                                            DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
-                                                            DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
-                                                            cg.InsertarLog(Session["idusuario"].ToString(),
-                                                                "afiliadosplanes",
-                                                                "Agrega",
-                                                                "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".",
-                                                                "",
-                                                                "");
-
-                                                            string script = @"
-                                                                Swal.fire({
-                                                                    title: '¡Venta registrada con éxito!',
-                                                                    text: 'Hemos enviado un correo al comprador para que complete sus datos y responda el formulario de salud (Par-Q).',
-                                                                    icon: 'success',
-                                                                    timer: 5000, // 5 segundos
-                                                                    showConfirmButton: false,
-                                                                    timerProgressBar: true
-                                                                }).then(() => {
-                                                                    window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
-                                                                });
-                                                                ";
-                                                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-
-                                                            ////////////////////////// ENVÍO DE CORREO ////////////////////////////////////////
-
-                                                            string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
-                                                            strMensaje += "Descripción del plan.\r\n\r\n";
-
-                                                            //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
-
-                                                            //////////////////////////////////////////////////////////////////////////////////
-
-                                                        }
-                                                        else
-                                                        {
-                                                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                                            MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error");
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        MostrarAlerta("Paga en counter", "El afiliado realiza el pago en counter.", "error");
-                                                    }
-
-                                                }
-                                                else
-                                                {
-                                                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                                    MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error");
-                                                }
-
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                                MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error");
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        try
-                                        {
-                                            string DocAfiliado = string.Empty;
-                                            string EstadoPago = "Activo";
-                                            string idcrm = Session["idcrm"].ToString();
-                                            DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
-                                            DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
-                                            fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
-                                            int idAfiliadoPlan = 0;
-
-                                            if (cbPagaCounter.Checked)
-                                            {
-                                                EstadoPago = "Pendiente";
-                                            }
-
-                                            string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()),
-                                                Convert.ToInt32(ViewState["idPlan"].ToString()),
-                                                txbFechaInicio.Text.ToString(),
-                                                String.Format("{0:yyyy-MM-dd}", fechafinal),
-                                                Convert.ToInt32(ViewState["meses"].ToString()),
-                                                Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                                ViewState["observaciones"].ToString(),
-                                                EstadoPago);
-
-                                            if (rta.StartsWith("OK"))
-                                            {
-                                                if (EstadoPago != "Pendiente")
-                                                {
-                                                    idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
-                                                    //DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
-
-                                                    //if (dt1.Rows.Count > 0) idAfiliadoPlan = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
-                                                    DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"].ToString()));
-                                                    if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
-
-                                                    //Consultamos los medios de pago
-                                                    DataTable dt2 = cg.ConsultarMediosDePago();
-
-                                                    string strTipoPago = string.Empty;
-                                                    string strReferencia = string.Empty;
-                                                    string strBanco = string.Empty;
-                                                    string respuesta = string.Empty;
-
-                                                    if (txbWompi.Text.ToString() != "$0")
-                                                    {
-                                                        strTipoPago = dt2.Rows[3]["idMedioPago"].ToString(); //Pago en linea - Wompi
-
-                                                        respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                            Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")),
-                                                            Convert.ToInt32(strTipoPago),
-                                                            strReferencia,
-                                                            "Wompi",
-                                                            Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                            "Aprobado",
-                                                            "",
-                                                            idCanalVenta,
-                                                            Convert.ToInt32(Session["idcrm"]));
-                                                    }
-
-                                                    if (txbDatafono.Text.ToString() != "$0")
-                                                    {
-                                                        strTipoPago = dt2.Rows[2]["idMedioPago"].ToString(); //Pago con Datafono Tarjeta Debito
-                                                        strReferencia = txbNroAprobacion.Text.ToString();
-
-                                                        respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                            Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")),
-                                                            Convert.ToInt32(strTipoPago),
-                                                            strReferencia,
-                                                            strBanco,
-                                                            Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                            "Aprobado",
-                                                            "",
-                                                            idCanalVenta,
-                                                            Convert.ToInt32(Session["idcrm"]));
-                                                        strReferencia = "";
-                                                    }
-
-                                                    if (txbEfectivo.Text.ToString() != "$0")
-                                                    {
-                                                        strTipoPago = dt2.Rows[0]["idMedioPago"].ToString();  //Pago con Efectivo
-
-                                                        respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                            Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")),
-                                                            Convert.ToInt32(strTipoPago),
-                                                            strReferencia,
-                                                            strBanco,
-                                                            Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                            "Aprobado",
-                                                            "",
-                                                            idCanalVenta,
-                                                            Convert.ToInt32(Session["idcrm"]));
-                                                    }
-
-                                                    await ProcesarPagoExitosoAsync(idAfiliadoPlan);
-
-                                                    //string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                    //    Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                                    //    Convert.ToInt32(strTipoPago), 
-                                                    //    strReferencia, 
-                                                    //    strBanco, 
-                                                    //    Convert.ToInt32(Session["idUsuario"].ToString()), 
-                                                    //    "Aprobado", 
-                                                    //    "", 
-                                                    //    idCanalVenta, 
-                                                    //    Convert.ToInt32(Session["idcrm"]));
-
-                                                    DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(int.Parse(Session["IdAfiliado"].ToString()));
-                                                    string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()),
-                                                        dt3.Rows[0]["NombrePlan"].ToString(),
-                                                        Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()),
-                                                        Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                        3);
-                                                    dt3.Dispose();
-
-                                                    if (respuesta == "OK" && respuesta1 == "OK")
-                                                    {
-                                                        DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
-                                                        DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
-                                                        cg.InsertarLog(Session["idusuario"].ToString(),
-                                                            "afiliadosplanes",
-                                                            "Agrega",
-                                                            "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".",
-                                                            "",
-                                                            "");
-
-                                                        string script = @"
-                                                            Swal.fire({
-                                                                title: '¡Venta registrada con éxito!',
-                                                                text: 'Hemos enviado un correo al comprador para que complete sus datos y responda el formulario de salud (Par-Q).',
-                                                                icon: 'success',
-                                                                timer: 5000, // 5 segundos
-                                                                showConfirmButton: false,
-                                                                timerProgressBar: true
-                                                            }).then(() => {
-                                                                window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
-                                                            });
-                                                            ";
-                                                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-
-                                                        ////////////////////////// ENVÍO DE CORREO ////////////////////////////////////////
-
-                                                        string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
-                                                        strMensaje += "Descripción del plan.\r\n\r\n";
-
-                                                        //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
-
-                                                        //////////////////////////////////////////////////////////////////////////////////
-
-                                                    }
-                                                    else
-                                                    {
-                                                        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                                        MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error");
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    string script = @"
-                                                        Swal.fire({
-                                                            title: 'Paga en counter',
-                                                            text: 'El afiliado realiza el pago en counter.',
-                                                            icon: 'success',
-                                                            timer: 5000, // 5 segundos
-                                                            showConfirmButton: false,
-                                                            timerProgressBar: true
-                                                        }).then(() => {
-                                                            window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
-                                                        });
-                                                        ";
-                                                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                                                }
-                                            }
-                                            else
-                                            {
-                                                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                                MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error");
-                                            }
-
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                            MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        dt.Dispose();
-                    }
-                    else
-                    {
-                        if (txbTotal.Text.ToString() == "")
-                        {
-                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                            MostrarAlerta("Error", "El valor total no puede estar vacío.", "error");
-                        }
-                        else
-                        {
-                            if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
-                                Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
-                            {
-                                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error");
-                            }
-                            else
-                            {
-                                if (Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")) > 0)
-                                {
-                                    if (ValidarBanco())
-                                    {
-                                        try
-                                        {
-                                            string DocAfiliado = string.Empty;
-                                            string EstadoPago = "Activo";
-                                            string idcrm = Session["idcrm"].ToString();
-                                            DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
-                                            DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
-                                            fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
-                                            int idAfiliadoPlan = 0;
-
-                                            if (cbPagaCounter.Checked)
-                                            {
-                                                EstadoPago = "Pendiente";
-                                            }
-
-                                            string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()),
-                                                Convert.ToInt32(ViewState["idPlan"].ToString()),
-                                                txbFechaInicio.Text.ToString(),
-                                                String.Format("{0:yyyy-MM-dd}", fechafinal),
-                                                Convert.ToInt32(ViewState["meses"].ToString()),
-                                                Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                                ViewState["observaciones"].ToString(),
-                                                EstadoPago);
-
-                                            if (rta.StartsWith("OK"))
-                                            {
-                                                if (EstadoPago != "Pendiente")
-                                                {
-                                                    idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
-                                                    //DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
-
-                                                    //if (dt1.Rows.Count > 0) idAfiliadoPlan = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
-                                                    DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"].ToString()));
-                                                    if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
-
-                                                    //Consultamos los medios de pago
-                                                    DataTable dt2 = cg.ConsultarMediosDePago();
-
-                                                    string strTipoPago = string.Empty;
-                                                    string strReferencia = string.Empty;
-                                                    string strBanco = string.Empty;
-                                                    string respuesta = string.Empty;
-
-                                                    if (txbWompi.Text.ToString() != "$0")
-                                                    {
-                                                        strTipoPago = dt2.Rows[3]["idMedioPago"].ToString(); //Pago en linea - Wompi
-
-                                                        respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                            Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")),
-                                                            Convert.ToInt32(strTipoPago),
-                                                            strReferencia,
-                                                            "Wompi",
-                                                            Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                            "Aprobado",
-                                                            "",
-                                                            idCanalVenta,
-                                                            Convert.ToInt32(Session["idcrm"]));
-                                                    }
-
-                                                    if (txbDatafono.Text.ToString() != "$0")
-                                                    {
-                                                        strTipoPago = dt2.Rows[2]["idMedioPago"].ToString(); //Pago con Datafono Tarjeta Debito
-                                                        strReferencia = txbNroAprobacion.Text.ToString();
-
-                                                        respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                            Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")),
-                                                            Convert.ToInt32(strTipoPago),
-                                                            strReferencia,
-                                                            strBanco,
-                                                            Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                            "Aprobado",
-                                                            "",
-                                                            idCanalVenta,
-                                                            Convert.ToInt32(Session["idcrm"]));
-                                                        strReferencia = "";
-                                                    }
-
-                                                    if (txbEfectivo.Text.ToString() != "$0")
-                                                    {
-                                                        strTipoPago = dt2.Rows[0]["idMedioPago"].ToString();  //Pago con Efectivo
-
-                                                        respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                            Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")),
-                                                            Convert.ToInt32(strTipoPago),
-                                                            strReferencia,
-                                                            strBanco,
-                                                            Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                            "Aprobado",
-                                                            "",
-                                                            idCanalVenta,
-                                                            Convert.ToInt32(Session["idcrm"]));
-                                                    }
-
-                                                    if (txbTransferencia.Text.ToString() != "$0")
-                                                    {
-                                                        strTipoPago = dt2.Rows[1]["idMedioPago"].ToString();  //Pago con Transferencia
-                                                        if (ViewState["Banco"] == null)
-                                                        {
-                                                            strBanco = "Ninguno";
-                                                        }
-                                                        else
-                                                        {
-                                                            strBanco = ViewState["Banco"].ToString();
-                                                        }
-
-                                                        respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                            Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")),
-                                                            Convert.ToInt32(strTipoPago),
-                                                            strReferencia,
-                                                            strBanco,
-                                                            Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                            "Aprobado",
-                                                            "",
-                                                            idCanalVenta,
-                                                            Convert.ToInt32(Session["idcrm"]));
-                                                    }
-
-                                                    await ProcesarPagoExitosoAsync(idAfiliadoPlan);
-
-                                                    //string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                    //    Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                                    //    Convert.ToInt32(strTipoPago), 
-                                                    //    strReferencia, 
-                                                    //    strBanco, 
-                                                    //    Convert.ToInt32(Session["idUsuario"].ToString()), 
-                                                    //    "Aprobado", 
-                                                    //    "", 
-                                                    //    idCanalVenta, 
-                                                    //    Convert.ToInt32(Session["idcrm"]));
-
-                                                    DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(int.Parse(Session["IdAfiliado"].ToString()));
-                                                    string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()),
-                                                        dt3.Rows[0]["NombrePlan"].ToString(),
-                                                        Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()),
-                                                        Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                        3);
-                                                    dt3.Dispose();
-
-                                                    if (respuesta == "OK" && respuesta1 == "OK")
-                                                    {
-                                                        DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
-                                                        DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
-                                                        cg.InsertarLog(Session["idusuario"].ToString(),
-                                                            "afiliadosplanes",
-                                                            "Agrega",
-                                                            "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".",
-                                                            "",
-                                                            "");
-
-                                                        string script = @"
-                                                                Swal.fire({
-                                                                    title: '¡Venta registrada con éxito!',
-                                                                    text: 'Hemos enviado un correo al comprador para que complete sus datos y responda el formulario de salud (Par-Q).',
-                                                                    icon: 'success',
-                                                                    timer: 5000, // 5 segundos
-                                                                    showConfirmButton: false,
-                                                                    timerProgressBar: true
-                                                                }).then(() => {
-                                                                    window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
-                                                                });
-                                                                ";
-                                                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-
-                                                        ////////////////////////// ENVÍO DE CORREO ////////////////////////////////////////
-
-                                                        string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
-                                                        strMensaje += "Descripción del plan.\r\n\r\n";
-
-                                                        //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
-
-                                                        //////////////////////////////////////////////////////////////////////////////////
-
-                                                    }
-                                                    else
-                                                    {
-                                                        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                                        MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error");
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    MostrarAlerta("Paga en counter", "El afiliado realiza el pago en counter.", "error");
-                                                }
-
-                                            }
-                                            else
-                                            {
-                                                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                                MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error");
-                                            }
-
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                            MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error");
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        string DocAfiliado = string.Empty;
-                                        string EstadoPago = "Activo";
-                                        string idcrm = Session["idcrm"].ToString();
-                                        DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
-                                        DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
-                                        fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
-                                        int idAfiliadoPlan = 0;
-
-                                        if (cbPagaCounter.Checked)
-                                        {
-                                            EstadoPago = "Pendiente";
-                                        }
-
-                                        string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()),
-                                            Convert.ToInt32(ViewState["idPlan"].ToString()),
-                                            txbFechaInicio.Text.ToString(),
-                                            String.Format("{0:yyyy-MM-dd}", fechafinal),
-                                            Convert.ToInt32(ViewState["meses"].ToString()),
-                                            Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                            ViewState["observaciones"].ToString(),
-                                            EstadoPago);
-
-                                        if (rta.StartsWith("OK"))
-                                        {
-                                            if (EstadoPago != "Pendiente")
-                                            {
-                                                idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
-                                                //DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
-
-                                                //if (dt1.Rows.Count > 0) idAfiliadoPlan = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
-                                                DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"].ToString()));
-                                                if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
-
-                                                //Consultamos los medios de pago
-                                                DataTable dt2 = cg.ConsultarMediosDePago();
-
-                                                string strTipoPago = string.Empty;
-                                                string strReferencia = string.Empty;
-                                                string strBanco = string.Empty;
-                                                string respuesta = string.Empty;
-
-                                                if (txbWompi.Text.ToString() != "$0")
-                                                {
-                                                    strTipoPago = dt2.Rows[3]["idMedioPago"].ToString(); //Pago en linea - Wompi
-
-                                                    respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                        Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")),
-                                                        Convert.ToInt32(strTipoPago),
-                                                        strReferencia,
-                                                        "Wompi",
-                                                        Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                        "Aprobado",
-                                                        "",
-                                                        idCanalVenta,
-                                                        Convert.ToInt32(Session["idcrm"]));
-                                                }
-
-                                                if (txbDatafono.Text.ToString() != "$0")
-                                                {
-                                                    strTipoPago = dt2.Rows[2]["idMedioPago"].ToString(); //Pago con Datafono Tarjeta Debito
-                                                    strReferencia = txbNroAprobacion.Text.ToString();
-
-                                                    respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                        Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")),
-                                                        Convert.ToInt32(strTipoPago),
-                                                        strReferencia,
-                                                        strBanco,
-                                                        Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                        "Aprobado",
-                                                        "",
-                                                        idCanalVenta,
-                                                        Convert.ToInt32(Session["idcrm"]));
-                                                    strReferencia = "";
-                                                }
-
-                                                if (txbEfectivo.Text.ToString() != "$0")
-                                                {
-                                                    strTipoPago = dt2.Rows[0]["idMedioPago"].ToString();  //Pago con Efectivo
-
-                                                    respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                        Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")),
-                                                        Convert.ToInt32(strTipoPago),
-                                                        strReferencia,
-                                                        strBanco,
-                                                        Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                        "Aprobado",
-                                                        "",
-                                                        idCanalVenta,
-                                                        Convert.ToInt32(Session["idcrm"]));
-                                                }
-
-                                                await ProcesarPagoExitosoAsync(idAfiliadoPlan);
-
-                                                //string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
-                                                //    Convert.ToInt32(ViewState["precioTotal"].ToString()),
-                                                //    Convert.ToInt32(strTipoPago), 
-                                                //    strReferencia, 
-                                                //    strBanco, 
-                                                //    Convert.ToInt32(Session["idUsuario"].ToString()), 
-                                                //    "Aprobado", 
-                                                //    "", 
-                                                //    idCanalVenta, 
-                                                //    Convert.ToInt32(Session["idcrm"]));
-
-                                                DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(int.Parse(Session["IdAfiliado"].ToString()));
-                                                string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()),
-                                                    dt3.Rows[0]["NombrePlan"].ToString(),
-                                                    Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()),
-                                                    Convert.ToInt32(Session["idUsuario"].ToString()),
-                                                    3);
-                                                dt3.Dispose();
-
-                                                if (respuesta == "OK" && respuesta1 == "OK")
-                                                {
-                                                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
-                                                    DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
-                                                    cg.InsertarLog(Session["idusuario"].ToString(),
-                                                        "afiliadosplanes",
-                                                        "Agrega",
-                                                        "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".",
-                                                        "",
-                                                        "");
-
-                                                    string script = @"
-                                                            Swal.fire({
-                                                                title: '¡Venta registrada con éxito!',
-                                                                text: 'Hemos enviado un correo al comprador para que complete sus datos y responda el formulario de salud (Par-Q).',
-                                                                icon: 'success',
-                                                                timer: 5000, // 5 segundos
-                                                                showConfirmButton: false,
-                                                                timerProgressBar: true
-                                                            }).then(() => {
-                                                                window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
-                                                            });
-                                                            ";
-                                                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-
-                                                    ////////////////////////// ENVÍO DE CORREO ////////////////////////////////////////
-
-                                                    string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
-                                                    strMensaje += "Descripción del plan.\r\n\r\n";
-
-                                                    //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
-
-                                                    //////////////////////////////////////////////////////////////////////////////////
-
-                                                }
-                                                else
-                                                {
-                                                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                                    MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error");
-                                                }
-                                            }
-                                            else
-                                            {
-                                                string script = @"
-                                                        Swal.fire({
-                                                            title: 'Paga en counter',
-                                                            text: 'El afiliado realiza el pago en counter.',
-                                                            icon: 'success',
-                                                            timer: 5000, // 5 segundos
-                                                            showConfirmButton: false,
-                                                            timerProgressBar: true
-                                                        }).then(() => {
-                                                            window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
-                                                        });
-                                                        ";
-                                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                            MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error");
-                                        }
-
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                                        MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                    MostrarAlerta("Validación", "Por favor, selecciona la fecha de inicio del plan.", "error");
-                }
-            }
-            else
-            {
-                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                MostrarAlerta("Validación", "Debes seleccionar un tipo de plan para continuar.", "warning");
-            }
-            //}
-        }
+        //protected async void lbAgregarPlan_Click(object sender, EventArgs e)
+        //{
+
+        //    if (!ValidarSesion())
+        //    {
+        //        Response.Redirect("~/Login.aspx", true);
+        //        return;
+        //    }
+
+        //    int idAfiliado = Convert.ToInt32(Session["IdAfiliado"].ToString());
+        //    int idCanalVenta = 0;
+        //    int _idcrm = Convert.ToInt32(Session["idcrm"].ToString());
+        //    int _idusuario = Convert.ToInt32(Session["idusuario"].ToString());
+        //    if (ViewState["nombrePlan"] != null)
+        //    {                
+        //        if (txbFechaInicio.Text != "")
+        //        {
+        //            clasesglobales cg = new clasesglobales();
+        //            DataTable dt = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+
+
+
+        //            if (dt.Rows.Count > 0)
+        //            {
+        //                // Consultar si este usuario tiene un plan activo y cual es su fecha de inicio y fecha final.
+        //                if (dt.Rows[0]["EstadoPlan"].ToString() == "Activo")
+        //                {
+        //                    string fechaFinal = string.Format("{0:dd MMM yyyy}", dt.Rows[0]["FechaFinalPlan"]);
+        //                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                    MostrarAlerta("Plan activo", "El afiliado ya tiene un plan activo hasta el " + fechaFinal + ". Modifique la fecha de inicio para continuar.", "warning");
+        //                }
+        //                else
+        //                {
+        //                    if (txbTotal.Text.ToString() == "")
+        //                    {
+        //                        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                        MostrarAlerta("Error", "El valor total no puede estar vacío.", "error");
+        //                    }
+        //                    else
+        //                    {
+        //                        if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+        //                            Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
+        //                        {
+        //                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                            MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error");
+        //                        }
+        //                        else
+        //                        {
+        //                            if (Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")) > 0)
+        //                            {
+        //                                if (ValidarBanco())
+        //                                {
+        //                                    try
+        //                                    {
+        //                                        string DocAfiliado = string.Empty;
+        //                                        string EstadoPago = "Activo";
+        //                                        string idcrm = Session["idcrm"].ToString();
+        //                                        DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
+        //                                        DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
+        //                                        fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
+        //                                        int idAfiliadoPlan = 0;
+
+        //                                        if (cbPagaCounter.Checked)
+        //                                        {
+        //                                            EstadoPago = "Pendiente";
+        //                                        }
+
+        //                                        string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()),
+        //                                            Convert.ToInt32(ViewState["idPlan"].ToString()),
+        //                                            txbFechaInicio.Text.ToString(),
+        //                                            String.Format("{0:yyyy-MM-dd}", fechafinal),
+        //                                            Convert.ToInt32(ViewState["meses"].ToString()),
+        //                                            Convert.ToInt32(ViewState["precioTotal"].ToString()),
+        //                                            ViewState["observaciones"].ToString(),
+        //                                            EstadoPago);
+
+        //                                        if (rta.StartsWith("OK"))
+        //                                        {
+        //                                            if (EstadoPago != "Pendiente")
+        //                                            {
+        //                                                idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
+        //                                                //DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
+
+        //                                                //if (dt1.Rows.Count > 0) idAfiliadoPlan = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
+        //                                                DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(_idusuario);
+        //                                                if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
+
+        //                                                //Consultamos los medios de pago
+        //                                                DataTable dt2 = cg.ConsultarMediosDePago();
+
+        //                                                string strTipoPago = string.Empty;
+        //                                                string strReferencia = string.Empty;
+        //                                                string strBanco = string.Empty;
+        //                                                string respuesta = string.Empty;
+
+        //                                                if (txbWompi.Text.ToString() != "$0")
+        //                                                {
+        //                                                    strTipoPago = dt2.Rows[3]["idMedioPago"].ToString(); //Pago en linea - Wompi
+
+        //                                                    respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                        Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")),
+        //                                                        Convert.ToInt32(strTipoPago),
+        //                                                        strReferencia,
+        //                                                        "Wompi",
+        //                                                        _idusuario,
+        //                                                        "Aprobado",
+        //                                                        "",
+        //                                                        idCanalVenta,
+        //                                                        Convert.ToInt32(Session["idcrm"]));
+        //                                                }
+
+        //                                                if (txbDatafono.Text.ToString() != "$0")
+        //                                                {
+        //                                                    strTipoPago = dt2.Rows[2]["idMedioPago"].ToString(); //Pago con Datafono Tarjeta Debito
+        //                                                    strReferencia = txbNroAprobacion.Text.ToString();
+
+        //                                                    respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                        Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")),
+        //                                                        Convert.ToInt32(strTipoPago),
+        //                                                        strReferencia,
+        //                                                        strBanco,
+        //                                                        _idusuario,
+        //                                                        "Aprobado",
+        //                                                        "",
+        //                                                        idCanalVenta,
+        //                                                        Convert.ToInt32(Session["idcrm"]));
+        //                                                    strReferencia = "";
+        //                                                }
+
+        //                                                if (txbEfectivo.Text.ToString() != "$0")
+        //                                                {
+        //                                                    strTipoPago = dt2.Rows[0]["idMedioPago"].ToString();  //Pago con Efectivo
+
+        //                                                    respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                        Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")),
+        //                                                        Convert.ToInt32(strTipoPago),
+        //                                                        strReferencia,
+        //                                                        strBanco,
+        //                                                        _idusuario,
+        //                                                        "Aprobado",
+        //                                                        "",
+        //                                                        idCanalVenta,
+        //                                                        Convert.ToInt32(Session["idcrm"]));
+        //                                                }
+
+        //                                                if (txbTransferencia.Text.ToString() != "$0")
+        //                                                {
+        //                                                    strTipoPago = dt2.Rows[1]["idMedioPago"].ToString();  //Pago con Transferencia
+        //                                                    if (ViewState["Banco"] == null)
+        //                                                    {
+        //                                                        strBanco = "Ninguno";
+        //                                                    }
+        //                                                    else
+        //                                                    {
+        //                                                        strBanco = ViewState["Banco"].ToString();
+        //                                                    }
+
+        //                                                    respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                        Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")),
+        //                                                        Convert.ToInt32(strTipoPago),
+        //                                                        strReferencia,
+        //                                                        strBanco,
+        //                                                        _idusuario,
+        //                                                        "Aprobado",
+        //                                                        "",
+        //                                                        idCanalVenta,
+        //                                                        Convert.ToInt32(Session["idcrm"]));
+        //                                                }
+
+        //                                                await ProcesarPagoExitosoAsync(idAfiliadoPlan);
+
+
+        //                                                DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(int.Parse(Session["IdAfiliado"].ToString()));
+
+        //                                                string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()),
+        //                                                    dt3.Rows[0]["NombrePlan"].ToString(),
+        //                                                    Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()),
+        //                                                    _idusuario,
+        //                                                    3);
+
+
+        //                                                if (respuesta == "OK" && respuesta1 == "OK")
+        //                                                {
+        //                                                    DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
+        //                                                    DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
+        //                                                    cg.InsertarLog(_idusuario.ToString(),
+        //                                                        "afiliadosplanes",
+        //                                                        "Agrega",
+        //                                                        "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".",
+        //                                                        "",
+        //                                                        "");
+
+        //                                                    string script = @"
+        //                                                        Swal.fire({
+        //                                                            title: '¡Venta registrada con éxito!',
+        //                                                            text: 'Hemos enviado un correo al comprador para que complete sus datos y responda el formulario de salud (Par-Q).',
+        //                                                            icon: 'success',
+        //                                                            timer: 5000, // 5 segundos
+        //                                                            showConfirmButton: false,
+        //                                                            timerProgressBar: true
+        //                                                        }).then(() => {
+        //                                                            window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
+        //                                                        });
+        //                                                        ";
+        //                                                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+
+        //                                                    ////////////////////////// ENVÍO DE CORREO ////////////////////////////////////////
+
+        //                                                    string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
+        //                                                    strMensaje += "Descripción del plan.\r\n\r\n";
+
+        //                                                    //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+
+        //                                                    //////////////////////////////////////////////////////////////////////////////////
+
+        //                                                }
+        //                                                else
+        //                                                {
+        //                                                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                                    MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error");
+        //                                                }
+        //                                            }
+        //                                            else
+        //                                            {
+        //                                                MostrarAlerta("Paga en counter", "El afiliado realiza el pago en counter.", "error");
+        //                                            }
+
+        //                                        }
+        //                                        else
+        //                                        {
+        //                                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                            MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error");
+        //                                        }
+
+        //                                    }
+        //                                    catch (Exception ex)
+        //                                    {
+        //                                        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                        MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error");
+        //                                    }
+        //                                }
+        //                            }
+        //                            else
+        //                            {
+        //                                try
+        //                                {
+        //                                    string DocAfiliado = string.Empty;
+        //                                    string EstadoPago = "Activo";
+        //                                    string idcrm = Session["idcrm"].ToString();
+        //                                    DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
+        //                                    DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
+        //                                    fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
+        //                                    int idAfiliadoPlan = 0;
+
+        //                                    if (cbPagaCounter.Checked)
+        //                                    {
+        //                                        EstadoPago = "Pendiente";
+        //                                    }
+
+        //                                    string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()),
+        //                                        Convert.ToInt32(ViewState["idPlan"].ToString()),
+        //                                        txbFechaInicio.Text.ToString(),
+        //                                        String.Format("{0:yyyy-MM-dd}", fechafinal),
+        //                                        Convert.ToInt32(ViewState["meses"].ToString()),
+        //                                        Convert.ToInt32(ViewState["precioTotal"].ToString()),
+        //                                        ViewState["observaciones"].ToString(),
+        //                                        EstadoPago);
+
+        //                                    if (rta.StartsWith("OK"))
+        //                                    {
+        //                                        if (EstadoPago != "Pendiente")
+        //                                        {
+        //                                            idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
+        //                                            //DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
+
+        //                                            //if (dt1.Rows.Count > 0) idAfiliadoPlan = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
+        //                                            DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(_idusuario);
+        //                                            if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
+
+        //                                            //Consultamos los medios de pago
+        //                                            DataTable dt2 = cg.ConsultarMediosDePago();
+
+        //                                            string strTipoPago = string.Empty;
+        //                                            string strReferencia = string.Empty;
+        //                                            string strBanco = string.Empty;
+        //                                            string respuesta = string.Empty;
+
+        //                                            if (txbWompi.Text.ToString() != "$0")
+        //                                            {
+        //                                                strTipoPago = dt2.Rows[3]["idMedioPago"].ToString(); //Pago en linea - Wompi
+
+        //                                                respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                    Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")),
+        //                                                    Convert.ToInt32(strTipoPago),
+        //                                                    strReferencia,
+        //                                                    "Wompi",
+        //                                                    _idusuario,
+        //                                                    "Aprobado",
+        //                                                    "",
+        //                                                    idCanalVenta,
+        //                                                    Convert.ToInt32(Session["idcrm"]));
+        //                                            }
+
+        //                                            if (txbDatafono.Text.ToString() != "$0")
+        //                                            {
+        //                                                strTipoPago = dt2.Rows[2]["idMedioPago"].ToString(); //Pago con Datafono Tarjeta Debito
+        //                                                strReferencia = txbNroAprobacion.Text.ToString();
+
+        //                                                respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                    Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")),
+        //                                                    Convert.ToInt32(strTipoPago),
+        //                                                    strReferencia,
+        //                                                    strBanco,
+        //                                                    _idusuario,
+        //                                                    "Aprobado",
+        //                                                    "",
+        //                                                    idCanalVenta,
+        //                                                    Convert.ToInt32(Session["idcrm"]));
+        //                                                strReferencia = "";
+        //                                            }
+
+        //                                            if (txbEfectivo.Text.ToString() != "$0")
+        //                                            {
+        //                                                strTipoPago = dt2.Rows[0]["idMedioPago"].ToString();  //Pago con Efectivo
+
+        //                                                respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                    Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")),
+        //                                                    Convert.ToInt32(strTipoPago),
+        //                                                    strReferencia,
+        //                                                    strBanco,
+        //                                                    _idusuario,
+        //                                                    "Aprobado",
+        //                                                    "",
+        //                                                    idCanalVenta,
+        //                                                    Convert.ToInt32(Session["idcrm"]));
+        //                                            }
+
+        //                                            await ProcesarPagoExitosoAsync(idAfiliadoPlan);
+
+
+
+        //                                            DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+        //                                            string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()),
+        //                                                dt3.Rows[0]["NombrePlan"].ToString(),
+        //                                                Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()),
+        //                                                _idusuario,
+        //                                                3);
+
+
+        //                                            if (respuesta == "OK" && respuesta1 == "OK")
+        //                                            {
+        //                                                DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
+        //                                                DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
+        //                                                cg.InsertarLog(_idusuario.ToString(),
+        //                                                    "afiliadosplanes",
+        //                                                    "Agrega",
+        //                                                    "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".",
+        //                                                    "",
+        //                                                    "");
+
+        //                                                string script = @"
+        //                                                    Swal.fire({
+        //                                                        title: '¡Venta registrada con éxito!',
+        //                                                        text: 'Hemos enviado un correo al comprador para que complete sus datos y responda el formulario de salud (Par-Q).',
+        //                                                        icon: 'success',
+        //                                                        timer: 5000, // 5 segundos
+        //                                                        showConfirmButton: false,
+        //                                                        timerProgressBar: true
+        //                                                    }).then(() => {
+        //                                                        window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
+        //                                                    });
+        //                                                    ";
+        //                                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+
+        //                                                ////////////////////////// ENVÍO DE CORREO ////////////////////////////////////////
+
+        //                                                string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
+        //                                                strMensaje += "Descripción del plan.\r\n\r\n";
+
+        //                                                //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+
+        //                                                //////////////////////////////////////////////////////////////////////////////////
+
+        //                                            }
+        //                                            else
+        //                                            {
+        //                                                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                                MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error");
+        //                                            }
+        //                                        }
+        //                                        else
+        //                                        {
+        //                                            string script = @"
+        //                                                Swal.fire({
+        //                                                    title: 'Paga en counter',
+        //                                                    text: 'El afiliado realiza el pago en counter.',
+        //                                                    icon: 'success',
+        //                                                    timer: 5000, // 5 segundos
+        //                                                    showConfirmButton: false,
+        //                                                    timerProgressBar: true
+        //                                                }).then(() => {
+        //                                                    window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
+        //                                                });
+        //                                                ";
+        //                                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+        //                                        }
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                        MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error");
+        //                                    }
+
+        //                                }
+        //                                catch (Exception ex)
+        //                                {
+        //                                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                    MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error");
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //                dt.Dispose();
+        //            }
+        //            else
+        //            {
+        //                if (txbTotal.Text.ToString() == "")
+        //                {
+        //                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                    MostrarAlerta("Error", "El valor total no puede estar vacío.", "error");
+        //                }
+        //                else
+        //                {
+        //                    if (Convert.ToInt32(ViewState["precioTotal"].ToString()) < Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) ||
+        //                        Convert.ToInt32(ViewState["precioMinimo"].ToString()) > Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")))
+        //                    {
+        //                        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                        MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error");
+        //                    }
+        //                    else
+        //                    {
+        //                        if (Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")) > 0)
+        //                        {
+        //                            if (ValidarBanco())
+        //                            {
+        //                                try
+        //                                {
+        //                                    string DocAfiliado = string.Empty;
+        //                                    string EstadoPago = "Activo";
+        //                                    string idcrm = Session["idcrm"].ToString();
+        //                                    DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
+        //                                    DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
+        //                                    fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
+        //                                    int idAfiliadoPlan = 0;
+
+        //                                    if (cbPagaCounter.Checked)
+        //                                    {
+        //                                        EstadoPago = "Pendiente";
+        //                                    }
+
+        //                                    string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()),
+        //                                        Convert.ToInt32(ViewState["idPlan"].ToString()),
+        //                                        txbFechaInicio.Text.ToString(),
+        //                                        String.Format("{0:yyyy-MM-dd}", fechafinal),
+        //                                        Convert.ToInt32(ViewState["meses"].ToString()),
+        //                                        Convert.ToInt32(ViewState["precioTotal"].ToString()),
+        //                                        ViewState["observaciones"].ToString(),
+        //                                        EstadoPago);
+
+        //                                    if (rta.StartsWith("OK"))
+        //                                    {
+        //                                        if (EstadoPago != "Pendiente")
+        //                                        {
+        //                                            idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
+        //                                            //DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
+
+        //                                            //if (dt1.Rows.Count > 0) idAfiliadoPlan = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
+        //                                            DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(_idusuario);
+        //                                            if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
+
+        //                                            //Consultamos los medios de pago
+        //                                            DataTable dt2 = cg.ConsultarMediosDePago();
+
+        //                                            string strTipoPago = string.Empty;
+        //                                            string strReferencia = string.Empty;
+        //                                            string strBanco = string.Empty;
+        //                                            string respuesta = string.Empty;
+
+        //                                            if (txbWompi.Text.ToString() != "$0")
+        //                                            {
+        //                                                strTipoPago = dt2.Rows[3]["idMedioPago"].ToString(); //Pago en linea - Wompi
+
+        //                                                respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                    Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")),
+        //                                                    Convert.ToInt32(strTipoPago),
+        //                                                    strReferencia,
+        //                                                    "Wompi",
+        //                                                    _idusuario,
+        //                                                    "Aprobado",
+        //                                                    "",
+        //                                                    idCanalVenta,
+        //                                                    Convert.ToInt32(Session["idcrm"]));
+        //                                            }
+
+        //                                            if (txbDatafono.Text.ToString() != "$0")
+        //                                            {
+        //                                                strTipoPago = dt2.Rows[2]["idMedioPago"].ToString(); //Pago con Datafono Tarjeta Debito
+        //                                                strReferencia = txbNroAprobacion.Text.ToString();
+
+        //                                                respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                    Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")),
+        //                                                    Convert.ToInt32(strTipoPago),
+        //                                                    strReferencia,
+        //                                                    strBanco,
+        //                                                    _idusuario,
+        //                                                    "Aprobado",
+        //                                                    "",
+        //                                                    idCanalVenta,
+        //                                                    Convert.ToInt32(Session["idcrm"]));
+        //                                                strReferencia = "";
+        //                                            }
+
+        //                                            if (txbEfectivo.Text.ToString() != "$0")
+        //                                            {
+        //                                                strTipoPago = dt2.Rows[0]["idMedioPago"].ToString();  //Pago con Efectivo
+
+        //                                                respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                    Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")),
+        //                                                    Convert.ToInt32(strTipoPago),
+        //                                                    strReferencia,
+        //                                                    strBanco,
+        //                                                    _idusuario,
+        //                                                    "Aprobado",
+        //                                                    "",
+        //                                                    idCanalVenta,
+        //                                                    Convert.ToInt32(Session["idcrm"]));
+        //                                            }
+
+        //                                            if (txbTransferencia.Text.ToString() != "$0")
+        //                                            {
+        //                                                strTipoPago = dt2.Rows[1]["idMedioPago"].ToString();  //Pago con Transferencia
+        //                                                if (ViewState["Banco"] == null)
+        //                                                {
+        //                                                    strBanco = "Ninguno";
+        //                                                }
+        //                                                else
+        //                                                {
+        //                                                    strBanco = ViewState["Banco"].ToString();
+        //                                                }
+
+        //                                                respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                    Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")),
+        //                                                    Convert.ToInt32(strTipoPago),
+        //                                                    strReferencia,
+        //                                                    strBanco,
+        //                                                    _idusuario,
+        //                                                    "Aprobado",
+        //                                                    "",
+        //                                                    idCanalVenta,
+        //                                                    Convert.ToInt32(Session["idcrm"]));
+        //                                            }
+
+        //                                            await ProcesarPagoExitosoAsync(idAfiliadoPlan);
+
+        //                                            //string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                            //    Convert.ToInt32(ViewState["precioTotal"].ToString()),
+        //                                            //    Convert.ToInt32(strTipoPago), 
+        //                                            //    strReferencia, 
+        //                                            //    strBanco, 
+        //                                            //    Convert.ToInt32(Session["idUsuario"].ToString()), 
+        //                                            //    "Aprobado", 
+        //                                            //    "", 
+        //                                            //    idCanalVenta, 
+        //                                            //    Convert.ToInt32(Session["idcrm"]));
+
+        //                                            DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(int.Parse(Session["IdAfiliado"].ToString()));
+        //                                            string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(Convert.ToInt32(Session["idcrm"].ToString()),
+        //                                                dt3.Rows[0]["NombrePlan"].ToString(),
+        //                                                Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()),
+        //                                                _idusuario,
+        //                                                3);
+
+
+        //                                            if (respuesta == "OK" && respuesta1 == "OK")
+        //                                            {
+        //                                                DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(int.Parse(Session["IdAfiliado"].ToString()));
+        //                                                DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
+        //                                                cg.InsertarLog(_idusuario.ToString(),
+        //                                                    "afiliadosplanes",
+        //                                                    "Agrega",
+        //                                                    "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".",
+        //                                                    "",
+        //                                                    "");
+
+        //                                                string script = @"
+        //                                                        Swal.fire({
+        //                                                            title: '¡Venta registrada con éxito!',
+        //                                                            text: 'Hemos enviado un correo al comprador para que complete sus datos y responda el formulario de salud (Par-Q).',
+        //                                                            icon: 'success',
+        //                                                            timer: 5000, // 5 segundos
+        //                                                            showConfirmButton: false,
+        //                                                            timerProgressBar: true
+        //                                                        }).then(() => {
+        //                                                            window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
+        //                                                        });
+        //                                                        ";
+        //                                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+
+        //                                                ////////////////////////// ENVÍO DE CORREO ////////////////////////////////////////
+
+        //                                                string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
+        //                                                strMensaje += "Descripción del plan.\r\n\r\n";
+
+        //                                                //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+
+        //                                                //////////////////////////////////////////////////////////////////////////////////
+
+        //                                            }
+        //                                            else
+        //                                            {
+        //                                                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                                MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error");
+        //                                            }
+        //                                        }
+        //                                        else
+        //                                        {
+        //                                            MostrarAlerta("Paga en counter", "El afiliado realiza el pago en counter.", "error");
+        //                                        }
+
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                        MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error");
+        //                                    }
+
+        //                                }
+        //                                catch (Exception ex)
+        //                                {
+        //                                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                    MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error");
+        //                                }
+        //                            }
+        //                        }
+        //                        else
+        //                        {
+        //                            try
+        //                            {
+        //                                string DocAfiliado = string.Empty;
+        //                                string EstadoPago = "Activo";
+        //                                string idcrm = Session["idcrm"].ToString();
+        //                                DateTime fechainicio = Convert.ToDateTime(txbFechaInicio.Text.ToString());
+        //                                DateTime fechafinal = fechainicio.AddMonths(Convert.ToInt16(ViewState["meses"].ToString()));
+        //                                fechafinal = fechafinal.AddDays(Convert.ToInt16(ViewState["DiasCortesia"].ToString()));
+        //                                int idAfiliadoPlan = 0;
+
+        //                                if (cbPagaCounter.Checked)
+        //                                {
+        //                                    EstadoPago = "Pendiente";
+        //                                }
+
+        //                                string rta = cg.InsertarAfiliadoPlan(Convert.ToInt32(Session["IdAfiliado"].ToString()),
+        //                                    Convert.ToInt32(ViewState["idPlan"].ToString()),
+        //                                    txbFechaInicio.Text.ToString(),
+        //                                    String.Format("{0:yyyy-MM-dd}", fechafinal),
+        //                                    Convert.ToInt32(ViewState["meses"].ToString()),
+        //                                    Convert.ToInt32(ViewState["precioTotal"].ToString()),
+        //                                    ViewState["observaciones"].ToString(),
+        //                                    EstadoPago);
+
+        //                                if (rta.StartsWith("OK"))
+        //                                {
+        //                                    if (EstadoPago != "Pendiente")
+        //                                    {
+        //                                        idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
+        //                                        //DataTable dt1 = cg.ConsultarUltimoAfilEnAfiliadosPlan();
+
+        //                                        //if (dt1.Rows.Count > 0) idAfiliadoPlan = Convert.ToInt32(dt1.Rows[0]["idAfiliadoPlan"].ToString());
+        //                                        DataTable dt6 = cg.ConsultarUsuarioSedePerfilPorId(_idusuario);
+        //                                        if (dt6.Rows.Count > 0) idCanalVenta = Convert.ToInt32(dt6.Rows[0]["idCanalVenta"].ToString());
+
+        //                                        //Consultamos los medios de pago
+        //                                        DataTable dt2 = cg.ConsultarMediosDePago();
+
+        //                                        string strTipoPago = string.Empty;
+        //                                        string strReferencia = string.Empty;
+        //                                        string strBanco = string.Empty;
+        //                                        string respuesta = string.Empty;
+
+        //                                        if (txbWompi.Text.ToString() != "$0")
+        //                                        {
+        //                                            strTipoPago = dt2.Rows[3]["idMedioPago"].ToString(); //Pago en linea - Wompi
+
+        //                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                Convert.ToInt32(Regex.Replace(txbWompi.Text, @"[^\d]", "")),
+        //                                                Convert.ToInt32(strTipoPago),
+        //                                                strReferencia,
+        //                                                "Wompi",
+        //                                                _idusuario,
+        //                                                "Aprobado",
+        //                                                "",
+        //                                                idCanalVenta,
+        //                                                Convert.ToInt32(Session["idcrm"]));
+        //                                        }
+
+        //                                        if (txbDatafono.Text.ToString() != "$0")
+        //                                        {
+        //                                            strTipoPago = dt2.Rows[2]["idMedioPago"].ToString(); //Pago con Datafono Tarjeta Debito
+        //                                            strReferencia = txbNroAprobacion.Text.ToString();
+
+        //                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                Convert.ToInt32(Regex.Replace(txbDatafono.Text, @"[^\d]", "")),
+        //                                                Convert.ToInt32(strTipoPago),
+        //                                                strReferencia,
+        //                                                strBanco,
+        //                                                _idusuario,
+        //                                                "Aprobado",
+        //                                                "",
+        //                                                idCanalVenta,
+        //                                                Convert.ToInt32(Session["idcrm"]));
+        //                                            strReferencia = "";
+        //                                        }
+
+        //                                        if (txbEfectivo.Text.ToString() != "$0")
+        //                                        {
+        //                                            strTipoPago = dt2.Rows[0]["idMedioPago"].ToString();  //Pago con Efectivo
+
+        //                                            respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                                Convert.ToInt32(Regex.Replace(txbEfectivo.Text, @"[^\d]", "")),
+        //                                                Convert.ToInt32(strTipoPago),
+        //                                                strReferencia,
+        //                                                strBanco,
+        //                                                _idusuario,
+        //                                                "Aprobado",
+        //                                                "",
+        //                                                idCanalVenta,
+        //                                                Convert.ToInt32(Session["idcrm"]));
+        //                                        }
+
+        //                                        await ProcesarPagoExitosoAsync(idAfiliadoPlan);
+
+        //                                        //string respuesta = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, +
+        //                                        //    Convert.ToInt32(ViewState["precioTotal"].ToString()),
+        //                                        //    Convert.ToInt32(strTipoPago), 
+        //                                        //    strReferencia, 
+        //                                        //    strBanco, 
+        //                                        //    Convert.ToInt32(Session["idUsuario"].ToString()), 
+        //                                        //    "Aprobado", 
+        //                                        //    "", 
+        //                                        //    idCanalVenta, 
+        //                                        //    Convert.ToInt32(Session["idcrm"]));
+
+        //                                        DataTable dt3 = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+
+        //                                        string respuesta1 = cg.ActualizarEstadoCRMPagoPlan(_idcrm,
+        //                                            dt3.Rows[0]["NombrePlan"].ToString(),
+        //                                            Convert.ToInt32(dt3.Rows[0]["Valor"].ToString()),
+        //                                            _idusuario,
+        //                                            3);
+
+
+        //                                        if (respuesta == "OK" && respuesta1 == "OK")
+        //                                        {
+        //                                            DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(idAfiliado);
+        //                                            DocAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
+        //                                            cg.InsertarLog(_idusuario.ToString(),
+        //                                                "afiliadosplanes",
+        //                                                "Agrega",
+        //                                                "El usuario agregó un nuevo plan al afiliado con documento: " + dt3.Rows[0]["Valor"].ToString() + ".",
+        //                                                "",
+        //                                                "");
+
+        //                                            string script = @"
+        //                                                    Swal.fire({
+        //                                                        title: '¡Venta registrada con éxito!',
+        //                                                        text: 'Hemos enviado un correo al comprador para que complete sus datos y responda el formulario de salud (Par-Q).',
+        //                                                        icon: 'success',
+        //                                                        timer: 5000, // 5 segundos
+        //                                                        showConfirmButton: false,
+        //                                                        timerProgressBar: true
+        //                                                    }).then(() => {
+        //                                                        window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
+        //                                                    });
+        //                                                    ";
+        //                                            ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+
+        //                                            ////////////////////////// ENVÍO DE CORREO ////////////////////////////////////////
+
+        //                                            string strMensaje = "Se ha creado un Plan para ud. en Fitness People \r\n\r\n";
+        //                                            strMensaje += "Descripción del plan.\r\n\r\n";
+
+        //                                            //cg.EnviarCorreo("afiliaciones@fitnesspeoplecolombia.com", dtAfiliado.Rows[0]["EmailAfiliado"].ToString(), "Plan Fitness People", strMensaje);
+
+        //                                            //////////////////////////////////////////////////////////////////////////////////
+
+        //                                        }
+        //                                        else
+        //                                        {
+        //                                            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                            MostrarAlerta("Error", "No se pudo registrar. Detalle: " + respuesta.Replace("'", "\\'") + "", "error");
+        //                                        }
+        //                                    }
+        //                                    else
+        //                                    {
+        //                                        string script = @"
+        //                                                Swal.fire({
+        //                                                    title: 'Paga en counter',
+        //                                                    text: 'El afiliado realiza el pago en counter.',
+        //                                                    icon: 'success',
+        //                                                    timer: 5000, // 5 segundos
+        //                                                    showConfirmButton: false,
+        //                                                    timerProgressBar: true
+        //                                                }).then(() => {
+        //                                                    window.location.href = 'detalleafiliado?search=" + DocAfiliado + @"&idcrm=" + idcrm + @"';
+        //                                                });
+        //                                                ";
+        //                                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+        //                                    }
+        //                                }
+        //                                else
+        //                                {
+        //                                    // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                    MostrarAlerta("Error", "No se pudo registrar. Detalle: " + rta.Replace("'", "\\'") + "", "error");
+        //                                }
+
+        //                            }
+        //                            catch (Exception ex)
+        //                            {
+        //                                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //                                MostrarAlerta("Error", "No se pudo registrar. Detalle: " + ex.Message.ToString() + "", "error");
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //            MostrarAlerta("Validación", "Por favor, selecciona la fecha de inicio del plan.", "error");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+        //        MostrarAlerta("Validación", "Debes seleccionar un tipo de plan para continuar.", "warning");
+        //    }
+        //    //}
+        //}
+
+
+
+        //private string ProcesarPago(clasesglobales cg, int idAfiliadoPlan, int valor, int idMedioPago, string referencia, string banco, int idUsuario,int idCanalVenta, int idcrm)
+        //{
+        //    return cg.InsertarPagoPlanAfiliado( idAfiliadoPlan, valor, idMedioPago,  referencia, banco, idUsuario, "Aprobado","", idCanalVenta, idcrm );
+        //}
+
+        //private bool ValidarSesion()
+        //{
+        //    return Session["IdAfiliado"] != null &&
+        //           Session["idcrm"] != null;
+        //}
+
 
         /// <summary>
         /// Evento que se ejecuta al interactuar con un ítem del Repeater de planes.

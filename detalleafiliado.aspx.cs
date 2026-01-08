@@ -230,7 +230,7 @@ namespace fpWebApp
             int idempresa = 2; //2 Armatura tabla integraciones
             string parametro = string.Empty;
             DataTable dti = cg.ConsultarUrl(idempresa);
-            string urlServicio = dti.Rows[0]["urlTest"].ToString() + parametro;
+            string urlServicio = dti.Rows[0]["url"].ToString() + parametro;
             if (dt.Rows.Count > 0)
             {
                 parametro = dti.Rows[0]["urlServicioAd1"].ToString();
