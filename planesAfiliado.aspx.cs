@@ -1082,13 +1082,13 @@ namespace fpWebApp
 
 
 
-            DataTable dtEstado = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
-            if (dtEstado.Rows.Count > 0 && dtEstado.Rows[0]["EstadoPlan"].ToString() == "Activo")
-            {
-                string fechaFinal = Convert.ToDateTime(dtEstado.Rows[0]["FechaFinalPlan"]).ToString("dd MMM yyyy");
-                MostrarAlerta("Plan activo", $"El afiliado ya tiene un plan activo hasta el {fechaFinal}.", "warning");
-                return;
-            }
+            //DataTable dtEstado = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+            //if (dtEstado.Rows.Count > 0 && dtEstado.Rows[0]["EstadoPlan"].ToString() == "Activo")
+            //{
+            //    string fechaFinal = Convert.ToDateTime(dtEstado.Rows[0]["FechaFinalPlan"]).ToString("dd MMM yyyy");
+            //    MostrarAlerta("Plan activo", $"El afiliado ya tiene un plan activo hasta el {fechaFinal}.", "warning");
+            //    return;
+            //}
 
             string estadoPago = cbPagaCounter.Checked ? "Pendiente" : "Activo";
 
