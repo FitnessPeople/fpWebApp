@@ -217,22 +217,22 @@ namespace fpWebApp
         {
             //if (Request.QueryString.Count > 0)
             //{
-                clasesglobales cg = new clasesglobales();
+            clasesglobales cg = new clasesglobales();
 
-                //string codDatafonoQS = Request.QueryString["codDatafono"];
-                string codDatafonoQS = "LM9ZZ702";
+            //string codDatafonoQS = Request.QueryString["codDatafono"];
+            string codDatafonoQS = "LM9ZZ702";
 
-                DataTable dt = cg.ConsultarDatafonoPorCodigo(codDatafonoQS);
+            DataTable dt = cg.ConsultarDatafonoPorCodigo(codDatafonoQS);
 
-                string codDatafono = dt != null && dt.Rows.Count > 0 ? dt.Rows[0]["codDatafono"].ToString() : "";
+            string codDatafono = dt != null && dt.Rows.Count > 0 ? dt.Rows[0]["codDatafono"].ToString() : "";
 
-                if (codDatafono != codDatafonoQS || codDatafono == "")
-                {
-                    Response.Redirect("default");
-                    return;
-                }
+            if (codDatafono != codDatafonoQS || codDatafono == "")
+            {
+                Response.Redirect("default");
+                return;
+            }
 
-                Session["codDatafono"] = codDatafono;
+            Session["codDatafono"] = codDatafono;
             //}
             //else
             //{
@@ -504,7 +504,7 @@ namespace fpWebApp
 
                 Session["idTransaccionRRN"] = partesRespuesta[12];
                 Session["numReciboDatafono"] = partesRespuesta[10];
-                
+
                 txbNroAprobacion.Text = Session["numReciboDatafono"].ToString();
 
                 //await ProcesarPagoExitosoAsync();
@@ -540,7 +540,7 @@ namespace fpWebApp
                 int idPayment = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idPayment"].ToString()) : 0;
                 dtIntegracion.Dispose();
 
-                
+
                 // 1. Creación de factura en Siigo
                 var siigoClient = new SiigoClient(
                     new HttpClient(),
@@ -583,47 +583,46 @@ namespace fpWebApp
                 int idCostCenter = dtSedeCostCenter != null && dtSedeCostCenter.Rows.Count > 0 ? Convert.ToInt32(dtSedeCostCenter.Rows[0]["idCostCenterSiigo"].ToString()) : 0;
                 dtSedeCostCenter.Dispose();
 
-                // PRODUCCIÓN
-                // TODO: NO ELIMINAR ESTO, SE USA EN LA CREACIÓN DE LA FACTURA
-                // ESTÁ COMENTADO PARA PRUEBAS LOCALES
+                string _codSiigoPlan;
+                string _nombrePlan;
+                int _precioPlan;
+
+                //  PRUEBAS
+                if (idIntegracionSiigo == 3)
+                {
+                    idCostCenter = 621;
+                    _codSiigoPlan = "COD2433";
+                    _nombrePlan = "Pago de suscripción";
+                    _precioPlan = 10000;
+                }
+                //  PRODUCCIÓN
+                else if (idIntegracionSiigo == 6)
+                {
+                    _codSiigoPlan = codSiigoPlan;
+                    _nombrePlan = nombrePlan;
+                    _precioPlan = int.Parse(precioPlan);
+                }
+                else
+                {
+                    throw new Exception("Id de integración Siigo no válido.");
+                }
                 string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
                     nroDoc,
-                    codSiigoPlan,
-                    nombrePlan,
-                    int.Parse(precioPlan),
+                    _codSiigoPlan,
+                    _nombrePlan,
+                    _precioPlan,
                     idSellerUser,
                     idDocumentType,
                     fechaActual,
                     idCostCenter,
                     idPayment
-                );
-                return (true, idSiigoFactura);
-
-                // PRUEBAS
-                if (idIntegracionSiigo == 3) idCostCenter = 621;
-
-                //string codSiigoPlan = "COD2433";
-                //string nombrePlan = "Pago de suscripción";
-                //int precioPlan = 10000;
-                //string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
-                //    nroDoc,
-                //    codSiigoPlan,
-                //    nombrePlan,
-                //    precioPlan,
-                //    idSellerUser,
-                //    idDocumentType,
-                //    fechaActual,
-                //    idCostCenter,
-                //    idPayment
-                //);
-                return (true, idSiigoFactura);
-
-
-
+                );                
+                
                 Session["idAfiliadoPlan"] = idAfiliadoPlan;
-
-                //string referencia = Session["documentoAfiliado"].ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                string referencia = Session["documentoAfiliado"].ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
                 string codDatafono = Session["codDatafono"].ToString();
+
+                return (true, idSiigoFactura);
             }
             catch (Exception ex)
             {
@@ -1119,16 +1118,16 @@ namespace fpWebApp
 
             DataTable mediosPago = cg.ConsultarMediosDePago();
             DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(idAfiliado);
-            string docAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();           
+            string docAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
 
             try
             {
 
-                var resultado = await ProcesarPagoExitosoAsync(idAfiliadoPlan, ViewState["codSiigoPlan"].ToString(), ViewState["nombrePlan"].ToString(), valorPagado.ToString());                 
+                var resultado = await ProcesarPagoExitosoAsync(idAfiliadoPlan, ViewState["codSiigoPlan"].ToString(), ViewState["nombrePlan"].ToString(), valorPagado.ToString());
 
                 if (!resultado.ok)
                 {
-                    MostrarAlerta( "Error", "No se pudo obtener la información del afiliado.", "error");
+                    MostrarAlerta("Error", "No se pudo obtener la información del afiliado.", "error");
                     return;
                 }
                 else
@@ -1146,9 +1145,9 @@ namespace fpWebApp
             {
                 new clasesglobales().InsertarLog(Session["idusuario"]?.ToString() ?? "0", "ASYNC", "ERROR", ex.ToString(), "", "");
 
-                    MostrarAlerta("Error", "No se pudo actualizar el CRM.", "error");                    
-                return; 
-            } 
+                MostrarAlerta("Error", "No se pudo actualizar el CRM.", "error");
+                return;
+            }
         }
 
         public class ResultadoPago
@@ -1159,20 +1158,20 @@ namespace fpWebApp
 
 
 
-        private void RegistrarPagos(clasesglobales cg, DataTable medios,int idAfiliadoPlan, int idUsuario, int idCanalVenta, int idcrm, string idSiigoFactura)
+        private void RegistrarPagos(clasesglobales cg, DataTable medios, int idAfiliadoPlan, int idUsuario, int idCanalVenta, int idcrm, string idSiigoFactura)
         {
             ProcesarMedio(cg, medios.Rows[3], txbWompi.Text, idAfiliadoPlan, idUsuario, "Wompi", idCanalVenta, idcrm, idSiigoFactura);
             ProcesarMedio(cg, medios.Rows[2], txbDatafono.Text, idAfiliadoPlan, idUsuario, "", idCanalVenta, idcrm, txbNroAprobacion.Text, idSiigoFactura);
             ProcesarMedio(cg, medios.Rows[0], txbEfectivo.Text, idAfiliadoPlan, idUsuario, "", idCanalVenta, idcrm, idSiigoFactura);
-            ProcesarMedio(cg, medios.Rows[1], txbTransferencia.Text, idAfiliadoPlan, idUsuario,ViewState["Banco"]?.ToString() ?? "Ninguno", idCanalVenta, idcrm, idSiigoFactura);
+            ProcesarMedio(cg, medios.Rows[1], txbTransferencia.Text, idAfiliadoPlan, idUsuario, ViewState["Banco"]?.ToString() ?? "Ninguno", idCanalVenta, idcrm, idSiigoFactura);
         }
 
-        private void ProcesarMedio( clasesglobales cg, DataRow medio, string valorText, int idAfiliadoPlan, int idUsuario, string banco,  int idCanalVenta, int idcrm, string idSiigoFactura, string referencia = "" )
+        private void ProcesarMedio(clasesglobales cg, DataRow medio, string valorText, int idAfiliadoPlan, int idUsuario, string banco, int idCanalVenta, int idcrm, string idSiigoFactura, string referencia = "")
         {
             int valor = Convert.ToInt32(Regex.Replace(valorText, @"[^\d]", ""));
             if (valor <= 0) return;
 
-            cg.InsertarPagoPlanAfiliado( idAfiliadoPlan, valor, Convert.ToInt32(medio["idMedioPago"]), referencia, banco, idUsuario, "Aprobado", idSiigoFactura, idCanalVenta, idcrm );
+            cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, valor, Convert.ToInt32(medio["idMedioPago"]), referencia, banco, idUsuario, "Aprobado", idSiigoFactura, idCanalVenta, idcrm);
         }
 
 
@@ -1207,7 +1206,7 @@ namespace fpWebApp
         }
 
 
-        
+
         protected void rpPlanes_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "SeleccionarPlan")
