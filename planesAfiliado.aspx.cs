@@ -24,12 +24,9 @@ namespace fpWebApp
     public partial class planesAfiliado : System.Web.UI.Page
     {
         // PRUEBAS
-        static int idIntegracionSiigo = 3; // SIIGO
-
-
+        //static int idIntegracionSiigo = 3; // SIIGO
         // PRODUCCIÓN
-        //static int idIntegracionSiigo = 6; // SIIGO
-
+        static int idIntegracionSiigo = 6; // SIIGO
         protected void Page_Load(object sender, EventArgs e)
         {
             ScriptManager.RegisterClientScriptInclude(this, this.GetType(),
@@ -520,7 +517,7 @@ namespace fpWebApp
             }
         }
 
-        private async Task<(bool ok, string idSiigoFactura)> ProcesarPagoExitosoAsync(int idAfiliadoPlan)
+        private async Task<(bool ok, string idSiigoFactura)> ProcesarPagoExitosoAsync(int idAfiliadoPlan, string codSiigoPlan, string nombrePlan, string precioPlan)
 
         {
             string idAfiliado = Session["IdAfiliado"].ToString();
@@ -589,35 +586,36 @@ namespace fpWebApp
                 // PRODUCCIÓN
                 // TODO: NO ELIMINAR ESTO, SE USA EN LA CREACIÓN DE LA FACTURA
                 // ESTÁ COMENTADO PARA PRUEBAS LOCALES
-                //string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
-                //    nroDoc,
-                //    Session["codSiigoPlan"].ToString(),
-                //    Session["nombrePlan"].ToString(),
-                //    int.Parse(Session["valorPlan"].ToString()),
-                //    idSellerUser,
-                //    idDocumentType,
-                //    fechaActual,
-                //    idCostCenter,
-                //    idPayment
-                //);
-
-                // PRUEBAS
-                if (idIntegracionSiigo == 3) idCostCenter = 621;
-
-                string codSiigoPlan = "COD2433";
-                string nombrePlan = "Pago de suscripción";
-                int precioPlan = 10000;
                 string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
                     nroDoc,
                     codSiigoPlan,
                     nombrePlan,
-                    precioPlan,
+                    int.Parse(precioPlan),
                     idSellerUser,
                     idDocumentType,
                     fechaActual,
                     idCostCenter,
                     idPayment
                 );
+                return (true, idSiigoFactura);
+
+                // PRUEBAS
+                if (idIntegracionSiigo == 3) idCostCenter = 621;
+
+                //string codSiigoPlan = "COD2433";
+                //string nombrePlan = "Pago de suscripción";
+                //int precioPlan = 10000;
+                //string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
+                //    nroDoc,
+                //    codSiigoPlan,
+                //    nombrePlan,
+                //    precioPlan,
+                //    idSellerUser,
+                //    idDocumentType,
+                //    fechaActual,
+                //    idCostCenter,
+                //    idPayment
+                //);
                 return (true, idSiigoFactura);
 
 
@@ -1126,7 +1124,7 @@ namespace fpWebApp
             try
             {
 
-                var resultado = await ProcesarPagoExitosoAsync(idAfiliadoPlan);                 
+                var resultado = await ProcesarPagoExitosoAsync(idAfiliadoPlan, ViewState["codSiigoPlan"].ToString(), ViewState["nombrePlan"].ToString(), valorPagado.ToString());                 
 
                 if (!resultado.ok)
                 {
