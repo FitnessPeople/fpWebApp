@@ -79,17 +79,19 @@ namespace fpWebApp
             try
             {
                 string strQuery = @"
-                    SELECT ap.idAfiliadoPlan, a.DocumentoAfiliado, CONCAT(a.NombreAfiliado, "" "", a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
-                    COUNT(a.idAfiliado) AS Intentos, MIN(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, p.PrecioBase 
-                    a.CelularAfiliado AS Celular, a.EmailAfiliado As Email 
+                    SELECT ap.idAfiliadoPlan, a.DocumentoAfiliado, CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
+                    COUNT(a.idAfiliado) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, p.PrecioBase, 
+                    a.CelularAfiliado AS Celular, a.EmailAfiliado AS Email 
                     FROM HistorialCobrosRechazados AS hcr 
                     INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
                     INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
-                    GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado;";
+                    INNER JOIN Planes AS p ON p.idPlan = ap.idPlan 
+                    GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado 
+                    ORDER BY Intentos ASC;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(strQuery);
-                string nombreArchivo = $"cobrosrechazados_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                string nombreArchivo = $"CobrosRechazados_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {
@@ -111,14 +113,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
 
             string strQuery = @"
-                SELECT ap.idAfiliadoPlan, a.DocumentoAfiliado, CONCAT(a.NombreAfiliado, "" "", a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
+                SELECT ap.idAfiliadoPlan, a.DocumentoAfiliado, CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
                 COUNT(a.idAfiliado) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, p.PrecioBase 
                 FROM HistorialCobrosRechazados AS hcr 
                 INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
                 INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
                 INNER JOIN Planes AS p ON p.idPlan = ap.idPlan 
                 GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado 
-                ORDER BY Intentos ASC";
+                ORDER BY Intentos ASC;";
 
 
             DataTable dt = cg.TraerDatos(strQuery);
