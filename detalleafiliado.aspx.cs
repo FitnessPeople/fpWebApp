@@ -22,8 +22,10 @@ namespace fpWebApp
 {
     public partial class detalleafiliado : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected Dictionary<string, string> FacturasUrls;
+        protected async void Page_Load(object sender, EventArgs e)
         {
+            
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
@@ -41,6 +43,7 @@ namespace fpWebApp
                         btnVolver.Visible = true;
                         string strDocumento = "";
                         string idcrm = "0";
+                        string idcrmFinal = idcrm;
                         Session["idcrm"] = idcrm;
                         clasesglobales cg = new clasesglobales();
 
@@ -51,33 +54,62 @@ namespace fpWebApp
 
                             if (!string.IsNullOrEmpty(Request.QueryString["idcrm"]))
                                 idcrm = Request.QueryString["idcrm"].ToString();
-                            if (idcrm == "0")
+                       
+                            if (idcrm != "0")
                             {
                                 btnVolver.Visible = false;
-                                DataTable dt1 = cg.ConsultarAfiliadoPlanPorDocumento(strDocumento);
-
-                                if (dt1.Rows.Count > 0)
-                                {
-                                    string strQuery = "SELECT * " +
-                                       "FROM AfiliadosPlanes ap, PagosPlanAfiliado ppa, afiliados a " +
-                                       "WHERE ap.idAfiliado = " + dt1.Rows[0]["idAfiliado"].ToString() + " " +
-                                       "AND ap.idAfiliadoPlan = ppa.idAfiliadoPlan " +
-                                       "AND ppa.EstadoPago = 'Aprobado' " +
-                                       "AND ap.idAfiliado = a.idAfiliado";
-                                    DataTable dt2 = cg.TraerDatos(strQuery);
-
-                                    if (dt2.Rows.Count > 0)
-                                    {
-                                        idcrm = dt2.Rows[0]["idContacto"].ToString();
-                                        rpDocumentos.DataSource = dt2;
-                                        rpDocumentos.DataBind();
-                                    }
-
-                                    if (!string.IsNullOrEmpty(idcrm)) ltCRM.Text = "No existen registros de CRM";
-                                }
                             }
 
-                            Session["idcrm"] = idcrm;
+                            DataTable dtAfiliado = cg.ConsultarAfiliadoPlanPorDocumento(strDocumento);
+
+                            if (dtAfiliado.Rows.Count == 0)
+                            {
+                                ltCRM.Text = "No existen registros del afiliado";
+                                return;
+                            }
+
+                            string strQuery = @"
+                                        SELECT *
+                                        FROM AfiliadosPlanes ap
+                                        INNER JOIN PagosPlanAfiliado ppa ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
+                                        INNER JOIN afiliados a ON ap.idAfiliado = a.idAfiliado
+                                        WHERE ap.idAfiliado = @idAfiliado
+                                          AND ppa.EstadoPago = 'Aprobado'";
+
+                            DataTable dtDocumentos = cg.TraerDatos(
+                                strQuery.Replace("@idAfiliado", dtAfiliado.Rows[0]["idAfiliado"].ToString())
+                            );
+
+                            if (dtDocumentos.Rows.Count > 0)
+                            {
+                                await CargarFacturasAsync(dtDocumentos);
+
+                                rpDocumentos.DataSource = dtDocumentos;
+                                rpDocumentos.DataBind();
+
+                                // 🔑 Resolver idcrm DEFINITIVO
+                                if (string.IsNullOrEmpty(idcrmFinal) || idcrmFinal == "0")
+                                {
+                                    if (dtDocumentos.Columns.Contains("idContacto") &&
+                                        dtDocumentos.Rows[0]["idContacto"] != DBNull.Value)
+                                    {
+                                        idcrmFinal = dtDocumentos.Rows[0]["idContacto"].ToString();
+                                    }
+                                }
+
+                                // 📌 Guardar siempre en sesión si ya se resolvió
+                                if (!string.IsNullOrEmpty(idcrmFinal) && idcrmFinal != "0")
+                                {
+                                    Session["idcrm"] = idcrmFinal;
+                                    btnVolver.Visible = false;
+                                }
+                            }
+                            else
+                            {
+                                ltCRM.Text = "No existen documentos asociados";
+                            }
+
+
                         }
                         else
                         {
@@ -96,33 +128,6 @@ namespace fpWebApp
                     Response.Redirect("logout");
                 }
             }
-        }
-
-        private async Task<string> ConsultarFactura(string strFactura)
-        {
-            string public_url = "";
-            
-            // Pruebas
-            //var siigoClient = new SiigoClient(
-            //    new HttpClient(),
-            //    "https://api.siigo.com/",
-            //    "sandbox@siigoapi.com",
-            //    "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=",
-            //    "SandboxSiigoApi"
-            //);
-
-            //Produccion
-            var siigoClient = new SiigoClient(
-                new HttpClient(),
-                "https://api.siigo.com/",
-                "contabilidad@fitnesspeoplecmd.com",
-                "NWFjNTQzN2QtNjkwZi00MTJiLWFiYTktZmU1ZTBkMmZkZGY4OnJ7WTU0LnVlY08=",
-                "ProductionSiigoApi"
-            );
-
-            public_url = await siigoClient.ManageInvoiceAsync(strFactura);
-            
-            return public_url.ToString();
         }
 
         private void ValidarPermisos(string strPagina)
@@ -520,19 +525,71 @@ namespace fpWebApp
                 string rta = EnviarPeticion(url, contenido);
             }
         }
-
-        protected void rpDocumentos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        private SiigoClient CrearClienteSiigo()
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            //Pruebas
+            //return new SiigoClient(
+            //    new HttpClient(),
+            //    "https://api.siigo.com/",
+            //    "sandbox@siigoapi.com",
+            //    "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=",
+            //    "SandboxSiigoApi"
+            //);
+
+            //Producción
+            return new SiigoClient(
+                   new HttpClient(),
+                 "https://api.siigo.com/",
+                 "contabilidad@fitnesspeoplecmd.com",
+                 "NWFjNTQzN2QtNjkwZi00MTJiLWFiYTktZmU1ZTBkMmZkZGY4OnJ7WTU0LnVlY08=",
+                 "ProductionSiigoApi"
+            );
+        }
+        private async Task CargarFacturasAsync(DataTable dt)
+        {
+            FacturasUrls = new Dictionary<string, string>();
+            var siigoClient = CrearClienteSiigo();
+
+            foreach (DataRow row in dt.Rows)
             {
-                if (ViewState["CrearModificar"].ToString() == "1")
+                string idFactura = row["idSiigoFactura"].ToString();
+
+                try
                 {
-                    HtmlAnchor lnkVerFactura = (HtmlAnchor)e.Item.FindControl("lnkVerFactura");
-                    var public_url = ConsultarFactura(((DataRowView)e.Item.DataItem).Row["idSiigoFactura"].ToString());
-                    lnkVerFactura.Attributes.Add("href", public_url.ToString());
-                    lnkVerFactura.Visible = true;
+                    string url = await siigoClient.ManageInvoiceAsync(idFactura);
+
+                    FacturasUrls[idFactura] = url;  
+                }
+                catch
+                {
+                    FacturasUrls[idFactura] = null;  
                 }
             }
         }
+        protected void rpDocumentos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item ||
+                e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                HtmlAnchor lnkVerFactura =
+                    (HtmlAnchor)e.Item.FindControl("lnkVerFactura");
+
+                string idFactura =
+                    ((DataRowView)e.Item.DataItem).Row["idSiigoFactura"].ToString();
+
+                if (FacturasUrls.ContainsKey(idFactura) &&
+                    !string.IsNullOrEmpty(FacturasUrls[idFactura]))
+                {
+                    lnkVerFactura.HRef = FacturasUrls[idFactura];
+                    lnkVerFactura.Target = "_blank";
+                    lnkVerFactura.Visible = true;
+                }
+                else
+                {
+                    lnkVerFactura.Visible = false;
+                }
+            }
+        }
+
     }
 }

@@ -2285,9 +2285,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Data\" />
     <Folder Include="docs\congelaciones\" />
     <Folder Include="docs\contratos\" />
     <Folder Include="docs\incapacidades\" />

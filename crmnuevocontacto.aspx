@@ -551,16 +551,19 @@
 
                                                                 <div class="row" id="metodosPagoYObjetivos">
                                                                     <div class="col-sm-6">
-                                                                        <div class="form-group">
+                                                                                                                                                <div class="form-group">
                                                                             <i class="fa-solid fa-coins text-info"></i>
                                                                             <label for="TipoPago" class="col-form-label">Métodos de pago:</label>
-                                                                            <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
-                                                                                DataTextField="NombreMedioPago" DataValueField="idMedioPago" CssClass="form-control input-sm">
-                                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                            </asp:DropDownList>
+                                                                        <asp:DropDownList ID="ddlTipoPago" runat="server" AppendDataBoundItems="true"
+                                                                            CssClass="form-control input-sm">
+                                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                        </asp:DropDownList>
                                                                             <asp:RequiredFieldValidator ID="rfvTipoPago" runat="server" ControlToValidate="ddlTipoPago"
                                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                                         </div>
+
+
+
                                                                     </div>
                                                                     <div class="col-sm-6">
                                                                         <div class="form-group">
@@ -1382,7 +1385,7 @@
         });
     </script>
 
-<%--    <script>
+    <%--    <script>
         $(document).ready(function () {
             $('#txbDocumento').on('change blur', function () {
                 var documento = $(this).val().trim();

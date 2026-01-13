@@ -414,10 +414,8 @@ namespace fpWebApp
 
                 ddlTipoPago.DataSource = dt;
                 ddlTipoPago.DataTextField = "NombreMedioPago";
-                ddlTipoPago.DataValueField = "idMedioPago"; 
+                ddlTipoPago.DataValueField = "idMedioPago";
                 ddlTipoPago.DataBind();
-
-                ddlTipoPago.Items.Insert(0, new ListItem("Seleccione", ""));
 
                 dt.Dispose();
             }
@@ -425,10 +423,11 @@ namespace fpWebApp
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso",
-                    "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog,
+                    "Ocurrió un inconveniente. Código: " + idLog,
                     "error");
             }
         }
+
 
 
         private void listaEmpresasAfiliadas()

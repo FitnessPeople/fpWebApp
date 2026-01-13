@@ -9,15 +9,18 @@
         </div>
     </div>
     <div class="ibox-content">
-        <div class="row">
+        <div class="row text-center">
             <div class="col-lg-4">
                 <canvas id="miGrafico1"></canvas>
+                <h5><i class="fa fa-chart-simple fa-2x text-navy m-r-xs"></i>Ventas Débito Automático Últimos 6 Meses</h5>
             </div>
             <div class="col-lg-4">
                 <canvas id="miGrafico2"></canvas>
+                <h5><i class="fa fa-chart-simple fa-2x text-navy m-r-xs"></i>Afiliados Activos por Sede</h5>
             </div>
             <div class="col-lg-4">
                 <canvas id="miGrafico3"></canvas>
+                <h5><i class="fa fa-chart-simple fa-2x text-navy m-r-xs"></i>Ingresos Totales Últimos 6 Meses</h5>
             </div>
         </div>
     </div>
@@ -26,7 +29,7 @@
 <script>
     $(function () {
 
-        // Gráfico de Ventas y Cantidades últimos 3 meses
+        // Gráfico Ventas Débito Automático últimos 6 meses
         const colores1 = sumatoria1.map((_, index) => {
             const hue = (index * 360) / sumatoria1.length;
             return `hsla(${hue}, 70%, 55%, 0.7)`;
@@ -52,10 +55,7 @@
         var barOptions = {
             responsive: true,
             legend: {
-                display: true,
-                labels: {
-                    usePointStyle: true
-                }
+                display: false,
             },
             tooltips: {
                 enabled: true,
@@ -65,7 +65,6 @@
                     label: function (tooltipItem, data) {
                         var dataset = data.datasets[tooltipItem.datasetIndex];
                         var value = tooltipItem.yLabel;
-
                         if (dataset.type === 'bar') {
                             return 'Ventas: $ ' + value.toLocaleString('es-CO');
                         }
@@ -73,11 +72,20 @@
                 }
             },
             scales: {
+                xAxes: [{
+                    ticks: {
+                        fontSize: 10,        // 👈 tamaño deseado
+                        autoSkip: false,     // 👈 MUY IMPORTANTE
+                        maxRotation: 0,      // 👈 evita que rote
+                        minRotation: 0
+                    }
+                }],
                 yAxes: [
                     {
                         id: 'y-bar',
                         position: 'left',
                         ticks: {
+                            fontSize: 10,
                             beginAtZero: true,
                             suggestedMax: Math.max(...sumatoria1) * 1.2,
                             callback: function (value) {
@@ -86,7 +94,8 @@
                         },
                         scaleLabel: {
                             display: true,
-                            labelString: 'Ventas'
+                            labelString: 'Ventas',
+                            fontSize: 11
                         }
                     }
                 ]
@@ -152,8 +161,17 @@
                 display: false
             },
             scales: {
+                xAxes: [{
+                    ticks: {
+                        fontSize: 10,        // 👈 tamaño deseado
+                        autoSkip: false,     // 👈 MUY IMPORTANTE
+                        maxRotation: 0,      // 👈 evita que rote
+                        minRotation: 0
+                    }
+                }],
                 yAxes: [{
                     ticks: {
+                        fontSize: 10,
                         beginAtZero: true
                     }
                 }]
@@ -172,7 +190,7 @@
                         var meta = chartInstance.controller.getDatasetMeta(i);
                         meta.data.forEach(function (bar, index) {
                             var value = dataset.data[index];
-                            ctx.fillText(value, bar._model.x, bar._model.y - 5);
+                            ctx.fillText(value, bar._model.x + 12, bar._model.y + 8);
                         });
                     });
                 }
@@ -180,6 +198,111 @@
         };
 
         var ctx1 = document.getElementById("miGrafico2").getContext("2d");
+        new Chart(ctx1, { type: 'horizontalBar', data: barData, options: barOptions });
+
+
+        // Gráfico Ingresos Totales últimos 6 meses
+        const colores3 = sumatoria3.map((_, index) => {
+            const hue = (index * 360) / sumatoria3.length;
+            return `hsla(${hue}, 70%, 55%, 0.7)`;
+
+        });
+
+        var barData = {
+            labels: nombres3,
+            datasets: [
+                {
+                    yAxisID: 'y-bar',
+                    type: 'bar',
+                    label: "Ingresos totales",
+                    backgroundColor: colores3,
+                    borderColor: "rgba(26,179,148,0.7)",
+                    pointBackgroundColor: "rgba(26,179,148,1)",
+                    pointBorderColor: "#fff",
+                    data: sumatoria3
+                }
+            ]
+        };
+
+        var barOptions = {
+            responsive: true,
+            legend: {
+                display: false,
+            },
+            tooltips: {
+                enabled: true,
+                mode: 'index',
+                intersect: false,
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var value = tooltipItem.yLabel;
+                        if (dataset.type === 'bar') {
+                            return 'Ingresos: $ ' + value.toLocaleString('es-CO');
+                        }
+                    }
+                }
+            },
+            scales: {
+                xAxes: [{
+                    ticks: {
+                        fontSize: 10,        // 👈 tamaño deseado
+                        autoSkip: false,     // 👈 MUY IMPORTANTE
+                        maxRotation: 0,      // 👈 evita que rote
+                        minRotation: 0
+                    }
+                }],
+                yAxes: [
+                    {
+                        id: 'y-bar',
+                        position: 'left',
+                        ticks: {
+                            fontSize: 10,
+                            beginAtZero: true,
+                            suggestedMax: Math.max(...sumatoria3) * 1.2,
+                            callback: function (value) {
+                                return '$ ' + value.toLocaleString('es-CO');
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Ingresos',
+                            fontSize: 11
+                        }
+                    }
+                ]
+            },
+            animation: {
+                duration: 1,
+                onProgress: function () {
+                    var chartInstance = this.chart;
+                    var ctx = chartInstance.ctx;
+
+                    ctx.font = "10px Arial";
+                    ctx.fillStyle = "#000";
+                    ctx.textAlign = "center";
+                    ctx.textBaseline = "bottom";
+
+                    this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+
+                        // 🔵 BARRAS (Ventas)
+                        if (dataset.type === 'bar') {
+                            meta.data.forEach(function (bar, index) {
+                                var value = dataset.data[index];
+                                var yPos = bar._model.y - 5;
+                                if (yPos < 15) yPos = 15;
+
+                                var texto = '$ ' + value.toLocaleString('es-CO');
+                                ctx.fillText(texto, bar._model.x, yPos);
+                            });
+                        }
+                    });
+                }
+            }
+        };
+
+        var ctx1 = document.getElementById("miGrafico3").getContext("2d");
         new Chart(ctx1, { type: 'bar', data: barData, options: barOptions });
     });
 </script>
