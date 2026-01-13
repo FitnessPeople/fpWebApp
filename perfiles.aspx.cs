@@ -108,7 +108,7 @@ namespace fpWebApp
         private void ListaPermisosPerfiles()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPermisosPerfilesPorPerfil(int.Parse(ddlPerfiles.SelectedItem.Value.ToString()));
+            DataTable dt = cg.ConsultarPermisosPerfilesPorPerfil(int.Parse(ddlPerfiles.SelectedItem.Value.ToString()), 0); // Permiso 0: Mostrar todas las páginas. Permiso 1: Mostrar solo las que tiene permiso.
 
             rpPaginasPermisos.DataSource = dt;
             rpPaginasPermisos.DataBind();
@@ -390,6 +390,27 @@ namespace fpWebApp
             dt.Dispose();
 
             return strData;
+        }
+
+        protected void cbSoloPermiso_CheckedChanged(object sender, EventArgs e)
+        {
+            clasesglobales cg = new clasesglobales();
+            if (cbSoloPermiso.Checked)
+            {
+                DataTable dt = cg.ConsultarPermisosPerfilesPorPerfil(int.Parse(ddlPerfiles.SelectedItem.Value.ToString()), 1); // Permiso 0: Mostrar todas las páginas. Permiso 1: Mostrar solo las que tiene permiso.
+
+                rpPaginasPermisos.DataSource = dt;
+                rpPaginasPermisos.DataBind();
+                dt.Dispose();
+            }
+            else
+            {
+                DataTable dt = cg.ConsultarPermisosPerfilesPorPerfil(int.Parse(ddlPerfiles.SelectedItem.Value.ToString()), 0); // Permiso 0: Mostrar todas las páginas. Permiso 1: Mostrar solo las que tiene permiso.
+
+                rpPaginasPermisos.DataSource = dt;
+                rpPaginasPermisos.DataBind();
+                dt.Dispose();
+            }
         }
     }
 }

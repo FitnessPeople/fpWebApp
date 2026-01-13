@@ -287,6 +287,8 @@
     <Content Include="controles\footer.ascx" />
     <Content Include="controles\grafico01.ascx" />
     <Content Include="controles\graficosCEO.ascx" />
+    <Content Include="controles\graficosDirCom.ascx" />
+    <Content Include="controles\graficosDirOpe.ascx" />
     <Content Include="controles\header.ascx" />
     <Content Include="controles\indicadoresCEO.ascx" />
     <Content Include="controles\indicadores02.ascx" />
@@ -295,6 +297,8 @@
     <Content Include="controles\indicadores05.ascx" />
     <Content Include="controles\indicadoresacceso.ascx" />
     <Content Include="controles\indicadoresconcursogympass.ascx" />
+    <Content Include="controles\indicadoresDirCom.ascx" />
+    <Content Include="controles\indicadoresDirOpe.ascx" />
     <Content Include="controles\indicadoresgympass.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
     <Content Include="controles\indicadoressoporte.ascx" />
@@ -1332,6 +1336,20 @@
     <Compile Include="controles\graficosCEO.ascx.designer.cs">
       <DependentUpon>graficosCEO.ascx</DependentUpon>
     </Compile>
+    <Compile Include="controles\graficosDirCom.ascx.cs">
+      <DependentUpon>graficosDirCom.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\graficosDirCom.ascx.designer.cs">
+      <DependentUpon>graficosDirCom.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\graficosDirOpe.ascx.cs">
+      <DependentUpon>graficosDirOpe.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\graficosDirOpe.ascx.designer.cs">
+      <DependentUpon>graficosDirOpe.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controles\header.ascx.cs">
       <DependentUpon>header.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1385,6 +1403,20 @@
     </Compile>
     <Compile Include="controles\indicadoresconcursogympass.ascx.designer.cs">
       <DependentUpon>indicadoresconcursogympass.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoresDirCom.ascx.cs">
+      <DependentUpon>indicadoresDirCom.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresDirCom.ascx.designer.cs">
+      <DependentUpon>indicadoresDirCom.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoresDirOpe.ascx.cs">
+      <DependentUpon>indicadoresDirOpe.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresDirOpe.ascx.designer.cs">
+      <DependentUpon>indicadoresDirOpe.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresgympass.ascx.cs">
       <DependentUpon>indicadoresgympass.ascx</DependentUpon>

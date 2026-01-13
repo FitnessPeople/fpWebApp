@@ -59,8 +59,8 @@
                     <p>
                         <b>Paso 1: Crea uno nuevo</b><br />
                         Usa el campo que está a la <b>izquierda</b> para digitar el nombre que quieres registrar.<br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Agregar:</b> Guarda la información y finaliza el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
                     <br />
                         <br />
                         <b>Paso 2: Visualiza</b><br />
@@ -69,17 +69,17 @@
                         <br />
                         <b>Paso 3: Gestiona perfiles</b><br />
                         En la columna <b>Acciones</b> encontrarás estas opciones:<br />
-                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Modifica los datos necesarios.<br />
-                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Borra lo que creas innecesario.
+                        <i class="fa fa-edit" style="color: #1AB394;"></i><b>Editar:</b> Modifica los datos necesarios.<br />
+                        <i class="fa fa-trash" style="color: #DC3545;"></i><b>Eliminar:</b> Borra lo que creas innecesario.
                      <br />
                         <br />
                         <b>Paso 4: Gestiona permisos</b><br />
                         Usa la tabla que está a la <b>derecha</b> para gestionar lo que desees.<br />
                         Selecciona el perfil.<br />
-                        Da click en <i class="fa-solid fa-thumbs-up" style="color: #1AB394;"></i> para modificar sus permisos.
+                        Da click en <i class="fa-solid fa-thumbs-up" style="color: #1AB394;"></i>para modificar sus permisos.
                     <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -145,8 +145,8 @@
                                         <div class="form-group">
                                             <label>Nombre del perfil:</label>
                                             <asp:TextBox ID="txbPerfil" runat="server" CssClass="form-control input-sm" placeholder="Perfil"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="rfvPerfil" runat="server" 
-                                                ErrorMessage="* Campo requerido" ControlToValidate="txbPerfil" 
+                                            <asp:RequiredFieldValidator ID="rfvPerfil" runat="server"
+                                                ErrorMessage="* Campo requerido" ControlToValidate="txbPerfil"
                                                 CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                         </div>
                                         <div class="form-group">
@@ -159,7 +159,7 @@
                                             <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
                                         </div>
 
-                                        <table class="footable1 table table-striped" data-paging-size="100" 
+                                        <table class="footable1 table table-striped" data-paging-size="100"
                                             data-paging="false" data-sorting="true" data-empty="-">
                                             <thead>
                                                 <tr>
@@ -206,18 +206,30 @@
                                             <ContentTemplate>
                                                 <div class="row">
                                                     <div class="col-lg-12">
-                                                        <div class="form-group">
-                                                            <label>Perfil</label>
-                                                            <asp:DropDownList CssClass="chosen-select form-control input-sm m-b required" 
-                                                                ID="ddlPerfiles" runat="server"
-                                                                OnSelectedIndexChanged="ddlPerfiles_SelectedIndexChanged" 
-                                                                DataValueField="idPerfil" DataTextField="Perfil"
-                                                                AutoPostBack="true" AppendDataBoundItems="true">
-                                                            </asp:DropDownList>
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label>Perfil</label>
+                                                                    <asp:DropDownList CssClass="chosen-select form-control input-sm m-b required"
+                                                                        ID="ddlPerfiles" runat="server"
+                                                                        OnSelectedIndexChanged="ddlPerfiles_SelectedIndexChanged"
+                                                                        DataValueField="idPerfil" DataTextField="Perfil"
+                                                                        AutoPostBack="true" AppendDataBoundItems="true">
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-group">
+                                                                    <label>Solo con permiso</label>
+                                                                    <asp:CheckBox ID="cbSoloPermiso" runat="server" Text="&nbsp;Solo con permiso" 
+                                                                        OnCheckedChanged="cbSoloPermiso_CheckedChanged" AutoPostBack="true" 
+                                                                        CssClass="form-control input-sm" />
+                                                                </div>
+                                                            </div>
                                                         </div>
 
-                                                        <table class="footable2 table table-striped" data-paging-size="100" 
-                                                            data-paging="false" data-sorting="true" >
+                                                        <table class="footable2 table table-striped" data-paging-size="100"
+                                                            data-paging="false" data-sorting="true">
                                                             <thead>
                                                                 <tr>
                                                                     <th>Página</th>

@@ -3574,7 +3574,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarPermisosPerfilesPorPerfil(int idPerfil)
+        public DataTable ConsultarPermisosPerfilesPorPerfil(int idPerfil, int permiso)
         {
             DataTable dt = new DataTable();
 
@@ -3586,7 +3586,8 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PERMISOS_PERFILES_POR_PERFIL", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_id_perfil", Convert.ToInt32(idPerfil));
+                        cmd.Parameters.AddWithValue("@p_id_perfil", idPerfil);
+                        cmd.Parameters.AddWithValue("@p_solo_con_permiso", permiso);
 
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
