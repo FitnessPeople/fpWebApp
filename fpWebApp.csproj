@@ -286,10 +286,16 @@
     <Content Include="contratoafiliado.aspx" />
     <Content Include="controles\footer.ascx" />
     <Content Include="controles\grafico01.ascx" />
+    <Content Include="controles\graficosAdmSede.ascx" />
+    <Content Include="controles\graficosAseCom.ascx" />
     <Content Include="controles\graficosCEO.ascx" />
     <Content Include="controles\graficosDirCom.ascx" />
+    <Content Include="controles\graficosDirFin.ascx" />
     <Content Include="controles\graficosDirOpe.ascx" />
+    <Content Include="controles\graficosLidAsis.ascx" />
     <Content Include="controles\header.ascx" />
+    <Content Include="controles\indicadoresAdmSede.ascx" />
+    <Content Include="controles\indicadoresAseCom.ascx" />
     <Content Include="controles\indicadoresCEO.ascx" />
     <Content Include="controles\indicadores02.ascx" />
     <Content Include="controles\indicadores03.ascx" />
@@ -298,8 +304,10 @@
     <Content Include="controles\indicadoresacceso.ascx" />
     <Content Include="controles\indicadoresconcursogympass.ascx" />
     <Content Include="controles\indicadoresDirCom.ascx" />
+    <Content Include="controles\indicadoresDirFin.ascx" />
     <Content Include="controles\indicadoresDirOpe.ascx" />
     <Content Include="controles\indicadoresgympass.ascx" />
+    <Content Include="controles\indicadoresLidAsis.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
     <Content Include="controles\indicadoressoporte.ascx" />
     <Content Include="controles\indicadoresusucrm.ascx" />
@@ -1329,6 +1337,20 @@
       <DependentUpon>grafico01.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="controles\graficosAdmSede.ascx.cs">
+      <DependentUpon>graficosAdmSede.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\graficosAdmSede.ascx.designer.cs">
+      <DependentUpon>graficosAdmSede.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\graficosAseCom.ascx.cs">
+      <DependentUpon>graficosAseCom.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\graficosAseCom.ascx.designer.cs">
+      <DependentUpon>graficosAseCom.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controles\graficosCEO.ascx.cs">
       <DependentUpon>graficosCEO.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1343,6 +1365,13 @@
     <Compile Include="controles\graficosDirCom.ascx.designer.cs">
       <DependentUpon>graficosDirCom.ascx</DependentUpon>
     </Compile>
+    <Compile Include="controles\graficosDirFin.ascx.cs">
+      <DependentUpon>graficosDirFin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\graficosDirFin.ascx.designer.cs">
+      <DependentUpon>graficosDirFin.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controles\graficosDirOpe.ascx.cs">
       <DependentUpon>graficosDirOpe.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1350,12 +1379,33 @@
     <Compile Include="controles\graficosDirOpe.ascx.designer.cs">
       <DependentUpon>graficosDirOpe.ascx</DependentUpon>
     </Compile>
+    <Compile Include="controles\graficosLidAsis.ascx.cs">
+      <DependentUpon>graficosLidAsis.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\graficosLidAsis.ascx.designer.cs">
+      <DependentUpon>graficosLidAsis.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controles\header.ascx.cs">
       <DependentUpon>header.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controles\header.ascx.designer.cs">
       <DependentUpon>header.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoresAdmSede.ascx.cs">
+      <DependentUpon>indicadoresAdmSede.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresAdmSede.ascx.designer.cs">
+      <DependentUpon>indicadoresAdmSede.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoresAseCom.ascx.cs">
+      <DependentUpon>indicadoresAseCom.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresAseCom.ascx.designer.cs">
+      <DependentUpon>indicadoresAseCom.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresCEO.ascx.cs">
       <DependentUpon>indicadoresCEO.ascx</DependentUpon>
@@ -1411,6 +1461,13 @@
     <Compile Include="controles\indicadoresDirCom.ascx.designer.cs">
       <DependentUpon>indicadoresDirCom.ascx</DependentUpon>
     </Compile>
+    <Compile Include="controles\indicadoresDirFin.ascx.cs">
+      <DependentUpon>indicadoresDirFin.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresDirFin.ascx.designer.cs">
+      <DependentUpon>indicadoresDirFin.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controles\indicadoresDirOpe.ascx.cs">
       <DependentUpon>indicadoresDirOpe.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1424,6 +1481,13 @@
     </Compile>
     <Compile Include="controles\indicadoresgympass.ascx.designer.cs">
       <DependentUpon>indicadoresgympass.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoresLidAsis.ascx.cs">
+      <DependentUpon>indicadoresLidAsis.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresLidAsis.ascx.designer.cs">
+      <DependentUpon>indicadoresLidAsis.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresmedico.ascx.cs">
       <DependentUpon>indicadoresmedico.ascx</DependentUpon>

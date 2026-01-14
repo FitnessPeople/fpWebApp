@@ -15,6 +15,15 @@ namespace fpWebApp.controles
     {
 
         /// <summary>
+        /// Control ltEtiqueta1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltEtiqueta1;
+
+        /// <summary>
         /// Control rpTareas.
         /// </summary>
         /// <remarks>
@@ -22,5 +31,14 @@ namespace fpWebApp.controles
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Repeater rpTareas;
+
+        /// <summary>
+        /// Control rpEnlaces.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rpEnlaces;
     }
 }

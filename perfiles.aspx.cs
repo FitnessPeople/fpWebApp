@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -51,9 +52,21 @@ namespace fpWebApp
                         }
                         if (Request.QueryString["deleteid"] != null)
                         {
-                            string strQuery = "DELETE FROM perfiles WHERE idPerfil = " + Request.QueryString["deleteid"].ToString();
-                            cg.TraerDatosStr(strQuery);
-                            Response.Redirect("perfiles");
+                            // Si existe un usuario con este perfil, no se puede borrar, de lo contrario si.
+                            string strQuery = "SELECT * FROM usuarios WHERE idPerfil = " + Request.QueryString["deleteid"].ToString();
+                            DataTable dt = cg.TraerDatos(strQuery);
+
+                            if (dt.Rows.Count > 0)
+                            {
+                                //No se puede borrar
+                                MostrarAlertaRedireccion("Eliminar", "Existe al menos un usuario con este perfil, no se puede eliminar.", "error", "perfiles.aspx");
+                            }
+                            else
+                            {
+                                strQuery = "DELETE FROM perfiles WHERE idPerfil = " + Request.QueryString["deleteid"].ToString();
+                                cg.TraerDatosStr(strQuery);
+                                MostrarAlertaRedireccion("Eliminar", "El perfil fue eliminado con exito.", "error", "perfiles.aspx");
+                            }
                         }
                     }
                 }
@@ -177,10 +190,12 @@ namespace fpWebApp
                             mensajeExcepcionInterna = ex.InnerException.Message;
                             Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
                         }
-                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Excepción interna." +
-                        "</div>";
+                        //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        //"Excepción interna." +
+                        //"</div>";
+
+                        MostrarAlerta("Excepción interna.", mensajeExcepcionInterna, "error");
                     }
                     Response.Redirect("perfiles");
                 }
@@ -411,6 +426,44 @@ namespace fpWebApp
                 rpPaginasPermisos.DataBind();
                 dt.Dispose();
             }
+        }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+            Swal.hideLoading();
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+        }
+
+        private void MostrarAlertaRedireccion(string titulo, string mensaje, string tipo, string urlRedirect)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+            Swal.hideLoading();
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar', 
+            }}).then((result) => {{
+                if (result.isConfirmed) {{
+                    window.location.replace('{urlRedirect}');
+                }}
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace fpWebApp
                     ltIdEmpresa.Text = Session["idEmpresa"].ToString();
                     ltCargo.Text = Session["CargoUsuario"].ToString();
                     ltFoto.Text = Session["Foto"].ToString();
-                    ltIdPerfil.Text = Session["idPerfil"].ToString();
+                    ltIdPerfil.Text = Session["idPerfil"].ToString() + " - " + Session["Perfil"].ToString();
                     ltEmailUsuario.Text = Session["emailUsuario"].ToString();
                     ltFechaNac.Text = Session["fechaNac"].ToString();
                     ltIdSede.Text = Session["idSede"].ToString();
@@ -61,8 +61,8 @@ namespace fpWebApp
                     TimeSpan diferencia = fechaDestino - hoy;
                     _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
 
-                    Control ctrIndicadores = new Control();
-                    Control ctrGraficos = new Control();
+                    Control ctrIndicadores;
+                    Control ctrGraficos;
 
                     switch (Session["Perfil"].ToString())
                     {
