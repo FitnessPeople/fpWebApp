@@ -618,7 +618,7 @@ namespace fpWebApp
                     idPayment
                 );                
                 
-                Session["idAfiliadoPlan"] = idAfiliadoPlan;
+                //Session["idAfiliadoPlan"] = idAfiliadoPlan;
                 //string referencia = Session["documentoAfiliado"].ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
                 //string codDatafono = Session["codDatafono"].ToString();
 
