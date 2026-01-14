@@ -619,8 +619,8 @@ namespace fpWebApp
                 );                
                 
                 Session["idAfiliadoPlan"] = idAfiliadoPlan;
-                string referencia = Session["documentoAfiliado"].ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
-                string codDatafono = Session["codDatafono"].ToString();
+                //string referencia = Session["documentoAfiliado"].ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                //string codDatafono = Session["codDatafono"].ToString();
 
                 return (true, idSiigoFactura);
             }

@@ -114,6 +114,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlTipoDocumento;
 
         /// <summary>
+        /// Control txbNombreContacto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbNombreContacto;
+
+        /// <summary>
+        /// Control txbCargoContacto.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbCargoContacto;
+
+        /// <summary>
         /// Control txbTelefonoPpal.
         /// </summary>
         /// <remarks>
@@ -123,24 +141,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbTelefonoPpal;
 
         /// <summary>
-        /// Control txbTelefonoSrio.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbTelefonoSrio;
-
-        /// <summary>
-        /// Control txbCelular.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCelular;
-
-        /// <summary>
         /// Control txbCorreo.
         /// </summary>
         /// <remarks>
@@ -148,6 +148,42 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbCorreo;
+
+        /// <summary>
+        /// Control txbNombrepagador.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbNombrepagador;
+
+        /// <summary>
+        /// Control txbCelularPagador.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbCelularPagador;
+
+        /// <summary>
+        /// Control txbCorreoPagador.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbCorreoPagador;
+
+        /// <summary>
+        /// Control rblActivo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList rblActivo;
 
         /// <summary>
         /// Control txbDireccion.
@@ -175,6 +211,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txbFechaConvenio;
+
+        /// <summary>
+        /// Control txbFechaFinConvenio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbFechaFinConvenio;
 
         /// <summary>
         /// Control txbNroEmpleados.

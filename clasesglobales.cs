@@ -11954,6 +11954,74 @@ namespace fpWebApp
                 }
             }
         }
+
+        public string InsertarEmpresaAfiliada(string documentoEmpresa,string digitoVerificacion,int idTipoDocumento,string nombreComercial,string razonSocial,
+            DateTime fechaConvenio,DateTime? fechaFinConvenio, string nombreContacto, string cargoContacto, string celularEmpresa, string correoEmpresa,
+            string nombrePagador, string telefonoPagador, string correoPagador, string direccionEmpresa, int idCiudadEmpresa, int nroEmpleados,
+            string tipoNegociacion,  int diasCredito,  string contrato,  string imagen, string camaraComercio, string rut, string cedulaRepLegal,
+            string retornoAdm, int idUsuario, out bool respuesta, out string mensaje )
+        {
+            respuesta = false;
+            mensaje = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_EMPRESA_AFILIADA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_empresa", documentoEmpresa);
+                        cmd.Parameters.AddWithValue("@p_digitoverificacion", digitoVerificacion);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_documento", idTipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_nombre_comercial", nombreComercial);
+                        cmd.Parameters.AddWithValue("@p_razon_social", razonSocial);
+                        cmd.Parameters.AddWithValue("@p_fecha_convenio", fechaConvenio);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin_convenio", fechaFinConvenio.HasValue ? (object)fechaFinConvenio.Value : DBNull.Value);
+                        cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_cargo_contacto", cargoContacto);
+                        cmd.Parameters.AddWithValue("@p_celular_empresa", celularEmpresa);
+                        cmd.Parameters.AddWithValue("@p_correo_empresa", correoEmpresa);
+                        cmd.Parameters.AddWithValue("@p_nombre_pagador", nombrePagador);
+                        cmd.Parameters.AddWithValue("@p_telefono_pagador", telefonoPagador);
+                        cmd.Parameters.AddWithValue("@p_correo_pagador", correoPagador);
+                        cmd.Parameters.AddWithValue("@p_direccion_empresa", direccionEmpresa);
+                        cmd.Parameters.AddWithValue("@p_id_ciudad_empresa", idCiudadEmpresa);
+                        cmd.Parameters.AddWithValue("@p_nro_empleados", nroEmpleados);
+                        cmd.Parameters.AddWithValue("@p_tipo_negociacion", tipoNegociacion);
+                        cmd.Parameters.AddWithValue("@p_dias_credito", diasCredito);
+                        cmd.Parameters.AddWithValue("@p_contrato", contrato);
+                        cmd.Parameters.AddWithValue("@p_imagen", imagen);
+                        cmd.Parameters.AddWithValue("@p_camara_comercio", camaraComercio);
+                        cmd.Parameters.AddWithValue("@p_rut", rut);
+                        cmd.Parameters.AddWithValue("@p_cedula_rep_leg", cedulaRepLegal);
+                        cmd.Parameters.AddWithValue("@p_retorno_adm", retornoAdm);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 50);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+
+                        mensaje = pMensaje.Value?.ToString();
+                        respuesta = (mensaje == "OK");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
         #endregion
 
         #region GymPass

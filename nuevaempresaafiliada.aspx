@@ -31,6 +31,14 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+        <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#nuevaempresa");
@@ -135,13 +143,15 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Nombre comercial</label>
-                                                    <asp:TextBox ID="txbNombreCcial" CssClass="form-control input-sm" runat="server" placeholder="Nombre comercial"></asp:TextBox>
+                                                    <asp:TextBox ID="txbNombreCcial" CssClass="form-control input-sm" runat="server" placeholder="Nombre comercial"
+                                                        Style="text-transform: uppercase;" SpellCheck="false" autocomplete="off"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Razón social</label>
-                                                    <asp:TextBox ID="txbRazonSocial" CssClass="form-control input-sm" runat="server" placeholder="Razón social"></asp:TextBox>
+                                                    <asp:TextBox ID="txbRazonSocial" CssClass="form-control input-sm" runat="server" placeholder="Razón social"
+                                                        Style="text-transform: uppercase;" SpellCheck="false" autocomplete="off"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -172,14 +182,17 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Teléfono principal</label>
-                                                    <asp:TextBox ID="txbTelefonoPpal" CssClass="form-control input-sm" runat="server" placeholder="Teléfono principal"></asp:TextBox>
+                                                    <label>Nombre del Contacto</label>
+                                                    <asp:TextBox ID="txbNombreContacto" CssClass="form-control input-sm" runat="server" placeholder="Nombre Contacto"
+                                                        Style="text-transform: uppercase;" SpellCheck="false" autocomplete="off"></asp:TextBox>
                                                 </div>
                                             </div>
+
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Teléfono secundario</label>
-                                                    <asp:TextBox ID="txbTelefonoSrio" CssClass="form-control input-sm" runat="server" placeholder="Teléfono secundario"></asp:TextBox>
+                                                    <label>Cargo del Contacto</label>
+                                                    <asp:TextBox ID="txbCargoContacto" CssClass="form-control input-sm" runat="server" placeholder="Cargo"
+                                                        Style="text-transform: uppercase;" SpellCheck="false" autocomplete="off"></asp:TextBox>
                                                 </div>
                                             </div>
                                         </div>
@@ -187,16 +200,57 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Celular</label>
-                                                    <asp:TextBox ID="txbCelular" CssClass="form-control input-sm" runat="server" placeholder="Celular"></asp:TextBox>
+                                                    <label>Teléfono Principal</label>
+                                                    <asp:TextBox ID="txbTelefonoPpal" CssClass="form-control input-sm" runat="server" placeholder="Teléfono principal"></asp:TextBox>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Correo Empresa</label>
+                                                    <asp:TextBox ID="txbCorreo" CssClass="form-control input-sm" runat="server" placeholder="Correo" required></asp:TextBox>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Nombre del Pagador</label>
+                                                    <asp:TextBox ID="txbNombrepagador" CssClass="form-control input-sm" runat="server" placeholder="Pagador"
+                                                        Style="text-transform: uppercase;" SpellCheck="false" autocomplete="off"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Correo</label>
-                                                    <asp:TextBox ID="txbCorreo" CssClass="form-control input-sm" runat="server" placeholder="Correo" required></asp:TextBox>
+                                                    <label>Celular</label>
+                                                    <asp:TextBox ID="txbCelularPagador" CssClass="form-control input-sm" runat="server" placeholder="Celular del Pagador"></asp:TextBox>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Correo del pagador</label>
+                                                    <asp:TextBox ID="txbCorreoPagador" CssClass="form-control input-sm" runat="server" placeholder="Correo Pagador"></asp:TextBox>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label for="Retorno" class="col-form-label">Retorno administrativo?:</label>
+                                                    <div class="col-sm-10">
+                                                        <asp:RadioButtonList
+                                                            ID="rblActivo"
+                                                            runat="server"
+                                                            RepeatDirection="Horizontal"
+                                                            CssClass="i-checks">
+                                                            <asp:ListItem Text="Sí" Value="1"></asp:ListItem>
+                                                            <asp:ListItem Text="No" Value="0" Selected="True"></asp:ListItem>
+                                                        </asp:RadioButtonList>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
 
@@ -221,13 +275,19 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <div class="form-group">
-                                                    <label>Fecha convenio</label>
+                                                    <label>Fecha inicio convenio</label>
                                                     <asp:TextBox ID="txbFechaConvenio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Fecha fin convenio</label>
+                                                    <asp:TextBox ID="txbFechaFinConvenio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label>Nro de empleados</label>
                                                     <asp:TextBox ID="txbNroEmpleados" CssClass="form-control input-sm" runat="server"></asp:TextBox>
@@ -267,7 +327,7 @@
                                                     <span class="fileinput-filename"></span>
                                                 </div>
                                                 <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                    <span class="fileinput-new input-sm">Seleccionar archivo</span>
+                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
                                                     <span class="fileinput-exists input-sm">Cambiar</span>
                                                     <input type="file" name="fileConvenio" id="fileConvenio" accept="application/pdf">
                                                 </span>
@@ -276,26 +336,53 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="form-group">
-                                                    <label for="ValorPresupuesto" class="col-form-label">Retorno administrativo?:</label>
-                                                    <div class="col-sm-10">
-                                                        <label class="checkbox-inline">
-                                                            <div class="i-checks">
-                                                                <label>
-                                                                    <input type="radio" value="option1" name="a">
-                                                                    <i></i>Sí
-                                                                </label>
-                                                            </div>
-                                                            <div class="i-checks">
-                                                                <label>
-                                                                    <input type="radio" checked="" value="option2" name="a">
-                                                                    <i></i>No</label>
-                                                            </div>
-                                                        </label>
-                                                    </div>
+                                        <div class="form-group">
+                                            <label>Camara de comercio:</label>
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="form-control input-sm" data-trigger="fileinput">
+                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                    <span class="fileinput-filename"></span>
                                                 </div>
+                                                <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
+                                                    <span class="fileinput-exists input-sm">Cambiar</span>
+                                                    <input type="file" name="fileCamara" id="fileCamara" accept="application/pdf">
+                                                </span>
+                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
+                                                    data-dismiss="fileinput">Quitar</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>RUT:</label>
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="form-control input-sm" data-trigger="fileinput">
+                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                    <span class="fileinput-filename"></span>
+                                                </div>
+                                                <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
+                                                    <span class="fileinput-exists input-sm">Cambiar</span>
+                                                    <input type="file" name="fileRut" id="fileRut" accept="application/pdf">
+                                                </span>
+                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
+                                                    data-dismiss="fileinput">Quitar</a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Cédula Representante Legal:</label>
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="form-control input-sm" data-trigger="fileinput">
+                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                    <span class="fileinput-filename"></span>
+                                                </div>
+                                                <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
+                                                    <span class="fileinput-exists input-sm">Cambiar</span>
+                                                    <input type="file" name="fileCedulaRepLeg" id="fileCedulaRepLeg" accept="application/pdf">
+                                                </span>
+                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
+                                                    data-dismiss="fileinput">Quitar</a>
                                             </div>
                                         </div>
 
@@ -384,6 +471,9 @@
                 txbFechaConvenio: {
                     required: true
                 },
+                txbFechaFinConvenio: {
+                    required: true
+                },
                 txbNroEmpleados: {
                     required: true
                 },
@@ -396,9 +486,21 @@
                 fileConvenio: {
                     required: true
                 },
+                fileCamara: {
+                    required: true
+                },
+                fileRut: {
+                    required: true
+                },
+                fileCedulaRepLeg: {
+                    required: true
+                },
             },
             messages: {
                 fileConvenio: "*",
+                fileCamara: "*",
+                fileRut: "*",
+                fileCedulaRepLeg: "*",
                 ddlCiudadEmpresa: "*",
             }
         });
