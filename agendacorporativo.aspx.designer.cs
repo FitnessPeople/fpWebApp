@@ -78,24 +78,6 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContenido;
 
         /// <summary>
-        /// Control lblMensaje.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMensaje;
-
-        /// <summary>
-        /// Control divCrear.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCrear;
-
-        /// <summary>
         /// Control ddlEmpresas.
         /// </summary>
         /// <remarks>
@@ -123,15 +105,6 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaIni;
 
         /// <summary>
-        /// Control txbFechaFin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaFin;
-
-        /// <summary>
         /// Control txbHoraIni.
         /// </summary>
         /// <remarks>
@@ -139,24 +112,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbHoraIni;
-
-        /// <summary>
-        /// Control txbHoraFin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbHoraFin;
-
-        /// <summary>
-        /// Control ddlDuracion.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDuracion;
 
         /// <summary>
         /// Control txaObservaciones.
@@ -177,22 +132,22 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvObservaciones;
 
         /// <summary>
-        /// Control ltSede.
+        /// Control ltAsesor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltSede;
+        protected global::System.Web.UI.WebControls.Literal ltAsesor;
 
         /// <summary>
-        /// Control ddlSedes.
+        /// Control ddlAsesores.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlSedes;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAsesores;
 
         /// <summary>
         /// Control footer.

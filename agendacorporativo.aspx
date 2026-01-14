@@ -14,7 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Agenda corporativa</title>
+    <title>Fitness People | Agenda corporativo</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -121,7 +121,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-calendar-days text-success m-r-sm"></i>Agenda corporativa</h2>
+                    <h2><i class="fa fa-calendar-days text-success m-r-sm"></i>Agenda corporativo</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Corporativo</li>
@@ -150,7 +150,6 @@
 
                     <form runat="server" id="form">
                         <div class="row animated fadeInDown" id="divContenido" runat="server">
-                            <asp:Label ID="lblMensaje" runat="server" Text="Label"></asp:Label>
                             <%--<div class="col-xxl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">--%>
                             <div class="col-sm-4">
                                 <div class="ibox float-e-margins">
@@ -165,7 +164,7 @@
                                             </a>
                                         </div>
                                     </div>
-                                    <div class="ibox-content" id="divCrear" runat="server" visible="false">
+                                    <div class="ibox-content" runat="server">
 
                                         <div class="row">
                                             <div class="col-sm-12">
@@ -189,22 +188,12 @@
 
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <label>Fecha Inicial:</label>
+                                                <label>Fecha:</label>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
-                                                <label>Fecha Final:</label>
-                                                <div class="form-group">
-                                                    <%--<span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>--%>
-                                                    <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-
-                                            <div class="col-sm-6 m-b-md">
                                                 <label>Hora inicio:</label>
                                                 <div class="input-group clockpicker" data-autoclose="true">
                                                     <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
@@ -213,37 +202,8 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
-                                                <label>Hora final:</label>
-                                                <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="12:00" id="txbHoraFin" name="txbHoraFin" runat="server" />
-                                                    <span class="input-group-addon">
-                                                        <span class="fa fa-clock"></span>
-                                                    </span>
-                                                </div>
-                                            </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-horizontal">
-                                                    <div class="form-group m-b-mb">
-                                                        <label class="col-sm-4">Duración cita:</label>
-                                                        <div class="col-sm-8">
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlDuracion" runat="server"
-                                                                AppendDataBoundItems="true">
-                                                                <asp:ListItem Text="20 minutos" Value="20"></asp:ListItem>
-                                                                <asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>
-                                                                <asp:ListItem Text="40 minutos" Value="40"></asp:ListItem>
-                                                                <asp:ListItem Text="45 minutos" Value="45"></asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
                                         <div class="row">
                                             <div class="form-group">
                                                 <i class="fas fa-pen text-info"></i>
@@ -263,23 +223,22 @@
                             <div class="col-sm-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Agenda
-                                            <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
+                                        <h5>Agenda 
+                                            <asp:Literal ID="ltAsesor" runat="server"></asp:Literal></h5>
                                         <div class="ibox-tools">
-                                            <span class="label label-success pull-right" style="color: #000;">Cita atendida</span>
-                                            <span class="label label-danger pull-right" style="color: #000;">Cita cancelada</span>
-                                            <span class="label label-warning pull-right" style="color: #000;">Cita asignada</span>
-                                            <span class="label label-primary pull-right" style="color: #000;">Cita disponible</span>
+                                            <span class="label label-primary pull-right" style="color: #000;">Cita agendada</span>
+                                            <span class="label label-warning pull-right" style="color: #000;">Cita atendida</span>
+                                            <span class="label label-success pull-right" style="color: #000;">Negociación realizada</span>
                                         </div>
                                     </div>
                                     <div class="ibox-content">
                                         <div class="form-horizontal">
                                             <div class="form-group m-b-n-sm">
-                                                <label class="col-sm-2 col-sm-2 control-label">Sede</label>
+                                                <label class="col-sm-2 col-sm-2 control-label">Asesor</label>
                                                 <div class="col-sm-10">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                        DataValueField="idSede" DataTextField="NombreSede"
+                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlAsesores" runat="server"
+                                                        OnSelectedIndexChanged="ddlAsesores_SelectedIndexChanged" 
+                                                        DataValueField="idUsuario" DataTextField="NombreUsuario" 
                                                         AutoPostBack="true" AppendDataBoundItems="true">                                                       
                                                     </asp:DropDownList>
                                                 </div>

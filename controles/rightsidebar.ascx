@@ -44,10 +44,14 @@
                     <asp:Repeater ID="rpEnlaces" runat="server">
                         <ItemTemplate>
                             <li>
-                                <%--<a href="#">--%>
-                                    <h4><%# Eval("NombreWeb") %></h4>
-                                    <%# Eval("token") %>
-                                <%--</a>--%>
+                                <h4><%# Eval("NombreWeb") %></h4>
+                                <%# Eval("token") %>
+                                <input type="hidden" id='hdEnlacePago_<%# Eval("token") %>' value='https://fitnesspeoplecolombia.com/register?token=<%# Eval("token") %>'>
+                                <button type="button" class="btn btn-success btn-circle" id="btnPortapaleles"
+                                    onclick='copyToClipboard("hdEnlacePago_<%# Eval("token") %>")' title="Copiar enlace">
+                                    <i class="fa fa-copy"></i>
+                                </button>
+
                             </li>
                         </ItemTemplate>
                     </asp:Repeater>
@@ -55,6 +59,21 @@
                 </ul>
 
             </div>
+
+            <script>
+                function copyToClipboard(hdEnlacePago) {
+                    //console.log(hdEnlacePago);
+                    // Get the text field
+                    var copyText = document.getElementById(hdEnlacePago);
+
+                    // Select the text field
+                    copyText.select();
+                    //copyText.setSelectionRange(0, 99999); // For mobile devices
+
+                    // Copy the text inside the text field
+                    navigator.clipboard.writeText(copyText.value);
+                }
+            </script>
 
             <div id="tab-1" class="tab-pane">
 

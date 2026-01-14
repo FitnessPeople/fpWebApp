@@ -11955,6 +11955,38 @@ namespace fpWebApp
             }
         }
 
+        public DataTable ConsultaAgendaPorAsesor(int idUsuario)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_AGENDA_ASESOR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+
         public string InsertarEmpresaAfiliada(string documentoEmpresa,string digitoVerificacion,int idTipoDocumento,string nombreComercial,string razonSocial,
             DateTime fechaConvenio,DateTime? fechaFinConvenio, string nombreContacto, string cargoContacto, string celularEmpresa, string correoEmpresa,
             string nombrePagador, string telefonoPagador, string correoPagador, string direccionEmpresa, int idCiudadEmpresa, int nroEmpleados,

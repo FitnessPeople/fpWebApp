@@ -26,23 +26,15 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        CargarSedes();
+                        CargarDatos();
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
-                        DateTime dtHoy = DateTime.Now;
-                        txbFechaIni.Attributes.Add("type", "date");
-                        txbFechaFin.Attributes.Add("type", "date");
-                        txbFechaIni.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
-                        txbFechaFin.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
-                        divCrear.Visible = true;
-                        CargarSedes();
-                        lblMensaje.Visible = false;
-                        listaEmpresasAfiliadas();
+                        CargarDatos();
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
-                        btnEliminar.Visible = true;
+                        //btnEliminar.Visible = true;
                     }
                     if (Request.QueryString.Count > 0)
                     {
@@ -93,10 +85,10 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarAgenda()
+        private void CargarAgenda(string idUsuario)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarAgenda(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
+            DataTable dt = cg.ConsultaAgendaPorAsesor(int.Parse(idUsuario));
 
             _strEventos = "events: [\r\n";
 
@@ -112,41 +104,47 @@ namespace fpWebApp
                     string strFechaHoraFin = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtFin);
 
                     _strEventos += "{\r\n";
-                    _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
-                    //_strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
-                    //_strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
+                    _strEventos += "id: '" + dt.Rows[i]["idAgendaCorp"].ToString() + "',\r\n";
                     _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
-                    //_strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
                     _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
-                    //_strEventos += "className: 'bg-primary',\r\n";
 
-                    if (dt.Rows[i]["idAfiliado"].ToString() != "")
+                    if (dt.Rows[i]["idUsuario"].ToString() != "")
                     {
-                        if (dt.Rows[i]["Cancelada"].ToString() != "0")
+                        if (dt.Rows[i]["Visitada"].ToString() == "0" && dt.Rows[i]["Vendida"].ToString() == "0") // Cita agendada
                         {
-                            _strEventos += "color: '#ed5565',\r\n"; //danger
-                            _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                            _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                            _strEventos += "icon: 'id-card',\r\n";
+                            _strEventos += "color: '#1ab394',\r\n"; // primary
+                            _strEventos += "title: '" + dt.Rows[i]["NombreUsuario"].ToString() + "',\r\n";
+                            _strEventos += "description: 'Cita agendada.',\r\n";
+                            _strEventos += "icon: 'calendar-plus',\r\n";
+                            _strEventos += "btnEliminar: 'inline',\r\n";
+                        }
+
+                        if (dt.Rows[i]["Atendida"].ToString() == "1" && dt.Rows[i]["Negociada"].ToString() == "0") // Cita atendida
+                        {
+                            _strEventos += "color: '#F8AC59',\r\n"; // warning
+                            _strEventos += "title: '" + dt.Rows[i]["NombreUsuario"].ToString() + "',\r\n";
+                            _strEventos += "description: 'Cita atendida.',\r\n";
+                            _strEventos += "icon: 'calendar-check',\r\n";
                             _strEventos += "btnEliminar: 'none',\r\n";
                         }
-                        else
+
+                        if (dt.Rows[i]["Negociada"].ToString() == "1") // Venta negociada
                         {
-                            _strEventos += "color: '#F8AC59',\r\n"; //warning
-                            _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                            _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                            _strEventos += "icon: 'id-card',\r\n";
+                            _strEventos += "color: '#1a7bb9',\r\n"; // success
+                            _strEventos += "title: '" + dt.Rows[i]["NombreUsuario"].ToString() + "',\r\n";
+                            _strEventos += "description: 'Venta negociada.',\r\n";
+                            _strEventos += "icon: 'trophy',\r\n";
                             _strEventos += "btnEliminar: 'none',\r\n";
                         }
                     }
-                    else
-                    {
-                        _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
-                        _strEventos += "color: '#1ab394',\r\n";
-                        _strEventos += "description: 'Cita disponible.',\r\n";
-                        _strEventos += "icon: 'user-doctor',\r\n";
-                        _strEventos += "btnEliminar: 'inline',\r\n";
-                    }
+                    //else
+                    //{
+                    //    _strEventos += "color: '#1ab394',\r\n";
+                    //    _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
+                    //    _strEventos += "description: 'Cita disponible.',\r\n";
+                    //    _strEventos += "icon: 'user-doctor',\r\n";
+                    //    _strEventos += "btnEliminar: 'inline',\r\n";
+                    //}
 
                     //_strEventos += "color: '#DBADFF',\r\n";
                     //_strEventos += "todoeldia: 0,\r\n";
@@ -157,7 +155,7 @@ namespace fpWebApp
 
             dt.Dispose();
 
-            AgregarFestivos(_strEventos, "2025");
+            AgregarFestivos(_strEventos, "2026");
 
             _strEventos += "],\r\n";
 
@@ -192,7 +190,6 @@ namespace fpWebApp
             return eventos;
         }
 
-
         private void listaEmpresasAfiliadas()
         {
             try
@@ -200,6 +197,7 @@ namespace fpWebApp
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
 
+                ddlEmpresas.Items.Clear();
                 ddlEmpresas.DataSource = dt;
                 ddlEmpresas.DataBind();
 
@@ -207,49 +205,48 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                lblMensaje.Visible = true;               
-                lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente. " + ex.Message.ToString();
-                lblMensaje.CssClass = "text-danger";
+                MostrarAlerta("Error", "Ocurrió un error al cargar las empresas. Por favor intente nuevamente." + ex.Message.ToString(), "error");
             }
-
-
         }
-        private void CargarSedes()
+        
+        private void CargarDatos()
         {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarSedes("Gimnasio");
+            DateTime dtHoy = DateTime.Now;
+            txbFechaIni.Attributes.Add("type", "date");
+            txbFechaIni.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
+            
+            listaEmpresasAfiliadas();
 
-            ddlSedes.Items.Clear();
-            ddlSedes.DataSource = dt;
-            ddlSedes.DataBind();
-
-            //ddlSedesCita.Items.Clear();
-            //ddlSedesCita.DataSource = dt;
-            //ddlSedesCita.DataBind();
-
-            dt.Dispose();
-
-            ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
-            CargarAgenda();
-        }
-
-        private void CargarEspecialistas()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarEspecialistas();
-
-            //ddlEspecialistas.DataSource = dt;
-            //ddlEspecialistas.DataBind();
-
-            dt.Dispose();
-        }
-
-        protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ddlSedes.SelectedItem.Value.ToString() != "")
+            if (Session["idPerfil"].ToString() == "36" || Session["idPerfil"].ToString() == "1" || Session["idPerfil"].ToString() == "37") // Líder Corporativo, CEO o Director operativo
             {
-                ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
-                CargarAgenda();
+                // Cargar lista de asesores corporativos
+                string strQuery = @"
+                    SELECT u.* 
+                    FROM usuarios u 
+                    INNER JOIN perfiles p ON p.idPerfil = u.idPerfil 
+                    WHERE p.idPerfil = 10 "; // Perfil 10: Asesor corporativo
+
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(strQuery);
+
+                ddlAsesores.Items.Clear();
+                ListItem li = new ListItem("Todos", "0");
+                ddlAsesores.Items.Add(li);
+                ddlAsesores.DataSource = dt;
+                ddlAsesores.DataBind();
+
+                //Cargar agenda de todos los asesores corporativos
+                CargarAgenda("0");
+                ltAsesor.Text = "todos los asesores";
+            }
+            else
+            {
+                if (Session["idPerfil"].ToString() == "10") // Asesor Corporativo
+                {
+                    //Cargar agenda de asesor
+                    CargarAgenda(Session["idPerfil"].ToString());
+                    ltAsesor.Text = Session["NombreUsuario"].ToString();
+                }
             }
         }
 
@@ -267,16 +264,9 @@ namespace fpWebApp
             DateTime dtFechaFinCita;
 
             DateTime dtFechaIni = Convert.ToDateTime(txbFechaIni.Value.ToString());
-            DateTime dtFechaFin = Convert.ToDateTime(txbFechaFin.Value.ToString());
+            DateTime dtFechaFin = Convert.ToDateTime(txbFechaIni.Value.ToString());
 
             int intCountItemsChecked = 0;
-            //foreach (ListItem item in cbDiasRepite.Items)
-            //{
-            //    if (item.Selected)
-            //    {
-            //        intCountItemsChecked += 1;
-            //    }
-            //}
 
             int nroDias = (dtFechaFin - dtFechaIni).Days + 1;
 
@@ -285,7 +275,7 @@ namespace fpWebApp
             for (int i = 0; i < nroDias; i++)
             {
                 DateTime dtFechaIniCita = Convert.ToDateTime(dtFechaIni.AddDays(i).ToString("yyyy-MM-dd") + " " + txbHoraIni.Value.ToString());
-                DateTime dtFechaFinCitaDia = Convert.ToDateTime(dtFechaIni.AddDays(i).ToString("yyyy-MM-dd") + " " + txbHoraFin.Value.ToString());
+                DateTime dtFechaFinCitaDia = Convert.ToDateTime(dtFechaIni.AddMinutes(60));
 
                 if (dtFechaFinCitaDia > dtFechaIniCita)
                 {
@@ -293,7 +283,7 @@ namespace fpWebApp
                     {
                         while (dtFechaIniCita < dtFechaFinCitaDia)
                         {
-                            dtFechaFinCita = dtFechaIniCita.AddMinutes(Convert.ToDouble(ddlDuracion.SelectedItem.Value.ToString()));
+                            dtFechaFinCita = dtFechaIniCita.AddMinutes(60);
 
                             // Consulta si se cruza la cita en la sede con la fecha y hora de otra disponible
                             string strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
@@ -306,14 +296,9 @@ namespace fpWebApp
 
                             if (dt.Rows.Count == 0)
                             {
-                                // Consulta si se cruza la cita del especialista con la fecha y hora de otra disponible
-                                //strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
-                                //    "WHERE idEspecialista = " + ddlEspecialistas.SelectedItem.Value.ToString() + " " +
-                                //    "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
-                                //    "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
-                                strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
-                                    "WHERE DocumentoEmpleado = '" + "1" + "' " +
-                                    "AND idSede != " + ddlSedes.SelectedItem.Value.ToString() + " " +
+                                strQuery = @"
+                                    SELECT * FROM AgendaAsesoresCorporativos " +
+                                    "WHERE idUsuario = " + ddlAsesores.SelectedItem.Value.ToString() + " " +
                                     "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 " +
                                     "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaHoraInicio) ";
                                 DataTable dt1 = cg.TraerDatos(strQuery);
@@ -463,6 +448,32 @@ namespace fpWebApp
         protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        protected void ddlAsesores_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlAsesores.SelectedItem.Value.ToString() != "")
+            {
+                ltAsesor.Text = ddlAsesores.SelectedItem.Text.ToString();
+                CargarAgenda(ddlAsesores.SelectedItem.Value.ToString());
+            }
+        }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                    title: '{titulo}',
+                    text: '{mensaje}',
+                    icon: '{tipo}', 
+                    allowOutsideClick: false, 
+                    showCloseButton: false, 
+                    confirmButtonText: 'Aceptar'
+                }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
     }
 }
