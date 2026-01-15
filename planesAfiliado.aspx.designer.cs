@@ -519,6 +519,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbTransferencia;
 
         /// <summary>
+        /// Control ddlEmpresa.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlEmpresa;
+
+        /// <summary>
+        /// Control txbCredito.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbCredito;
+
+        /// <summary>
         /// Control ltValorTotal.
         /// </summary>
         /// <remarks>
