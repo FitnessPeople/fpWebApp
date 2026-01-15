@@ -186,12 +186,12 @@
                                     <div class="col-lg-6 form-horizontal">
                                         <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;"
                                             href="nuevaempresaafiliada" title="Agregar empresa afiliada"
-                                            runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i>NUEVO
+                                            runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus m-r-xs"></i>NUEVO
                                         </a>
                                         <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
                                             CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                             OnClick="lbExportarExcel_Click">
-                                            <i class="fa fa-file-excel"></i> EXCEL
+                                            <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                         </asp:LinkButton>
                                     </div>
                                 </div>

@@ -969,7 +969,6 @@
     <Content Include="nuevaempresaafiliada.aspx" />
     <Content Include="nuevahistoriaclinica.aspx" />
     <Content Include="nuevoafiliado.aspx" />
-    <Content Include="nuevocontactocrm.aspx" />
     <Content Include="nuevoconvenio.aspx" />
     <Content Include="nuevoempleado.aspx" />
     <Content Include="nuevoespecialista.aspx" />
@@ -999,7 +998,6 @@
     <Content Include="profesiones.aspx" />
     <Content Include="prospectocorporativo.aspx" />
     <Content Include="prospectoscrm.aspx" />
-    <Content Include="prospectosempresas.aspx" />
     <Content Include="pruebaapiempresa.aspx" />
     <Content Include="recuperacionclave.aspx" />
     <Content Include="redactarcorreo.aspx" />
@@ -1989,13 +1987,6 @@
     <Compile Include="nuevoafiliado.aspx.designer.cs">
       <DependentUpon>nuevoafiliado.aspx</DependentUpon>
     </Compile>
-    <Compile Include="nuevocontactocrm.aspx.cs">
-      <DependentUpon>nuevocontactocrm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="nuevocontactocrm.aspx.designer.cs">
-      <DependentUpon>nuevocontactocrm.aspx</DependentUpon>
-    </Compile>
     <Compile Include="nuevoconvenio.aspx.cs">
       <DependentUpon>nuevoconvenio.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2199,13 +2190,6 @@
     </Compile>
     <Compile Include="prospectoscrm.aspx.designer.cs">
       <DependentUpon>prospectoscrm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="prospectosempresas.aspx.cs">
-      <DependentUpon>prospectosempresas.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="prospectosempresas.aspx.designer.cs">
-      <DependentUpon>prospectosempresas.aspx</DependentUpon>
     </Compile>
     <Compile Include="pruebaapiempresa.aspx.cs">
       <DependentUpon>pruebaapiempresa.aspx</DependentUpon>

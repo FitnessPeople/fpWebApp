@@ -302,7 +302,7 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    <a href="prospectosempresas" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <a href="prospectocorporativo" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar" CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
                                                 </div>
@@ -320,7 +320,7 @@
                             <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Lista de prospectos</h5>
+                                        <h5>Lista de empresas prospecto</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -341,7 +341,7 @@
                                                     CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                    <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                                 </asp:LinkButton>
                                             </div>
                                         </div>

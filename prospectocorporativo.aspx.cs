@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -49,7 +46,7 @@ namespace fpWebApp
                     ListaProspectosEmpresas();
                     CargarCiudad();
 
-                    ltTitulo.Text = "Agregar prospecto empresa";
+                    ltTitulo.Text = "Agregar empresa prospecto";
                     if (Request.QueryString.Count > 0)
                     {
                         rpEmpresasCRM.Visible = false;
@@ -58,7 +55,7 @@ namespace fpWebApp
                         {
                             //Editar
                             clasesglobales cg = new clasesglobales();
-                            System.Data.DataTable dt = new System.Data.DataTable();
+                            DataTable dt = new DataTable();
 
                             dt = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["editid"].ToString()), out respuesta);
                             if (dt.Rows.Count > 0 && respuesta)
@@ -67,6 +64,7 @@ namespace fpWebApp
                                     ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
                                 else
                                     ddlTipoDocumento.SelectedItem.Value = "0";
+
                                 ddlTipoDocumento.SelectedIndex = Convert.ToInt32(ddlTipoDocumento.Items.IndexOf(ddlTipoDocumento.Items.FindByValue(dt.Rows[0]["idTipoDocumento"].ToString())));
                                 txbDocumento.Text = dt.Rows[0]["DocumentoEmpresa"].ToString();
                                 txbDigitoVerificacion.Text = dt.Rows[0]["digitoverificacion"].ToString();
@@ -76,10 +74,12 @@ namespace fpWebApp
                                 txbCargoContacto.Value = dt.Rows[0]["CargoContacto"].ToString();
                                 txbCelularEmpresa.Value = dt.Rows[0]["CelularEmpresa"].ToString();
                                 txbCorreoEmpresa.Value = dt.Rows[0]["CorreoEmpresa"].ToString();
+
                                 if (dt.Rows[0]["idCiudad"].ToString() != "")
                                     ddlCiudades.SelectedIndex = Convert.ToInt32(ddlCiudades.Items.IndexOf(ddlCiudades.Items.FindByValue(dt.Rows[0]["idCiudad"].ToString())));
                                 else
                                     ddlCiudades.SelectedItem.Value = "0";
+
                                 txaObservaciones.Value = dt.Rows[0]["ObservacionesEmp"].ToString();
 
                                 btnAgregar.Text = "Actualizar";
@@ -91,7 +91,7 @@ namespace fpWebApp
                             clasesglobales cg = new clasesglobales();
                             string mensaje = string.Empty;
 
-                            System.Data.DataTable dt = cg.ValidarEmpresaCRMPorId(Convert.ToInt32(Request.QueryString["deleteid"].ToString()), out respuesta, out mensaje);
+                            DataTable dt = cg.ValidarEmpresaCRMPorId(Convert.ToInt32(Request.QueryString["deleteid"].ToString()), out respuesta, out mensaje);
                             if (!respuesta)
                             {
                                 ltMensaje.Text = "<div class=\"ibox-content\">" +
@@ -100,7 +100,7 @@ namespace fpWebApp
                                     mensaje +
                                     "</div></div>";
 
-                                System.Data.DataTable dt1 = new System.Data.DataTable();
+                                DataTable dt1 = new DataTable();
                                 dt1 = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()), out respuesta);
                                 if (dt.Rows.Count > 0 && respuesta)
                                 {
@@ -132,7 +132,7 @@ namespace fpWebApp
                             else
                             {
                                 //Borrar
-                                System.Data.DataTable dt1 = new System.Data.DataTable();
+                                DataTable dt1 = new DataTable();
                                 dt1 = cg.ConsultarEmpresaCRMPorId(int.Parse(Request.QueryString["deleteid"].ToString()), out respuesta);
                                 if (dt1.Rows.Count > 0)
                                 {
@@ -174,7 +174,7 @@ namespace fpWebApp
         private void CargarCiudad()
         {
             clasesglobales cg = new clasesglobales();
-            System.Data.DataTable dt = cg.ConsultarCiudadesCol();
+            DataTable dt = cg.ConsultarCiudadesCol();
 
             ddlCiudades.DataSource = dt;
             ddlCiudades.DataBind();
@@ -191,7 +191,7 @@ namespace fpWebApp
             ViewState["Borrar"] = "0";
 
             clasesglobales cg1 = new clasesglobales();
-            System.Data.DataTable dt = cg1.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+            DataTable dt = cg1.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
 
             if (dt.Rows.Count > 0)
             {
@@ -208,7 +208,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                System.Data.DataTable dt = cg.ConsultartiposDocumento();
+                DataTable dt = cg.ConsultartiposDocumento();
 
                 DataView dv = new DataView(dt);
                 dv.RowFilter = "idTipoDoc = 7";
@@ -225,20 +225,18 @@ namespace fpWebApp
 
         }
 
-
-
         private void ListaProspectosEmpresas()
         {
             try
             {
-                System.Data.DataTable dt = new System.Data.DataTable();
+                DataTable dt = new DataTable();
                 clasesglobales cg = new clasesglobales();
 
                 int idUsuario = Convert.ToInt32(Session["idUsuario"]);
-                System.Data.DataTable dt1 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
+                DataTable dt1 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
                 int idPerfil = Convert.ToInt32(dt1.Rows[0]["idPerfil"]);
 
-                if (idPerfil == 36)
+                if (idPerfil == 36 || idPerfil == 1 || idPerfil == 37) // 36: Líder corporativo, 1: CEO, 37: Director operativo
                 {
                     phAsesorHeader.Visible = true;
                     rpEmpresasCRM.ItemDataBound += (s, e) =>
@@ -400,7 +398,7 @@ namespace fpWebApp
             }
             else
             {
-                System.Data.DataTable dt3 = new System.Data.DataTable();
+                DataTable dt3 = new DataTable();
                 dt3 = cg.ConsultarEmpresasCRMPorNombre(txbRazonSocial.Value.ToString());
                 if (dt3.Rows.Count == 0)
                 {
@@ -475,7 +473,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                System.Data.DataTable dt = cg.ConsultarEmpresasCRM();
+                DataTable dt = cg.ConsultarEmpresasCRM();
                 string nombreArchivo = $"Empresas_prospecto{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
@@ -510,7 +508,7 @@ namespace fpWebApp
                 idEmpresaProspecto = Convert.ToInt32(Request.QueryString["deleteid"].ToString());
             }
 
-            System.Data.DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaProspecto, out respuesta);
+            DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaProspecto, out respuesta);
 
             string strData = "";
             if (dt.Rows.Count > 0 && respuesta)
