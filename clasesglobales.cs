@@ -11986,7 +11986,6 @@ namespace fpWebApp
             return dt;
         }
 
-
         public string InsertarEmpresaAfiliada(string documentoEmpresa,string digitoVerificacion,int idTipoDocumento,string nombreComercial,string razonSocial,
             DateTime fechaConvenio,DateTime? fechaFinConvenio, string nombreContacto, string cargoContacto, string celularEmpresa, string correoEmpresa,
             string nombrePagador, string telefonoPagador, string correoPagador, string direccionEmpresa, int idCiudadEmpresa, int nroEmpleados,
