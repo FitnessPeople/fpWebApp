@@ -490,6 +490,7 @@
                     meridiem: 'short'
                 },
                 locale: 'es',
+                noEventsContent: 'No hay eventos agendados.',
                 buttonText: {
                     prev: '',
                     next: '',

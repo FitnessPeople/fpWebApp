@@ -99,16 +99,18 @@
                     <div class="event-description"></div>
                     <div class="event-id text-hide" id="event-id"></div>
                     <div class="event-allday text-hide" id="event-allday"></div>
-                    <div class="pull-right">
-                        <input id="cbAtendida" type="checkbox" title="Atendida" value="1"  />
-                        <label for="cbAtendida">Atendida</label>
-                        <input id="cbNegociada" type="checkbox" title="Negociada" value="1" />
-                        <label for="cbNegociada">Negociada</label>
-                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'agendacorporativo.aspx?deleteid=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" 
+                        onclick="window.location.href='agendacorporativo.aspx?atendida=' + document.getElementById('event-id').innerHTML" 
+                        runat="server" id="btnAtendida"><i class='fa fa-calendar-check m-r-sm'></i>Atendida</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" 
+                        onclick="window.location.href='agendacorporativo.aspx?negociada=' + document.getElementById('event-id').innerHTML" 
+                        runat="server" id="btnNegociada"><i class='fa fa-handshake m-r-sm'></i>Negociada</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" 
+                        onclick="window.location.href='agendacorporativo.aspx?deleteid=' + document.getElementById('event-id').innerHTML" 
+                        runat="server" id="btnEliminar"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                 </div>
             </div>
         </div>
@@ -184,6 +186,18 @@
                                             </div>
                                         </div>
 
+                                        <div class="row" runat="server" id="divAsesor">
+                                            <div class="col-sm-12">
+                                                <label>Asesor</label>
+                                                <div class="form-group">
+                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlAsesores" runat="server"
+                                                        DataValueField="idUsuario" DataTextField="NombreUsuario"
+                                                        AppendDataBoundItems="true">
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <label>Fecha:</label>
@@ -238,19 +252,6 @@
                                         </div>
                                     </div>
                                     <div class="ibox-content">
-                                        <div class="form-horizontal">
-                                            <div class="form-group m-b-n-sm">
-                                                <label class="col-sm-2 col-sm-2 control-label">Asesor</label>
-                                                <div class="col-sm-10">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlAsesores" runat="server"
-                                                        OnSelectedIndexChanged="ddlAsesores_SelectedIndexChanged"
-                                                        DataValueField="idUsuario" DataTextField="NombreUsuario"
-                                                        AutoPostBack="true" AppendDataBoundItems="true">
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr />
                                         <div id="calendar"></div>
                                     </div>
                                 </div>
@@ -400,20 +401,28 @@
                         jQuery('.event-title').html(info.event.title);
                         jQuery('.event-body').html(" <i class='fa fa-calendar-day'></i> " + formatteddiaini + "  " + formattedmesini + "<br /><i class='fa fa-clock'></i> " + formattedTime1 + " - " + formattedTime2 + "<br /><br />");
                         jQuery('.event-description').html(info.event.extendedProps.description);
-                        var btn = document.getElementById("btnEliminar");
-                        btn.style.display = info.event.extendedProps.btnEliminar;
+                        
+                        var btn1 = document.getElementById("btnEliminar");
+                        btn1.style.display = info.event.extendedProps.btnEliminar;
+
+                        var btn2 = document.getElementById("btnAtendida");
+                        btn2.style.display = info.event.extendedProps.btnAtendida;
+
+                        var btn3 = document.getElementById("btnNegociada");
+                        btn3.style.display = info.event.extendedProps.btnNegociada;                        
+
                         jQuery('#modal-view-event').modal();
                     }
                 },
                 height: 700,
-                initialView: 'dayGridMonth',
+                initialView: '<%=strVistaInicial%>',
                 firstDay: 1,
                 allDayText: 'Todo\r\nel día',
                 moreLinkContent: function (args) {
                     return '+' + args.num + ' eventos más';
                 },
-                slotMinTime: '06:00',
-                slotMaxTime: '22:00',
+                slotMinTime: '07:00',
+                slotMaxTime: '20:00',
                 //weekends: false,
                 //hiddenDays: [0],
                 //slotDuration: '00:25:00',
@@ -425,6 +434,7 @@
                     meridiem: 'short'
                 },
                 locale: 'es',
+                noEventsContent: 'No hay eventos agendados.',
                 buttonText: {
                     prev: '',
                     next: '',

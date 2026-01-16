@@ -10,7 +10,9 @@ namespace fpWebApp
     public partial class agendacorporativo : System.Web.UI.Page
     {
         private string _strEventos;
+        private string _strVistaInicial;
         protected string strEventos { get { return this._strEventos; } }
+        protected string strVistaInicial { get { return this._strVistaInicial; } }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -42,8 +44,40 @@ namespace fpWebApp
                         {
                             try
                             {
-                                string strQuery = "DELETE FROM agendaasesorescorporativos " +
+                                string strQuery = "DELETE FROM AgendaAsesoresCorporativos " +
                                     " WHERE idAgendaCorp = " + Request.QueryString["deleteid"].ToString();
+                                clasesglobales cg = new clasesglobales();
+                                string mensaje = cg.TraerDatosStr(strQuery);
+                            }
+                            catch (SqlException ex)
+                            {
+                                string mensaje = ex.Message;
+                            }
+                            Response.Redirect("agendacorporativo");
+                        }
+                        
+                        if (Request.QueryString["atendida"] != null)
+                        {
+                            try
+                            {
+                                string strQuery = "UPDATE AgendaAsesoresCorporativos SET Atendida = 1 " +
+                                    " WHERE idAgendaCorp = " + Request.QueryString["atendida"].ToString();
+                                clasesglobales cg = new clasesglobales();
+                                string mensaje = cg.TraerDatosStr(strQuery);
+                            }
+                            catch (SqlException ex)
+                            {
+                                string mensaje = ex.Message;
+                            }
+                            Response.Redirect("agendacorporativo");
+                        }
+
+                        if (Request.QueryString["negociada"] != null)
+                        {
+                            try
+                            {
+                                string strQuery = "UPDATE AgendaAsesoresCorporativos SET Atendida = 1, Negociada = 1 " +
+                                    " WHERE idAgendaCorp = " + Request.QueryString["negociada"].ToString();
                                 clasesglobales cg = new clasesglobales();
                                 string mensaje = cg.TraerDatosStr(strQuery);
                             }
@@ -119,37 +153,37 @@ namespace fpWebApp
                                 "<i class=\"fa fa-pen-to-square m-r-sm\"></i>" + dt.Rows[i]["Contexto"].ToString() + "',\r\n";
                             _strEventos += "icon: 'calendar-plus',\r\n";
                             _strEventos += "btnEliminar: 'inline',\r\n";
+                            _strEventos += "btnAtendida: 'inline',\r\n";
+                            _strEventos += "btnNegociada: 'inline',\r\n";
                         }
 
                         if (dt.Rows[i]["Atendida"].ToString() == "1" && dt.Rows[i]["Negociada"].ToString() == "0") // Cita atendida
                         {
                             _strEventos += "color: '#F8AC59',\r\n"; // warning
                             _strEventos += "title: '" + dt.Rows[i]["NombreUsuario"].ToString() + "',\r\n";
-                            _strEventos += "description: 'Cita atendida.',\r\n";
+                            _strEventos += "description: '<h4>Cita agendada.</h4><br />" +
+                                "<i class=\"fa fa-building m-r-sm\"></i>" + dt.Rows[i]["NombreEmpresaCRM"].ToString() + "<br />" +
+                                "<i class=\"fa fa-pen-to-square m-r-sm\"></i>" + dt.Rows[i]["Contexto"].ToString() + "',\r\n";
                             _strEventos += "icon: 'calendar-check',\r\n";
                             _strEventos += "btnEliminar: 'none',\r\n";
+                            _strEventos += "btnAtendida: 'none',\r\n";
+                            _strEventos += "btnNegociada: 'inline',\r\n";
                         }
 
                         if (dt.Rows[i]["Negociada"].ToString() == "1") // Venta negociada
                         {
                             _strEventos += "color: '#1a7bb9',\r\n"; // success
                             _strEventos += "title: '" + dt.Rows[i]["NombreUsuario"].ToString() + "',\r\n";
-                            _strEventos += "description: 'Venta negociada.',\r\n";
+                            _strEventos += "description: '<h4>Cita agendada.</h4><br />" +
+                                "<i class=\"fa fa-building m-r-sm\"></i>" + dt.Rows[i]["NombreEmpresaCRM"].ToString() + "<br />" +
+                                "<i class=\"fa fa-pen-to-square m-r-sm\"></i>" + dt.Rows[i]["Contexto"].ToString() + "',\r\n";
                             _strEventos += "icon: 'trophy',\r\n";
                             _strEventos += "btnEliminar: 'none',\r\n";
+                            _strEventos += "btnAtendida: 'none',\r\n";
+                            _strEventos += "btnNegociada: 'none',\r\n";
                         }
                     }
-                    //else
-                    //{
-                    //    _strEventos += "color: '#1ab394',\r\n";
-                    //    _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
-                    //    _strEventos += "description: 'Cita disponible.',\r\n";
-                    //    _strEventos += "icon: 'user-doctor',\r\n";
-                    //    _strEventos += "btnEliminar: 'inline',\r\n";
-                    //}
 
-                    //_strEventos += "color: '#DBADFF',\r\n";
-                    //_strEventos += "todoeldia: 0,\r\n";
                     _strEventos += "allDay: false,\r\n";
                     _strEventos += "},\r\n";
                 }
@@ -238,18 +272,22 @@ namespace fpWebApp
                 ddlAsesores.Items.Add(li);
                 ddlAsesores.DataSource = dt;
                 ddlAsesores.DataBind();
+                divAsesor.Visible = true;
 
                 //Cargar agenda de todos los asesores corporativos
                 CargarAgenda("0");
                 ltAsesor.Text = "todos los asesores";
+                _strVistaInicial = "dayGridMonth";
             }
             else
             {
                 if (Session["idPerfil"].ToString() == "10") // Asesor Corporativo
                 {
                     //Cargar agenda de asesor
-                    CargarAgenda(Session["idPerfil"].ToString());
+                    CargarAgenda(Session["idUsuario"].ToString());
                     ltAsesor.Text = Session["NombreUsuario"].ToString();
+                    divAsesor.Visible = false;
+                    _strVistaInicial = "timeGridWeek";
                 }
             }
         }
@@ -257,8 +295,6 @@ namespace fpWebApp
         /// <summary>
         /// Inserta en la tabla AgendaAsesoresCorporativos
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             //string fechahorainicio = txbFechaIni.Value.ToString() + " " + txbHoraIni.Value.ToString();
@@ -270,11 +306,20 @@ namespace fpWebApp
             DateTime dtFechaIni = Convert.ToDateTime(txbFechaIni.Value.ToString());
             DateTime dtFechaFin = Convert.ToDateTime(txbFechaIni.Value.ToString());
 
-            int intCountItemsChecked = 0;
-
             int nroDias = (dtFechaFin - dtFechaIni).Days + 1;
 
             string script = string.Empty;
+
+            int idUsuario;
+            if (Session["idPerfil"].ToString() == "10") // Asesor Corporativo
+            {
+                //Cargar agenda de asesor
+                idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
+            }
+            else
+            {
+                idUsuario = Convert.ToInt32(ddlAsesores.SelectedItem.Value.ToString());
+            }
 
             for (int i = 0; i < nroDias; i++)
             {
@@ -290,7 +335,7 @@ namespace fpWebApp
                         // Consulta si se cruza la cita en la sede con la fecha y hora de otra disponible
                         string strQuery = "SELECT * FROM AgendaAsesoresCorporativos " +
                             "WHERE (idEmpresa = " + ddlEmpresas.SelectedItem.Value.ToString() + " " +
-                            "OR idUsuario = " + Session["idUsuario"].ToString() + ") " +
+                            "OR idUsuario = " + idUsuario.ToString() + ") " +
                             "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
                             "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
                         clasesglobales cg = new clasesglobales();
@@ -300,7 +345,7 @@ namespace fpWebApp
                         {
                             strQuery = @"
                                 SELECT * FROM AgendaAsesoresCorporativos " +
-                                "WHERE idUsuario = " + ddlAsesores.SelectedItem.Value.ToString() + " " +
+                                "WHERE idUsuario = " + idUsuario.ToString() + " " +
                                 "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 " +
                                 "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaHoraInicio) ";
                             DataTable dt1 = cg.TraerDatos(strQuery);
@@ -323,37 +368,16 @@ namespace fpWebApp
                                 }
                                 else
                                 {
-                                    if (intCountItemsChecked > 0)
-                                    {
-                                        //foreach (ListItem item in cbDiasRepite.Items)
-                                        //{
-                                        //    if (item.Selected)
-                                        //    {
-                                        //        if (Convert.ToInt16(dtFechaIniCita.DayOfWeek) == Convert.ToInt16(item.Value.ToString()))
-                                        //        {
-                                        //            strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                        //                "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                        //                "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + "1" + ", " +
-                                        //                "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                        //                "" + Session["idusuario"].ToString() + ") ";
+                                    strQuery = "INSERT INTO AgendaAsesoresCorporativos " +
+                                        "(idUsuario, idEmpresa, FechaHoraInicio, FechaHoraFinal, Contexto) " +
+                                        "VALUES (" + idUsuario.ToString() + ", " +
+                                        "" + ddlEmpresas.SelectedItem.Value.ToString() + ", " +
+                                        "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
+                                        "'" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
+                                        "'" + txbObservaciones.Value.ToString() + "') ";
 
-                                        //            string mensaje = cg.TraerDatosStr(strQuery);
-                                        //        }
-                                        //    }
-                                        //}
-                                    }
-                                    else
-                                    {
-                                        strQuery = "INSERT INTO AgendaAsesoresCorporativos " +
-                                            "(idUsuario, idEmpresa, FechaHoraInicio, FechaHoraFinal, Contexto) " +
-                                            "VALUES (" + Session["idUsuario"].ToString() + ", " +
-                                            "" + ddlEmpresas.SelectedItem.Value.ToString() + ", " +
-                                            "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                            "'" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                            "'" + txbObservaciones.Value.ToString() + "') ";
-
-                                        string mensaje = cg.TraerDatosStr(strQuery);
-                                    }
+                                    string mensaje = cg.TraerDatosStr(strQuery);
+                                    
                                     dtFechaIniCita = dtFechaFinCita;
 
                                     script = @"
@@ -417,14 +441,14 @@ namespace fpWebApp
             }
         }
 
-        protected void ddlAsesores_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ddlAsesores.SelectedItem.Value.ToString() != "")
-            {
-                ltAsesor.Text = ddlAsesores.SelectedItem.Text.ToString();
-                CargarAgenda(ddlAsesores.SelectedItem.Value.ToString());
-            }
-        }
+        //protected void ddlAsesores_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (ddlAsesores.SelectedItem.Value.ToString() != "")
+        //    {
+        //        ltAsesor.Text = ddlAsesores.SelectedItem.Text.ToString();
+        //        CargarAgenda(ddlAsesores.SelectedItem.Value.ToString());
+        //    }
+        //}
 
         private void MostrarAlerta(string titulo, string mensaje, string tipo)
         {
