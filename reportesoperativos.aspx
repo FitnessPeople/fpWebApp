@@ -300,7 +300,7 @@
                                                     CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                    <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                                 </asp:LinkButton>
                                             </div>
                                             <div class="col-lg-1">
@@ -311,7 +311,7 @@
                                                     CssClass="btn btn-success pull-right dim m-l-md"
                                                     Style="font-size: 12px;"
                                                     OnClick="lbExportarPdf_Click">
-                                                    <i class="fa fa-file-pdf"></i> PDF
+                                                    <i class="fa fa-file-pdf m-r-xs"></i>PDF
                                                 </asp:LinkButton>
 
                                             </div>

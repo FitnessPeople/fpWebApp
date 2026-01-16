@@ -42,8 +42,8 @@ namespace fpWebApp
                         {
                             try
                             {
-                                string strQuery = "DELETE FROM DisponibilidadEspecialistas " +
-                                    " WHERE idDisponibilidad = " + Request.QueryString["deleteid"].ToString();
+                                string strQuery = "DELETE FROM agendaasesorescorporativos " +
+                                    " WHERE idAgendaCorp = " + Request.QueryString["deleteid"].ToString();
                                 clasesglobales cg = new clasesglobales();
                                 string mensaje = cg.TraerDatosStr(strQuery);
                             }
@@ -51,7 +51,7 @@ namespace fpWebApp
                             {
                                 string mensaje = ex.Message;
                             }
-                            Response.Redirect("agenda");
+                            Response.Redirect("agendacorporativo");
                         }
                     }
                 }
@@ -110,11 +110,13 @@ namespace fpWebApp
 
                     if (dt.Rows[i]["idUsuario"].ToString() != "")
                     {
-                        if (dt.Rows[i]["Visitada"].ToString() == "0" && dt.Rows[i]["Vendida"].ToString() == "0") // Cita agendada
+                        if (dt.Rows[i]["Atendida"].ToString() == "0" && dt.Rows[i]["Negociada"].ToString() == "0") // Cita agendada
                         {
                             _strEventos += "color: '#1ab394',\r\n"; // primary
                             _strEventos += "title: '" + dt.Rows[i]["NombreUsuario"].ToString() + "',\r\n";
-                            _strEventos += "description: 'Cita agendada.',\r\n";
+                            _strEventos += "description: '<h4>Cita agendada.</h4><br />" +
+                                "<i class=\"fa fa-building m-r-sm\"></i>" + dt.Rows[i]["NombreEmpresaCRM"].ToString() + "<br />" +
+                                "<i class=\"fa fa-pen-to-square m-r-sm\"></i>" + dt.Rows[i]["Contexto"].ToString() + "',\r\n";
                             _strEventos += "icon: 'calendar-plus',\r\n";
                             _strEventos += "btnEliminar: 'inline',\r\n";
                         }
@@ -198,6 +200,8 @@ namespace fpWebApp
                 DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
 
                 ddlEmpresas.Items.Clear();
+                ListItem li = new ListItem("Seleccione", "");
+                ddlEmpresas.Items.Add(li);
                 ddlEmpresas.DataSource = dt;
                 ddlEmpresas.DataBind();
 
@@ -251,7 +255,7 @@ namespace fpWebApp
         }
 
         /// <summary>
-        /// Inserta en la tabola DisponibilidadEspecialistas
+        /// Inserta en la tabla AgendaAsesoresCorporativos
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -275,179 +279,142 @@ namespace fpWebApp
             for (int i = 0; i < nroDias; i++)
             {
                 DateTime dtFechaIniCita = Convert.ToDateTime(dtFechaIni.AddDays(i).ToString("yyyy-MM-dd") + " " + txbHoraIni.Value.ToString());
-                DateTime dtFechaFinCitaDia = Convert.ToDateTime(dtFechaIni.AddMinutes(60));
+                DateTime dtFechaFinCitaDia = dtFechaIniCita.AddMinutes(60);
 
-                if (dtFechaFinCitaDia > dtFechaIniCita)
+                try
                 {
-                    try
+                    while (dtFechaIniCita < dtFechaFinCitaDia)
                     {
-                        while (dtFechaIniCita < dtFechaFinCitaDia)
+                        dtFechaFinCita = dtFechaIniCita.AddMinutes(60);
+
+                        // Consulta si se cruza la cita en la sede con la fecha y hora de otra disponible
+                        string strQuery = "SELECT * FROM AgendaAsesoresCorporativos " +
+                            "WHERE (idEmpresa = " + ddlEmpresas.SelectedItem.Value.ToString() + " " +
+                            "OR idUsuario = " + Session["idUsuario"].ToString() + ") " +
+                            "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
+                            "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
+                        clasesglobales cg = new clasesglobales();
+                        DataTable dt = cg.TraerDatos(strQuery);
+
+                        if (dt.Rows.Count == 0)
                         {
-                            dtFechaFinCita = dtFechaIniCita.AddMinutes(60);
+                            strQuery = @"
+                                SELECT * FROM AgendaAsesoresCorporativos " +
+                                "WHERE idUsuario = " + ddlAsesores.SelectedItem.Value.ToString() + " " +
+                                "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 " +
+                                "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaHoraInicio) ";
+                            DataTable dt1 = cg.TraerDatos(strQuery);
 
-                            // Consulta si se cruza la cita en la sede con la fecha y hora de otra disponible
-                            string strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
-                                "WHERE (idSede = " + "1" + " " +
-                                "OR DocumentoEmpleado = '" + "1" + "') " +
-                                "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
-                                "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
-                            clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.TraerDatos(strQuery);
-
-                            if (dt.Rows.Count == 0)
+                            if (dt1.Rows.Count == 0)
                             {
-                                strQuery = @"
-                                    SELECT * FROM AgendaAsesoresCorporativos " +
-                                    "WHERE idUsuario = " + ddlAsesores.SelectedItem.Value.ToString() + " " +
-                                    "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 " +
-                                    "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaHoraInicio) ";
-                                DataTable dt1 = cg.TraerDatos(strQuery);
-
-                                if (dt1.Rows.Count == 0)
-                                {
-                                    if (dtFechaIniCita.Hour < 6 || dtFechaIniCita.Hour >= 21)
-                                    {
-                                        script = @"
-                                            Swal.fire({
-                                                title: 'Advertencia',
-                                                text: 'Horario fuera del intervalo del especialista.',
-                                                icon: 'error'
-                                            }).then(() => {
-                                            });
-                                            ";
-                                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                                        //ltMensaje.Text = "Horario fuera del intervalo del especialista";
-                                        dtFechaIniCita = dtFechaFinCita;
-                                    }
-                                    else
-                                    {
-                                        if (intCountItemsChecked > 0)
-                                        {
-                                            //foreach (ListItem item in cbDiasRepite.Items)
-                                            //{
-                                            //    if (item.Selected)
-                                            //    {
-                                            //        if (Convert.ToInt16(dtFechaIniCita.DayOfWeek) == Convert.ToInt16(item.Value.ToString()))
-                                            //        {
-                                            //            strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                            //                "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                            //                "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + "1" + ", " +
-                                            //                "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                            //                "" + Session["idusuario"].ToString() + ") ";
-
-                                            //            string mensaje = cg.TraerDatosStr(strQuery);
-                                            //        }
-                                            //    }
-                                            //}
-                                        }
-                                        else
-                                        {
-                                            strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                                "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                                "VALUES ('" + "1" + "', " + "1" + ", " +
-                                                "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                                "" + Session["idusuario"].ToString() + ") ";
-
-                                            string mensaje = cg.TraerDatosStr(strQuery);
-                                        }
-                                        dtFechaIniCita = dtFechaFinCita;
-
-                                        script = @"
-                                            Swal.fire({
-                                                title: 'Agenda creada exitosamente.',
-                                                text: '',
-                                                icon: 'success',
-                                                timer: 3000, // 3 segundos
-                                                showConfirmButton: false,
-                                                timerProgressBar: true
-                                            }).then(() => {
-                                                window.location.href = 'agenda';
-                                            });
-                                            ";
-                                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                                    }
-                                }
-                                else
+                                if (dtFechaIniCita.Hour < 7 || dtFechaIniCita.Hour >= 18)
                                 {
                                     script = @"
                                         Swal.fire({
                                             title: 'Advertencia',
-                                            text: 'Ya esta ocupado este especialista en otra sede.',
+                                            text: 'Horario fuera del intervalo de visitas.',
                                             icon: 'error'
                                         }).then(() => {
                                         });
                                         ";
                                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                                    //ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    //    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    //    "Ya esta ocupado este especialista en otra sede." +
-                                    //    "</div></div>";
-                                    //ltMensaje.Text = "Ya esta ocupado este especialista en otra sede.";
-                                    dtFechaIniCita = dtFechaFinCitaDia;
+                                    //ltMensaje.Text = "Horario fuera del intervalo del especialista";
+                                    dtFechaIniCita = dtFechaFinCita;
                                 }
-                                dt1.Dispose();
+                                else
+                                {
+                                    if (intCountItemsChecked > 0)
+                                    {
+                                        //foreach (ListItem item in cbDiasRepite.Items)
+                                        //{
+                                        //    if (item.Selected)
+                                        //    {
+                                        //        if (Convert.ToInt16(dtFechaIniCita.DayOfWeek) == Convert.ToInt16(item.Value.ToString()))
+                                        //        {
+                                        //            strQuery = "INSERT INTO DisponibilidadEspecialistas " +
+                                        //                "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
+                                        //                "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + "1" + ", " +
+                                        //                "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
+                                        //                "" + Session["idusuario"].ToString() + ") ";
+
+                                        //            string mensaje = cg.TraerDatosStr(strQuery);
+                                        //        }
+                                        //    }
+                                        //}
+                                    }
+                                    else
+                                    {
+                                        strQuery = "INSERT INTO AgendaAsesoresCorporativos " +
+                                            "(idUsuario, idEmpresa, FechaHoraInicio, FechaHoraFinal, Contexto) " +
+                                            "VALUES (" + Session["idUsuario"].ToString() + ", " +
+                                            "" + ddlEmpresas.SelectedItem.Value.ToString() + ", " +
+                                            "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
+                                            "'" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
+                                            "'" + txbObservaciones.Value.ToString() + "') ";
+
+                                        string mensaje = cg.TraerDatosStr(strQuery);
+                                    }
+                                    dtFechaIniCita = dtFechaFinCita;
+
+                                    script = @"
+                                        Swal.fire({
+                                            title: 'Agenda creada exitosamente.',
+                                            text: '',
+                                            icon: 'success',
+                                            timer: 3000, // 3 segundos
+                                            showConfirmButton: false,
+                                            timerProgressBar: true
+                                        }).then(() => {
+                                            window.location.href = 'agendacorporativo';
+                                        });
+                                        ";
+                                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                                }
                             }
                             else
                             {
                                 script = @"
                                     Swal.fire({
                                         title: 'Advertencia',
-                                        text: 'Ya esta ocupado este horario en la sede.',
+                                        text: 'Ya esta ocupado este espacio con la misma empresa.',
                                         icon: 'error'
                                     }).then(() => {
                                     });
                                     ";
                                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                                //ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                //    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                //    "Ya esta ocupado este horario en la sede." +
-                                //    "</div></div>";
-                                //ltMensaje.Text = "Ya esta ocupado este horario en la sede.";
                                 dtFechaIniCita = dtFechaFinCitaDia;
                             }
-                            dt.Dispose();
+                            dt1.Dispose();
                         }
-                    }
-                    catch (SqlException ex)
-                    {
-                        script = @"
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'SqlException: (" + ex.Message.ToString() + @").',
-                                icon: 'error'
-                            }).then(() => {
-                            });
-                            ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        else
+                        {
+                            script = @"
+                                Swal.fire({
+                                    title: 'Advertencia',
+                                    text: 'Ya esta ocupado este horario en la sede.',
+                                    icon: 'error'
+                                }).then(() => {
+                                });
+                                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                            dtFechaIniCita = dtFechaFinCitaDia;
+                        }
+                        dt.Dispose();
                     }
                 }
-                else
+                catch (SqlException ex)
                 {
                     script = @"
                         Swal.fire({
-                            title: 'Advertencia',
-                            text: 'Hora de inicio debe ser menor a hora final.',
+                            title: 'Error',
+                            text: 'SqlException: (" + ex.Message.ToString() + @").',
                             icon: 'error'
                         }).then(() => {
                         });
                         ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                    //ltMensaje.Text = "<div class=\"ibox-content\">" +
-                    //    "<div class=\"alert alert-danger alert-dismissable\">" +
-                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    //    "Hora de inicio debe ser menor a hora final." +
-                    //    "</div></div>";
-                    //ltMensaje.Text = "Hora de inicio debe ser menor a hora final";
                 }
             }
-            //Response.Redirect("agenda");
-        }
-
-        protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
         protected void ddlAsesores_SelectedIndexChanged(object sender, EventArgs e)

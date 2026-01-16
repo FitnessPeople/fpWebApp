@@ -87,15 +87,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlEmpresas;
 
         /// <summary>
-        /// Control txbLugar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbLugar;
-
-        /// <summary>
         /// Control txbFechaIni.
         /// </summary>
         /// <remarks>
@@ -114,13 +105,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlInputText txbHoraIni;
 
         /// <summary>
-        /// Control txaObservaciones.
+        /// Control txbObservaciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTextArea txaObservaciones;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txbObservaciones;
 
         /// <summary>
         /// Control rfvObservaciones.
@@ -130,6 +121,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvObservaciones;
+
+        /// <summary>
+        /// Control btnAgregar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAgregar;
 
         /// <summary>
         /// Control ltAsesor.

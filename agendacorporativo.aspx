@@ -94,16 +94,20 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h4 class="h4"><span class="event-icon mr-3 fa-2x"></span><span class="event-title"></span></h4>
+                    <h4 class="h4"><span class="event-icon mr-3 fa-2x m-r-xs"></span><span class="event-title"></span></h4>
                     <div class="event-body"></div>
                     <div class="event-description"></div>
                     <div class="event-id text-hide" id="event-id"></div>
                     <div class="event-allday text-hide" id="event-allday"></div>
+                    <div class="pull-right">
+                        <input id="cbAtendida" type="checkbox" title="Atendida" value="1"  />
+                        <label for="cbAtendida">Atendida</label>
+                        <input id="cbNegociada" type="checkbox" title="Negociada" value="1" />
+                        <label for="cbNegociada">Negociada</label>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
-                    <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'agenda.aspx?deleteid=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'agendacorporativo.aspx?deleteid=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                 </div>
             </div>
@@ -170,18 +174,12 @@
                                             <div class="col-sm-12">
                                                 <label>Empresa:</label>
                                                 <div class="form-group">
-                                                     <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
-                                                        OnSelectedIndexChanged="ddlEmpresas_SelectedIndexChanged" DataValueField="idEmpresa" DataTextField="NombreEmpresa"
-                                                        AutoPostBack="true" AppendDataBoundItems="true">
-                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>                                                     
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-12">
-                                                <label>Lugar:</label>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control input-sm" id="txbLugar" name="txbLugar" runat="server" />
+                                                    <asp:DropDownList CssClass="form-control input-sm required" 
+                                                        ID="ddlEmpresas" runat="server" 
+                                                        DataValueField="idEmpresa" DataTextField="NombreEmpresa" 
+                                                        AppendDataBoundItems="true">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
                                                 </div>
                                             </div>
                                         </div>
@@ -209,10 +207,16 @@
                                                 <div class="form-group">
                                                     <i class="fas fa-pen text-info"></i>
                                                     <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
-                                                    <textarea id="txaObservaciones" runat="server" rows="3"
+                                                    <textarea id="txbObservaciones" runat="server" rows="3"
                                                         cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
-                                                    <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txaObservaciones"
+                                                    <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txbObservaciones"
                                                         ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <a href="agendacorporativo" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
                                                 </div>
                                             </div>
                                         </div>
@@ -239,9 +243,9 @@
                                                 <label class="col-sm-2 col-sm-2 control-label">Asesor</label>
                                                 <div class="col-sm-10">
                                                     <asp:DropDownList CssClass="form-control input-sm required" ID="ddlAsesores" runat="server"
-                                                        OnSelectedIndexChanged="ddlAsesores_SelectedIndexChanged" 
-                                                        DataValueField="idUsuario" DataTextField="NombreUsuario" 
-                                                        AutoPostBack="true" AppendDataBoundItems="true">                                                       
+                                                        OnSelectedIndexChanged="ddlAsesores_SelectedIndexChanged"
+                                                        DataValueField="idUsuario" DataTextField="NombreUsuario"
+                                                        AutoPostBack="true" AppendDataBoundItems="true">
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -278,7 +282,6 @@
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- Full Calendar -->
-    <%--<script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>--%>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
 
     <!-- Date range picker -->
@@ -348,16 +351,6 @@
         $(document).ready(function () {
 
             $('#data_1 .input-group.date').datepicker({
-                language: "es",
-                daysOfWeekDisabled: "0",
-                todayBtn: "linked",
-                todayHighlight: true,
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true,
-            });
-
-            $('#data_2 .input-group.date').datepicker({
                 language: "es",
                 daysOfWeekDisabled: "0",
                 todayBtn: "linked",
