@@ -262,20 +262,21 @@
                                                         <asp:ListItem Text="Ventas totales" Value="3"></asp:ListItem>
                                                         <asp:ListItem Text="Ventas por Planes" Value="4"></asp:ListItem>
                                                         <asp:ListItem Text="Ventas Usuarios planes" Value="5"></asp:ListItem>
-                                                        <asp:ListItem Text="Ventas por CRM" Value="6"></asp:ListItem>
-                                                        <asp:ListItem Text="Clientes activos/inactivos" Value="7"></asp:ListItem>
-                                                        <asp:ListItem Text="Clientes corporativos" Value="8"></asp:ListItem>
-                                                        <asp:ListItem Text="Negociaciones por cliente" Value="9"></asp:ListItem>
-                                                        <asp:ListItem Text="Estado de cuenta por cliente" Value="10"></asp:ListItem>
-                                                        <asp:ListItem Text="Estado de cuenta general" Value="11"></asp:ListItem>
-                                                        <asp:ListItem Text="Gestión diaria de asesores" Value="12"></asp:ListItem>
-                                                        <asp:ListItem Text="Tiempos de respuesta" Value="13"></asp:ListItem>
-                                                        <asp:ListItem Text="Negociaciones creadas / eliminadas" Value="14"></asp:ListItem>
-                                                        <asp:ListItem Text="Empresas con mayor facturación" Value="15"></asp:ListItem>
-                                                        <asp:ListItem Text="Estado de contratos empresariales" Value="16"></asp:ListItem>
-                                                        <asp:ListItem Text="Usuarios activos / inactivos" Value="17"></asp:ListItem>
-                                                        <asp:ListItem Text="Roles y permisos" Value="18"></asp:ListItem>
-                                                        <%--<asp:ListItem Text="Financiación" Value="5"></asp:ListItem>--%>
+                                                        <asp:ListItem Text="Metas vs Ventas Asesor" Value="6"></asp:ListItem>
+                                                        <asp:ListItem Text="Ventas Corporativo" Value="7"></asp:ListItem>
+                                                        <asp:ListItem Text="Ventas por CRM" Value="8"></asp:ListItem>
+                                                        <asp:ListItem Text="Clientes activos/inactivos" Value="9"></asp:ListItem>
+                                                        <asp:ListItem Text="Clientes corporativos" Value="10"></asp:ListItem>
+                                                        <asp:ListItem Text="Negociaciones por cliente" Value="11"></asp:ListItem>
+                                                        <asp:ListItem Text="Estado de cuenta por cliente" Value="12"></asp:ListItem>
+                                                        <asp:ListItem Text="Estado de cuenta general" Value="13"></asp:ListItem>
+                                                        <asp:ListItem Text="Gestión diaria de asesores" Value="14"></asp:ListItem>
+                                                        <asp:ListItem Text="Tiempos de respuesta" Value="15"></asp:ListItem>
+                                                        <asp:ListItem Text="Negociaciones creadas / eliminadas" Value="16"></asp:ListItem>
+                                                        <asp:ListItem Text="Empresas con mayor facturación" Value="17"></asp:ListItem>
+                                                        <asp:ListItem Text="Estado de contratos empresariales" Value="18"></asp:ListItem>
+                                                        <asp:ListItem Text="Usuarios activos / inactivos" Value="19"></asp:ListItem>
+                                                        <asp:ListItem Text="Roles y permisos" Value="20"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>

@@ -145,7 +145,10 @@ namespace fpWebApp
                 case 5:
                     dt = cg.ConsultarUsuariosPlanesPorFecha(fechaIni, fechaFin);
                     break;
-                    // agrega los demás casos aquí
+                case 6:
+                    dt = cg.ConsultarVentasVsMetasPorFecha(fechaIni, fechaFin);
+                    break;
+                 
             }
 
             return dt;
@@ -236,6 +239,11 @@ namespace fpWebApp
                         tituloReporte = $"Reporte Usuarios Planes desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
                         nombreArchivo = $"Reporte_Usuarios_Planes_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
                         break;
+                    case 6:
+                        dt = cg.ConsultarVentasVsMetasPorFecha(fechaIni, fechaFin);
+                        tituloReporte = $"Reporte Metas vs ventas Asesres desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
+                        nombreArchivo = $"Reporte_Metas_Vs_Ventas_Asesres{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
+                        break;
 
                     default:
                         MostrarAlerta("Info", "Este reporte aún no tiene exportación PDF.", "info");
@@ -308,7 +316,12 @@ namespace fpWebApp
                         tituloReporte = $"Reporte Usuarios Planes desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
                         nombreArchivo = $"Reporte_Usuarios_Planes_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
                         break;
-
+                    case 6:
+                        dt = cg.ConsultarVentasVsMetasPorFecha(fechaIni, fechaFin);
+                        tituloReporte = $"Reporte Metas vs ventas Asesres desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
+                        nombreArchivo = $"Reporte_Metas_Vs_Ventas_Asesres{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
+                        break;
+                        
                     default:
                         MostrarAlerta("Info", "Este reporte aún no tiene exportación PDF.", "info");
                         return;
