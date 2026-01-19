@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.IO;
@@ -24,9 +25,9 @@ namespace fpWebApp
     public partial class planesAfiliado : System.Web.UI.Page
     {
         // PRUEBAS
-        //static int idIntegracionSiigo = 3; // SIIGO
+        static int idIntegracionSiigo = 3; // SIIGO
         // PRODUCCIÓN
-        static int idIntegracionSiigo = 6; // SIIGO
+        //static int idIntegracionSiigo = 6; // SIIGO
         protected void Page_Load(object sender, EventArgs e)
         {
             ScriptManager.RegisterClientScriptInclude(this, this.GetType(),
@@ -517,8 +518,9 @@ namespace fpWebApp
             }
         }
 
-        private async Task<(bool ok, string idSiigoFactura)> ProcesarPagoExitosoAsync(int idAfiliadoPlan, string codSiigoPlan, string nombrePlan, string precioPlan)
 
+
+        private async Task<(bool ok, string idSiigoFactura)> ProcesarPagoExitosoAsync(int idAfiliadoPlan, string codSiigoPlan, string nombrePlan, string precioPlan)
         {
             string idAfiliado = Session["IdAfiliado"].ToString();
             string urlRedirect = $"planesAfiliado?id={idAfiliado}";
@@ -528,6 +530,10 @@ namespace fpWebApp
                 string fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
 
                 clasesglobales cg = new clasesglobales();
+
+                string ambiente = cg.GetAppSetting("AmbienteSiigo");
+                string idIntegracionSiigoStr = cg.GetAppSetting("idIntegracionSiigo");
+                int idIntegracionSiigo = Convert.ToInt32(idIntegracionSiigoStr);
 
                 DataTable dtIntegracion = cg.ConsultarIntegracionPorId(idIntegracionSiigo);
                 string url = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["url"].ToString() : null;
