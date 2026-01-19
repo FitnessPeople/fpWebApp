@@ -13454,6 +13454,11 @@ namespace fpWebApp
             return dt;
         }
 
+        public string GetAppSetting(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
+        }
+
         // Pagos en la Web
 
         public DataTable ConsultarIntegracionPorId(int idIntegracion)

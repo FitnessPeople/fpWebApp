@@ -241,8 +241,8 @@ namespace fpWebApp
                         break;
                     case 6:
                         dt = cg.ConsultarVentasVsMetasPorFecha(fechaIni, fechaFin);
-                        tituloReporte = $"Reporte Metas vs ventas Asesres desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                        nombreArchivo = $"Reporte_Metas_Vs_Ventas_Asesres{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
+                        tituloReporte = $"Reporte Metas vs ventas Asesores desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
+                        nombreArchivo = $"Reporte_Metas_Vs_Ventas_Asesores{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
                         break;
 
                     default:
