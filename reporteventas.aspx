@@ -596,6 +596,13 @@
         const maxY21 = redondearSuperior(maxVentas2 * 1.1, 100000);
         const maxY22 = Math.ceil(maxCantidad2 * 1.2);
 
+        const coloresBarras2 = datos2.labels.map((_, index) => {
+            const hue = (index * 360) / datos2.labels.length;
+            return `hsla(${hue}, 70%, 55%, 0.7)`;
+        });
+
+        const bordesBarras2 = coloresBarras2.map(c => c.replace('0.7', '1'));
+
         const data2 = {
             labels: datos2.labels, // nombres de canal
             datasets: [
@@ -604,8 +611,8 @@
                     label: 'Ventas',
                     data: datos2.ventas,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: coloresBarras2,
+                    borderColor: bordesBarras2,
                     borderWidth: 1
                 },
                 {

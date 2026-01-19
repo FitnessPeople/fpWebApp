@@ -823,22 +823,22 @@ namespace fpWebApp
             return sb.ToString();
         }
 
-        protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-            {
-                if (ViewState["Borrar"].ToString() == "1")
-                {
-                    //HtmlAnchor btnVer = (HtmlAnchor)e.Item.FindControl("btnVer");
-                    //btnVer.Attributes.Add("href", "reportepagoswompi?verid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-                    //btnVer.Visible = false;
+        //protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        //{
+        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //    {
+        //        if (ViewState["Borrar"].ToString() == "1")
+        //        {
+        //            //HtmlAnchor btnVer = (HtmlAnchor)e.Item.FindControl("btnVer");
+        //            //btnVer.Attributes.Add("href", "reportepagoswompi?verid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+        //            //btnVer.Visible = false;
 
-                    Button btnCancelar = (Button)e.Item.FindControl("btnCancelar");
-                    btnCancelar.Visible = true;
-                }
-            }
+        //            Button btnCancelar = (Button)e.Item.FindControl("btnCancelar");
+        //            btnCancelar.Visible = true;
+        //        }
+        //    }
 
-        }
+        //}
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
@@ -962,15 +962,15 @@ namespace fpWebApp
             }
         }
 
-        protected void btnCancelar_Command(object sender, CommandEventArgs e)
-        {
-            if (e.CommandName == "cancelarDebito")
-            {
-                int idAfiliadoPlan = int.Parse(e.CommandArgument.ToString());
+        //protected void btnCancelar_Command(object sender, CommandEventArgs e)
+        //{
+        //    if (e.CommandName == "cancelarDebito")
+        //    {
+        //        int idAfiliadoPlan = int.Parse(e.CommandArgument.ToString());
 
-                Response.Redirect("cancelardebito?idAfiliadoPlan=" + idAfiliadoPlan.ToString());
-            }
-        }
+        //        Response.Redirect("cancelardebito?idAfiliadoPlan=" + idAfiliadoPlan.ToString());
+        //    }
+        //}
 
         protected void btnBuscar_Click(object sender, EventArgs e)
         {

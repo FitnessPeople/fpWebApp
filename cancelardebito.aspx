@@ -34,9 +34,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#reportepagos");
+            var element1 = document.querySelector("#afiliadosplanes");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#reportes");
+            var element2 = document.querySelector("#afiliados2");
             element2.classList.remove("collapse");
         }
     </script>
@@ -126,7 +126,7 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form role="form" id="form" runat="server">
-                        <div class="row" id="divContenido" runat="server">
+                        <div id="divContenido" runat="server">
 
                             <div class="row m-b-lg m-t-lg">
                                 <div class="col-md-6">
@@ -196,7 +196,7 @@
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
-                                                    <a href="reportepagos" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Regresar</a>
+                                                    <a href="afiliadosplanes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Regresar</a>
                                                     <asp:Button ID="btnCancelarDebito" runat="server" Text="Cancelar débito"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs"
                                                         OnClick="btnCancelarDebito_Click" Visible="true" ValidationGroup="agregar" />

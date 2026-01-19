@@ -223,8 +223,6 @@
                                                     <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
                                                     <textarea id="txbObservaciones" runat="server" rows="3"
                                                         cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
-                                                    <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txbObservaciones"
-                                                        ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
@@ -310,25 +308,19 @@
 
         $("#form").validate({
             rules: {
-                ddlEspecialistas: {
+                ddlEmpresas: {
                     required: true,
                 },
-                ddlSedesCita: {
+                ddlAsesores: {
                     required: true,
                 },
                 txbFechaIni: {
                     required: true
                 },
-                txbFechaFin: {
-                    required: true
-                },
                 txbHoraIni: {
                     required: true,
                 },
-                txbHoraFin: {
-                    required: true,
-                },
-                txbDuracion: {
+                txbObservaciones: {
                     required: true,
                 },
             }

@@ -245,6 +245,7 @@
     <Content Include="accesoafiliado.aspx" />
     <Content Include="activosfijos.aspx" />
     <Content Include="afiliados.aspx" />
+    <Content Include="afiliadosplanes.aspx" />
     <Content Include="agenda.aspx" />
     <Content Include="agendacorporativo.aspx" />
     <Content Include="agendacrm.aspx" />
@@ -1055,6 +1056,13 @@
     </Compile>
     <Compile Include="afiliados.aspx.designer.cs">
       <DependentUpon>afiliados.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="afiliadosplanes.aspx.cs">
+      <DependentUpon>afiliadosplanes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="afiliadosplanes.aspx.designer.cs">
+      <DependentUpon>afiliadosplanes.aspx</DependentUpon>
     </Compile>
     <Compile Include="agenda.aspx.cs">
       <DependentUpon>agenda.aspx</DependentUpon>

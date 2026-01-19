@@ -253,12 +253,12 @@
                                                     <label class="col-lg-2 control-label">Mostrar</label>
                                                     <div class="col-lg-10">
                                                         <asp:RadioButtonList ID="rblPageSize" runat="server" AutoPostBack="true"
-                                                            RepeatDirection="Horizontal"
+                                                            RepeatDirection="Horizontal" RepeatLayout="Flow" 
                                                             OnSelectedIndexChanged="rblPageSize_SelectedIndexChanged">
-                                                            <asp:ListItem Text="&nbsp;10" Value="10" Selected="True" />
-                                                            <asp:ListItem Text="&nbsp;50" Value="50" />
-                                                            <asp:ListItem Text="&nbsp;100" Value="100" />
-                                                            <asp:ListItem Text="&nbsp;Todos" Value="0" />
+                                                            <asp:ListItem Text="&nbsp;10" Value="10" style="margin-right: 5px; font-size: 10px;" Selected="True" />
+                                                            <asp:ListItem Text="&nbsp;50" Value="50" style="margin-right: 5px; font-size: 10px;"/>
+                                                            <asp:ListItem Text="&nbsp;100" Value="100" style="margin-right: 5px; font-size: 10px;"/>
+                                                            <asp:ListItem Text="&nbsp;Todos" Value="0" style="margin-right: 5px; font-size: 10px;"/>
                                                         </asp:RadioButtonList>
                                                         <asp:Label ID="lblTotalRegistros" runat="server" CssClass="total-registros" />
                                                     </div>

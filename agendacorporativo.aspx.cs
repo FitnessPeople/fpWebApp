@@ -268,7 +268,7 @@ namespace fpWebApp
                 DataTable dt = cg.TraerDatos(strQuery);
 
                 ddlAsesores.Items.Clear();
-                ListItem li = new ListItem("Todos", "0");
+                ListItem li = new ListItem("Seleccione", "");
                 ddlAsesores.Items.Add(li);
                 ddlAsesores.DataSource = dt;
                 ddlAsesores.DataBind();

@@ -333,7 +333,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpPagos" runat="server" OnItemDataBound="rpPagos_ItemDataBound">
+                                                <asp:Repeater ID="rpPagos" runat="server">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("idAfiliadoPlan") %></td>
@@ -354,11 +354,6 @@
                                                                     OnCommand="btnDetalle_Command"
                                                                     CommandName="mostrarDetalle"
                                                                     Visible='<%# Eval("NombreMedioPago").ToString() == "Pago en línea" %>' />
-                                                                <asp:Button ID="btnCancelar" runat="server" Text="Cancelar"
-                                                                    CssClass="btn btn-danger btn-xs"
-                                                                    CommandArgument='<%# Eval("idAfiliadoPlan") %>'
-                                                                    OnCommand="btnCancelar_Command"
-                                                                    CommandName="cancelarDebito" Visible="false"/>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
@@ -554,6 +549,13 @@
         const maxY21 = redondearSuperior(maxVentas2 * 1.1, 100000);
         const maxY22 = Math.ceil(maxCantidad2 * 1.2);
 
+        const coloresBarras2 = datos2.labels.map((_, index) => {
+            const hue = (index * 360) / datos2.labels.length;
+            return `hsla(${hue}, 70%, 55%, 0.7)`;
+        });
+
+        const bordesBarras2 = coloresBarras2.map(c => c.replace('0.7', '1'));
+
         const data2 = {
             labels: datos2.labels, // nombres de canal
             datasets: [
@@ -562,8 +564,8 @@
                     label: 'Ingresos',
                     data: datos2.ventas,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: coloresBarras2,
+                    borderColor: bordesBarras2,
                     borderWidth: 1
                 },
                 {
@@ -847,6 +849,13 @@
         const maxY61 = redondearSuperior(maxVentas6 * 1.1, 100000);
         const maxY62 = Math.ceil(maxCantidad6 * 1.2);
 
+        const coloresBarras6 = datos6.labels.map((_, index) => {
+            const hue = (index * 360) / datos6.labels.length;
+            return `hsla(${hue}, 70%, 55%, 0.7)`;
+        });
+
+        const bordesBarras6 = coloresBarras6.map(c => c.replace('0.7', '1'));
+
         const data6 = {
             labels: datos6.labels, // nombres de canal
             datasets: [
@@ -855,8 +864,8 @@
                     label: 'Ingresos',
                     data: datos6.ventas,
                     yAxisID: 'y1',              // Asociado al eje Y izquierdo
-                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: coloresBarras6,
+                    borderColor: bordesBarras6,
                     borderWidth: 1
                 },
                 {
