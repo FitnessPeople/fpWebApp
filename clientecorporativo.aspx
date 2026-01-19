@@ -144,7 +144,7 @@
                         <div class="row" id="divContenido" runat="server">
 
                             <asp:Label ID="lblMensaje" runat="server" Text=""></asp:Label>
-                            <div class="col-lg-5">
+                            <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>
@@ -291,7 +291,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-7">
+                            <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Lista de Prospectos</h5>
@@ -308,24 +308,17 @@
 
                                                 <div class="row">
 
-                                                    <div class="col-lg-6 form-horizontal">
-                                                        <%--<div class="form-group">
-                                                            <label class="col-lg-2 control-label">Canal de venta:</label>
-                                                            <div class="col-lg-10">
-                                                                
-                                                            </div>
-                                                        </div>--%>
-
+                                                    <div class="col-lg-4 form-horizontal">
                                                         <div class="form-group">
                                                             <label class="col-lg-2 control-label">Mostrar</label>
                                                             <div class="col-lg-10">
                                                                 <asp:RadioButtonList ID="rblPageSize" runat="server" AutoPostBack="true"
-                                                                    RepeatDirection="Horizontal"
+                                                                    RepeatDirection="Horizontal" CssClass="form-control input-sm" RepeatLayout="Flow" 
                                                                     OnSelectedIndexChanged="rblPageSize_SelectedIndexChanged">
-                                                                    <asp:ListItem Text="&nbsp;10" Value="10" Selected="True" />
-                                                                    <asp:ListItem Text="&nbsp;50" Value="50" />
-                                                                    <asp:ListItem Text="&nbsp;100" Value="100" />
-                                                                    <asp:ListItem Text="&nbsp;Todos" Value="0" />
+                                                                    <asp:ListItem Text="&nbsp;10" Value="10" style="margin-right: 5px; font-size: 10px;" Selected="True" />
+                                                                    <asp:ListItem Text="&nbsp;50" Value="50" style="margin-right: 5px; font-size: 10px;"/>
+                                                                    <asp:ListItem Text="&nbsp;100" Value="100" style="margin-right: 5px; font-size: 10px;"/>
+                                                                    <asp:ListItem Text="&nbsp;Todos" Value="0" style="margin-right: 5px; font-size: 10px;"/>
                                                                 </asp:RadioButtonList>
                                                                 <asp:Label ID="lblTotalRegistros" runat="server" CssClass="total-registros" />
                                                             </div>
@@ -348,21 +341,6 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
-                                                            <label class="col-lg-2 control-label">&nbsp;</label>
-                                                            <div class="col-lg-10">
-                                                                <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;"
-                                                                    target="_blank" runat="server" id="btnExportar"
-                                                                    href="imprimirafiliados" visible="false" title="Exportar">
-                                                                    <i class="fa fa-file-excel m-r-xs"></i>EXCEL
-                                                                </a>
-                                                                <asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
-                                                                    CssClass="btn btn-primary pull-right dim m-l-md" Visible="false"
-                                                                    OnClick="lnkAsignar_Click" CausesValidation="true" ValidationGroup="asignar">
-                                                                    <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
-                                                                </asp:LinkButton>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
                                                             <!-- Imagen de carga -->
                                                             <div id="divCargando" style="display: none; text-align: center;">
                                                                 <div class="sk-spinner sk-spinner-cube-grid">
@@ -376,6 +354,24 @@
                                                                     <div class="sk-cube"></div>
                                                                     <div class="sk-cube"></div>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2 form-horizontal">
+                                                        <div class="form-group">
+                                                            <%--<label class="col-lg-2 control-label"></label>--%>
+                                                            <div class="col-lg-10">
+                                                                <a class="btn btn-info pull-right dim m-l-md" style="font-size: 12px;"
+                                                                    target="_blank" runat="server" id="btnExportar"
+                                                                    href="imprimirafiliados" visible="false" title="Exportar">
+                                                                    <i class="fa fa-file-excel m-r-xs"></i>EXCEL
+                                                                </a>
+                                                                <asp:LinkButton ID="lnkAsignar" runat="server" Style="font-size: 12px;"
+                                                                    CssClass="btn btn-primary pull-right dim m-l-md" Visible="false"
+                                                                    OnClick="lnkAsignar_Click" CausesValidation="true" ValidationGroup="asignar">
+                                                                    <i class="fa fa-user-plus m-r-xs"></i>ASIGNAR
+                                                                </asp:LinkButton>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -484,7 +480,6 @@
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->

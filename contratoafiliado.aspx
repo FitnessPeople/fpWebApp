@@ -210,8 +210,15 @@
                             <div class="col-lg-10 col-lg-offset-1">
                                 <div class="tabs-container">
                                     <ul class="nav nav-tabs">
-                                        <li class="active"><a data-toggle="tab" href="#tab-1"> Contrato Mayor de Edad F.P.</a></li>
-                                        <li class=""><a data-toggle="tab" href="#tab-2"> Contrato Mayor de Edad I.F.</a></li>
+                                        <li class="active">
+                                            <a data-toggle="tab" href="#tab-1"> Contrato Mayor de Edad F.P.</a>
+                                        </li>
+                                        <li class="">
+                                            <a data-toggle="tab" href="#tab-2"> Contrato Mayor de Edad I.F.</a>
+                                        </li>
+                                        <li class="">
+                                            <a data-toggle="tab" href="#tab-3"> Contrato Débito Automático F.P.</a>
+                                        </li>
                                     </ul>
                                     <div class="tab-content">
                                         <div id="tab-1" class="tab-pane active">

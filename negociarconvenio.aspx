@@ -239,8 +239,8 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <i class="fas fa-angle-right"></i>
-                                                            <label for="txbFechaFin" class="col-form-label">Fecha fin</label>
+                                                            <i class="fas fa-calendar-days text-info"></i>
+                                                            <label for="txbFechaFin" class="col-form-label">Fecha final:</label>
                                                             <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" />
                                                             <asp:RequiredFieldValidator ID="rfvFechaFin" runat="server" ControlToValidate="txbFechaFin"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">

@@ -94,7 +94,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h4 class="h4"><span class="event-icon mr-3 fa-2x"></span><span class="event-title"></span></h4>
+                    <h4 class="h4"><span class="event-icon mr-3 fa-2x m-r-xs"></span><span class="event-title"></span></h4>
                     <div class="event-body"></div>
                     <div class="event-description"></div>
                     <div class="event-id text-hide" id="event-id"></div>
@@ -337,7 +337,6 @@
     <script src="js/plugins/jquery-ui/jquery-ui.min.js"></script>
 
     <!-- Full Calendar -->
-    <%--<script src="js/plugins/fullcalendar/fullcalendar.min.js"></script>--%>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
 
     <!-- Date range picker -->
@@ -491,6 +490,7 @@
                     meridiem: 'short'
                 },
                 locale: 'es',
+                noEventsContent: 'No hay eventos agendados.',
                 buttonText: {
                     prev: '',
                     next: '',

@@ -189,7 +189,6 @@
                         </ContentTemplate>
                     </asp:UpdatePanel>--%>
             </ul>
-            </a>
         </li>
 
         <li class="dropdown">

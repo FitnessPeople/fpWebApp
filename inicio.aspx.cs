@@ -19,7 +19,7 @@ namespace fpWebApp
                     ltIdEmpresa.Text = Session["idEmpresa"].ToString();
                     ltCargo.Text = Session["CargoUsuario"].ToString();
                     ltFoto.Text = Session["Foto"].ToString();
-                    ltIdPerfil.Text = Session["idPerfil"].ToString();
+                    ltIdPerfil.Text = Session["idPerfil"].ToString() + " - " + Session["Perfil"].ToString();
                     ltEmailUsuario.Text = Session["emailUsuario"].ToString();
                     ltFechaNac.Text = Session["fechaNac"].ToString();
                     ltIdSede.Text = Session["idSede"].ToString();
@@ -61,14 +61,42 @@ namespace fpWebApp
                     TimeSpan diferencia = fechaDestino - hoy;
                     _strDiaZero = Convert.ToInt32(diferencia.TotalDays).ToString();
 
-                    Control ctrIndicadores = new Control();
-                    Control ctrGraficos = new Control();
+                    Control ctrIndicadores;
+                    Control ctrGraficos;
 
                     switch (Session["Perfil"].ToString())
                     {
                         case "CEO":
                             ctrIndicadores = LoadControl("controles/indicadoresCEO.ascx");
                             ctrGraficos = LoadControl("controles/graficosCEO.ascx");
+                            break;
+                        case "Director operativo":
+                            ctrIndicadores = LoadControl("controles/indicadoresDirOpe.ascx");
+                            ctrGraficos = LoadControl("controles/graficosDirOpe.ascx");
+                            break;
+                        case "Director comercial":
+                            ctrIndicadores = LoadControl("controles/indicadoresDirCom.ascx");
+                            ctrGraficos = LoadControl("controles/graficosDirCom.ascx");
+                            break;
+                        case "Administrador sede":
+                            ctrIndicadores = LoadControl("controles/indicadoresAdmSede.ascx");
+                            ctrGraficos = LoadControl("controles/graficosAdmSede.ascx");
+                            break;
+                        case "Asesor comercial":
+                            ctrIndicadores = LoadControl("controles/indicadoresAseCom.ascx");
+                            ctrGraficos = LoadControl("controles/graficosAseCom.ascx");
+                            break;
+                        case "Asesor corporativo":
+                            ctrIndicadores = LoadControl("controles/indicadoresAseCom.ascx");
+                            ctrGraficos = LoadControl("controles/graficosAseCom.ascx");
+                            break;
+                        case "Líder asistencial":
+                            ctrIndicadores = LoadControl("controles/indicadoresLidAsis.ascx");
+                            ctrGraficos = LoadControl("controles/graficosLidAsis.ascx");
+                            break;
+                        case "Director financiero y administrativo":
+                            ctrIndicadores = LoadControl("controles/indicadoresDirFin.ascx");
+                            ctrGraficos = LoadControl("controles/graficosDirFin.ascx");
                             break;
                         default:
                             ctrIndicadores = LoadControl("controles/indicadores02.ascx");

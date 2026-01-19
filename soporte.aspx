@@ -14,7 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Plantilla</title>
+    <title>Fitness People | Soporte FP+</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
@@ -96,11 +96,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Titulo</h2>
+                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Soporte FP+</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Menu principal</li>
-                        <li class="active"><strong>Titulo</strong></li>
+                        <li>Mantenimiento</li>
+                        <li class="active"><strong>Soporte FP+</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">

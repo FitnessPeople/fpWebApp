@@ -59,30 +59,30 @@
                     <p>
                         <b>Paso 1: Busca y filtra empresas</b><br />
                         Usa el buscador para encontrar empresas específicas. Puedes filtrar por:<br />
-                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i> <b>Documento (CC, TI, etc.).<br />
-                        <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i> Nombre Comercial.<br />
-                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> Celular o Correo.<br />
-                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> Fecha de Convenio.<br />
-                        <i class="fa-solid fa-circle" style="color: #0D6EFD;"></i> Estado (Activo/Inactivo).<br />
-                        <i class="fa-solid fa-circle-info" style="color: #0D6EFD;"></i> Info (datos adicionales).</b><br />
-                        <i class="fa-solid fa-star" style="color: #FECE32;"></i> Tip: ¡Combina filtros para resultados más exactos!
+                        <i class="fa-solid fa-address-card" style="color: #0D6EFD;"></i><b>Documento (CC, TI, etc.).<br />
+                            <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i>Nombre Comercial.<br />
+                            <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i>Celular o Correo.<br />
+                            <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i>Fecha de Convenio.<br />
+                            <i class="fa-solid fa-circle" style="color: #0D6EFD;"></i>Estado (Activo/Inactivo).<br />
+                            <i class="fa-solid fa-circle-info" style="color: #0D6EFD;"></i>Info (datos adicionales).</b><br />
+                        <i class="fa-solid fa-star" style="color: #FECE32;"></i>Tip: ¡Combina filtros para resultados más exactos!
                     <br />
                         <br />
                         <b>Paso 2: Revisa la tabla de resultados</b><br />
                         La tabla muestra toda la información de las empresas.<br />
-                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Haz clic para modificar datos.<br />
-                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Elimina el convenio (sistema pedirá confirmación).
+                        <i class="fa fa-edit" style="color: #1AB394;"></i><b>Editar:</b> Haz clic para modificar datos.<br />
+                        <i class="fa fa-trash" style="color: #DC3545;"></i><b>Eliminar:</b> Elimina el convenio (sistema pedirá confirmación).
                     <br />
                         <br />
                         <b>Paso 3: Acciones adicionales</b><br />
                         Al lado opuesto del buscador encontrarás dos botones útiles:<br />
-                        <i class="fa-solid fa-file-export" style="color: #212529;"></i> <b>Exportar a Excel:</b> 
+                        <i class="fa-solid fa-file-export" style="color: #212529;"></i><b>Exportar a Excel:</b>
                         Genera un archivo Excel con los datos visibles en la tabla.<br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Crear Nueva Empresa:</b> 
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Crear Nueva Empresa:</b>
                         Te lleva a un formulario para registrar un nuevo convenio.
                    <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -92,32 +92,38 @@
         </div>
     </div>
 
+
     <div class="modal inmodal" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content animated bounceInRight">
+
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <%--<i class="fa fa-file-pdf modal-icon"></i>--%>
-                    <h4 class="modal-title"><span id="titulo"></span></h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <i class="fa fa-file modal-icon"></i>
+                    <h4 class="modal-title">
+                        <span id="titulo"></span>
+                    </h4>
                 </div>
+
                 <div class="modal-body">
-                    
-                    <div class="text-center m-t-md">
-                        <object data="" type="application/pdf" width="450px" height="600px" id="objFile">
-                            <embed src="" id="objEmbed">
-                                <p>Este navegador no soporta archivos PDFs. Descarge el archivo para verlo: <a href="" id="objHref">Descargar PDF</a>.</p>
-                            </embed>
-                        </object> 
+                    <div id="viewer"
+                        class="text-center"
+                        style="min-height: 600px;">
                     </div>
-                        
-                    
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">
+                        Cerrar
+                    </button>
                 </div>
+
             </div>
         </div>
     </div>
+
     <div id="wrapper">
 
         <uc1:navbar runat="server" ID="navbar1" />
@@ -140,7 +146,6 @@
                 <div class="col-sm-2">
                 </div>
                 <%--Fin Breadcrumb!!!--%>
-
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
@@ -177,26 +182,26 @@
                                             <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                         </div>
                                     </div>
- 
+
                                     <div class="col-lg-6 form-horizontal">
-                                        <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
-                                            href="nuevaempresaafiliada" title="Agregar empresa afiliada" 
-                                            runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus"></i> NUEVO
+                                        <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;"
+                                            href="nuevaempresaafiliada" title="Agregar empresa afiliada"
+                                            runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus m-r-xs"></i>NUEVO
                                         </a>
-                                        <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
-                                            CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
+                                        <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                            CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                             OnClick="lbExportarExcel_Click">
-                                            <i class="fa fa-file-excel"></i> EXCEL
+                                            <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                         </asp:LinkButton>
                                     </div>
                                 </div>
                             </form>
-                            <table class="footable table table-striped" data-paging-size="10" 
-                                data-filter-min="3" data-filter-placeholder="Buscar" 
-                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
-                                data-paging-limit="10" data-filtering="true" 
-                                data-filter-container="#filter-form-container" data-filter-delay="300" 
-                                data-filter-dropdown-title="Buscar en:" data-filter-position="left" 
+                            <table class="footable table table-striped" data-paging-size="10"
+                                data-filter-min="3" data-filter-placeholder="Buscar"
+                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                data-paging-limit="10" data-filtering="true"
+                                data-filter-container="#filter-form-container" data-filter-delay="300"
+                                data-filter-dropdown-title="Buscar en:" data-filter-position="left"
                                 data-empty="Sin resultados">
                                 <thead>
                                     <tr>
@@ -243,11 +248,39 @@
                                                             <td><%# Eval("TipoNegociacion") %></td>
                                                             <td><%# Eval("DiasCredito") %></td>
                                                             <td>
-                                                                <%--<a href='pdfviewer?url=./docs/contratos/&file=<%# Eval("Contrato") %>'><%# Eval("Contrato") %></a>--%>
-                                                                <a class="dropdown-toggle" data-toggle="modal" 
-                                                                    href="#" data-target="#myModal2" 
+                                                                <a href="#"
+                                                                    class="ver-documento"
                                                                     data-file="<%# Eval("Contrato") %>">
                                                                     <%# Eval("Contrato") %>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th width="25%"><i class="fa fa-file m-r-xs"></i>Camara de comercio</th>
+                                                            <th width="25%"><i class="fa fa-file m-r-xs"></i>Rut</th>
+                                                            <th width="25%"><i class="fa fa-file m-r-xs"></i>Cédula representante legal</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <a href="#"
+                                                                    class="ver-documento"
+                                                                    data-file="<%# Eval("CamaraComercio") %>">
+                                                                    <%# Eval("CamaraComercio") %>
+                                                                </a>
+
+                                                            </td>
+                                                            <td>
+                                                                <a href="#"
+                                                                    class="ver-documento"
+                                                                    data-file="<%# Eval("Rut") %>">
+                                                                    <%# Eval("Rut") %>
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                <a href="#"
+                                                                    class="ver-documento"
+                                                                    data-file="<%# Eval("CedulaRepLeg") %>">
+                                                                    <%# Eval("CedulaRepLeg") %>
                                                                 </a>
                                                             </td>
                                                         </tr>
@@ -300,23 +333,53 @@
     <!-- pdfJS -->
     <script src="js/plugins/pdfjs/pdf.js"></script>
 
-    <script id="script">
-        //
-        // If absolute URL from the remote server is provided, configure the CORS
-        // header on that server.
-        //
+    <script>
+        $(document).on('click', '.ver-documento', function (e) {
+            e.preventDefault();
 
-        $(document).on("click", ".dropdown-toggle", function () {
-            var url = './docs/contratos/';
-            url = url + $(this).data('file');
+            var archivo = $(this).data('file');
 
-            document.getElementById('titulo').innerHTML = $(this).data('file');
-            document.getElementById('objFile').data = url;
-            document.getElementById('objEmbed').src = url;
-            document.getElementById('objHref').src = url;
+            console.log('Archivo recibido:', archivo);
+
+            if (!archivo) {
+                alert('No hay archivo');
+                return;
+            }
+
+            archivo = archivo.toString().trim();
+
+            var url = './docs/contratos/' + archivo;
+            console.log('URL final:', url);
+
+            $('#titulo').text(archivo);
+
+            $('#viewer').html(
+                '<p><i class="fa fa-spinner fa-spin"></i> Cargando documento...</p>'
+            );
+
+            var ext = archivo.split('.').pop().toLowerCase();
+            var html = '';
+
+            if (ext === 'pdf') {
+                html =
+                    '<object data="' + url + '" type="application/pdf" width="100%" height="600px">' +
+                    '<p>No se puede mostrar el PDF. ' +
+                    '<a href="' + url + '" target="_blank">Descargar</a></p>' +
+                    '</object>';
+            }
+            else if (ext === 'jpg' || ext === 'jpeg' || ext === 'png') {
+                html =
+                    '<img src="' + url + '" style="max-width:100%;max-height:600px;" />';
+            }
+            else {
+                html = '<p class="text-danger">Formato no soportado</p>';
+            }
+
+            $('#viewer').html(html);
+            $('#myModal2').modal('show');
         });
-        
     </script>
+
 
 </body>
 

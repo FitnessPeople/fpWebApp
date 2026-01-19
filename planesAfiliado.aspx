@@ -577,7 +577,30 @@
                                                                                 AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
                                                                         </td>
                                                                     </tr>
-
+                                                                    <tr>
+                                                                        <td>
+                                                                            <button type="button" class="btn btn-secondary m-r-sm">
+                                                                                <i class="fa fa-coins"></i>
+                                                                            </button>
+                                                                            <span class="font-bold">Crédito</span>
+                                                                        </td>
+                                                                        <%--<td></td>--%>
+                                                                        <td colspan="2">
+                                                                            <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM"
+                                                                                runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                                <asp:ListItem Text="N/A" Value="0"></asp:ListItem>
+                                                                            </asp:DropDownList>
+                                                                        </td>
+                                                                        <td>
+                                                                            <asp:TextBox ID="txbCredito" CssClass="form-control input-sm"
+                                                                                runat="server" Text="$0" 
+                                                                                onclick="if(this.value === '$0') this.value=''" placeholder="$0"
+                                                                                onkeyup="formatCurrency(this)" autocomplete="off"
+                                                                                onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
+                                                                                AutoPostBack="true" Style="text-align: right;"></asp:TextBox>
+                                                                        </td>
+                                                                    </tr>
                                                                 </tbody>
                                                             </table>
                                                         </div>

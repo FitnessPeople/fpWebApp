@@ -3574,7 +3574,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarPermisosPerfilesPorPerfil(int idPerfil)
+        public DataTable ConsultarPermisosPerfilesPorPerfil(int idPerfil, int permiso)
         {
             DataTable dt = new DataTable();
 
@@ -3586,7 +3586,8 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_PERMISOS_PERFILES_POR_PERFIL", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_id_perfil", Convert.ToInt32(idPerfil));
+                        cmd.Parameters.AddWithValue("@p_id_perfil", idPerfil);
+                        cmd.Parameters.AddWithValue("@p_solo_con_permiso", permiso);
 
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
                         {
@@ -7084,6 +7085,139 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ConsultarTokenPorIdPlanYIdVendedor(int idPlan, int idVendedor)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_TOKEN_POR_PLAN_VENDEDOR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_id_vendedor", idVendedor);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+
+                        //mysqlConexion.Open();
+
+                        //int cantidad = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        //return cantidad > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+
+                //return false;
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarToken(string token)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_TOKEN", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_token", token);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public string InsertarTokenPlanVendedor(int idPlan, int idVendedor, string token)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_TOKEN_PLAN_VENDEDOR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_plan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_id_vendedor", idVendedor);
+                        cmd.Parameters.AddWithValue("@p_token", token);
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataTable ConsultarTokensPorIdVendedor(int idVendedor)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_TOKENS_POR_VENDEDOR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_vendedor", idVendedor);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
 
         #endregion
 
@@ -10433,6 +10567,39 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ConsultarVentasVsMetasPorFecha(DateTime FechaIni, DateTime FechaFin)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_REPORTE_VENTAS_VS_METAS_ASESOR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_fecha_ini", FechaIni);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", FechaFin);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
         public DataTable ConsultarCantidadLeadsPorEstadosVenta()
         {
             DataTable dt = new DataTable();
@@ -11820,6 +11987,135 @@ namespace fpWebApp
                 }
             }
         }
+
+        public DataTable ConsultaAgendaPorAsesor(int idUsuario)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_AGENDA_ASESOR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public string InsertarEmpresaAfiliada(string documentoEmpresa,string digitoVerificacion,int idTipoDocumento,string nombreComercial,string razonSocial,
+            DateTime fechaConvenio,DateTime? fechaFinConvenio, string nombreContacto, string cargoContacto, string celularEmpresa, string correoEmpresa,
+            string nombrePagador, string telefonoPagador, string correoPagador, string direccionEmpresa, int idCiudadEmpresa, int nroEmpleados,
+            string tipoNegociacion,  int diasCredito,  string contrato,  string imagen, string camaraComercio, string rut, string cedulaRepLegal,
+            string retornoAdm, int idUsuario, out bool respuesta, out string mensaje )
+        {
+            respuesta = false;
+            mensaje = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_EMPRESA_AFILIADA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_documento_empresa", documentoEmpresa);
+                        cmd.Parameters.AddWithValue("@p_digitoverificacion", digitoVerificacion);
+                        cmd.Parameters.AddWithValue("@p_id_tipo_documento", idTipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_nombre_comercial", nombreComercial);
+                        cmd.Parameters.AddWithValue("@p_razon_social", razonSocial);
+                        cmd.Parameters.AddWithValue("@p_fecha_convenio", fechaConvenio);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin_convenio", fechaFinConvenio.HasValue ? (object)fechaFinConvenio.Value : DBNull.Value);
+                        cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_cargo_contacto", cargoContacto);
+                        cmd.Parameters.AddWithValue("@p_celular_empresa", celularEmpresa);
+                        cmd.Parameters.AddWithValue("@p_correo_empresa", correoEmpresa);
+                        cmd.Parameters.AddWithValue("@p_nombre_pagador", nombrePagador);
+                        cmd.Parameters.AddWithValue("@p_telefono_pagador", telefonoPagador);
+                        cmd.Parameters.AddWithValue("@p_correo_pagador", correoPagador);
+                        cmd.Parameters.AddWithValue("@p_direccion_empresa", direccionEmpresa);
+                        cmd.Parameters.AddWithValue("@p_id_ciudad_empresa", idCiudadEmpresa);
+                        cmd.Parameters.AddWithValue("@p_nro_empleados", nroEmpleados);
+                        cmd.Parameters.AddWithValue("@p_tipo_negociacion", tipoNegociacion);
+                        cmd.Parameters.AddWithValue("@p_dias_credito", diasCredito);
+                        cmd.Parameters.AddWithValue("@p_contrato", contrato);
+                        cmd.Parameters.AddWithValue("@p_imagen", imagen);
+                        cmd.Parameters.AddWithValue("@p_camara_comercio", camaraComercio);
+                        cmd.Parameters.AddWithValue("@p_rut", rut);
+                        cmd.Parameters.AddWithValue("@p_cedula_rep_leg", cedulaRepLegal);
+                        cmd.Parameters.AddWithValue("@p_retorno_adm", retornoAdm);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 50);
+                        pMensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(pMensaje);
+
+                        cmd.ExecuteNonQuery();
+
+                        mensaje = pMensaje.Value?.ToString();
+                        respuesta = (mensaje == "OK");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = false;
+                mensaje = "ERROR: " + ex.Message;
+            }
+
+            return mensaje;
+        }
+
+        public DataTable ConsultarEmpresasYProspectosCorporativos()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EMPRESAS_Y_PROSPECTOS_CORPORATIVOS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
         #endregion
 
         #region GymPass
@@ -13158,6 +13454,11 @@ namespace fpWebApp
             return dt;
         }
 
+        public string GetAppSetting(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
+        }
+
         // Pagos en la Web
 
         public DataTable ConsultarIntegracionPorId(int idIntegracion)
@@ -13646,40 +13947,6 @@ namespace fpWebApp
             }
 
             return respuesta;
-        }
-
-        #endregion
-
-        #region Corporativo
-
-        public DataTable ConsultarEmpresasYProspectosCorporativos()
-        {
-            DataTable dt = new DataTable();
-
-            try
-            {
-                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-                {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_EMPRESAS_Y_PROSPECTOS_CORPORATIVOS", mysqlConexion))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
-                        {
-                            mysqlConexion.Open();
-                            dataAdapter.Fill(dt);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                dt = new DataTable();
-                dt.Columns.Add("Error", typeof(string));
-                dt.Rows.Add(ex.Message);
-            }
-
-            return dt;
         }
 
         #endregion

@@ -49,21 +49,6 @@ namespace fpWebApp
             }
         }
 
-        private void listaEmpresasAfiliadas()
-        {
-            string strQuery = "SELECT *, " +
-                "IF(EstadoEmpresa='Activo','success','danger') badge " +
-                "FROM EmpresasAfiliadas ea, ciudades c " +
-                "WHERE ea.idCiudadEmpresa = c.idCiudad ";
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
-
-            rpEmpresasAfiliadas.DataSource = dt;
-            rpEmpresasAfiliadas.DataBind();
-
-            dt.Dispose();
-        }
-
         private void ValidarPermisos(string strPagina)
         {
             ViewState["SinPermiso"] = "1";
@@ -83,6 +68,21 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
+
+            dt.Dispose();
+        }
+
+        private void listaEmpresasAfiliadas()
+        {
+            string strQuery = "SELECT *, " +
+                "IF(EstadoEmpresa='Activo','success','danger') badge " +
+                "FROM EmpresasAfiliadas ea, ciudades c " +
+                "WHERE ea.idCiudadEmpresa = c.idCiudad ";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            rpEmpresasAfiliadas.DataSource = dt;
+            rpEmpresasAfiliadas.DataBind();
 
             dt.Dispose();
         }
