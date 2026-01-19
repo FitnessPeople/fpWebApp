@@ -525,6 +525,8 @@ namespace fpWebApp
 
             try
             {
+                string observaciones = $"Pago correspondiente del plan {nombrePlan} por valor de ${precioPlan}.";
+
                 string fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
 
                 clasesglobales cg = new clasesglobales();
@@ -611,6 +613,7 @@ namespace fpWebApp
                     _codSiigoPlan,
                     _nombrePlan,
                     _precioPlan,
+                    observaciones, 
                     idSellerUser,
                     idDocumentType,
                     fechaActual,

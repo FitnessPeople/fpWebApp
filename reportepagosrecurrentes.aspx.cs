@@ -217,6 +217,47 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarCobrosRecurrentes();
 
+            if (!dt.Columns.Contains("ProximoValorCobrar")) dt.Columns.Add("ProximoValorCobrar", typeof(int));
+            if (!dt.Columns.Contains("MontoAcumulado")) dt.Columns.Add("MontoAcumulado", typeof(int));
+            if (!dt.Columns.Contains("MesesACobrar")) dt.Columns.Add("MesesACobrar", typeof(int));
+
+            foreach (DataRow row in dt.Rows)
+            {
+                int idPlan = Convert.ToInt32(row["idPlan"]);
+                int idAfiliadoPlan = Convert.ToInt32(row["idAfiliadoPlan"]);
+                int valorBase = Convert.ToInt32(row["Valor"]);
+                DateTime fechaProximoCobro = Convert.ToDateTime(row["FechaProximoCobro"]);
+
+                int mesesAtraso = ((DateTime.Now.Year - fechaProximoCobro.Year) * 12) + DateTime.Now.Month - fechaProximoCobro.Month;
+
+                if (DateTime.Now.Day >= fechaProximoCobro.Day) mesesAtraso++;
+
+                if (mesesAtraso < 0) mesesAtraso = 0;
+
+                // Si está al día, al menos mostrar el valor del mes actual
+                int mesesACobrar = mesesAtraso > 0 ? mesesAtraso : 1;
+
+                int mesesPagados = cg.ConsultarCantidadMesesPagadosPorIdAfiliadoPlan(idAfiliadoPlan);
+
+                row["ProximoValorCobrar"] = cg.ObtenerValorMesPlanSimulado(idPlan, mesesPagados, valorBase);
+
+
+                // Monto Acumulado
+                int montoTotal = 0; 
+
+                for (int i = 0; i < mesesACobrar; i++)
+                {
+                    int mesSimulado = mesesPagados + i;
+
+                    int valorMes  = cg.ObtenerValorMesPlanSimulado(idPlan, mesSimulado, valorBase);
+
+                    montoTotal += valorMes;
+                }
+
+                row["MontoAcumulado"] = montoTotal;
+                row["MesesACobrar"] = mesesACobrar;
+            }
+
             rpPagos.DataSource = dt;
             rpPagos.DataBind();
             dt.Dispose();
@@ -248,13 +289,26 @@ namespace fpWebApp
             }
         }
 
-        protected async void btnCobrar_Click(object sender, EventArgs e)
+        protected async void btnCobrar_Click(object sender, CommandEventArgs e)
         {
             try
             {
                 // Obtenemos la fila
                 Button btn = (Button)sender;
                 RepeaterItem item = (RepeaterItem)btn.NamingContainer;
+
+                int valorACobrar;
+                int mesesACobrar = 1;
+
+                if (e.CommandName == "ACUMULADO")
+                {
+                    valorACobrar = Convert.ToInt32(((HiddenField)item.FindControl("hfMontoAcumulado")).Value);
+                    mesesACobrar = Convert.ToInt32(((HiddenField)item.FindControl("hfMesesACobrar")).Value);
+                }
+                else
+                {
+                    valorACobrar = Convert.ToInt32(((HiddenField)item.FindControl("hfProximoValorCobrar")).Value);
+                }
 
                 // Recuperamos los datos ocultos
                 int idAfiliadoPlan = Convert.ToInt32(((HiddenField)item.FindControl("hfIdAfiliadoPlan")).Value);
@@ -263,7 +317,6 @@ namespace fpWebApp
                 int idPlan = Convert.ToInt32(((HiddenField)item.FindControl("hfIdPlan")).Value);
                 string codSiigoPlan = ((HiddenField)item.FindControl("hfCodSiigoPlan")).Value;
                 string nombrePlan = ((HiddenField)item.FindControl("hfNombrePlan")).Value;
-                int valorPlan = Convert.ToInt32(((HiddenField)item.FindControl("hfValor")).Value);
                 string fuentePago = ((HiddenField)item.FindControl("hfFuentePago")).Value;
                 string documentoAfiliado = ((HiddenField)item.FindControl("hfDocumentoAfiliado")).Value;
                 string correo = ((HiddenField)item.FindControl("hfEmail")).Value;
@@ -281,16 +334,14 @@ namespace fpWebApp
                 int idCostCenter = dtSede != null && dtSede.Rows.Count > 0 ? Convert.ToInt32(dtSede.Rows[0]["idCostCenterSiigo"].ToString()) : 0;
                 dtSede.Dispose();
 
-                int valorPromocion = cg.ObtenerValorPlanConPromocion(idPlan, idAfiliadoPlan);
-
-                if (valorPromocion > 0) valorPlan = valorPromocion;
-
-                if (idPlan == 12) valorPlan = 89000;
-
-                int monto = valorPlan * 100;
+                int monto = valorACobrar * 100;
                 string moneda = "COP";
                 string referencia = $"{documentoAfiliado}-{DateTime.Now.ToString("yyyyMMddHHmmss")}";
-                string descripcion = $"Cobro recurrente del plan {nombrePlan}";
+
+                string plural = mesesACobrar > 1 ? "meses" : "mes";
+                string descripcion = e.CommandName == "ACUMULADO"
+                     ? $"Cobro de {mesesACobrar} {plural} del plan {nombrePlan} por valor de ${valorACobrar}."
+                     : $"Cobro mensual del plan {nombrePlan} por valor de ${valorACobrar}.";
 
                 string concatenado = $"{referencia}{monto}{moneda}{IntegritySecret}";
                 string hash256 = ComputeSha256Hash(concatenado);
@@ -305,6 +356,10 @@ namespace fpWebApp
                     descripcion
                 );
 
+                string observaciones = e.CommandName == "ACUMULADO"
+                    ? $"Pago correspondiente a {mesesACobrar} meses del plan {nombrePlan}."
+                    : $"Pago correspondiente a 1 mes del plan {nombrePlan}.";
+
                 // Si fue exitoso, registramos el pago
                 if (pagoExitoso)
                 {
@@ -313,7 +368,9 @@ namespace fpWebApp
                         documentoAfiliado,
                         codSiigoPlan,
                         nombrePlan,
-                        valorPlan,
+                        observaciones, 
+                        valorACobrar,
+                        mesesACobrar,
                         referencia,
                         idVendedor,
                         fuentePago, 
@@ -335,7 +392,7 @@ namespace fpWebApp
                         EstadoCobroRechazado
                     );
 
-                    MostrarAlerta("Error", "El cobro no fue aprobado por la pasarela.", "error");
+                    MostrarAlerta("Error en el cobro", $"El intento de cobro fue rechazado por Wompi.\nDetalle del rechazo:\n{EstadoCobroRechazado}", "error");
                 }
             }
             catch (Exception ex)
@@ -363,7 +420,7 @@ namespace fpWebApp
             }
         }
 
-        private async void RegistrarPago(int idAfiliadoPlan, string documentoAfiliado, string codSiigoPlan, string nombrePlan, int valor, string referencia, int idVendedor, string idFuentePago, int idSede, int idCostCenter)
+        private async void RegistrarPago(int idAfiliadoPlan, string documentoAfiliado, string codSiigoPlan, string nombrePlan, string observaciones, int valor, int mesesCobrados, string referencia, int idVendedor, string idFuentePago, int idSede, int idCostCenter)
         {
             try
             {
@@ -386,7 +443,7 @@ namespace fpWebApp
                     null
                 );
 
-                cg.ActualizarFechaProximoCobro(idAfiliadoPlan);
+                cg.ActualizarFechaProximoCobro(idAfiliadoPlan, mesesCobrados);
 
                 try
                 {
@@ -439,6 +496,7 @@ namespace fpWebApp
                         codSiigoPlan,
                         nombrePlan,
                         valor,
+                        observaciones,
                         IdSellerUser,
                         IdDocumentType,
                         fechaActual,
@@ -458,6 +516,7 @@ namespace fpWebApp
                     //    codSiigoPlan,
                     //    nombrePlan,
                     //    precioPlan,
+                    //    observaciones,
                     //    IdSellerUser,
                     //    IdDocumentType,
                     //    fechaActual,

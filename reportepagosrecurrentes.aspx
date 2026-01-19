@@ -195,45 +195,75 @@
                                         data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
                                         <thead>
                                             <tr>
-                                                <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">Id Pago</th>
                                                 <th>Documento</th>
                                                 <th>Afiliado</th>
+                                                <th>Celular</th>
                                                 <th>Email</th>
-                                                <th data-breakpoints="xs sm md">Valor</th>
-                                                <th data-breakpoints="xs sm md">Plan</th>
-                                                <th data-breakpoints="xs sm md">Fecha</th>
-                                                <th data-breakpoints="xs sm md">Acciones</th>
+                                                <th>Plan</th>
+                                                <th>Fecha Cobro</th>
+                                                <th class="text-center">Valor a Cobrar</th>
+                                                <th class="text-center">Monto Acumulado</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <asp:Repeater ID="rpPagos" runat="server">
                                                 <ItemTemplate>
                                                     <tr class="feed-element">
-                                                        <td><%# Eval("idPago") %></td>
                                                         <td><%# Eval("DocumentoAfiliado") %></td>
                                                         <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
+                                                        <td><%# Eval("CelularAfiliado") %></td>
                                                         <td><%# Eval("EmailAfiliado") %></td>
-                                                        <td><%# Eval("Valor", "{0:C0}") %></td>
                                                         <td><%# Eval("NombrePlan") %></td>
                                                         <td><%# Eval("fechaProximoCobro", "{0:dd MMM yyyy}") %></td>
-                                                        <td>
-                                                            <asp:Button ID="btnCobrar" runat="server" Text="Cobrar"
-                                                                CssClass="btn btn-primary"
-                                                                CommandArgument='<%# Eval("idPago") %>'
-                                                                OnCommand="btnCobrar_Click"
-                                                                OnClientClick="return confirmarCobro(this);" />
 
-                                                            <!-- Hidden fields con información adicional -->
-                                                            <asp:HiddenField ID="hfIdAfiliadoPlan" runat="server" Value='<%# Eval("idAfiliadoPlan") %>' />
-                                                            <asp:HiddenField ID="hfIdVendedor" runat="server" Value='<%# Eval("idUsuario") %>' /> 
-                                                            <asp:HiddenField ID="hfIdSede" runat="server" Value='<%# Eval("idSede") %>' />
-                                                            <asp:HiddenField ID="hfIdPlan" runat="server" Value='<%# Eval("idPlan") %>' />
-                                                            <asp:HiddenField ID="hfCodSiigoPlan" runat="server" Value='<%# Eval("CodSiigoPlan") %>' />
-                                                            <asp:HiddenField ID="hfNombrePlan" runat="server" Value='<%# Eval("NombrePlan") %>' />
-                                                            <asp:HiddenField ID="hfValor" runat="server" Value='<%# Eval("Valor") %>' />
-                                                            <asp:HiddenField ID="hfFuentePago" runat="server" Value='<%# Eval("DataIdFuente") %>' />
-                                                            <asp:HiddenField ID="hfDocumentoAfiliado" runat="server" Value='<%# Eval("DocumentoAfiliado") %>' />
-                                                            <asp:HiddenField ID="hfEmail" runat="server" Value='<%# Eval("EmailAfiliado") %>' />
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-xs-6 text-right">
+                                                                    <%# Eval("ProximoValorCobrar", "{0:C0}") %>
+                                                                </div>
+
+                                                                <div class="col-xs-6 text-left">
+                                                                    <asp:Button ID="btnCobrarValor" runat="server" 
+                                                                        Text="Cobrar"
+                                                                        CommandName="PROXIMO"
+                                                                        CssClass="btn btn-success"
+                                                                        CommandArgument='<%# Eval("idAfiliadoPlan") %>'
+                                                                        OnCommand="btnCobrar_Click"
+                                                                        OnClientClick="return confirmarCobro(this);" />
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
+                                                        <td>
+                                                            <div class="row">
+                                                                <div class="col-xs-6 text-right">
+                                                                    <%# Eval("MontoAcumulado", "{0:C0}") %>
+
+                                                                    <!-- Hidden fields con información adicional -->
+                                                                    <asp:HiddenField ID="hfIdAfiliadoPlan" runat="server" Value='<%# Eval("idAfiliadoPlan") %>' />
+                                                                    <asp:HiddenField ID="hfDocumentoAfiliado" runat="server" Value='<%# Eval("DocumentoAfiliado") %>' />
+                                                                    <asp:HiddenField ID="hfEmail" runat="server" Value='<%# Eval("EmailAfiliado") %>' />
+                                                                    <asp:HiddenField ID="hfIdVendedor" runat="server" Value='<%# Eval("idUsuario") %>' /> 
+                                                                    <asp:HiddenField ID="hfIdSede" runat="server" Value='<%# Eval("idSede") %>' />
+                                                                    <asp:HiddenField ID="hfIdPlan" runat="server" Value='<%# Eval("idPlan") %>' />
+                                                                    <asp:HiddenField ID="hfCodSiigoPlan" runat="server" Value='<%# Eval("CodSiigoPlan") %>' />
+                                                                    <asp:HiddenField ID="hfNombrePlan" runat="server" Value='<%# Eval("NombrePlan") %>' />
+                                                                    <asp:HiddenField ID="hfProximoValorCobrar" runat="server" Value='<%# Eval("ProximoValorCobrar") %>' />
+                                                                    <asp:HiddenField ID="hfMontoAcumulado" runat="server" Value='<%# Eval("MontoAcumulado") %>' />
+                                                                    <asp:HiddenField ID="hfFuentePago" runat="server" Value='<%# Eval("DataIdFuente") %>' />
+                                                                    <asp:HiddenField ID="hfMesesACobrar" runat="server" Value='<%# Eval("MesesACobrar") %>' />
+                                                                </div>
+
+                                                                <div class="col-xs-6 text-left">
+                                                                    <asp:Button ID="btnCobrarMonto" runat="server" 
+                                                                        Text="Cobrar"
+                                                                        CommandName="ACUMULADO"
+                                                                        CssClass="btn btn-danger"
+                                                                        CommandArgument='<%# Eval("idAfiliadoPlan") %>'
+                                                                        OnCommand="btnCobrar_Click"
+                                                                        OnClientClick="return confirmarCobro(this);" />
+                                                                </div>
+                                                            </div>
                                                         </td>
                                                     </tr>
                                                 </ItemTemplate>

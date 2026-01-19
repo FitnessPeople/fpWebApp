@@ -13256,9 +13256,9 @@ namespace fpWebApp
             return dt;
         }
 
-        public int ConsultarCantidadPagosPorIdAfiliadoPlan(int idAfiliadoPlan)
+        public int ConsultarCantidadMesesPagadosPorIdAfiliadoPlan(int idAfiliadoPlan)
         {
-            int cantidadPagos = 0;
+            int meses = 0;
 
             try
             {
@@ -13266,7 +13266,7 @@ namespace fpWebApp
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
                     mysqlConexion.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CANTIDAD_PAGOS_POR_ID_AFILIADO_PLAN", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CANTIDAD_MESES_PAGADOS_POR_ID_AFILIADO_PLAN", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
@@ -13275,7 +13275,7 @@ namespace fpWebApp
                         {
                             if (reader.Read())
                             {
-                                cantidadPagos = Convert.ToInt32(reader["CantidadPagos"]);
+                                meses = Convert.ToInt32(reader["CantidadMesesPagados"]);
                             }
                         }
                     }
@@ -13284,56 +13284,36 @@ namespace fpWebApp
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("Error en InsertarAfiliadoPlan: " + ex.Message);
-                cantidadPagos = -1; // -1 indica error
+                meses = -1; // -1 indica error
             }
 
-            return cantidadPagos;
+            return meses;
         }
 
-        public int ObtenerValorPlanConPromocion(int idPlan, int idAfiliadoPlan)
+        public int ObtenerValorMesPlanSimulado(int idPlan, int mesSimulado, int precioNormal)
         {
-            try
-            {
-                DataTable promo = ConsultarPlanPromocionPorId(idPlan);
+            if (idPlan == 12) return 89000;
 
-                // Si hubo error en el procedimiento
-                if (promo == null || promo.Rows.Count == 0 || promo.Columns.Contains("Error"))
-                {
-                    System.Diagnostics.Debug.WriteLine($"[ObtenerValorPlanConPromocion] No se encontró promoción para plan {idPlan}");
-                    return 0; // valor por defecto, el que luego puedes reemplazar por PrecioTotal
-                }
+            DataTable promo = ConsultarPlanPromocionPorId(idPlan);
 
-                DataRow row = promo.Rows[0];
+            // Si el plan NO tiene promoción → cobrar precio normal
+            if (promo == null || promo.Rows.Count == 0) return precioNormal;
 
-                // Validar campos con TryParse para evitar excepciones
-                int.TryParse(row["MesesDuracion"]?.ToString(), out int mesesPromo);
-                int.TryParse(row["PrecioProm"]?.ToString(), out int precioPromo);
-                int.TryParse(row["PrecioTotal"]?.ToString(), out int precioNormal);
 
-                // Si por alguna razón viene vacío, ponemos 0 para no romper
-                if (mesesPromo == 0 || (precioPromo == 0 && precioNormal == 0))
-                {
-                    System.Diagnostics.Debug.WriteLine($"[ObtenerValorPlanConPromocion] Datos de promoción incompletos para plan {idPlan}");
-                    return 0;
-                }
+            DataRow row = promo.Rows[0];
 
-                int cantidadPagos = ConsultarCantidadPagosPorIdAfiliadoPlan(idAfiliadoPlan);
+            // Leer valores de la promoción
+            int.TryParse(row["MesesDuracion"]?.ToString(), out int mesesPromo);
+            int.TryParse(row["PrecioProm"]?.ToString(), out int precioPromo);
+            int.TryParse(row["PrecioTotal"]?.ToString(), out int precioTotal);
 
-                if (cantidadPagos == -1)
-                {
-                    // Error al consultar los pagos
-                    return 0;
-                }
 
-                // Regla: si aún está dentro del número de meses promocionales, cobra precio promo
-                int valorFinal = (cantidadPagos < mesesPromo) ? precioPromo : precioNormal;
-                return valorFinal;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"[ObtenerValorPlanConPromocion] Error: {ex.Message}");
-                return 0;
-            }
+            // Si aún está dentro de la promoción
+            if (mesSimulado < mesesPromo) return precioPromo;
+
+            // Si ya terminó la promoción
+            // Si existe PrecioTotal válido, usarlo; si no, usar el precio normal
+            return precioTotal > 0 ? precioTotal : precioNormal;
         }
 
         public DataTable ConsultarCobrosRecurrentes()
@@ -13453,7 +13433,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarFechaProximoCobro(int idAfiliadoPlan)
+        public string ActualizarFechaProximoCobro(int idAfiliadoPlan, int mesesCobrados)
         {
             string respuesta = string.Empty;
             try
@@ -13470,6 +13450,7 @@ namespace fpWebApp
 
                         // Parámetros de entrada
                         cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+                        cmd.Parameters.AddWithValue("@p_meses_cobrados", mesesCobrados);
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
                     }
