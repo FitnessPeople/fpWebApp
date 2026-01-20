@@ -306,7 +306,7 @@
                                                     CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click" Visible="false">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                    <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                                 </asp:LinkButton>
                                             </div>
                                         </div>

@@ -179,7 +179,7 @@
                                                 <div class="col-lg-4">
                                                     <asp:LinkButton ID="btnExportarEfe" runat="server" CausesValidation="false"
                                                         CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                                        OnClick="btnExportarEfe_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                                        OnClick="btnExportarEfe_Click"><i class="fa fa-file-excel m-r-xs"></i>EXCEL                                       
                                                     </asp:LinkButton>
                                                 </div>
                                             </div>
@@ -243,7 +243,7 @@
                                                 <div class="col-lg-4">
                                                     <asp:LinkButton ID="btnExportarData" runat="server" CausesValidation="false"
                                                         CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                                        OnClick="btnExportarData_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                                        OnClick="btnExportarData_Click"><i class="fa fa-file-excel m-r-xs"></i>EXCEL                                       
                                                     </asp:LinkButton>
                                                 </div>
                                             </div>
@@ -313,7 +313,7 @@
                                                 <div class="col-lg-4">
                                                     <asp:LinkButton ID="btnExportarTrans" runat="server" CausesValidation="false"
                                                         CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                                        OnClick="btnExportarTrans_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                                        OnClick="btnExportarTrans_Click"><i class="fa fa-file-excel m-r-xs"></i>EXCEL                                       
                                                     </asp:LinkButton>
                                                 </div>
                                             </div>
@@ -380,7 +380,7 @@
                                                 <div class="col-lg-4">
                                                     <asp:LinkButton ID="btnExportarWompi" runat="server" CausesValidation="false"
                                                         CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
-                                                        OnClick="btnExportarWompi_Click"><i class="fa fa-file-excel"></i> EXCEL                                       
+                                                        OnClick="btnExportarWompi_Click"><i class="fa fa-file-excel m-r-xs"></i>EXCEL                                       
                                                     </asp:LinkButton>
                                                 </div>
                                             </div>
