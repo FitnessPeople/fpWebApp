@@ -226,8 +226,8 @@
                                                 <div class="form-group">
                                                     <label>Empresa convenio:</label>
                                                     <asp:DropDownList ID="ddlEmpresaConvenio" runat="server"
-                                                        AppendDataBoundItems="true" DataTextField="RazonSocial"
-                                                        DataValueField="idEmpresaAfiliada" CssClass="form-control input-sm">
+                                                        AppendDataBoundItems="true" DataTextField="NombreComercial"
+                                                        DataValueField="DocumentoEmpresa" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Ninguna" Value="0"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>

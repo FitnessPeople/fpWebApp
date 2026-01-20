@@ -108,10 +108,12 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
             ddlEmpresaConvenio.DataSource = dt;
+            ddlEmpresaConvenio.DataValueField = "DocumentoEmpresa";  
+            ddlEmpresaConvenio.DataTextField = "NombreComercial";   
             ddlEmpresaConvenio.DataBind();
-
             dt.Dispose();
         }
+
 
         private void CargarEstadoCivil()
         {
@@ -186,6 +188,7 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             try
             {
+                DataTable dt1 = null, dt2 = null;
                 idcrm = Request.QueryString["idcrm"];
                 Session["IdCRM"] = idcrm;
                 string editid = Request.QueryString["editid"];
@@ -194,8 +197,8 @@ namespace fpWebApp
                 {
                     if (!string.IsNullOrEmpty(idcrm))
                     {
-                        DataTable dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
-                        DataTable dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
+                        dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
+                        dt2 = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(dt1.Rows[0]["DocumentoAfiliado"].ToString()));
                         parametro = dt2.Rows[0]["idAfiliado"].ToString();
                         btnActualizar.Visible = false;
                         btnCancelar.Visible = false;
@@ -279,6 +282,22 @@ namespace fpWebApp
                                 ddlParentesco.SelectedIndex = ddlParentesco.Items.IndexOf(
                                     ddlParentesco.Items.FindByText(dt.Rows[0]["Parentesco"].ToString()));
                             }
+
+                            if (!string.IsNullOrEmpty(idcrm))
+                            {
+                                dt1 = cg.ConsultarContactosCRMPorId(Convert.ToInt32(idcrm), out respuesta);
+
+                                if (dt1.Rows.Count > 0 && !string.IsNullOrEmpty(dt1.Rows[0]["idEmpresaCRM"].ToString()))
+                                {
+                                    ddlEmpresaConvenio.SelectedIndex =
+                                        ddlEmpresaConvenio.Items.IndexOf(
+                                            ddlEmpresaConvenio.Items.FindByValue(
+                                                dt1.Rows[0]["idEmpresaCRM"].ToString()
+                                            )
+                                        );
+                                }
+                            }
+
 
                             txbResponsable.Text = dt.Rows[0]["ResponsableAfiliado"].ToString();
                             txbTelefonoContacto.Text = dt.Rows[0]["ContactoAfiliado"].ToString();

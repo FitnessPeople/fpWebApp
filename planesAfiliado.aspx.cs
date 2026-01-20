@@ -24,10 +24,6 @@ namespace fpWebApp
 {
     public partial class planesAfiliado : System.Web.UI.Page
     {
-        // PRUEBAS
-        static int idIntegracionSiigo = 3; // SIIGO
-        // PRODUCCIÓN
-        //static int idIntegracionSiigo = 6; // SIIGO
         protected void Page_Load(object sender, EventArgs e)
         {
             ScriptManager.RegisterClientScriptInclude(this, this.GetType(),
@@ -67,6 +63,7 @@ namespace fpWebApp
                         CargarAfiliado();
                         CargarPlanesAfiliado();
                         ConsultarCodDatafono();
+                        CargarEmpresas();
 
                         txbWompi.Enabled = false;
                         txbDatafono.Enabled = false;
@@ -1033,7 +1030,17 @@ namespace fpWebApp
                    Session["idusuario"] != null;
         }
 
+        private void CargarEmpresas()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
+            ddlEmpresa.DataSource = dt;
+            ddlEmpresa.DataValueField = "DocumentoEmpresa";
+            ddlEmpresa.DataTextField = "NombreComercial";
+            ddlEmpresa.DataBind();
+            dt.Dispose();
+        }
         protected async void lbAgregarPlan_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -1149,7 +1156,7 @@ namespace fpWebApp
                 string rtaPlan = cg.InsertarAfiliadoPlan(idAfiliado, Convert.ToInt32(ViewState["idPlan"]), fechaInicio.ToString("yyyy-MM-dd"), fechaFinalPlan.ToString("yyyy-MM-dd"), Convert.ToInt32(ViewState["meses"]),
                                 Convert.ToInt32(ViewState["precioTotal"]), ViewState["observaciones"].ToString(), estadoPago);
 
-                string rtaCartera = cg.InsertarCarteraPlan( idAfiliado,idcrm,  0, Convert.ToInt32(ViewState["idPlan"]),ddlEmpresa.SelectedItem.Text,
+                string rtaCartera = cg.InsertarCarteraPlan( idAfiliado,idcrm,  0, Convert.ToInt32(ViewState["idPlan"]),ddlEmpresa.SelectedValue,
                         valorCredito, 0, valorCredito, Convert.ToInt32(ViewState["meses"]), fechaInicio, fechaFinalPlan,  6, "ACTIVA",
                         false,  null, null,  idUsuario);
 

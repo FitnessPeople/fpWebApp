@@ -586,7 +586,7 @@
                                                                         </td>
                                                                         <%--<td></td>--%>
                                                                         <td colspan="2">
-                                                                            <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM"
+                                                                            <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreComercial" DataValueField="DocumentoEmpresa"
                                                                                 runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                                 <asp:ListItem Text="N/A" Value="0"></asp:ListItem>
