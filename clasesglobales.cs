@@ -12159,6 +12159,62 @@ namespace fpWebApp
             return dt;
         }
 
+        public string InsertarCarteraPlan(int idContacto, int idPregestion, int idNegociacion, int idPlan, string documentoEmpresa, decimal valorPlan, decimal descuento,
+        decimal valorFacturar, int mesesPlan, DateTime fechaInicio, DateTime fechaFin,  int idMedioPago, string estadoCartera, bool facturadoMesActual,
+        DateTime? fechaUltimaFactura, string numeroFactura, int idUsuario)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("PA_INSERTAR_CARTERA_PLAN", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_idContacto", idContacto);
+                        cmd.Parameters.AddWithValue("@p_idPregestion", idPregestion);
+                        cmd.Parameters.AddWithValue("@p_idNegociacion", idNegociacion);
+                        cmd.Parameters.AddWithValue("@p_idPlan", idPlan);
+                        cmd.Parameters.AddWithValue("@p_DocumentoEmpresa", documentoEmpresa);
+                        cmd.Parameters.AddWithValue("@p_ValorPlan", valorPlan);
+                        cmd.Parameters.AddWithValue("@p_Descuento", descuento);
+                        cmd.Parameters.AddWithValue("@p_ValorFacturar", valorFacturar);
+                        cmd.Parameters.AddWithValue("@p_MesesPlan", mesesPlan);
+                        cmd.Parameters.AddWithValue("@p_FechaInicio", fechaInicio);
+                        cmd.Parameters.AddWithValue("@p_FechaFin", fechaFin);
+                        cmd.Parameters.AddWithValue("@p_idMedioPago", idMedioPago);
+                        cmd.Parameters.AddWithValue("@p_EstadoCartera", estadoCartera);
+                        cmd.Parameters.AddWithValue("@p_FacturadoMesActual", facturadoMesActual ? 1 : 0);
+                        cmd.Parameters.AddWithValue("@p_FechaUltimaFactura", (object)fechaUltimaFactura ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@p_NumeroFactura", (object)numeroFactura ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@p_idUsuario", idUsuario);
+
+                        // Parámetro de salida
+                        MySqlParameter mensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 200);
+                        mensaje.Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add(mensaje);
+
+                        cmd.ExecuteNonQuery();
+
+                        respuesta = mensaje.Value.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+
         #endregion
 
         #region GymPass

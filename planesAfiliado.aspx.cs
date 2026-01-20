@@ -1055,21 +1055,55 @@ namespace fpWebApp
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txbTotal.Text))
+            bool usaCredito = false;
+            bool usaEmpresaAfiliada = false;
+            //string rtaCartera = "";
+            int totalIngresado, precioMax, precioMin;
+
+            // 1️⃣ Validar valor en crédito
+            int valorCredito = Convert.ToInt32(
+                Regex.Replace(txbCredito.Text ?? "0", @"[^\d]", "")
+            );
+
+            if (valorCredito > 0)
             {
-                MostrarAlerta("Error", "El valor total no puede estar vacío.", "error");
-                return;
+                usaCredito = true;
             }
 
-            int totalIngresado = Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", ""));
-            int precioMax = Convert.ToInt32(ViewState["precioTotal"]);
-            int precioMin = Convert.ToInt32(ViewState["precioMinimo"]);
-
-            if (totalIngresado > precioMax || totalIngresado < precioMin)
+            if (!string.IsNullOrEmpty(ddlEmpresa.SelectedValue)
+                && ddlEmpresa.SelectedValue != "0")
             {
-                MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error");
-                return;
+                usaEmpresaAfiliada = true;
+                usaCredito = true;
             }
+
+            if (!usaCredito)
+            {
+                if (string.IsNullOrWhiteSpace(txbTotal.Text) ||
+                    Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", "")) <= 0)
+                {
+                    MostrarAlerta("Error", "El valor total no puede estar vacío.", "error");
+                    return;
+                }
+            }
+            if (!usaCredito)
+            {
+                totalIngresado = Convert.ToInt32(Regex.Replace(txbTotal.Text, @"[^\d]", ""));
+                precioMax = Convert.ToInt32(ViewState["precioTotal"]);
+                precioMin = Convert.ToInt32(ViewState["precioMinimo"]);
+
+                if (totalIngresado > precioMax || totalIngresado < precioMin)
+                {
+                    MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error");
+                    return;
+                }
+            }
+
+            //if (totalIngresado > precioMax || totalIngresado < precioMin)
+            //{
+            //    MostrarAlerta("Error", "Precio incorrecto. Intenta nuevamente.", "error");
+            //    return;
+            //}
 
             if (Convert.ToInt32(Regex.Replace(txbTransferencia.Text, @"[^\d]", "")) > 0 && !ValidarBanco())
             {
@@ -1084,9 +1118,7 @@ namespace fpWebApp
             string valorPagadoTexto = txbTotal.Text.Trim();
             string valorLimpio = Regex.Replace(valorPagadoTexto, @"[^\d]", "");
             int valorPagado;
-            int.TryParse(valorLimpio, out valorPagado);
-
-
+            int.TryParse(valorLimpio, out valorPagado);            
 
             //DataTable dtEstado = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
             //if (dtEstado.Rows.Count > 0 && dtEstado.Rows[0]["EstadoPlan"].ToString() == "Activo")
@@ -1102,6 +1134,46 @@ namespace fpWebApp
             DateTime fechaFinalPlan = fechaInicio
                 .AddMonths(Convert.ToInt32(ViewState["meses"]))
                 .AddDays(Convert.ToInt32(ViewState["DiasCortesia"]));
+
+            ///////////////ZONA DE CARTERA////////////////////////
+
+            string _docAfiliado = "";
+            DataTable _dtAfiliado = cg.ConsultarAfiliadoPorId(idAfiliado);
+            if (_dtAfiliado.Rows.Count > 0)
+            {
+                _docAfiliado = _dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
+            }
+
+            if (usaCredito || usaEmpresaAfiliada)
+            {
+                string rtaPlan = cg.InsertarAfiliadoPlan(idAfiliado, Convert.ToInt32(ViewState["idPlan"]), fechaInicio.ToString("yyyy-MM-dd"), fechaFinalPlan.ToString("yyyy-MM-dd"), Convert.ToInt32(ViewState["meses"]),
+                                Convert.ToInt32(ViewState["precioTotal"]), ViewState["observaciones"].ToString(), estadoPago);
+
+                string rtaCartera = cg.InsertarCarteraPlan( idAfiliado,idcrm,  0, Convert.ToInt32(ViewState["idPlan"]),ddlEmpresa.SelectedItem.Text,
+                        valorCredito, 0, valorCredito, Convert.ToInt32(ViewState["meses"]), fechaInicio, fechaFinalPlan,  6, "ACTIVA",
+                        false,  null, null,  idUsuario);
+
+                DataTable _dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+                string rtaCRM = cg.ActualizarEstadoCRMPagoPlan(idcrm, _dtActivo.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32(ViewState["precioTotal"]), idUsuario, 3);
+
+                if (!rtaCartera.StartsWith("OK"))
+                {
+                    MostrarAlerta("Error", rtaCartera, "error");
+                    return;
+                }
+
+                if (!rtaCartera.StartsWith("OK"))
+                {
+                    MostrarAlerta("Error", "No se pudo registrar la cartera.", "error");
+                    return;
+                }
+                cg.InsertarLog(idUsuario.ToString(), "afiliadosplanes", "Agrega", $"El usuario agregó un nuevo plan de cartera al afiliado con documento: {_docAfiliado}.", "", "");
+
+                MostrarMensajeExito(_docAfiliado, idcrm);
+                return;
+            }
+            //////////////////////////////////////////////////////
+
 
             string rta = cg.InsertarAfiliadoPlan(idAfiliado, Convert.ToInt32(ViewState["idPlan"]), fechaInicio.ToString("yyyy-MM-dd"), fechaFinalPlan.ToString("yyyy-MM-dd"), Convert.ToInt32(ViewState["meses"]),
                 Convert.ToInt32(ViewState["precioTotal"]), ViewState["observaciones"].ToString(), estadoPago);
@@ -1148,7 +1220,6 @@ namespace fpWebApp
                     RegistrarPagos(cg, mediosPago, idAfiliadoPlan, idUsuario, idCanalVenta, idcrm, idSiigoFactura);
                     MostrarMensajeExito(docAfiliado, idcrm);
                 }
-
             }
             catch (Exception ex)
             {
@@ -1213,9 +1284,6 @@ namespace fpWebApp
 
             ScriptManager.RegisterStartupScript(this, GetType(), "Counter", script, true);
         }
-
-
-
         protected void rpPlanes_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
             if (e.CommandName == "SeleccionarPlan")
