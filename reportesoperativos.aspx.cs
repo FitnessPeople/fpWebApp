@@ -116,6 +116,7 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
 
             DateTime fechaIni, fechaFin;
+
             if (!DateTime.TryParse(txbFechaIni.Value, out fechaIni) ||
                 !DateTime.TryParse(txbFechaFin.Value, out fechaFin))
             {
@@ -147,8 +148,12 @@ namespace fpWebApp
                     break;
                 case 6:
                     dt = cg.ConsultarVentasVsMetasPorFecha(fechaIni, fechaFin);
-                    break;
-                 
+                    break; 
+                case 9:
+                    dt = cg.ConsultarAfiliadosActivosInactivosPorFecha(fechaIni, fechaFin);
+                    break; 
+
+
             }
 
             return dt;
@@ -244,6 +249,11 @@ namespace fpWebApp
                         tituloReporte = $"Reporte Metas vs ventas Asesores desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
                         nombreArchivo = $"Reporte_Metas_Vs_Ventas_Asesores{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
                         break;
+                    case 9:
+                        dt = cg.ConsultarAfiliadosActivosInactivosPorFecha(fechaIni, fechaFin);
+                        tituloReporte = $"Reporte Afiliados activos/inactivos desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
+                        nombreArchivo = $"Reporte_Afiliados_Activos/Inactivos{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
+                        break;
 
                     default:
                         MostrarAlerta("Info", "Este reporte aún no tiene exportación PDF.", "info");
@@ -321,7 +331,12 @@ namespace fpWebApp
                         tituloReporte = $"Reporte Metas vs ventas Asesres desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
                         nombreArchivo = $"Reporte_Metas_Vs_Ventas_Asesres{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
                         break;
-                        
+                    case 9:
+                        dt = cg.ConsultarAfiliadosActivosInactivosPorFecha(fechaIni, fechaFin);
+                        tituloReporte = $"Reporte Afiliados activos/inactivos desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
+                        nombreArchivo = $"Reporte_Afiliados_Activos/Inactivos{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
+                        break;
+
                     default:
                         MostrarAlerta("Info", "Este reporte aún no tiene exportación PDF.", "info");
                         return;
