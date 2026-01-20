@@ -78,13 +78,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltTitulo;
 
         /// <summary>
-        /// Control ddlPaginas.
+        /// Control contenedorSelect.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPaginas;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl contenedorSelect;
 
         /// <summary>
         /// Control txtDescripcion.

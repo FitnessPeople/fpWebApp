@@ -22,13 +22,14 @@
     <!-- FooTable -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
-    <!-- Select2 -->
-    <link href="css/plugins/select2/select2.min.css" rel="stylesheet">
-
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         function changeClass() {
@@ -140,12 +141,15 @@
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label>Página reportada:</label>
-                                                    <asp:DropDownList ID="ddlPaginas" runat="server" CssClass="form-control input-sm"
+                                                    <%--<asp:DropDownList ID="ddlPaginas" runat="server" 
+                                                        CssClass="chosen-select input-sm"
                                                         AppendDataBoundItems="true">
-                                                    </asp:DropDownList>
+                                                    </asp:DropDownList>--%>
+                                                    <div runat="server" id="contenedorSelect"></div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Descripción:</label>
+                                                    <p class="text-info">Indique claramente, paso a paso, como se llega al error.</p>
                                                     <asp:TextBox ID="txtDescripcion" runat="server" CssClass="form-control input-sm" 
                                                         TextMode="MultiLine" Rows="4" />
                                                 </div>
@@ -222,12 +226,16 @@
                                                             </td>
                                                             <td><asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
                                                             <td>
+                                                                <!-- Botón asignar -->
                                                                 <button type="button" runat="server" id="btnAsignar"
                                                                     class="btn btn-outline btn-warning pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
                                                                     title="Asignar responsable">
                                                                     <i class="fa fa-user-plus"></i>
                                                                 </button>
+
+                                                                <!-- Ingeniero -->
+                                                                <asp:Literal ID="ltIngeniero" runat="server"></asp:Literal>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
@@ -262,8 +270,8 @@
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
-    <!-- Select2 -->
-    <script src="js/plugins/select2/select2.full.min.js"></script>
+    <!-- Chosen -->
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
@@ -283,6 +291,13 @@
                     required: true,
                 },
             }
+        });
+
+        $('.chosen-select').chosen({
+            width: "100%",
+            disable_search_threshold: 10,
+            no_results_text: "Sin resultados",
+            placeholder_text_single: "Seleccione una página"
         });
     </script>
 

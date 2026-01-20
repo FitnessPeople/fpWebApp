@@ -1,5 +1,9 @@
 ﻿using System;
 using System.Data;
+using System.Text;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace fpWebApp
@@ -25,26 +29,63 @@ namespace fpWebApp
 
         private void CargarPaginas()
         {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("<select id='ddlPaginas' name='ddlPaginas' class='form-control input-sm chosen-select'>");
+            sb.AppendLine("<option value=''>Seleccione una página</option>");
+
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarPaginas();
 
-            dt.Columns.Add("NombrePagina", typeof(string), "'🌐 ' + NombreCategoriaPagina + ' ◾ ' + Pagina");
+            using (DataTable dtCategorias = cg.CargarCategoriasPaginaPorPerfil(
+                Convert.ToInt32(Session["idPerfil"])
+            ))
+            {
+                foreach (DataRow cat in dtCategorias.Rows)
+                {
+                    string categoria = HttpUtility.HtmlEncode(
+                        cat["NombreCategoriaPagina"].ToString()
+                    );
 
-            ListItem li = new ListItem("Categoria y página", "");
-            ddlPaginas.Items.Add(li);
+                    sb.AppendLine($"<optgroup label='{categoria}'>");
 
-            ddlPaginas.DataSource = dt;
-            ddlPaginas.DataValueField = "idPagina";
-            ddlPaginas.DataTextField = "NombrePagina";
-            ddlPaginas.DataBind();
+                    using (DataTable dtPaginas = cg.CargarPaginasPorCategoriayPerfil(
+                        Convert.ToInt32(cat["idCategoriaPagina"]),
+                        Convert.ToInt32(Session["idPerfil"])
+                    ))
+                    {
+                        foreach (DataRow pag in dtPaginas.Rows)
+                        {
+                            string pagina = HttpUtility.HtmlEncode(
+                                pag["Pagina"].ToString()
+                            );
 
-            dt.Dispose();
+                            sb.AppendLine(
+                                $"<option value='{pag["idPagina"]}'>{pagina}</option>"
+                            );
+                        }
+                    }
+
+                    sb.AppendLine("</optgroup>");
+                }
+            }
+
+            sb.AppendLine("</select>");
+
+            contenedorSelect.InnerHtml = sb.ToString();
         }
 
         private void CargarTickets()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.CargarSoportesFPMas(Convert.ToInt32(Session["idUsuario"].ToString()));
+            DataTable dt;
+            if (Session["idPerfil"].ToString() == "18") // Perfil 18: Ingeniero de Desarrollo
+            {
+                dt = cg.CargarSoportesFPMas(0);
+            }
+            else
+            {
+                dt = cg.CargarSoportesFPMas(Convert.ToInt32(Session["idUsuario"].ToString()));
+            }
 
             rpTickets.DataSource = dt;
             rpTickets.DataBind();
@@ -55,7 +96,7 @@ namespace fpWebApp
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             string descripcion = txtDescripcion.Text;
-            int idPagina = int.Parse(ddlPaginas.SelectedValue);
+            int idPagina = int.Parse(Request.Form["ddlPaginas"]);
             string idUsuario = Session["idUsuario"].ToString(); // Aquí se usa el ID del usuario logueado
             string strQuery = "INSERT INTO SoporteFPmas " +
                 "(idPagina, idReportadoPor, FechaCreacionTicket, DescripcionTicket, EstadoTicket) " +
@@ -77,6 +118,13 @@ namespace fpWebApp
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
+                // Perfil actual
+                int idPerfil = Convert.ToInt32(Session["idPerfil"]);
+
+                // Controles
+                var btnAsignar = (HtmlButton)e.Item.FindControl("btnAsignar");
+                var ltIngeniero = (Literal)e.Item.FindControl("ltIngeniero");
+
                 DataRowView row = (DataRowView)e.Item.DataItem;
                 if (row["FechaCreacionTicket"] != DBNull.Value)
                 {
@@ -113,6 +161,21 @@ namespace fpWebApp
                         ltTiempo.Text = leyenda;
                     }
                 }
+
+                string strIngeniero = row["Ingeniero"].ToString();
+
+                if (idPerfil == 18) // ejemplo: Ingeniero
+                {
+                    btnAsignar.Visible = true;
+                    ltIngeniero.Visible = false;
+                }
+                else
+                {
+                    btnAsignar.Visible = false;
+                    ltIngeniero.Visible = true;
+                    ltIngeniero.Text = "Asignado a: " + strIngeniero;
+                }
+
             }
         }
     }
