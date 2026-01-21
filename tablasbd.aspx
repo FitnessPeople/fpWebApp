@@ -18,11 +18,9 @@
     <title>Fitness People | Tablas BD</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <%--<link href="css/plugins/footable/footable.core.css" rel="stylesheet" />--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
 
     <!-- Morris -->
@@ -179,11 +177,11 @@
                                         data-empty="Sin resultados">
                                         <thead>
                                             <tr>
-                                                <th data-breakpoints="xs">Nombre Tabla</th>
-                                                <th data-breakpoints="xs sm md" data-type="number">Filas</th>
+                                                <th data-breakpoints="xs">Nombre de la tabla</th>
+                                                <th data-breakpoints="xs sm md" data-type="number"># de Registros</th>
                                                 <th data-breakpoints="xs sm md" data-type="number">Autoincremental</th>
-                                                <th data-breakpoints="xs sm md">Fecha de creación</th>
-                                                <th data-breakpoints="xs sm md">Fecha de modificación</th>
+                                                <th data-type="date" data-breakpoints="xs sm md">Fecha de creación</th>
+                                                <th data-type="date" data-breakpoints="xs sm md">Fecha de modificación</th>
                                                 <th data-breakpoints="xs sm md">Ver detalles</th>
                                             </tr>
                                         </thead>
@@ -194,8 +192,12 @@
                                                         <td><%# Eval("Table_name") %></td>
                                                         <td><%# Eval("Table_rows") %></td>
                                                         <td><%# Eval("Auto_increment") %></td>
-                                                        <td><%# Eval("Create_time", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                        <td><%# Eval("Update_time", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                        <td data-sort-value="<%# Eval("Create_time", "{0:yyyy-MM-dd HH:mm:ss}") %>">
+                                                            <%# Eval("Create_time", "{0:dd MMM yyyy HH:mm}") %>
+                                                        </td>
+                                                        <td data-sort-value="<%# Eval("Update_time", "{0:yyyy-MM-dd HH:mm:ss}") %>">
+                                                            <%# Eval("Update_time", "{0:dd MMM yyyy HH:mm}") %>
+                                                        </td>
                                                         <td>
                                                             <button runat="server" id="btnDetalles" class="btn btn-outline btn-primary pull-left m-r-xs"
                                                                 style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Detalles">

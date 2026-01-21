@@ -76,7 +76,10 @@ namespace fpWebApp
 
         private void listaTablasBD()
         {
-            string strQuery = "SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'fitnesspeople'";
+            string strQuery = @"
+                SELECT Table_name, Table_rows, Auto_increment, Create_time, Update_time  
+                FROM information_schema.TABLES 
+                WHERE TABLE_SCHEMA = 'fitnesspeople'";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
             rpTablas.DataSource = dt;
@@ -88,7 +91,10 @@ namespace fpWebApp
         {
             try
             {
-                string consultaSQL = @"SELECT * FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'fitnesspeople'";
+                string consultaSQL = @"
+                    SELECT Table_name, Table_rows, Auto_increment, Create_time, Update_time  
+                    FROM information_schema.TABLES 
+                    WHERE TABLE_SCHEMA = 'fitnesspeople'";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
@@ -115,22 +121,22 @@ namespace fpWebApp
             {
                 HtmlButton btnDetalles = (HtmlButton)e.Item.FindControl("btnDetalles");
                 btnDetalles.Attributes.Add("data-toggle", "modal");
-                btnDetalles.Attributes.Add("data-target", "#myModal" + ((DataRowView)e.Item.DataItem).Row[2].ToString());
+                btnDetalles.Attributes.Add("data-target", "#myModal" + ((DataRowView)e.Item.DataItem).Row["Table_name"].ToString());
                 btnDetalles.Visible = true;
 
-                string strQuery = "DESCRIBE " + ((DataRowView)e.Item.DataItem).Row[2].ToString();
+                string strQuery = "DESCRIBE " + ((DataRowView)e.Item.DataItem).Row["Table_name"].ToString();
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(strQuery);
 
                 Literal ltModales = (Literal)e.Item.FindControl("ltModales");
-                ltModales.Text += "<div class=\"modal inmodal\" id=\"myModal" + ((DataRowView)e.Item.DataItem).Row[2].ToString() + "\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">";
+                ltModales.Text += "<div class=\"modal inmodal\" id=\"myModal" + ((DataRowView)e.Item.DataItem).Row["Table_name"].ToString() + "\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">";
                 ltModales.Text += "<div class=\"modal-dialog modal-lg\">";
                 ltModales.Text += "<div class=\"modal-content animated bounceInRight\">";
 
                 ltModales.Text += "<div class=\"modal-header\">";
                 ltModales.Text += "<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Cerrar</span></button>";
                 ltModales.Text += "<i class=\"fa fa-table modal-icon\" style=\"color: #1C84C6;\"></i>";
-                ltModales.Text += "<h4 class=\"modal-title\">Datos de la tabla <span class=\"text-success\">" + ((DataRowView)e.Item.DataItem).Row[2].ToString() + "</span></h4>";
+                ltModales.Text += "<h4 class=\"modal-title\">Datos de la tabla <span class=\"text-success\">" + ((DataRowView)e.Item.DataItem).Row["Table_name"].ToString() + "</span></h4>";
                 ltModales.Text += "</div>";
 
                 ltModales.Text += "<div class=\"modal-body\">";
@@ -141,6 +147,14 @@ namespace fpWebApp
                 ltModales.Text += "</td>";
                 ltModales.Text += "<td class=\"small\"><b>Tipo</b>";
                 ltModales.Text += "</td>";
+                ltModales.Text += "<td class=\"small\"><b>Null</b>";
+                ltModales.Text += "</td>";
+                ltModales.Text += "<td class=\"small\"><b>Llave</b>";
+                ltModales.Text += "</td>";
+                ltModales.Text += "<td class=\"small\"><b>Por defecto</b>";
+                ltModales.Text += "</td>";
+                ltModales.Text += "<td class=\"small\"><b>Adicional</b>";
+                ltModales.Text += "</td>";
                 ltModales.Text += "</tr>";
 
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -149,6 +163,14 @@ namespace fpWebApp
                     ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Field"].ToString();
                     ltModales.Text += "</td>";
                     ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Type"].ToString();
+                    ltModales.Text += "</td>";
+                    ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Null"].ToString();
+                    ltModales.Text += "</td>";
+                    ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Key"].ToString();
+                    ltModales.Text += "</td>";
+                    ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Default"].ToString();
+                    ltModales.Text += "</td>";
+                    ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Extra"].ToString();
                     ltModales.Text += "</td>";
                     ltModales.Text += "</tr>";
                 }

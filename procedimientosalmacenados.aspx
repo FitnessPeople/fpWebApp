@@ -180,19 +180,40 @@
                                         <thead>
                                             <tr>
                                                 <th data-breakpoints="xs">Nombre PA</th>
-                                                <th data-breakpoints="xs sm md">Definición</th>
-                                                <th data-breakpoints="xs sm md">Fecha de creación</th>
-                                                <th data-breakpoints="xs sm md">Fecha de modificación</th>
+                                                <%--<th data-breakpoints="xs sm md">Definición</th>--%>
+                                                <th data-type="date" data-breakpoints="xs sm md">Fecha de creación</th>
+                                                <th data-type="date" data-breakpoints="xs sm md">Fecha de modificación</th>
+                                                <th data-breakpoints="all" data-title="Info"></th>
+                                                <th data-breakpoints="xs sm md">Ver detalles</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <asp:Repeater ID="rpProcedimientos" runat="server">
+                                            <asp:Repeater ID="rpProcedimientos" runat="server" OnItemDataBound="rpProcedimientos_ItemDataBound">
                                                 <ItemTemplate>
                                                     <tr>
-                                                        <td><%# Eval("Specific_name") %></td>
-                                                        <td><%# Eval("Routine_definition") %></td>
-                                                        <td><%# Eval("Created", "{0:dd MMM yyyy HH:mm}") %></td>
-                                                        <td><%# Eval("Last_altered", "{0:dd MMM yyyy HH:mm}") %></td>
+                                                        <td><%# Eval("Routine_name") %></td>
+                                                        <td data-sort-value="<%# Eval("Created", "{0:yyyy-MM-dd HH:mm:ss}") %>">
+                                                            <%# Eval("Created", "{0:dd MMM yyyy HH:mm}") %>
+                                                        </td>
+                                                        <td data-sort-value="<%# Eval("Last_altered", "{0:yyyy-MM-dd HH:mm:ss}") %>">
+                                                            <%# Eval("Last_altered", "{0:dd MMM yyyy HH:mm}") %>
+                                                        </td>
+                                                        <td>
+                                                            <table class="table table-bordered table-striped">
+                                                                <tr>
+                                                                    <td>
+                                                                        <pre><%# Eval("Routine_definition") %></pre></td>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <button runat="server" id="btnDetalles" class="btn btn-outline btn-primary pull-left m-r-xs"
+                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Detalles">
+                                                            <i class="fa fa-edit"></i>
+                                                            </button>
+                                                            <asp:Literal ID="ltModales" runat="server"></asp:Literal>
+                                                        </td>
                                                     </tr>
                                                 </ItemTemplate>
                                             </asp:Repeater>

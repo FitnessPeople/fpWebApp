@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Data;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -74,7 +76,11 @@ namespace fpWebApp
 
         private void listaProcedimientos()
         {
-            string strQuery = "SELECT * FROM information_schema.routines WHERE ROUTINE_TYPE = 'PROCEDURE' AND ROUTINE_SCHEMA = 'fitnesspeople'";
+            string strQuery = @"
+                SELECT Routine_name, Routine_definition, Created, Last_altered  
+                FROM information_schema.routines 
+                WHERE ROUTINE_TYPE = 'PROCEDURE' 
+                AND ROUTINE_SCHEMA = 'fitnesspeople'";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
             rpProcedimientos.DataSource = dt;
@@ -86,7 +92,11 @@ namespace fpWebApp
         {
             try
             {
-                string consultaSQL = @"SELECT * FROM information_schema.routines WHERE ROUTINE_TYPE = 'PROCEDURE' AND ROUTINE_SCHEMA = 'fitnesspeople'";
+                string consultaSQL = @"
+                    SELECT Routine_name, Routine_definition, Created, Last_altered 
+                    FROM information_schema.routines 
+                    WHERE ROUTINE_TYPE = 'PROCEDURE' 
+                    AND ROUTINE_SCHEMA = 'fitnesspeople'";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
@@ -104,6 +114,80 @@ namespace fpWebApp
             catch (Exception ex)
             {
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+            }
+        }
+
+        protected void rpProcedimientos_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                HtmlButton btnDetalles = (HtmlButton)e.Item.FindControl("btnDetalles");
+                btnDetalles.Attributes.Add("data-toggle", "modal");
+                btnDetalles.Attributes.Add("data-target", "#myModal" + ((DataRowView)e.Item.DataItem).Row["Routine_name"].ToString());
+                btnDetalles.Visible = true;
+
+                string strQuery = @"
+                    SELECT 
+                        r.ROUTINE_NAME,
+                        p.ORDINAL_POSITION,
+                        p.PARAMETER_MODE,
+                        p.PARAMETER_NAME,
+                        p.DATA_TYPE,
+                        p.DTD_IDENTIFIER
+                    FROM information_schema.ROUTINES r
+                    LEFT JOIN information_schema.PARAMETERS p 
+                        ON r.SPECIFIC_NAME = p.SPECIFIC_NAME
+                        AND r.ROUTINE_SCHEMA = p.SPECIFIC_SCHEMA
+                    WHERE r.ROUTINE_TYPE = 'PROCEDURE'
+                      AND r.ROUTINE_SCHEMA = 'fitnesspeople' 
+                      AND r.ROUTINE_NAME = '" + ((DataRowView)e.Item.DataItem).Row["Routine_name"].ToString() + @"' 
+                    ORDER BY r.ROUTINE_NAME, p.ORDINAL_POSITION;";
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.TraerDatos(strQuery);
+
+                Literal ltModales = (Literal)e.Item.FindControl("ltModales");
+                ltModales.Text += "<div class=\"modal inmodal\" id=\"myModal" + ((DataRowView)e.Item.DataItem).Row["Routine_name"].ToString() + "\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">";
+                ltModales.Text += "<div class=\"modal-dialog modal-lg\">";
+                ltModales.Text += "<div class=\"modal-content animated bounceInRight\">";
+
+                ltModales.Text += "<div class=\"modal-header\">";
+                ltModales.Text += "<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Cerrar</span></button>";
+                ltModales.Text += "<i class=\"fa fa-database modal-icon\" style=\"color: #1C84C6;\"></i>";
+                ltModales.Text += "<h4 class=\"modal-title\">Datos del SP <span class=\"text-success\">" + ((DataRowView)e.Item.DataItem).Row["Routine_name"].ToString() + "</span></h4>";
+                ltModales.Text += "</div>";
+
+                ltModales.Text += "<div class=\"modal-body\">";
+                ltModales.Text += "<p>Definición: <br /><pre>" + ((DataRowView)e.Item.DataItem).Row["Routine_definition"].ToString() + "</pre></p>";
+
+                ltModales.Text += "<table class=\"table table-striped\">";
+                ltModales.Text += "<tr>";
+                ltModales.Text += "<td class=\"small\"><b>Parámetro</b>";
+                ltModales.Text += "</td>";
+                ltModales.Text += "<td class=\"small\"><b>Modo</b>";
+                ltModales.Text += "</td>";
+                ltModales.Text += "<td class=\"small\"><b>Tipo</b>";
+                ltModales.Text += "</td>";
+                ltModales.Text += "</tr>";
+
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    ltModales.Text += "<tr>";
+                    ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Parameter_name"].ToString();
+                    ltModales.Text += "</td>";
+                    ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Parameter_mode"].ToString();
+                    ltModales.Text += "</td>";
+                    ltModales.Text += "<td class=\"small\">" + dt.Rows[i]["Data_type"].ToString();
+                    ltModales.Text += "</td>";
+                    ltModales.Text += "</tr>";
+                }
+
+                ltModales.Text += "</table>";
+
+                ltModales.Text += "</div>";
+
+                ltModales.Text += "</div>";
+                ltModales.Text += "</div>";
+                ltModales.Text += "</div>";
             }
         }
     }
