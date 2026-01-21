@@ -17,18 +17,19 @@
     <title>Fitness People | Soporte FP+</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
-    <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
     <!-- FooTable -->
-    <link href="css/plugins/footable/footable.core.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
+
+    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         function changeClass() {
@@ -96,10 +97,9 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Soporte FP+</h2>
+                    <h2><i class="fa fa-laptop text-success m-r-sm"></i>Soporte FP+</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Mantenimiento</li>
                         <li class="active"><strong>Soporte FP+</strong></li>
                     </ol>
                 </div>
@@ -123,22 +123,130 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <div class="ibox float-e-margins" runat="server" id="divContenido">
-                        <div class="ibox-title">
-                            <h5>Título</h5>
-                            <div class="ibox-tools">
-                                <a class="collapse-link">
-                                    <i class="fa fa-chevron-up"></i>
-                                </a>
+                    <form role="form" id="form" runat="server">
+                        <div class="row" id="divContenido" runat="server">
+                            <div class="col-lg-4">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>
+                                            <asp:Literal ID="ltTitulo" runat="server"></asp:Literal></h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Página reportada:</label>
+                                                    <%--<asp:DropDownList ID="ddlPaginas" runat="server" 
+                                                        CssClass="chosen-select input-sm"
+                                                        AppendDataBoundItems="true">
+                                                    </asp:DropDownList>--%>
+                                                    <div runat="server" id="contenedorSelect"></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Descripción:</label>
+                                                    <p class="text-info">Indique claramente, paso a paso, como se llega al error.</p>
+                                                    <asp:TextBox ID="txtDescripcion" runat="server" CssClass="form-control input-sm" 
+                                                        TextMode="MultiLine" Rows="4" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <a href="sedes" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                        CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
+                                                        OnClick="btnAgregar_Click" />
+                                                </div>
+                                                <br />
+                                                <br />
+                                                <div class="form-group">
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-8">
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Lista de Tickets de Soporte FP+</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+
+                                        <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
+                                            <div class="col-lg-6 form-horizontal">
+                                                <div class="form-group">
+                                                    <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-6 form-horizontal">
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                    OnClick="lbExportarExcel_Click">
+                                                    <i class="fa fa-file-excel m-r-xs"></i>EXCEL
+                                                </asp:LinkButton>
+                                            </div>
+                                        </div>
+
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                            data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                            data-paging-limit="10" data-filtering="true"
+                                            data-filter-container="#filter-form-container" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                            data-empty="Sin resultados">
+                                            <thead>
+                                                <tr>
+                                                    <th data-sortable="true" data-breakpoints="xs">Página</th>
+                                                    <th data-breakpoints="xs sm md">Descripción</th>
+                                                    <th data-breakpoints="xs sm md">Estado</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs" width="150px">Fecha</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs" width="150px">Hace cuánto?</th>
+                                                    <th data-sortable="false" class="text-right">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpTickets" runat="server" OnItemDataBound="rpTickets_ItemDataBound">
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td><%# Eval("Pagina") %><br /></td>
+                                                            <td><%# Eval("DescripcionTicket") %></td>
+                                                            <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("EstadoTicket") %></span></td>
+                                                            <td><%# Eval("FechaCreacionTicket", "{0:dd MMM yyyy}") %></br>
+                                                                <%# Eval("FechaCreacionTicket", "{0:hh:mm:ss}") %>
+                                                            </td>
+                                                            <td><asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
+                                                            <td>
+                                                                <!-- Botón asignar -->
+                                                                <button type="button" runat="server" id="btnAsignar"
+                                                                    class="btn btn-outline btn-warning pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
+                                                                    title="Asignar responsable">
+                                                                    <i class="fa fa-user-plus"></i>
+                                                                </button>
+
+                                                                <!-- Ingeniero -->
+                                                                <asp:Literal ID="ltIngeniero" runat="server"></asp:Literal>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="ibox-content">
-                            <div class="row">
-
-                            </div>
-                        </div>
-                    </div>
-
+                    </form>
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
@@ -155,17 +263,43 @@
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <!-- FooTable -->
-    <script src="js/plugins/footable/footable.all.min.js"></script>
-
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- FooTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+
     <!-- Chosen -->
     <script src="js/plugins/chosen/chosen.jquery.js"></script>
 
-    <!-- Page-Level Scripts -->
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+    <script>
+        $('.footable').footable();
+
+        $("#form").validate({
+            rules: {
+                ddlPaginas: {
+                    required: true,
+                },
+                txtDescripcion: {
+                    required: true,
+                },
+            }
+        });
+
+        $('.chosen-select').chosen({
+            width: "100%",
+            disable_search_threshold: 10,
+            no_results_text: "Sin resultados",
+            placeholder_text_single: "Seleccione una página"
+        });
+    </script>
 
 </body>
 

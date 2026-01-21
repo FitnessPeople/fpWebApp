@@ -1695,10 +1695,10 @@ namespace fpWebApp
 
                                         ddlCanalesMarketing.SelectedValue = "15";
                                         ddlEmpresa.SelectedValue = row["DocumentoEmpresa"].ToString();
-                                        if (ddlTipoPago.Items.FindByValue("7") != null)
+                                        if (ddlTipoPago.Items.FindByValue("6") != null)
                                         {
                                             ddlTipoPago.ClearSelection();
-                                            ddlTipoPago.SelectedValue = "7";
+                                            ddlTipoPago.SelectedValue = "6";
                                         }
                                         ddlEstrategia.SelectedValue = "0";
                                         ddlStatusLead.SelectedValue = "2";
@@ -1812,10 +1812,10 @@ namespace fpWebApp
 
                                     ddlCanalesMarketing.SelectedValue = "15";
                                     ddlEmpresa.SelectedValue = row["DocumentoEmpresa"].ToString();
-                                    if (ddlTipoPago.Items.FindByValue("7") != null)
+                                    if (ddlTipoPago.Items.FindByValue("6") != null)
                                     {
                                         ddlTipoPago.ClearSelection();
-                                        ddlTipoPago.SelectedValue = "7";
+                                        ddlTipoPago.SelectedValue = "6";
                                     }
                                     ddlEstrategia.SelectedValue = "0";
                                     ddlStatusLead.SelectedValue = "2";

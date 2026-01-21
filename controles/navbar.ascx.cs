@@ -67,16 +67,8 @@ namespace fpWebApp.controles
 
         private void cargarMenu()
         {
-            string strQuery = "SELECT cp.idCategoriaPagina, cp.NombreCategoriaPagina, cp.IconoFA, cp.Identificador " + 
-                "FROM CategoriasPaginas cp " +
-                "INNER JOIN Paginas p ON p.idCategoria = cp.idCategoriaPagina " +
-                "INNER JOIN permisos_perfiles pp ON pp.idPagina = p.idPagina " +
-                "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                "AND SinPermiso = 0 " +
-                "GROUP BY cp.idCategoriaPagina " +
-                "ORDER BY cp.Orden";
             clasesglobales cg = new clasesglobales();
-            DataTable dt1 = cg.TraerDatos(strQuery);
+            DataTable dt1 = cg.CargarCategoriasPaginaPorPerfil(Convert.ToInt32(Session["idPerfil"].ToString()));
 
             string strMenu = string.Empty;
 
@@ -84,16 +76,8 @@ namespace fpWebApp.controles
             {
                 for (int i = 0; i < dt1.Rows.Count; i++)
                 {
-                    strQuery = "SELECT p.Pagina, p.NombreASPX, p.IconoFA " +
-                        "FROM paginas p " +
-                        "INNER JOIN CategoriasPaginas cp " +
-                        "ON p.idCategoria = cp.idCategoriaPagina " +
-                        "INNER JOIN permisos_perfiles pp ON pp.idPagina = p.idPagina " +
-                        "AND pp.idPerfil = " + Session["idPerfil"].ToString() + " " +
-                        "AND SinPermiso = 0 " +
-                        "AND cp.idCategoriaPagina = " + dt1.Rows[i]["idCategoriaPagina"].ToString() + " " +
-                        "ORDER BY p.idPagina ";
-                    DataTable dt2 = cg.TraerDatos(strQuery);
+                    DataTable dt2 = cg.CargarPaginasPorCategoriayPerfil(Convert.ToInt32(dt1.Rows[i]["idCategoriaPagina"].ToString()),
+                        Convert.ToInt32(Session["idPerfil"].ToString()));
 
                     strMenu += "<li>";
                     strMenu += "<a href=\"#\" title=\"" + dt1.Rows[i]["NombreCategoriaPagina"].ToString() + "\"><i class=\"fa fa-" + dt1.Rows[i]["IconoFA"].ToString() + "\"></i><span class=\"nav-label\">" + dt1.Rows[i]["NombreCategoriaPagina"].ToString() + "</span><span class=\"fa arrow\"></span></a>";

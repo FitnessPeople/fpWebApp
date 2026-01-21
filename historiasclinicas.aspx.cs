@@ -74,22 +74,24 @@ namespace fpWebApp
 
         private void ListaHistorias()
         {
-            string strQuery = "SELECT *, " +
-                "IF(g.idGenero=1,'<i class=\"fa fa-mars text-success\"></i>',IF(g.idGenero=2,'<i class=\"fa fa-venus text-danger\"></i>','<i class=\"fa fa-venus-mars text-warning\"></i>')) AS iconGenero, " +
-                "IF(TIMESTAMPDIFF(YEAR, a.FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, a.FechaNacAfiliado, CURDATE()),'') AS edad, " +
-                "IF(Tabaquismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS fuma, " +
-                "IF(Alcoholismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS toma, " +
-                "IF(Sedentarismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS sedentario, " +
-                "IF(Diabetes=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS diabetico, " +
-                "IF(Colesterol=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Colesterol=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS colesterado, " +
-                "IF(Trigliceridos=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Trigliceridos=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS triglicerado, " +
-                "IF(HTA=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(HTA=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS hipertenso " +
-                "FROM HistoriasClinicas hc " +
-                "LEFT JOIN Afiliados a ON hc.idAfiliado = a.idAfiliado " +
-                "LEFT JOIN Generos g ON a.idGenero = g.idGenero " +
-                "ORDER BY FechaHora DESC";
+            //string strQuery = "SELECT *, " +
+            //    "IF(g.idGenero=1,'<i class=\"fa fa-mars text-success\"></i>',IF(g.idGenero=2,'<i class=\"fa fa-venus text-danger\"></i>','<i class=\"fa fa-venus-mars text-warning\"></i>')) AS iconGenero, " +
+            //    "IF(TIMESTAMPDIFF(YEAR, a.FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, a.FechaNacAfiliado, CURDATE()),'') AS edad, " +
+            //    "IF(Tabaquismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS fuma, " +
+            //    "IF(Alcoholismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS toma, " +
+            //    "IF(Sedentarismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS sedentario, " +
+            //    "IF(Diabetes=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS diabetico, " +
+            //    "IF(Colesterol=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Colesterol=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS colesterado, " +
+            //    "IF(Trigliceridos=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Trigliceridos=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS triglicerado, " +
+            //    "IF(HTA=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(HTA=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS hipertenso " +
+            //    "FROM HistoriasClinicas hc " +
+            //    "LEFT JOIN Afiliados a ON hc.idAfiliado = a.idAfiliado " +
+            //    "LEFT JOIN Generos g ON a.idGenero = g.idGenero " +
+            //    "ORDER BY FechaHora DESC";
+
+
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarHistoriasClinicas();
 
             rpHistoriasClinicas.DataSource = dt;
             rpHistoriasClinicas.DataBind();

@@ -220,7 +220,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Horario:</label>
-                                                    <div id="editor" cssclass="form-control input-sm"></div>
+                                                    <div id="editor"></div>
                                                     <asp:HiddenField ID="hiddenEditor" runat="server" />
                                                 </div>
                                                 <div class="form-group">
@@ -287,7 +287,7 @@
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
-                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                    <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                                 </asp:LinkButton>
                                             </div>
                                         </div>

@@ -15,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Usuarios</title>
+    <title>Fitness People | Usuarios FP+</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
@@ -107,11 +107,11 @@
             <div class="row wrapper border-bottom white-bg page-heading">
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-users text-success m-r-sm"></i>Usuarios</h2>
+                    <h2><i class="fas fa-users text-success m-r-sm"></i>Usuarios FP+</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Sistema</li>
-                        <li class="active"><strong>Usuarios</strong></li>
+                        <li class="active"><strong>Usuarios FP+</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -163,7 +163,7 @@
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
                                                     CssClass="btn btn-info pull-right dim m-l-md" style="font-size: 12px;" 
                                                     OnClick="lbExportarExcel_Click" >
-                                                    <i class="fa fa-file-excel"></i> EXCEL
+                                                    <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                                 </asp:LinkButton>
                                             </div>
                                         </div>

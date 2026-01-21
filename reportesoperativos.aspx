@@ -171,58 +171,7 @@
                             <div class="col-lg-12">
 
                                 <div class="row">
-                                    <%--                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-success">
 
-                                                <h5>Ventas hoy
-                                                    <asp:Literal ID="ltMes1" runat="server"></asp:Literal></h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="ltVentasHoy" runat="server"></asp:Literal></h1>
-                                                <small>&nbsp;</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-success">
-                                                <h5>Transaciones hoy </h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="ltTransaccionesHoy" runat="server"></asp:Literal></h1>
-                                                <small>&nbsp;</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-success">
-                                                <h5>Ventas mes
-                                                    <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="ltVentasMes" runat="server"></asp:Literal></h1>
-                                                <small>&nbsp;</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-success">
-                                                <h5>Ventas ayer
-                                                    <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="ltVentasAyer" runat="server"></asp:Literal></h1>
-                                                <small>&nbsp;</small>
-                                            </div>
-                                        </div>
-                                    </div>--%>
                                 </div>
 
                                 <!-- INDICADORES FINAL -->
@@ -247,11 +196,6 @@
                                                 </div>
                                             </div>
 
-<%--                                            <div class="col-lg-2">
-                                                <div class="form-group">
-                                                    <div class="form-group" id="filter-form-container"></div>
-                                                </div>
-                                            </div>--%>
 
                                             <div class="col-lg-2">
                                                 <div class="form-group">
@@ -265,7 +209,7 @@
                                                         <asp:ListItem Text="Metas vs Ventas Asesor" Value="6"></asp:ListItem>
                                                         <asp:ListItem Text="Ventas Corporativo" Value="7"></asp:ListItem>
                                                         <asp:ListItem Text="Ventas por CRM" Value="8"></asp:ListItem>
-                                                        <asp:ListItem Text="Clientes activos/inactivos" Value="9"></asp:ListItem>
+                                                        <asp:ListItem Text="Afiliados activos/inactivos" Value="9"></asp:ListItem>
                                                         <asp:ListItem Text="Clientes corporativos" Value="10"></asp:ListItem>
                                                         <asp:ListItem Text="Negociaciones por cliente" Value="11"></asp:ListItem>
                                                         <asp:ListItem Text="Estado de cuenta por cliente" Value="12"></asp:ListItem>

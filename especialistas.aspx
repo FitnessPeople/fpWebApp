@@ -113,7 +113,7 @@
                                         <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
                                             CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;" 
                                             OnClick="lbExportarExcel_Click">
-                                            <i class="fa fa-file-excel"></i> EXCEL
+                                            <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                         </asp:LinkButton>
                                         <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;" 
                                             href="nuevoespecialista" title="Agregar especialista" runat="server" 
