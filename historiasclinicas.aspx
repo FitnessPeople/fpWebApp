@@ -181,10 +181,15 @@
                                                 <ItemTemplate>
                                                     <tr class="feed-element">
                                                         <%--<td><%# Eval("idHistoria") %></td>--%>
-                                                        <td><i class="fa fa-calendar-day"></i> <%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i> <%# Eval("FechaHora", "{0:HH:mm}") %></td>
+                                                        <td data-sort-value="<%# Eval("FechaHora", "{0:yyyy-MM-dd HH:mm:ss}") %>">
+                                                            <i class="fa fa-calendar-day"></i> <%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i> <%# Eval("FechaHora", "{0:HH:mm}") %>
+                                                        </td>
                                                         <td><%# Eval("DocumentoAfiliado") %></td>
                                                         <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
-                                                        <td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>
+                                                        <td><%# Eval("Genero").ToString() == "1"
+                                                            ? "<i class='fa fa-mars text-success'></i>"
+                                                            : "<i class='fa fa-venus text-danger'></i>" %></td>
+                                                        <%--<td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>--%>
                                                         <td><%# Eval("Edad") %> años</td>
                                                         <td>
                                                             <h3 class="text-info">Antecedentes</h3>
@@ -232,15 +237,33 @@
                                                                     <th width="10%"><i class="fa fa-stethoscope m-r-sm"></i>H.T.A.</th>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><%# Eval("fuma") %></td>
-                                                                    <td><%# Eval("Cigarrillos") %></td>
-                                                                    <td><%# Eval("toma") %></td>
-                                                                    <td><%# Eval("Bebidas") %></td>
-                                                                    <td><%# Eval("sedentario") %></td>
-                                                                    <td><%# Eval("diabetico") %></td>
-                                                                    <td><%# Eval("colesterado") %></td>
-                                                                    <td><%# Eval("triglicerado") %></td>
-                                                                    <td><%# Eval("hipertenso") %></td>
+                                                                    <td><%# Eval("Tabaquismo").ToString() == "1"
+                                                                        ? "<i class='fa fa-check text-danger'></i>"
+                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                    <td><%# Eval("Cigarrillos").ToString() == "1"
+                                                                        ? "<i class='fa fa-check text-danger'></i>"
+                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                    <td><%# Eval("Alcoholismo").ToString() == "1"
+                                                                        ? "<i class='fa fa-check text-danger'></i>"
+                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                    <td><%# Eval("Bebidas").ToString() == "1"
+                                                                        ? "<i class='fa fa-check text-danger'></i>"
+                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                    <td><%# Eval("Sedentarismo").ToString() == "1"
+                                                                        ? "<i class='fa fa-check text-danger'></i>"
+                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                    <td><%# Eval("Diabetes").ToString() == "1"
+                                                                        ? "<i class='fa fa-check text-danger'></i>"
+                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                    <td><%# Eval("Colesterol").ToString() == "1"
+                                                                        ? "<i class='fa fa-check text-danger'></i>"
+                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                    <td><%# Eval("Trigliceridos").ToString() == "1"
+                                                                        ? "<i class='fa fa-check text-danger'></i>"
+                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                    <td><%# Eval("HTA").ToString() == "1"
+                                                                        ? "<i class='fa fa-check text-danger'></i>"
+                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
                                                                 </tr>
                                                             </table>
                                                         </td>
