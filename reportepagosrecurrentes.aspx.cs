@@ -346,6 +346,10 @@ namespace fpWebApp
                 string concatenado = $"{referencia}{monto}{moneda}{IntegritySecret}";
                 string hash256 = ComputeSha256Hash(concatenado);
 
+                string observaciones = e.CommandName == "ACUMULADO"
+                    ? $"Pago correspondiente a {mesesACobrar} meses del plan {nombrePlan}."
+                    : $"Pago correspondiente a 1 mes del plan {nombrePlan}.";
+
                 bool pagoExitoso = await CrearTransaccionRecurrenteAsync(
                     monto,
                     moneda,
@@ -355,10 +359,6 @@ namespace fpWebApp
                     Convert.ToInt32(fuentePago),
                     descripcion
                 );
-
-                string observaciones = e.CommandName == "ACUMULADO"
-                    ? $"Pago correspondiente a {mesesACobrar} meses del plan {nombrePlan}."
-                    : $"Pago correspondiente a 1 mes del plan {nombrePlan}.";
 
                 // Si fue exitoso, registramos el pago
                 if (pagoExitoso)
@@ -442,6 +442,8 @@ namespace fpWebApp
                     null,
                     null
                 );
+
+                cg.ActualizarMesesPagadosPagoPlanAfiliadoPorIdAfiliadoPlan(idAfiliadoPlan, mesesCobrados);
 
                 cg.ActualizarFechaProximoCobro(idAfiliadoPlan, mesesCobrados);
 

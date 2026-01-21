@@ -13734,6 +13734,37 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public string ActualizarMesesPagadosPagoPlanAfiliadoPorIdAfiliadoPlan(int idAfiliadoPlan, int mesesPagados)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open(); // Abrir conexión antes de usarla
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_MESES_PAGADOS_PAGO_PLAN_AFILIADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+                        cmd.Parameters.AddWithValue("@p_meses_pagados", mesesPagados);
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
         public string ActualizarFechaProximoCobro(int idAfiliadoPlan, int mesesCobrados)
         {
             string respuesta = string.Empty;
