@@ -152,8 +152,9 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
             ddlEmpresaConvenio.DataSource = dt;
+            ddlEmpresaConvenio.DataValueField = "DocumentoEmpresa";
+            ddlEmpresaConvenio.DataTextField = "NombreComercial";
             ddlEmpresaConvenio.DataBind();
-
             dt.Dispose();
         }
 
