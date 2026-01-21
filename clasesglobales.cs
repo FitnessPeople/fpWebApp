@@ -14134,7 +14134,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarMesesPagadosPagoPlanAfiliadoPorIdAfiliadoPlan(int idAfiliadoPlan, int mesesPagados)
+        public string ActualizarMesesPagadosEnPagoPlanAfiliado(int idPago, int mesesPagados)
         {
             string respuesta = string.Empty;
             try
@@ -14150,7 +14150,7 @@ namespace fpWebApp
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         // Parámetros de entrada
-                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+                        cmd.Parameters.AddWithValue("@p_id_pago", idPago);
                         cmd.Parameters.AddWithValue("@p_meses_pagados", mesesPagados);
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";

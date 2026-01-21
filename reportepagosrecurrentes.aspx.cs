@@ -443,7 +443,7 @@ namespace fpWebApp
                     null
                 );
 
-                cg.ActualizarMesesPagadosPagoPlanAfiliadoPorIdAfiliadoPlan(idAfiliadoPlan, mesesCobrados);
+                cg.ActualizarMesesPagadosEnPagoPlanAfiliado(idPago, mesesCobrados);
 
                 cg.ActualizarFechaProximoCobro(idAfiliadoPlan, mesesCobrados);
 
