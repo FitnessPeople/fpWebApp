@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reporteventasasesor.aspx.cs" Inherits="fpWebApp.reporteventasasesor" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="reporteventasasesor.aspx.cs" Inherits="fpWebApp.reporteventasasesor" Async="true" %>
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -186,7 +186,7 @@
                                     <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title text-success">
-                                                <h5>Transaciones hoy </h5>
+                                                <h5>Transacciones hoy </h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -253,7 +253,6 @@
                                                         <asp:ListItem Text="Datafono" Value="3"></asp:ListItem>
                                                         <asp:ListItem Text="Pago en línea" Value="4"></asp:ListItem>
                                                         <%--<asp:ListItem Text="Financiación" Value="5"></asp:ListItem>--%>
-
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -326,7 +325,11 @@
                                                             <td><%# Eval("FechaHora", "{0:dd MMM yyyy HH:mm}") %></td>
                                                             <td><%# Eval("Est") %></td>
                                                             <td><%# Eval("Plan") %></td>
-                                                            <td><%# Eval("idSiigo") %></td>
+                                                            <td>
+                                                                <a runat="server" id="lnkVerFactura" target="_blank">
+                                                                    <i class="fa fa-file"></i>Ver factura
+                                                                </a>
+                                                            </td>
                                                             <%--<td><%# Eval("Usu") %></td>--%>
                                                             <%--<td><%# Eval("CanalV") %></td>--%>
                                                             <td>
