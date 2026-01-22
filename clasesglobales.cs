@@ -608,10 +608,10 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string InsertarPagoPlanAfiliado(int idAfiliadoPlan, int valor, int idMedioPago, string idReferencia, string banco,
+        public int InsertarPagoPlanAfiliado(int idAfiliadoPlan, int valor, int idMedioPago, string idReferencia, string banco,
         int idUsuario, string estado, string idSiigoFactura, int idCanalVenta, int idcrm)
         {
-            string respuesta = string.Empty;
+            int idPago = 0;
             try
             {
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
@@ -634,6 +634,45 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_siigo_factura", idSiigoFactura);
                         cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
                         cmd.Parameters.AddWithValue("@p_id_contacto", idcrm);
+
+                        cmd.ExecuteNonQuery();
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                idPago = Convert.ToInt32(reader["idPago"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string respuesta = "ERROR: " + ex.Message;
+                return 0;
+            }
+
+            return idPago;
+        }
+
+        public string ActualizarPagoConFactura(int idPago, string idSiigoFactura)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open(); // Abrir conexión antes de usarla
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_PAGO_CON_FACTURA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        // Parámetros de entrada
+                        cmd.Parameters.AddWithValue("@p_id_pago", idPago);
+                        cmd.Parameters.AddWithValue("@p_idSiigoFactura", idSiigoFactura);
 
                         cmd.ExecuteNonQuery();
                         respuesta = "OK";
