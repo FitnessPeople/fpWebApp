@@ -302,8 +302,7 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-1">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server"
-                                                    CausesValidation="false"
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click" Visible="false">
                                                     <i class="fa fa-file-excel m-r-xs"></i>EXCEL
@@ -414,8 +413,6 @@
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
 
-
-
     <!-- Mainly scripts -->
     <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -436,12 +433,6 @@
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
-
-        //const miTabla = document.getElementById('miTabla');
-        //const tbody = miTabla.tBodies[0];
-        //const numeroRegistros = tbody.rows.length;
-
-        //console.log("Número total de registros:", numeroRegistros);
     </script>
 
     <script>
