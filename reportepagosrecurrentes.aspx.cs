@@ -220,6 +220,7 @@ namespace fpWebApp
             if (!dt.Columns.Contains("ProximoValorCobrar")) dt.Columns.Add("ProximoValorCobrar", typeof(int));
             if (!dt.Columns.Contains("MontoAcumulado")) dt.Columns.Add("MontoAcumulado", typeof(int));
             if (!dt.Columns.Contains("MesesACobrar")) dt.Columns.Add("MesesACobrar", typeof(int));
+            if (!dt.Columns.Contains("PeridoACobrar")) dt.Columns.Add("PeridoACobrar", typeof(string));
 
             foreach (DataRow row in dt.Rows)
             {
@@ -241,12 +242,26 @@ namespace fpWebApp
 
                 row["ProximoValorCobrar"] = cg.ObtenerValorMesPlanSimulado(idPlan, mesesPagados, valorBase);
 
+                // Lógica para identificar el nombre de los meses a cobrar
+                CultureInfo cultura = new CultureInfo("es-CO");
+                TextInfo texto = cultura.TextInfo;
+
+                List<string> nombresMeses = new List<string>();
+                DateTime fechaBase = fechaProximoCobro;
 
                 // Monto Acumulado
                 int montoTotal = 0; 
 
                 for (int i = 0; i < mesesACobrar; i++)
                 {
+                    DateTime mes = fechaBase.AddMonths(i);
+
+                    string nombreMes = mes.ToString("MMMM yyyy", cultura);
+                    nombreMes = texto.ToTitleCase(nombreMes);
+
+                    nombresMeses.Add(nombreMes);
+
+
                     int mesSimulado = mesesPagados + i;
 
                     int valorMes  = cg.ObtenerValorMesPlanSimulado(idPlan, mesSimulado, valorBase);
@@ -256,6 +271,7 @@ namespace fpWebApp
 
                 row["MontoAcumulado"] = montoTotal;
                 row["MesesACobrar"] = mesesACobrar;
+                row["PeridoACobrar"] = string.Join(", ", nombresMeses);
             }
 
             rpPagos.DataSource = dt;
@@ -300,14 +316,19 @@ namespace fpWebApp
                 int valorACobrar;
                 int mesesACobrar = 1;
 
+                string periodoCompleto = ((HiddenField)item.FindControl("hfPeridoACobrar")).Value;
+                string periodoCobrar;
+
                 if (e.CommandName == "ACUMULADO")
                 {
                     valorACobrar = Convert.ToInt32(((HiddenField)item.FindControl("hfMontoAcumulado")).Value);
                     mesesACobrar = Convert.ToInt32(((HiddenField)item.FindControl("hfMesesACobrar")).Value);
+                    periodoCobrar = periodoCompleto;
                 }
                 else
                 {
                     valorACobrar = Convert.ToInt32(((HiddenField)item.FindControl("hfProximoValorCobrar")).Value);
+                    periodoCobrar = periodoCompleto.Split(',')[0].Trim();
                 }
 
                 // Recuperamos los datos ocultos
@@ -320,7 +341,7 @@ namespace fpWebApp
                 string fuentePago = ((HiddenField)item.FindControl("hfFuentePago")).Value;
                 string documentoAfiliado = ((HiddenField)item.FindControl("hfDocumentoAfiliado")).Value;
                 string correo = ((HiddenField)item.FindControl("hfEmail")).Value;
-
+                
                 // Validaciones básicas
                 if (string.IsNullOrEmpty(fuentePago))
                 {
@@ -340,15 +361,15 @@ namespace fpWebApp
 
                 string plural = mesesACobrar > 1 ? "meses" : "mes";
                 string descripcion = e.CommandName == "ACUMULADO"
-                     ? $"Cobro de {mesesACobrar} {plural} del plan {nombrePlan} por valor de ${valorACobrar}."
-                     : $"Cobro mensual del plan {nombrePlan} por valor de ${valorACobrar}.";
+                     ? $"Cobro de {mesesACobrar} {plural} ({periodoCobrar}) del plan {nombrePlan} por valor de ${valorACobrar}."
+                     : $"Cobro mensual ({periodoCobrar}) del plan {nombrePlan} por valor de ${valorACobrar}.";
 
                 string concatenado = $"{referencia}{monto}{moneda}{IntegritySecret}";
                 string hash256 = ComputeSha256Hash(concatenado);
 
                 string observaciones = e.CommandName == "ACUMULADO"
-                    ? $"Pago correspondiente a {mesesACobrar} meses del plan {nombrePlan}."
-                    : $"Pago correspondiente a 1 mes del plan {nombrePlan}.";
+                    ? $"Pago correspondiente a {mesesACobrar} meses ({periodoCobrar}) del plan {nombrePlan}."
+                    : $"Pago correspondiente a 1 mes ({periodoCobrar}) del plan {nombrePlan}.";
 
                 bool pagoExitoso = await CrearTransaccionRecurrenteAsync(
                     monto,
