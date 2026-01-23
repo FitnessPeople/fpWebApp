@@ -200,9 +200,10 @@
                                                 <th>Celular</th>
                                                 <th>Email</th>
                                                 <th>Plan</th>
-                                                <th>Fecha Cobro</th>
-                                                <th class="text-center">Valor a Cobrar</th>
+                                                <th>Fecha de Cobro</th>
+                                                <th class="text-center">Valor Mensual</th>
                                                 <th class="text-center">Monto Acumulado</th>
+                                                <th class="text-center">Período a Cobrar</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -226,7 +227,7 @@
                                                                     <asp:Button ID="btnCobrarValor" runat="server" 
                                                                         Text="Cobrar"
                                                                         CommandName="PROXIMO"
-                                                                        CssClass="btn btn-success"
+                                                                        CssClass="btn btn-success btn-sm"
                                                                         CommandArgument='<%# Eval("idAfiliadoPlan") %>'
                                                                         OnCommand="btnCobrar_Click"
                                                                         OnClientClick="return confirmarCobro(this);" />
@@ -252,19 +253,21 @@
                                                                     <asp:HiddenField ID="hfMontoAcumulado" runat="server" Value='<%# Eval("MontoAcumulado") %>' />
                                                                     <asp:HiddenField ID="hfFuentePago" runat="server" Value='<%# Eval("DataIdFuente") %>' />
                                                                     <asp:HiddenField ID="hfMesesACobrar" runat="server" Value='<%# Eval("MesesACobrar") %>' />
+                                                                    <asp:HiddenField ID="hfPeridoACobrar" runat="server" Value='<%# Eval("PeridoACobrar") %>' />
                                                                 </div>
 
                                                                 <div class="col-xs-6 text-left">
                                                                     <asp:Button ID="btnCobrarMonto" runat="server" 
-                                                                        Text="Cobrar"
+                                                                        Text="Cobrar Total"
                                                                         CommandName="ACUMULADO"
-                                                                        CssClass="btn btn-danger"
+                                                                        CssClass="btn btn-danger btn-sm"
                                                                         CommandArgument='<%# Eval("idAfiliadoPlan") %>'
                                                                         OnCommand="btnCobrar_Click"
                                                                         OnClientClick="return confirmarCobro(this);" />
                                                                 </div>
                                                             </div>
                                                         </td>
+                                                        <td><%# Eval("PeridoACobrar") %></td>
                                                     </tr>
                                                 </ItemTemplate>
                                             </asp:Repeater>
