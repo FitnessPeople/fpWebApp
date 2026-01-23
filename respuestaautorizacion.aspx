@@ -17,7 +17,6 @@
     <title>Fitness People | Autorizaciones</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />

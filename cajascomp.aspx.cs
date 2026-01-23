@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -65,13 +66,9 @@ namespace fpWebApp
                             DataTable dt = cg.ValidarCajaCompEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta Caja de Compensación no se puede borrar, hay empleados asociados a ella." +
-                                    "</div></div>";
+                                MostrarAlerta("Mensaje", "Esta Caja de Compensación no se puede borrar, hay empleados asociados a ella.", "warning");
 
-                                DataTable dt1 = new DataTable();
+                                DataTable dt1;
                                 dt1 = cg.ConsultarCajaCompPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
                                 if (dt1.Rows.Count > 0)
                                 {
@@ -176,12 +173,10 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
-                string strInitData = TraerData();
-
                 if (Request.QueryString["editid"] != null)
                 {
+                    string strInitData = TraerData();
                     string respuesta = cg.ActualizarCajaComp(int.Parse(Request.QueryString["editid"].ToString()), txbCajaComp.Text.ToString().Trim());
-
                     string strNewData = TraerData();
                     cg.InsertarLog(Session["idusuario"].ToString(), "cajas compensación", "Modifica", "El usuario modificó la caja de compensación: " + txbCajaComp.Text.ToString() + ".", strInitData, strNewData);
                 }
@@ -208,21 +203,14 @@ namespace fpWebApp
                         if (ex.InnerException != null)
                         {
                             mensajeExcepcionInterna = ex.InnerException.Message;
-                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                            MostrarAlerta("Error", "Mensaje de la excepción interna: " + mensajeExcepcionInterna, "error");
                         }
-                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Excepción interna." +
-                        "</div>";
                     }
                     Response.Redirect("cajascomp");
                 }
                 else
                 {
-                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una Caja de Compensación con ese nombre." +
-                        "</div>";
+                    MostrarAlerta("Mensaje", "Ya existe una Caja de Compensación con ese nombre.", "warning");
                 }
             }
         }
@@ -232,8 +220,8 @@ namespace fpWebApp
             try
             {
                 string consultaSQL = @"SELECT NombreCajaComp AS 'Cajas de Compensación'
-	                                   FROM cajascompensacion 
-	                                   ORDER BY NombreCajaComp;";
+	                FROM cajascompensacion 
+	                ORDER BY NombreCajaComp;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
@@ -241,17 +229,34 @@ namespace fpWebApp
 
                 if (dt.Rows.Count > 0)
                 {
-                    cg.ExportarExcel(dt, nombreArchivo);
+                    cg.ExportarExcelOk(dt, nombreArchivo);
                 }
                 else
                 {
-                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                    MostrarAlerta("Mensaje", "No existen registros para esta consulta", "warning");
                 }
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+                MostrarAlerta("Error", "Error al exportar" + ex.Message, "error");
             }
+        }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                    title: '{titulo}',
+                    text: '{mensaje}',
+                    icon: '{tipo}', 
+                    allowOutsideClick: false, 
+                    showCloseButton: false, 
+                    confirmButtonText: 'Aceptar'
+                }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
 
         private string TraerData()
