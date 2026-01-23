@@ -23,7 +23,7 @@
                     <small><i class="fa fa-tim"></i>Tienes 10 tareas, 8 sin completar.</small>
                 </div>--%>
 
-                <ul class="sidebar-list">
+                <ul class="sidebar-list list-group-item">
                     <asp:Repeater ID="rpTareas" runat="server">
                         <ItemTemplate>
                             <li>
@@ -43,11 +43,11 @@
 
                     <asp:Repeater ID="rpEnlaces" runat="server">
                         <ItemTemplate>
-                            <li>
-                                <h4><%# Eval("NombreWeb") %></h4>
+                            <li style="padding: 1px 20px;">
+                                <h6 class="text-info font-bold m-b-xxs"><%# Eval("NombrePlan") %></h6>
                                 <%# Eval("token") %>
                                 <input type="hidden" id='hdEnlacePago_<%# Eval("token") %>' value='https://fitnesspeoplecolombia.com/register?token=<%# Eval("token") %>'>
-                                <button type="button" class="btn btn-success btn-circle" id="btnPortapaleles"
+                                <button type="button" class="btn btn-success btn-xs" id="btnPortapaleles"
                                     onclick='copyToClipboard("hdEnlacePago_<%# Eval("token") %>")' title="Copiar enlace">
                                     <i class="fa fa-copy"></i>
                                 </button>
@@ -56,6 +56,16 @@
                         </ItemTemplate>
                     </asp:Repeater>
 
+                    <!-- Enlace para cambio de método de pago -->
+                    <li style="padding: 1px 20px;">
+                        <h6 class="text-info font-bold m-b-xxs">Cambio de método de pago</h6>
+                        cambioMetodoPago
+                        <input type="hidden" id='hdEnlaceCambio' value='https://fitnesspeoplecolombia.com/cambioMetodoPago'>
+                        <button type="button" class="btn btn-success btn-xs" id="btnPortapaleles"
+                            onclick='copyToClipboard("hdEnlaceCambio")' title="Copiar enlace">
+                            <i class="fa fa-copy"></i>
+                        </button>
+                    </li>
                 </ul>
 
             </div>

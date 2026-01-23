@@ -34,11 +34,14 @@ namespace fpWebApp.controles
 
             if (dtTokens.Rows.Count > 0)
             {
+                DataView dv = dtTokens.DefaultView;
+                dv.RowFilter = "VisibleWeb = 1";
+
                 ltEtiqueta1.Text = "<a data-toggle=\"tab\" href=\"#tab-2\">Enlaces</a>";
                 rpEnlaces.Visible = true;
                 rpTareas.Visible = false;
 
-                rpEnlaces.DataSource = dtTokens;
+                rpEnlaces.DataSource = dv;
                 rpEnlaces.DataBind();
             }
             else
