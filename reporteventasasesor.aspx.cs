@@ -15,7 +15,7 @@ namespace fpWebApp
     public partial class reporteventasasesor : System.Web.UI.Page
     {
         protected Dictionary<string, string> FacturasUrls;
-        protected async void Page_Load(object sender, EventArgs e)
+        protected async Task Page_Load(object sender, EventArgs e)
         {
             CultureInfo culture = new CultureInfo("es-CO");
             Thread.CurrentThread.CurrentCulture = culture;
