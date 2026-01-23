@@ -558,13 +558,12 @@ namespace fpWebApp
                 DataTable dtAfi = cg.ConsultarAfiliadoPorId(Convert.ToInt32(idAfiliado));
 
                 if (dtAfi.Rows.Count == 0) return (false, null);
-
-                // Obtener datos del afiliado
                 string nroDoc = dtAfi.Rows[0]["DocumentoAfiliado"].ToString();
-                string strNombre = dtAfi.Rows[0]["NombreAfiliado"].ToString();
-                string strApellido = dtAfi.Rows[0]["ApellidoAfiliado"].ToString();
-                string strCelular = dtAfi.Rows[0]["CelularAfiliado"].ToString();
+                string strNombre = LimpiarTextoSiigo(dtAfi.Rows[0]["NombreAfiliado"].ToString());
+                string strApellido = LimpiarTextoSiigo(dtAfi.Rows[0]["ApellidoAfiliado"].ToString());
+                string strCelular = Regex.Replace(dtAfi.Rows[0]["CelularAfiliado"].ToString(), @"[^\d]", "");
                 string strEmail = dtAfi.Rows[0]["EmailAfiliado"].ToString();
+
                 int idSede = Convert.ToInt32(dtAfi.Rows[0]["idSede"].ToString());
                 dtAfi.Dispose();
 
@@ -616,14 +615,14 @@ namespace fpWebApp
                     _codSiigoPlan,
                     _nombrePlan,
                     _precioPlan,
-                    observaciones, 
+                    observaciones,
                     idSellerUser,
                     idDocumentType,
                     fechaActual,
                     idCostCenter,
                     idPayment
-                );                
-                
+                );
+
                 //Session["idAfiliadoPlan"] = idAfiliadoPlan;
                 //string referencia = Session["documentoAfiliado"].ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
                 //string codDatafono = Session["codDatafono"].ToString();
@@ -1125,7 +1124,7 @@ namespace fpWebApp
             string valorPagadoTexto = txbTotal.Text.Trim();
             string valorLimpio = Regex.Replace(valorPagadoTexto, @"[^\d]", "");
             int valorPagado;
-            int.TryParse(valorLimpio, out valorPagado);            
+            int.TryParse(valorLimpio, out valorPagado);
 
             //DataTable dtEstado = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
             //if (dtEstado.Rows.Count > 0 && dtEstado.Rows[0]["EstadoPlan"].ToString() == "Activo")
@@ -1156,9 +1155,9 @@ namespace fpWebApp
                 string rtaPlan = cg.InsertarAfiliadoPlan(idAfiliado, Convert.ToInt32(ViewState["idPlan"]), fechaInicio.ToString("yyyy-MM-dd"), fechaFinalPlan.ToString("yyyy-MM-dd"), Convert.ToInt32(ViewState["meses"]),
                                 Convert.ToInt32(ViewState["precioTotal"]), ViewState["observaciones"].ToString(), estadoPago);
 
-                string rtaCartera = cg.InsertarCarteraPlan( idAfiliado,idcrm,  0, Convert.ToInt32(ViewState["idPlan"]),ddlEmpresa.SelectedValue,
-                        valorCredito, 0, valorCredito, Convert.ToInt32(ViewState["meses"]), fechaInicio, fechaFinalPlan,  6, "ACTIVA",
-                        false,  null, null,  idUsuario);
+                string rtaCartera = cg.InsertarCarteraPlan(idAfiliado, idcrm, 0, Convert.ToInt32(ViewState["idPlan"]), ddlEmpresa.SelectedValue,
+                        valorCredito, 0, valorCredito, Convert.ToInt32(ViewState["meses"]), fechaInicio, fechaFinalPlan, 6, "ACTIVA",
+                        false, null, null, idUsuario);
 
                 DataTable _dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
                 string rtaCRM = cg.ActualizarEstadoCRMPagoPlan(idcrm, _dtActivo.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32(ViewState["precioTotal"]), idUsuario, 3);
@@ -1210,28 +1209,40 @@ namespace fpWebApp
 
             try
             {
+                DataTable dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+                string rtaCRM = cg.ActualizarEstadoCRMPagoPlan(idcrm, dtActivo.Rows[0]["NombrePlan"].ToString(), valorPagado, idUsuario, 3);
+                RegistrarPagos(cg, mediosPago, idAfiliadoPlan, idUsuario, idCanalVenta, idcrm, null);
+
+                ////////////////////SIIGO//////////////////////////
 
                 var resultado = await ProcesarPagoExitosoAsync(idAfiliadoPlan, ViewState["codSiigoPlan"].ToString(), ViewState["nombrePlan"].ToString(), valorPagado.ToString());
 
                 if (!resultado.ok)
                 {
-                    MostrarAlerta("Error", "No se pudo obtener la información del afiliado.", "error");
+                    MostrarAlerta("Error", "No se pudo generar la factura en Siigo.", "error");
                     return;
                 }
-                else
+                List<int> pagos = RegistrarPagos(
+                    cg,
+                    mediosPago,
+                    idAfiliadoPlan,
+                    idUsuario,
+                    idCanalVenta,
+                    idcrm
+                );
+
+                foreach (int idPago in pagos)
                 {
-                    string idSiigoFactura = resultado.idSiigoFactura;
-                    DataTable dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
-                    string rtaCRM = cg.ActualizarEstadoCRMPagoPlan(idcrm, dtActivo.Rows[0]["NombrePlan"].ToString(), valorPagado, idUsuario, 3);
-                    cg.InsertarLog(idUsuario.ToString(), "afiliadosplanes", "Agrega", $"El usuario agregó un nuevo plan al afiliado con documento: {docAfiliado}.", "", "");
-                    RegistrarPagos(cg, mediosPago, idAfiliadoPlan, idUsuario, idCanalVenta, idcrm, idSiigoFactura);
-                    MostrarMensajeExito(docAfiliado, idcrm);
+                    cg.ActualizarPagoConFactura(idPago, resultado.idSiigoFactura);
                 }
+                cg.InsertarLog(idUsuario.ToString(), "afiliadosplanes", "Agrega", $"El usuario agregó un nuevo plan al afiliado con documento: {docAfiliado}.", "", "");
+                MostrarMensajeExito(docAfiliado, idcrm);
+                //////////////////////////////////////////////////
             }
             catch (Exception ex)
             {
                 new clasesglobales().InsertarLog(Session["idusuario"]?.ToString() ?? "0", "ASYNC", "ERROR", ex.ToString(), "", "");
-
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error", "No se pudo actualizar el CRM.", "error");
                 return;
             }
@@ -1247,18 +1258,41 @@ namespace fpWebApp
 
         private void RegistrarPagos(clasesglobales cg, DataTable medios, int idAfiliadoPlan, int idUsuario, int idCanalVenta, int idcrm, string idSiigoFactura)
         {
-            ProcesarMedio(cg, medios.Rows[3], txbWompi.Text, idAfiliadoPlan, idUsuario, "Wompi", idCanalVenta, idcrm, idSiigoFactura);
-            ProcesarMedio(cg, medios.Rows[2], txbDatafono.Text, idAfiliadoPlan, idUsuario, "", idCanalVenta, idcrm, txbNroAprobacion.Text, idSiigoFactura);
-            ProcesarMedio(cg, medios.Rows[0], txbEfectivo.Text, idAfiliadoPlan, idUsuario, "", idCanalVenta, idcrm, idSiigoFactura);
-            ProcesarMedio(cg, medios.Rows[1], txbTransferencia.Text, idAfiliadoPlan, idUsuario, ViewState["Banco"]?.ToString() ?? "Ninguno", idCanalVenta, idcrm, idSiigoFactura);
+            ProcesarMedio(cg, medios.Rows[3], txbWompi.Text, idAfiliadoPlan, idUsuario, "Wompi", idCanalVenta, idcrm);
+            ProcesarMedio(cg, medios.Rows[2], txbDatafono.Text, idAfiliadoPlan, idUsuario, "", idCanalVenta, idcrm, txbNroAprobacion.Text);
+            ProcesarMedio(cg, medios.Rows[0], txbEfectivo.Text, idAfiliadoPlan, idUsuario, "Ninguno", idCanalVenta, idcrm);
+            ProcesarMedio(cg, medios.Rows[1], txbTransferencia.Text, idAfiliadoPlan, idUsuario, ViewState["Banco"]?.ToString() ?? "Ninguno", idCanalVenta, idcrm);
         }
 
-        private void ProcesarMedio(clasesglobales cg, DataRow medio, string valorText, int idAfiliadoPlan, int idUsuario, string banco, int idCanalVenta, int idcrm, string idSiigoFactura, string referencia = "")
+        private int ProcesarMedio(clasesglobales cg, DataRow medio, string valorText, int idAfiliadoPlan, int idUsuario, string banco, int idCanalVenta, int idcrm, string referencia = "")
         {
             int valor = Convert.ToInt32(Regex.Replace(valorText, @"[^\d]", ""));
-            if (valor <= 0) return;
+            if (valor <= 0) return 0;
 
-            cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, valor, Convert.ToInt32(medio["idMedioPago"]), referencia, banco, idUsuario, "Aprobado", idSiigoFactura, idCanalVenta, idcrm);
+            int idPago = cg.InsertarPagoPlanAfiliado(idAfiliadoPlan, valor, Convert.ToInt32(medio["idMedioPago"]), referencia, banco, idUsuario,
+                "Aprobado", null, idCanalVenta, idcrm);
+
+            return idPago;
+        }
+        private List<int> RegistrarPagos(clasesglobales cg, DataTable medios, int idAfiliadoPlan, int idUsuario, int idCanalVenta, int idcrm)
+        {
+            List<int> pagos = new List<int>();
+
+            int id;
+
+            id = ProcesarMedio(cg, medios.Rows[3], txbWompi.Text, idAfiliadoPlan, idUsuario, "Wompi", idCanalVenta, idcrm);
+            if (id > 0) pagos.Add(id);
+
+            id = ProcesarMedio(cg, medios.Rows[2], txbDatafono.Text, idAfiliadoPlan, idUsuario, "Ninguno", idCanalVenta, idcrm, txbNroAprobacion.Text);
+            if (id > 0) pagos.Add(id);
+
+            id = ProcesarMedio(cg, medios.Rows[0], txbEfectivo.Text, idAfiliadoPlan, idUsuario, "Ninguno", idCanalVenta, idcrm);
+            if (id > 0) pagos.Add(id);
+
+            id = ProcesarMedio(cg, medios.Rows[1], txbTransferencia.Text, idAfiliadoPlan, idUsuario, ViewState["Banco"]?.ToString() ?? "Ninguno", idCanalVenta, idcrm);
+            if (id > 0) pagos.Add(id);
+
+            return pagos;
         }
 
 
@@ -1275,7 +1309,9 @@ namespace fpWebApp
                     window.location.href = 'detalleafiliado?search={doc}&idcrm={idcrm}';
                 }});";
 
-            ScriptManager.RegisterStartupScript(this, GetType(), "Exito", script, true);
+            //ScriptManager.RegisterStartupScript(this, GetType(), "Exito", script, true);
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "Exito", script, true);
+
         }
 
         private void MostrarMensajeCounter(int idcrm, int idAfiliado)
@@ -1439,5 +1475,39 @@ namespace fpWebApp
                 }
             }
         }
+
+
+
+        public static string LimpiarTextoSiigo(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                return string.Empty;
+
+            // Normaliza (separa acentos)
+            texto = texto.Normalize(NormalizationForm.FormD);
+
+            var sb = new StringBuilder();
+
+            foreach (char c in texto)
+            {
+                var categoria = Char.GetUnicodeCategory(c);
+
+                // Letras, números, espacio
+                if (categoria == UnicodeCategory.UppercaseLetter ||
+                    categoria == UnicodeCategory.LowercaseLetter ||
+                    categoria == UnicodeCategory.DecimalDigitNumber ||
+                    categoria == UnicodeCategory.SpaceSeparator)
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb
+                .ToString()
+                .Normalize(NormalizationForm.FormC)
+                .Trim();
+        }
+
+
     }
 }

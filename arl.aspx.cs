@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -65,11 +66,12 @@ namespace fpWebApp
                             DataTable dt = cg.ValidarArlEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                    "Esta ARL no se puede borrar, hay empleados asociados a ella." +
-                                    "</div></div>";
+                                //ltMensaje.Text = "<div class=\"ibox-content\">" +
+                                //    "<div class=\"alert alert-danger alert-dismissable\">" +
+                                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                                //    "Esta ARL no se puede borrar, hay empleados asociados a ella." +
+                                //    "</div></div>";
+                                MostrarAlerta("Mensaje", "Esta ARL no se puede borrar, hay empleados asociados a ella.", "warning");
 
                                 DataTable dt1 = new DataTable();
                                 dt1 = cg.ConsultarArlPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
@@ -176,12 +178,10 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             if (Request.QueryString.Count > 0)
             {
-                string strInitData = TraerData();
-
                 if (Request.QueryString["editid"] != null)
                 {
+                    string strInitData = TraerData();
                     string respuesta = cg.ActualizarArl(int.Parse(Request.QueryString["editid"].ToString()), txbArl.Text.ToString().Trim());
-
                     string strNewData = TraerData();
                     cg.InsertarLog(Session["idusuario"].ToString(), "ARL", "Modifica", "El usuario modificó la ARL: " + txbArl.Text.ToString() + ".", strInitData, strNewData);
                 }
@@ -208,21 +208,22 @@ namespace fpWebApp
                         if (ex.InnerException != null)
                         {
                             mensajeExcepcionInterna = ex.InnerException.Message;
-                            Console.WriteLine("Mensaje de la excepción interna: " + mensajeExcepcionInterna);
+                            MostrarAlerta("Error", "Mensaje de la excepción interna: " + mensajeExcepcionInterna, "error");
                         }
-                        ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Excepción interna." +
-                        "</div>";
+                        //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                        //"<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                        //"Excepción interna." +
+                        //"</div>";
                     }
                     Response.Redirect("arl");
                 }
                 else
                 {
-                    ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
-                        "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                        "Ya existe una ARL con ese nombre." +
-                        "</div>";
+                    //ltMensaje.Text = "<div class=\"alert alert-danger alert-dismissable\">" +
+                    //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    //    "Ya existe una ARL con ese nombre." +
+                    //    "</div>";
+                    MostrarAlerta("Mensaje", "Ya existe una ARL con ese nombre.", "warning");
                 }
             }
         }
@@ -241,17 +242,34 @@ namespace fpWebApp
 
                 if (dt.Rows.Count > 0)
                 {
-                    cg.ExportarExcel(dt, nombreArchivo);
+                    cg.ExportarExcelOk(dt, nombreArchivo);
                 }
                 else
                 {
-                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                    MostrarAlerta("Mensaje", "No existen registros para esta consulta", "warning");
                 }
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+                MostrarAlerta("Error", "Error al exportar" + ex.Message, "error");
             }
+        }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                    title: '{titulo}',
+                    text: '{mensaje}',
+                    icon: '{tipo}', 
+                    allowOutsideClick: false, 
+                    showCloseButton: false, 
+                    confirmButtonText: 'Aceptar'
+                }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
 
         private string TraerData()

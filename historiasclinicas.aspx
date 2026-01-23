@@ -18,11 +18,9 @@
     <title>Fitness People | Historias Clínicas</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
     <!-- FooTable -->
-    <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <!-- Morris -->
@@ -30,6 +28,8 @@
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         function changeClass() {
@@ -138,6 +138,7 @@
 
                                     <div class="row">
                                         <form id="form1" runat="server">
+                                            <asp:ScriptManager ID="ScriptManager1" runat="server" />
                                             <div class="col-lg-6 form-horizontal">
                                                 <div class="form-group">
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
@@ -186,11 +187,12 @@
                                                         </td>
                                                         <td><%# Eval("DocumentoAfiliado") %></td>
                                                         <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
-                                                        <td><%# Eval("Genero").ToString() == "1"
-                                                            ? "<i class='fa fa-mars text-success'></i>"
-                                                            : "<i class='fa fa-venus text-danger'></i>" %></td>
-                                                        <%--<td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>--%>
-                                                        <td><%# Eval("Edad") %> años</td>
+                                                        <td><%# Eval("Genero").ToString() == "Masculino"
+                                                            ? "<i class='fa fa-mars text-success'></i> Masculino"
+                                                            : "<i class='fa fa-venus text-danger'></i> Femenino" %></td>
+                                                        <td><%# Eval("Edad") != DBNull.Value && Convert.ToInt32(Eval("Edad")) == 1
+                                                            ? "1 año"
+                                                            : Eval("Edad") + " años" %></td>
                                                         <td>
                                                             <h3 class="text-info">Antecedentes</h3>
                                                             <table class="table table-bordered table-striped">

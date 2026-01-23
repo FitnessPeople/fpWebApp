@@ -1,15 +1,21 @@
-﻿using System;
+﻿using fpWebApp.Services;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
     public partial class reporteventasasesor : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected Dictionary<string, string> FacturasUrls;
+        protected async void Page_Load(object sender, EventArgs e)
         {
             CultureInfo culture = new CultureInfo("es-CO");
             Thread.CurrentThread.CurrentCulture = culture;
@@ -52,7 +58,7 @@ namespace fpWebApp
                         }
                     }
 
-                    listaVentas();
+                    await listaVentas();
                 }
                 else
                 {
@@ -85,7 +91,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void listaVentas()
+        private async Task listaVentas()
         {
             clasesglobales cg = new clasesglobales();
             try
@@ -107,7 +113,7 @@ namespace fpWebApp
 	                    MAX(ppa.FechaHoraPago) AS FechaHora, 
 	                    MAX(ppa.EstadoPago) AS Est, 
 	                    MAX(p.NombrePlan) AS Plan, 
-	                    MAX(ppa.idSiigoFactura) AS idSiigo 
+	                    MAX(ppa.idSiigoFactura) AS idSiigoFactura 
                     FROM PagosPlanAfiliado ppa
                     INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan
                     INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado
@@ -119,6 +125,9 @@ namespace fpWebApp
                     ORDER BY FechaHora DESC";
 
                 DataTable dt = cg.TraerDatos(strQuery);
+
+                FacturasUrls = new Dictionary<string, string>();
+                await CargarFacturasAsync(dt);
 
                 rpPagos.DataSource = dt;
                 rpPagos.DataBind();
@@ -205,9 +214,9 @@ namespace fpWebApp
             }
         }
 
-        protected void btnBuscar_Click(object sender, EventArgs e)
+        protected async void btnBuscar_Click(object sender, EventArgs e)
         {
-            listaVentas();
+            await listaVentas();
         }
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
@@ -293,7 +302,81 @@ namespace fpWebApp
                 Repeater rpDetallesPago = (Repeater)e.Item.FindControl("rpDetallesPago");
                 rpDetallesPago.DataSource = dt;
                 rpDetallesPago.DataBind();
+
+                HtmlAnchor lnkVerFactura =(HtmlAnchor)e.Item.FindControl("lnkVerFactura");
+
+                string idFactura = ((DataRowView)e.Item.DataItem).Row["idSiigoFactura"].ToString();
+
+                string debug = $"ID: [{idFactura}] - Existe: {FacturasUrls.ContainsKey(idFactura)}";
+                System.Diagnostics.Debug.WriteLine(debug);
+
+                string url = FacturasUrls[idFactura];
+
+                System.Diagnostics.Debug.WriteLine(
+                    $"ID: [{idFactura}] | URL: [{url}] | IsNull: {url == null}"
+                );
+
+                if (FacturasUrls.ContainsKey(idFactura) &&
+                    !string.IsNullOrEmpty(FacturasUrls[idFactura]))
+                {
+                    lnkVerFactura.HRef = FacturasUrls[idFactura];
+                    lnkVerFactura.Target = "_blank";
+                    lnkVerFactura.Visible = true;
+                }
+                else
+                {
+                    lnkVerFactura.Visible = false;
+                }
             }
+        }
+
+        //protected Dictionary<string, string> FacturasUrls
+        //{
+        //    get => ViewState["FacturasUrls"] as Dictionary<string, string>;
+        //    set => ViewState["FacturasUrls"] = value;
+        //}
+
+        private async Task CargarFacturasAsync(DataTable dt)
+        {
+            FacturasUrls = new Dictionary<string, string>();
+            var siigoClient = CrearClienteSiigo();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string idFactura = row["idSiigoFactura"].ToString();
+
+                try
+                {
+                    string url = await siigoClient.ManageInvoiceAsync(idFactura);
+
+                    FacturasUrls[idFactura] = url;
+                }
+                catch
+                {
+                    FacturasUrls[idFactura] = null;
+                }
+            }
+        }
+
+        private SiigoClient CrearClienteSiigo()
+        {
+            //Pruebas
+            return new SiigoClient(
+                new HttpClient(),
+                "https://api.siigo.com/",
+                "sandbox@siigoapi.com",
+                "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=",
+                "SandboxSiigoApi"
+            );
+
+            //Producción
+            //return new SiigoClient(
+            //       new HttpClient(),
+            //     "https://api.siigo.com/",
+            //     "contabilidad@fitnesspeoplecmd.com",
+            //     "NWFjNTQzN2QtNjkwZi00MTJiLWFiYTktZmU1ZTBkMmZkZGY4OnJ7WTU0LnVlY08=",
+            //     "ProductionSiigoApi"
+            //);
         }
     }
 }

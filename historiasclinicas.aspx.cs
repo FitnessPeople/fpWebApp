@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -74,22 +75,6 @@ namespace fpWebApp
 
         private void ListaHistorias()
         {
-            //string strQuery = "SELECT *, " +
-            //    "IF(g.idGenero=1,'<i class=\"fa fa-mars text-success\"></i>',IF(g.idGenero=2,'<i class=\"fa fa-venus text-danger\"></i>','<i class=\"fa fa-venus-mars text-warning\"></i>')) AS iconGenero, " +
-            //    "IF(TIMESTAMPDIFF(YEAR, a.FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, a.FechaNacAfiliado, CURDATE()),'') AS edad, " +
-            //    "IF(Tabaquismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS fuma, " +
-            //    "IF(Alcoholismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS toma, " +
-            //    "IF(Sedentarismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS sedentario, " +
-            //    "IF(Diabetes=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS diabetico, " +
-            //    "IF(Colesterol=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Colesterol=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS colesterado, " +
-            //    "IF(Trigliceridos=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Trigliceridos=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS triglicerado, " +
-            //    "IF(HTA=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(HTA=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS hipertenso " +
-            //    "FROM HistoriasClinicas hc " +
-            //    "LEFT JOIN Afiliados a ON hc.idAfiliado = a.idAfiliado " +
-            //    "LEFT JOIN Generos g ON a.idGenero = g.idGenero " +
-            //    "ORDER BY FechaHora DESC";
-
-
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarHistoriasClinicas();
 
@@ -131,7 +116,44 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                DataTable dtHC = cg.ConsultarHistoriasClinicas();
+                string nombreArchivo = $"HistoriasClinicas_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
+                if (dtHC.Rows.Count > 0)
+                {
+                    cg.ExportarExcelOk(dtHC, nombreArchivo);
+                }
+                else
+                {
+                    //Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                    MostrarAlerta("Mensaje", "No existen registros para esta consulta", "warning");
+                }
+            }
+            catch (Exception ex)
+            {
+                //Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+                MostrarAlerta("Error", "Error al exportar" + ex.Message, "error");
+            }
+        }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+            Swal.hideLoading();
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
     }
 }

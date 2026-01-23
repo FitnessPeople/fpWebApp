@@ -17,23 +17,18 @@
     <title>Fitness People | Nueva Empresa Convenio</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
-    <%--<link href="font-awesome/css/font-awesome.css" rel="stylesheet">--%>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
 
-    <link href="css/plugins/dropzone/basic.css" rel="stylesheet" />
-    <link href="css/plugins/dropzone/dropzone.css" rel="stylesheet" />
+    <!-- Estilos para FileUpload -->
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet" />
-    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet" />
 
     <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-        <!-- Sweet Alert -->
-    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-
+    <!-- ClockPicker -->
     <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
 
     <!-- Sweet alert -->
@@ -41,9 +36,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#nuevaempresa");
+            var element1 = document.querySelector("#empresasafiliadas");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#afiliados2");
+            var element2 = document.querySelector("#corporativo");
             element2.classList.remove("collapse");
         }
     </script>
@@ -424,9 +419,6 @@
 
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
-
-    <!-- DROPZONE -->
-    <script src="js/plugins/dropzone/dropzone.js"></script>
 
     <script>
 

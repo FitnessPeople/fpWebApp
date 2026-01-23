@@ -845,21 +845,22 @@ namespace fpWebApp
             try
             {
                 // TODO: Arreglar datos quemados
-                string consultaSQL = @"SELECT a.DocumentoAfiliado AS 'Documento de Afiliado', CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS 'Nombre de Afiliado', 
-                        pa.Valor AS 'Valor', pa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
-                        pa.Banco AS 'Entidad Bancaría', pa.FechaHoraPago AS 'Fecha de Pago', pa.estadoPago AS 'Estado', 
-                        u.NombreUsuario AS 'Nombre de Usuario', cv.NombreCanalVenta AS 'Canal de Venta' 
-                        FROM pagosplanafiliado pa
-                        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-                        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-                        INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-                        INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
-                        INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
-                        INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-                        WHERE DATE(pa.FechaHoraPago) 
-                            BETWEEN '"  + txbFechaIni.Value.ToString() + @"' 
-                            AND '"  + txbFechaFin.Value.ToString() + @"'  
-                        ORDER BY pa.FechaHoraPago DESC;";
+                string consultaSQL = @"
+                    SELECT a.DocumentoAfiliado AS 'Documento de Afiliado', CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS 'Nombre de Afiliado', 
+                    pa.Valor AS 'Valor', pa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
+                    pa.Banco AS 'Entidad Bancaría', pa.FechaHoraPago AS 'Fecha de Pago', pa.estadoPago AS 'Estado', 
+                    u.NombreUsuario AS 'Nombre de Usuario', cv.NombreCanalVenta AS 'Canal de Venta' 
+                    FROM pagosplanafiliado pa
+                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
+                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
+                    INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
+                    INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
+                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                    WHERE DATE(pa.FechaHoraPago) 
+                    BETWEEN '"  + txbFechaIni.Value.ToString() + @"' 
+                    AND '"  + txbFechaFin.Value.ToString() + @"'  
+                    ORDER BY pa.FechaHoraPago DESC;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
@@ -879,70 +880,7 @@ namespace fpWebApp
             {
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
             }
-
-
-            //try
-            //{
-            //    // se instaló NPOI en nuguet
-            //    clasesglobales cg = new clasesglobales();
-            //    DataTable dt = cg.ConsultarPagosPorTipo(ddlTipoPago.SelectedValue.ToString(), txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), out decimal valortotal);
-            //    if (dt.Rows.Count == 0)
-            //    {
-            //        dt = cg.ConsultarPagosRecientes(out decimal valorTotal, out int totalRegistros);
-
-            //    }
-            //    string nombreArchivo = $"{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
-
-            //    if (dt.Rows.Count > 0)
-            //    {
-            //        IWorkbook workbook = new XSSFWorkbook();
-            //        ISheet sheet = workbook.CreateSheet("Pagos");
-
-            //        IRow headerRow = sheet.CreateRow(0);
-            //        for (int i = 0; i < dt.Columns.Count; i++)
-            //        {
-            //            ICell cell = headerRow.CreateCell(i);
-            //            cell.SetCellValue(dt.Columns[i].ColumnName);
-            //        }
-
-            //        for (int i = 0; i < dt.Rows.Count; i++)
-            //        {
-            //            IRow row = sheet.CreateRow(i + 1);
-            //            for (int j = 0; j < dt.Columns.Count; j++)
-            //            {
-            //                object value = dt.Rows[i][j];
-            //                row.CreateCell(j).SetCellValue(value != DBNull.Value ? value.ToString() : "");
-            //            }
-            //        }
-
-            //        for (int i = 0; i < dt.Columns.Count; i++)
-            //        {
-            //            sheet.AutoSizeColumn(i);
-            //        }
-
-            //        using (MemoryStream memoryStream = new MemoryStream())
-            //        {
-            //            workbook.Write(memoryStream);
-            //            workbook.Close();
-
-            //            byte[] byteArray = memoryStream.ToArray();
-
-            //            Response.Clear();
-            //            Response.Buffer = true;
-            //            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            //            Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.xlsx");
-            //            Response.BinaryWrite(byteArray);
-            //            Response.Flush();
-            //            HttpContext.Current.ApplicationInstance.CompleteRequest();
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
-            //}
         }
-
 
         protected void btnDetalle_Command(object sender, CommandEventArgs e)
         {

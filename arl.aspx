@@ -18,13 +18,16 @@
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
     
     <!-- FooTable -->
-    <%--<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />--%>
     <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style type="text/css" media="print">
         body {
@@ -145,20 +148,12 @@
                                                 <div class="form-group">
                                                     <label>Nombre de la ARL:</label>
                                                     <asp:TextBox ID="txbArl" runat="server" CssClass="form-control input-sm"></asp:TextBox>
-                                                    <asp:RequiredFieldValidator ID="rfvArl" runat="server" ErrorMessage="* Campo requerido" 
-                                                        ControlToValidate="txbArl" ValidationGroup="agregar" 
-                                                        CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="arl" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
-                                                        OnClick="btnAgregar_Click" Visible="false" ValidationGroup="agregar" />
-                                                </div>
-                                                <br />
-                                                <br />
-                                                <div class="form-group">
-                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                        OnClick="btnAgregar_Click" Visible="false" />
                                                 </div>
                                             </div>
                                         </div>
@@ -241,18 +236,33 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- FooTable -->
-    <%--<script src="js/plugins/footable/footable.all.min.js"></script>--%>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- FooTable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
+
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+
     <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
+
+        $("#form1").validate({
+            rules: {
+                txbArl: {
+                    required: true,
+                    minlength: 3
+                },
+            }
+        });
     </script>
 
 </body>

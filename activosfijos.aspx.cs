@@ -169,36 +169,50 @@ namespace fpWebApp
         {
             try
             {
-                string consultaSQL = @"SELECT NombreUsuario AS 'Nombre de Usuario', EmailUsuario AS 'Correo de Usuario', ClaveUsuario AS 'Contraseña', 
-                    CargoUsuario AS 'Cargo de Usuario', EstadoUsuario AS 'Estado de Usuario', DocumentoEmpleado AS 'Nro. de Documento', 
-                    IF(NombreEmpleado IS NULL, '-Sin asociar-', NombreEmpleado) AS 'Nombre de Empleado', TelefonoEmpleado AS 'Celular', EmailEmpleado AS 'Correo de Empleado',
-                    FechaNacEmpleado AS 'Fecha de Nacimiento', DireccionEmpleado AS 'Dirección de Residencia', NombreCiudad AS 'Ciudad', 
-                    NroContrato AS 'Nro. de Contrato', TipoContrato AS 'Tipo de Contrato', CargoEmpleado AS 'Cargo de Empleado', 
-                    FechaInicio AS 'Fecha de Inicio', FechaFinal AS 'Fecha de Terminación',
-                    Sueldo, GrupoNomina AS 'Grupo de Nómina', Estado, Perfil 
-                    FROM Usuarios u 
-                    LEFT JOIN Empleados e ON u.idEmpleado = e.DocumentoEmpleado 
-				    LEFT JOIN Ciudades c ON c.idCiudad = e.idCiudadEmpleado                                       
-                    INNER JOIN Perfiles pf ON u.idPerfil = pf.idPerfil 
-                    ORDER BY NombreUsuario;";
+                string sede = ddlSedes.SelectedValue;
+                string categoria = ddlCategorias.SelectedValue;
 
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.TraerDatos(consultaSQL);
-                string nombreArchivo = $"Usuarios_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
+                string strQuery = "SELECT * " +
+                    "FROM ActivosFijos af " +
+                    "INNER JOIN Sedes s ON s.idSede = af.idSede " +
+                    "INNER JOIN CategoriasActivos ca ON ca.idCategoriaActivo = af.idCategoriaActivo " +
+                    "WHERE ('" + sede + "' = '' OR af.idSede = '" + sede + "') " +
+                    "AND ('" + categoria + "' = '' OR af.idCategoriaActivo = '" + categoria + "') ";
+
+                DataTable dt = cg.TraerDatos(strQuery);;
+                string nombreArchivo = $"ActivosFijos_{DateTime.Now.ToString("yyyyMMdd")}_{DateTime.Now.ToString("HHmmss")}";
 
                 if (dt.Rows.Count > 0)
                 {
-                    cg.ExportarExcel(dt, nombreArchivo);
+                    cg.ExportarExcelOk(dt, nombreArchivo);
                 }
                 else
                 {
-                    Response.Write("<script>alert('No existen registros para esta consulta');</script>");
+                    MostrarAlerta("Mensaje", "No existen registros para esta consulta", "warning");
                 }
             }
             catch (Exception ex)
             {
-                Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
+                MostrarAlerta("Error", "Error al exportar" + ex.Message, "error");
             }
+        }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+            Swal.hideLoading();
+            Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
 
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
