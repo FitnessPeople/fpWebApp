@@ -199,7 +199,7 @@ namespace fpWebApp
                 // Validar que sí existan filas
                 if (filasHoy.Length > 0)
                 {
-                    ventasHoy = Convert.ToDecimal(filasHoy[0].ItemArray[3]);
+                    ventasHoy = filasHoy.Sum(f => f.Field<decimal>("Sumatoria"));
                 }
                 else
                 {
