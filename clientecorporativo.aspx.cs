@@ -90,23 +90,65 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        //private void ListaClienteCorporativo()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    try
+        //    {
+        //        DataTable dt = cg.ConsultarProspectosCRM();
+        //        gvProspectos.DataSource = dt;
+        //        gvProspectos.DataBind();
+        //        dt.Dispose();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+        //    }
+
+        //}
+
         private void ListaClienteCorporativo()
         {
             clasesglobales cg = new clasesglobales();
+
             try
             {
                 DataTable dt = cg.ConsultarProspectosCRM();
-                gvProspectos.DataSource = dt;
-                gvProspectos.DataBind();
+                DataTable dt1 = cg.ConsultarProspectosCRMAsignados2();
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    gvProspectos.DataSource = dt;
+                    gvProspectos.DataBind();
+                }
+                else
+                {
+                    gvProspectos.DataSource = null;
+                    gvProspectos.DataBind();
+                }
+
+                if (dt1 != null && dt1.Rows.Count > 0)
+                {
+                    gvAsignados.DataSource = dt1;
+                    gvAsignados.DataBind();
+
+                }
+                else
+                {
+                    gvAsignados.DataSource = null;
+                    gvAsignados.DataBind();
+                }
+
                 dt.Dispose();
             }
             catch (Exception ex)
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Código de error: " + idLog, "error");
             }
-
         }
+
         private void MostrarAlerta(string titulo, string mensaje, string tipo)
         {
             // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
@@ -204,14 +246,14 @@ namespace fpWebApp
             int idTipoDocumento = Convert.ToInt32(ddlTipoDocumento.SelectedValue);
             string celular = txbCelular.Text.Trim();
             int tipoGestion = 4;
-            string rta = string.Empty;          
+            string rta = string.Empty;
 
-          
+
             if (ViewState["idPregestion"] != null)
             {
                 int idPregestion = Convert.ToInt32(ViewState["idPregestion"]);
 
-                var respuesta = cg.ActualizarClienteCorporativo(idPregestion, documento, idTipoDocumento, nombre,  apellido, celular, ddlEmpresas.SelectedValue );
+                var respuesta = cg.ActualizarClienteCorporativo(idPregestion, documento, idTipoDocumento, nombre, apellido, celular, ddlEmpresas.SelectedValue);
                 if (respuesta.salida == 1)
                 {
                     string script = $@"
@@ -250,9 +292,9 @@ namespace fpWebApp
             else
             {
                 rta = cg.InsertarPregestionAsesorCRM(nombre, apellido, documento, idTipoDocumento, celular, tipoGestion, Convert.ToInt32(Session["idCanalVenta"]), Convert.ToInt32(Session["idUsuario"]),
-                    0, "Pendiente", ddlEmpresas.SelectedValue );
+                    0, "Pendiente", ddlEmpresas.SelectedValue);
             }
-            
+
             if (rta == "OK")
             {
                 string mensaje = ViewState["idPregestion"] != null
@@ -528,7 +570,7 @@ namespace fpWebApp
 
                         if (chk != null && chk.Checked)
                         {
-                            haySeleccionados = true;                           
+                            haySeleccionados = true;
                             string idPregestion = gvProspectos.DataKeys[row.RowIndex]["idPregestion"].ToString();
                             string estadoNegociacion = gvProspectos.DataKeys[row.RowIndex]["EstadoNegociacion"].ToString();
 
@@ -698,5 +740,73 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        protected void gvAsignados_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+
+        }
+
+        protected void gvAsignados_RowCreated(object sender, GridViewRowEventArgs e)
+        {
+
+        }
+
+        protected void gvAsignados_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+
+        }
+
+        protected void gvAsignados_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                int idPregestion = Convert.ToInt32(e.CommandArgument);
+
+                if (e.CommandName == "Deshacer")
+                {
+                    var resultado = cg.EliminarAsignacionClienteCorporativo(idPregestion);
+
+                    if (resultado.salida == 1)
+                    {
+                        string script = @"
+                                Swal.fire({
+                                    title: '¡Se ha eliminado la asignación!',
+                                    text: '',
+                                    icon: 'success',
+                                    timer: 3000, // 3 segundos
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }).then(() => {
+                                    window.location.href = 'clientecorporativo';
+                                });
+                                ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                    }
+                    else
+                    {
+                        string script = @"
+                                Swal.fire({
+                                title: 'Error',
+                                text: '" + resultado.mensaje.Replace("'", "\\'") + @"',
+                                icon: 'error',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: true
+                            }).then(() => {
+                                Response.Redirect(Request.RawUrl);
+                            });
+                        ";
+                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+
+                    }
+                    ListaClienteCorporativo();
+                }
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+        }
     }
 }
