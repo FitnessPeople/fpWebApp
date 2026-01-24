@@ -478,6 +478,7 @@
     <Content Include="estudiafit.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="generarfactura.ascx" />
     <Content Include="genero.aspx" />
     <Content Include="Global.asax" />
     <Content Include="gympass.aspx" />
@@ -1760,6 +1761,13 @@
     </Compile>
     <Compile Include="estudiafit.aspx.designer.cs">
       <DependentUpon>estudiafit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="generarfactura.ascx.cs">
+      <DependentUpon>generarfactura.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="generarfactura.ascx.designer.cs">
+      <DependentUpon>generarfactura.ascx</DependentUpon>
     </Compile>
     <Compile Include="genero.aspx.cs">
       <DependentUpon>genero.aspx</DependentUpon>
