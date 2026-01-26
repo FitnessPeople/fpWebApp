@@ -14,8 +14,10 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
+                    clasesglobales cg = new clasesglobales();
+                    string ipLogin = cg.ObtenerIPReal();
                     ltIdUsuario.Text = Session["idUsuario"].ToString();
-                    ltNombreUsuario.Text = Session["NombreUsuario"].ToString();
+                    ltNombreUsuario.Text = Session["NombreUsuario"].ToString() + " IP: " + ipLogin;
                     ltIdEmpresa.Text = Session["idEmpresa"].ToString();
                     ltCargo.Text = Session["CargoUsuario"].ToString();
                     ltFoto.Text = Session["Foto"].ToString();

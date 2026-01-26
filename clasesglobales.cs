@@ -9388,6 +9388,21 @@ namespace fpWebApp
 
         #region Otros
 
+        public string ObtenerIPReal()
+        {
+            var request = HttpContext.Current.Request;
+
+            string ip = request.Headers["CF-Connecting-IP"];
+
+            if (string.IsNullOrEmpty(ip))
+                ip = request.Headers["X-Forwarded-For"]?.Split(',')[0].Trim();
+
+            if (string.IsNullOrEmpty(ip))
+                ip = request.ServerVariables["REMOTE_ADDR"];
+
+            return ip;
+        }
+
         public DataTable CargarPlanesAfiliado(string idAfiliado, string docAfiliado, string Estado)
         {
             DataTable dt = new DataTable();

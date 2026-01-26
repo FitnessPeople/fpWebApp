@@ -2381,10 +2381,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="docs\congelaciones\" />
-    <Folder Include="docs\contratos\" />
-    <Folder Include="docs\incapacidades\" />
-    <Folder Include="docs\traspasos\" />
+    <Folder Include="docs\transferencias\" />
     <Folder Include="img\comprobantes\" />
     <Folder Include="img\contratos\" />
     <Folder Include="img\correo\docs\" />
@@ -2413,6 +2410,31 @@
     <Content Include="js\plugins\diff_match_patch\COPYING" />
     <Content Include="js\plugins\justified-gallery\README.md" />
     <Content Include="js\plugins\topojson\LICENSE" />
+    <Content Include="docs\congelaciones\1_1_VOLANTE DEBITO AUTOMATICO.pdf" />
+    <Content Include="docs\contratos\800141757_CamaraComercio.pdf" />
+    <Content Include="docs\contratos\800141757_CedulaRepLegal.pdf" />
+    <Content Include="docs\contratos\800141757_Rut.pdf" />
+    <Content Include="docs\contratos\890200295_CamaraComercio.pdf" />
+    <Content Include="docs\contratos\890200295_CedulaRepLegal.pdf" />
+    <Content Include="docs\contratos\890200295_Rut.pdf" />
+    <Content Include="docs\contratos\890200928_CedulaRepLegal.pdf" />
+    <Content Include="docs\contratos\890200928_Rut.pdf" />
+    <Content Include="docs\contratos\890200929_CamaraComercio.pdf" />
+    <Content Include="docs\contratos\890200929_CedulaRepLegal.pdf" />
+    <Content Include="docs\contratos\890200929_Rut.pdf" />
+    <Content Include="docs\contratos\990885887_CamaraComercio.pdf" />
+    <Content Include="docs\contratos\990885887_CedulaRepLegal.pdf" />
+    <Content Include="docs\contratos\990885887_Rut.pdf" />
+    <Content Include="docs\contratos\ARMATURA CONTROL DE ACCESO.pdf" />
+    <Content Include="docs\contratos\INFORME DE CUENTA DOMINIO CORREO fitnesspeoplecmd.pdf" />
+    <Content Include="docs\incapacidades\1_Formato de Préstamo de Equipos %282%29.docx" />
+    <Content Include="docs\incapacidades\1_LINEA CRONOLOGICA.pdf" />
+    <Content Include="docs\incapacidades\1_VOLANTE DEBITO AUTOMATICO.pdf" />
+    <Content Include="docs\traspasos\Ori_12252_Des_12250_VOLANTE DEBITO AUTOMATICO.pdf" />
+    <Content Include="docs\traspasos\Ori_12252_Des_12250_volante.pdf" />
+    <Content Include="docs\traspasos\Ori_2206_Des_2207_Logística.pdf" />
+    <Content Include="docs\traspasos\Ori_2336_Des_2260_Fitness People 250425-1.pdf" />
+    <Content Include="docs\traspasos\RutActualizadoChristian.pdf" />
     <None Include="packages.config" />
     <Content Include="UploadImage.ashx" />
     <Content Include="UploadFile.ashx" />
