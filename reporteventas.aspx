@@ -360,7 +360,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpPagos" runat="server">
+                                                <asp:Repeater ID="rpVentas" runat="server">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
                                                             <td><%# Eval("idAfiliadoPlan") %></td>

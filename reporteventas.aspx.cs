@@ -75,6 +75,28 @@ namespace fpWebApp
             }
         }
 
+        private void ValidarPermisos(string strPagina)
+        {
+            ViewState["SinPermiso"] = "1";
+            ViewState["Consulta"] = "0";
+            ViewState["Exportar"] = "0";
+            ViewState["CrearModificar"] = "0";
+            ViewState["Borrar"] = "0";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
+
+            if (dt.Rows.Count > 0)
+            {
+                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
+                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
+                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
+                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
+                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
+            }
+            dt.Dispose();
+        }
+
         private void VentasWeb()
         {
             int annio = Convert.ToInt32(ddlAnnio.SelectedItem.Value.ToString());
@@ -182,29 +204,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void ValidarPermisos(string strPagina)
-        {
-            ViewState["SinPermiso"] = "1";
-            ViewState["Consulta"] = "0";
-            ViewState["Exportar"] = "0";
-            ViewState["CrearModificar"] = "0";
-            ViewState["Borrar"] = "0";
-
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ValidarPermisos(strPagina, Session["idPerfil"].ToString(), Session["idusuario"].ToString());
-
-            if (dt.Rows.Count > 0)
-            {
-                ViewState["SinPermiso"] = dt.Rows[0]["SinPermiso"].ToString();
-                ViewState["Consulta"] = dt.Rows[0]["Consulta"].ToString();
-                ViewState["Exportar"] = dt.Rows[0]["Exportar"].ToString();
-                ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
-                ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
-            }
-
-            dt.Dispose();
-        }
-
         private void CargarPlanes()
         {
             ddlPlanes.Items.Clear();
@@ -240,6 +239,12 @@ namespace fpWebApp
                 filtroMedioPago = " AND ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue);
             }
 
+            string filtroPlan = "";
+            if (ddlPlanes.SelectedValue != "0") // 0 = Todos
+            {
+                filtroPlan = " AND p.idPlan = " + Convert.ToInt32(ddlPlanes.SelectedValue);
+            }
+
             string query = @"
                 SELECT ppa.idPago, ppa.idAfiliadoPlan, ppa.IdReferencia, ppa.FechaHoraPago, ppa.EstadoPago, ppa.Valor, 
                     a.DocumentoAfiliado,
@@ -256,6 +261,7 @@ namespace fpWebApp
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE ppa.idUsuario NOT IN (156) 
                 " + filtroMedioPago + @" 
+                " + filtroPlan + @" 
                 AND ap.idPlan IN (1, 17, 20, 21) 
                 AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                 AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
@@ -276,6 +282,7 @@ namespace fpWebApp
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE ppa.idUsuario = 156 
                 " + filtroMedioPago + @" 
+                " + filtroPlan + @" 
                 AND ap.idPlan IN (18,19,20,21) 
                 AND MONTH(ppa.fechaHoraPago) = " + mes + @" 
                 AND YEAR(ppa.fechaHoraPago) = " + annio + @" 
@@ -283,8 +290,8 @@ namespace fpWebApp
                 ORDER BY idPago DESC";
 
             DataTable dt = cg.TraerDatos(query);
-            rpPagos.DataSource = dt;
-            rpPagos.DataBind();
+            rpVentas.DataSource = dt;
+            rpVentas.DataBind();
 
             decimal sumatoriaValor = 0;
 
@@ -338,6 +345,12 @@ namespace fpWebApp
                 filtroMedioPago = " AND ppa.idMedioPago = " + Convert.ToInt32(ddlTipoPago.SelectedValue);
             }
 
+            string filtroPlan = "";
+            if (ddlPlanes.SelectedValue != "0") // 0 = Todos
+            {
+                filtroPlan = " AND p.idPlan = " + Convert.ToInt32(ddlPlanes.SelectedValue);
+            }
+
             foreach (DataRow dr in dt.Rows)
             {
                 string query = @"
@@ -356,6 +369,7 @@ namespace fpWebApp
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE ppa.idUsuario = 152 
                 " + filtroMedioPago + @" 
+                " + filtroPlan + @" 
                 AND ap.idPlan IN (1, 17, 20, 21) 
                 AND MONTH(ppa.fechaHoraPago) = " + dr["Mes"].ToString() + @" 
                 AND YEAR(ppa.fechaHoraPago) = " + dr["Anio"].ToString() + @" 
@@ -376,6 +390,7 @@ namespace fpWebApp
                 INNER JOIN planes p ON p.idPlan = ap.idPlan 
                 WHERE ppa.idUsuario = 156 
                 " + filtroMedioPago + @" 
+                " + filtroPlan + @" 
                 AND ap.idPlan IN (18, 19, 20, 21) 
                 AND MONTH(ppa.fechaHoraPago) = " + dr["Mes"].ToString() + @" 
                 AND YEAR(ppa.fechaHoraPago) = " + dr["Anio"].ToString() + @" 

@@ -258,13 +258,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
-        /// Control rpPagos.
+        /// Control rpVentas.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rpPagos;
+        protected global::System.Web.UI.WebControls.Repeater rpVentas;
 
         /// <summary>
         /// Control ltMes5.
