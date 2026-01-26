@@ -213,9 +213,14 @@
                                                         </div>
                                                         <div class="col-lg-6 form-group">
                                                             <label>Empresa:</label>
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
+                                                            <%-- <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEmpresas" runat="server"
                                                                 DataValueField="idEmpresa" DataTextField="NombreEmpresa"
                                                                 AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>--%>
+                                                            <label>Empresa:</label>
+                                                            <asp:DropDownList ID="ddlEmpresas" CssClass="form-control input-sm required" runat="server"
+                                                                >
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
@@ -494,7 +499,7 @@
                                                     </div>
 
                                                     <div class="col-lg-6 form-horizontal">
-<%--                                                        <div class="form-group">
+                                                        <%--                                                        <div class="form-group">
                                                             <label class="col-lg-4 control-label">Asesor comercial:</label>
                                                             <div class="col-lg-8">
                                                                 <asp:DropDownList ID="ddlAsesores2" runat="server" AppendDataBoundItems="true"

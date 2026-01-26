@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="nuevaempresaafiliada.aspx.cs" Inherits="fpWebApp.nuevaempresaafiliada" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="nuevaempresaafiliada.aspx.cs" Inherits="fpWebApp.nuevaempresaafiliada" ValidateRequest="false" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -27,6 +27,44 @@
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+
+    <!-- CSS de Quill -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- JS de Quill -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <script>
+        var quill;
+        document.addEventListener("DOMContentLoaded", function () {
+            quill = new Quill("#editor", {
+                theme: "snow",
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold'], // Negrita y Tachado
+                        ['italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                    ]
+                }
+            });
+            function ajustarAlturaEditor() {
+                var editorContenido = document.querySelector(".ql-editor");
+                editorContenido.style.height = "auto";
+                editorContenido.style.height = editorContenido.scrollHeight + "px";
+            }
+            quill.on("text-change", ajustarAlturaEditor);
+
+            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
+                if (contenidoGuardado.trim() !== "") {
+                    quill.root.innerHTML = contenidoGuardado;
+                }
+            });
+        function guardarContenidoEditor() {
+            var contenido = quill.root.innerHTML;
+            document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
+        }
+    </script>
 
     <!-- ClockPicker -->
     <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
@@ -245,6 +283,24 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-12">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <%--                                                        <i class="fas fa-pen text-info"></i>
+                                                        <label for="message-text" class="col-form-label">Descripción de la negociación / oferta y beneficios:</label>
+                                                        <textarea id="txaObservaciones" runat="server" rows="3"
+                                                            cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
+                                                        <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txaObservaciones"
+                                                            ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />--%>
+                                                        <%--</div>--%>
+                                                        <div class="form-group">
+                                                            <label>Descripción de la negociación / oferta y beneficios:</label>
+                                                            <div id="editor" cssclass="form-control input-sm"></div>
+                                                            <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -383,7 +439,7 @@
 
                                         <div>
                                             <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='empresasafiliadas'"><strong>Cancelar</strong></button>
-                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
+                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClientClick="guardarContenidoEditor();" OnClick="btnAgregar_Click"  />
                                         </div>
                                     </div>
                                 </form>

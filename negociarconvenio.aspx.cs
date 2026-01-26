@@ -56,6 +56,7 @@ namespace fpWebApp
                             {
                                 btnAgregar.Visible = true;
                             }
+                            listaEmpresasAfiliadas();
                             //lblMensaje.Visible = false ;
                             txbFechaIni.Attributes.Add("type", "date");
                             txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-dd");
@@ -64,9 +65,7 @@ namespace fpWebApp
                             DateTime ultimoDiaMes = new DateTime(hoy.Year, hoy.Month, DateTime.DaysInMonth(hoy.Year, hoy.Month));
                             txbFechaFin.Value = ultimoDiaMes.ToString("yyyy-MM-dd");
                         }
-
-
-                        listaEmpresasAfiliadas();
+                        
                         CargarPlanes();
                         CargarNegociaciones(Convert.ToInt32(Session["idUsuario"].ToString()));
 
@@ -251,29 +250,32 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             try
             {               
-                DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
+                DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
                 ddlEmpresas.DataSource = dt;
                 ddlEmpresas.DataValueField = "DocumentoEmpresa";
-                ddlEmpresas.DataTextField = "NombreEmpresa";
+                ddlEmpresas.DataTextField = "NombreComercial";
                 ddlEmpresas.DataBind();
 
-                 ddlEmpresas.Items.Insert(0, new ListItem("Seleccione", ""));
+                string descripcion = dt.Rows[0]["Descripcion"].ToString();
+                //item.Attributes["data-descripcion"] = descripcion;
 
-                 foreach (ListItem item in ddlEmpresas.Items)
-                {
-                    if (!string.IsNullOrEmpty(item.Value))  
-                    {
+                ddlEmpresas.Items.Insert(0, new ListItem("Seleccione", ""));
+
+                // foreach (ListItem item in ddlEmpresas.Items)
+                //{
+                //    if (!string.IsNullOrEmpty(item.Value))  
+                //    {
                         
-                        DataRow[] row = dt.Select($"DocumentoEmpresa = '{item.Value}'");
+                //        DataRow[] row = dt.Select($"DocumentoEmpresa = '{item.Value}'");
 
-                        if (row.Length > 0)
-                        {
-                            string estado = row[0]["Origen"].ToString();   
-                            item.Text = $"{item.Text} ({estado})";       
-                        }
-                    }
-                }
+                //        if (row.Length > 0)
+                //        {
+                //            string estado = row[0]["Origen"].ToString();   
+                //            item.Text = $"{item.Text} ({estado})";       
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {
@@ -292,8 +294,40 @@ namespace fpWebApp
                 if (!string.IsNullOrEmpty(documento))
                 {
                     ListaProspectos(documento);
-                }
-            }
+                   
+                    DataTable dtEmpresa = cg.ConsultarEmpresaAfiliadaPorDocumento(documento);
+
+                    if (dtEmpresa.Rows.Count > 0)
+                    {
+                        string descripcion = dtEmpresa.Rows[0]["Descripcion"].ToString();
+                        CultureInfo cultura = new CultureInfo("es-CO"); // o es-ES
+
+                        DateTime fechaIni;
+                        DateTime fechaFin;
+
+                        if (DateTime.TryParse(dtEmpresa.Rows[0]["FechaConvenio"].ToString(), cultura, DateTimeStyles.None, out fechaIni))
+                        {
+                            txbFechaIni.Value = fechaIni.ToString("yyyy-MM-dd");
+                        }
+
+                        if (DateTime.TryParse(dtEmpresa.Rows[0]["FechaFinConvenio"].ToString(), cultura, DateTimeStyles.None, out fechaFin))
+                        {
+                            txbFechaFin.Value = fechaFin.ToString("yyyy-MM-dd");
+                        }
+
+                        hiddenEditor.Value = descripcion;
+                        
+                        ScriptManager.RegisterStartupScript(
+                            this,
+                            this.GetType(),
+                            "setEditor",
+                            $"setEditorContent(`{HttpUtility.JavaScriptStringEncode(descripcion)}`);",
+                            true
+                        );
+
+
+                    }
+            }}
             catch (Exception ex)
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
@@ -301,7 +335,6 @@ namespace fpWebApp
             }
 
         }
-
 
         private void ListaProspectos(string documentoEmpresa)
         {
@@ -330,7 +363,6 @@ namespace fpWebApp
             }
         }
 
-
         private void ValidarPermisos(string strPagina)
         {
             ViewState["SinPermiso"] = "1";
@@ -353,8 +385,6 @@ namespace fpWebApp
 
             dt.Dispose();
         }
-
-
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
@@ -657,8 +687,6 @@ namespace fpWebApp
         {
 
         }
-
-
 
 
         protected void rpNegociaciones_ItemDataBound(object sender, RepeaterItemEventArgs e)

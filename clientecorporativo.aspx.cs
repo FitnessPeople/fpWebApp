@@ -167,24 +167,60 @@ namespace fpWebApp
         }
 
 
+        //private void listaEmpresasAfiliadas()
+        //{
+        //    try
+        //    {
+        //        clasesglobales cg = new clasesglobales();
+        //        DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
+
+        //        ddlEmpresas.DataSource = dt;
+        //        ddlEmpresas.DataValueField = "DocumentoEmpresa";  // Ahora SÍ existe
+        //        ddlEmpresas.DataTextField = "NombreEmpresa";
+        //        ddlEmpresas.DataBind();
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        lblMensaje.Visible = true;
+        //        lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente. " + ex.Message.ToString();
+        //        lblMensaje.CssClass = "text-danger";
+        //    }
+        //}
+
         private void listaEmpresasAfiliadas()
         {
+            clasesglobales cg = new clasesglobales();
             try
             {
-                clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
+                DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
                 ddlEmpresas.DataSource = dt;
-                ddlEmpresas.DataValueField = "DocumentoEmpresa";  // Ahora SÍ existe
-                ddlEmpresas.DataTextField = "NombreEmpresa";
+                ddlEmpresas.DataValueField = "DocumentoEmpresa";
+                ddlEmpresas.DataTextField = "NombreComercial";
                 ddlEmpresas.DataBind();
 
+                ddlEmpresas.Items.Insert(0, new ListItem("Seleccione", ""));
+
+                //foreach (ListItem item in ddlEmpresas.Items)
+                //{
+                //    if (!string.IsNullOrEmpty(item.Value))
+                //    {
+
+                //        DataRow[] row = dt.Select($"DocumentoEmpresa = '{item.Value}'");
+
+                //        if (row.Length > 0)
+                //        {
+                //            string estado = row[0]["Origen"].ToString();
+                //            item.Text = $"{item.Text} ({estado})";
+                //        }
+                //    }
+                //}
             }
             catch (Exception ex)
             {
-                lblMensaje.Visible = true;
-                lblMensaje.Text = "Ocurrió un error al cargar las empresas. Por favor intente nuevamente. " + ex.Message.ToString();
-                lblMensaje.CssClass = "text-danger";
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 

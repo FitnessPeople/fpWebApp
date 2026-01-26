@@ -94,6 +94,7 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
+            string contenidoEditor = hiddenEditor.Value;
             string carpeta = Server.MapPath("~/docs/contratos/");
             if (!Directory.Exists(carpeta))
             {
@@ -139,6 +140,7 @@ namespace fpWebApp
                 strFilenameCedRep = nombre;
             }
 
+            contenidoEditor = hiddenEditor.Value;
 
             clasesglobales cg = new clasesglobales();
             bool respuesta;

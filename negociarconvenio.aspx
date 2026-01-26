@@ -221,7 +221,7 @@
 
 
                                                 <div class="form-group">
-                                                    <label>Descripción de la negociación / condiciones:</label>
+                                                    <label>Descripción de la negociación / oferta y beneficios:</label>
                                                     <div id="editor" cssclass="form-control input-sm"></div>
                                                     <asp:HiddenField ID="hiddenEditor" runat="server" />
                                                 </div>
@@ -828,6 +828,11 @@
         $('.footable').footable();
     </script>
 
+    <script type="text/javascript">
+        function setEditorContent(texto) {
+            document.getElementById("editor").innerHTML = texto || "";
+        }
+    </script>
 
 
 
