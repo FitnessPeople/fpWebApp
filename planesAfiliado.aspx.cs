@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -430,6 +431,7 @@ namespace fpWebApp
         /// </summary>
         private async void IniciarPago()
         {
+            clasesglobales cg = new clasesglobales();
             string urlRedirect = $"planesAfiliado?id=" + Request.QueryString["id"].ToString();
 
             try
@@ -452,6 +454,7 @@ namespace fpWebApp
             {
                 LimpiarPago();
                 MostrarAlerta("Error", "Ha ocurrido un error inesperado: " + ex.Message, "error");
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
             }
         }
 
@@ -1211,25 +1214,29 @@ namespace fpWebApp
             {
                 DataTable dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
                 string rtaCRM = cg.ActualizarEstadoCRMPagoPlan(idcrm, dtActivo.Rows[0]["NombrePlan"].ToString(), valorPagado, idUsuario, 3);
-                RegistrarPagos(cg, mediosPago, idAfiliadoPlan, idUsuario, idCanalVenta, idcrm, null);
+                //RegistrarPagos(cg, mediosPago, idAfiliadoPlan, idUsuario, idCanalVenta, idcrm, null);
 
-                ////////////////////SIIGO//////////////////////////
+                List<int> pagos = RegistrarPagos(
+                 cg,
+                 mediosPago,
+                 idAfiliadoPlan,
+                 idUsuario,
+                 idCanalVenta,
+                 idcrm,
+                 null
+             );
 
                 var resultado = await ProcesarPagoExitosoAsync(idAfiliadoPlan, ViewState["codSiigoPlan"].ToString(), ViewState["nombrePlan"].ToString(), valorPagado.ToString());
 
                 if (!resultado.ok)
                 {
-                    MostrarAlerta("Error", "No se pudo generar la factura en Siigo.", "error");
+                    MostrarAlerta(
+                        "Error",
+                        "El pago quedó registrado pero no se pudo generar la factura en Siigo. Puede reintentarse.",
+                        "warning"
+                    );
                     return;
                 }
-                List<int> pagos = RegistrarPagos(
-                    cg,
-                    mediosPago,
-                    idAfiliadoPlan,
-                    idUsuario,
-                    idCanalVenta,
-                    idcrm
-                );
 
                 foreach (int idPago in pagos)
                 {
@@ -1256,13 +1263,13 @@ namespace fpWebApp
 
 
 
-        private void RegistrarPagos(clasesglobales cg, DataTable medios, int idAfiliadoPlan, int idUsuario, int idCanalVenta, int idcrm, string idSiigoFactura)
-        {
-            ProcesarMedio(cg, medios.Rows[3], txbWompi.Text, idAfiliadoPlan, idUsuario, "Wompi", idCanalVenta, idcrm);
-            ProcesarMedio(cg, medios.Rows[2], txbDatafono.Text, idAfiliadoPlan, idUsuario, "", idCanalVenta, idcrm, txbNroAprobacion.Text);
-            ProcesarMedio(cg, medios.Rows[0], txbEfectivo.Text, idAfiliadoPlan, idUsuario, "Ninguno", idCanalVenta, idcrm);
-            ProcesarMedio(cg, medios.Rows[1], txbTransferencia.Text, idAfiliadoPlan, idUsuario, ViewState["Banco"]?.ToString() ?? "Ninguno", idCanalVenta, idcrm);
-        }
+        //private void RegistrarPagos(clasesglobales cg, DataTable medios, int idAfiliadoPlan, int idUsuario, int idCanalVenta, int idcrm, string idSiigoFactura)
+        //{
+        //    ProcesarMedio(cg, medios.Rows[3], txbWompi.Text, idAfiliadoPlan, idUsuario, "Wompi", idCanalVenta, idcrm);
+        //    ProcesarMedio(cg, medios.Rows[2], txbDatafono.Text, idAfiliadoPlan, idUsuario, "", idCanalVenta, idcrm, txbNroAprobacion.Text);
+        //    ProcesarMedio(cg, medios.Rows[0], txbEfectivo.Text, idAfiliadoPlan, idUsuario, "Ninguno", idCanalVenta, idcrm);
+        //    ProcesarMedio(cg, medios.Rows[1], txbTransferencia.Text, idAfiliadoPlan, idUsuario, ViewState["Banco"]?.ToString() ?? "Ninguno", idCanalVenta, idcrm);
+        //}
 
         private int ProcesarMedio(clasesglobales cg, DataRow medio, string valorText, int idAfiliadoPlan, int idUsuario, string banco, int idCanalVenta, int idcrm, string referencia = "")
         {
@@ -1274,12 +1281,12 @@ namespace fpWebApp
 
             return idPago;
         }
-        private List<int> RegistrarPagos(clasesglobales cg, DataTable medios, int idAfiliadoPlan, int idUsuario, int idCanalVenta, int idcrm)
+        private List<int> RegistrarPagos(clasesglobales cg, DataTable medios, int idAfiliadoPlan, int idUsuario, int idCanalVenta, int idcrm, string idSiigo)
         {
             List<int> pagos = new List<int>();
 
             int id;
-
+            Debug.WriteLine(">>> LLAMANDO RegistrarPagos <<<");
             id = ProcesarMedio(cg, medios.Rows[3], txbWompi.Text, idAfiliadoPlan, idUsuario, "Wompi", idCanalVenta, idcrm);
             if (id > 0) pagos.Add(id);
 
@@ -1291,7 +1298,7 @@ namespace fpWebApp
 
             id = ProcesarMedio(cg, medios.Rows[1], txbTransferencia.Text, idAfiliadoPlan, idUsuario, ViewState["Banco"]?.ToString() ?? "Ninguno", idCanalVenta, idcrm);
             if (id > 0) pagos.Add(id);
-
+            Debug.WriteLine($"[ID PAGO CREADO] {id}");
             return pagos;
         }
 

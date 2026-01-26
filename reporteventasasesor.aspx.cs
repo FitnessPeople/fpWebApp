@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -15,7 +16,58 @@ namespace fpWebApp
     public partial class reporteventasasesor : System.Web.UI.Page
     {
         protected Dictionary<string, string> FacturasUrls;
-        protected async void Page_Load(object sender, EventArgs e)
+        //protected async Task Page_Load(object sender, EventArgs e)
+        //{
+        //    CultureInfo culture = new CultureInfo("es-CO");
+        //    Thread.CurrentThread.CurrentCulture = culture;
+        //    Thread.CurrentThread.CurrentUICulture = culture;
+
+        //    if (!IsPostBack)
+        //    {
+        //        if (Session["idUsuario"] != null)
+        //        {
+        //            ValidarPermisos("Mis ventas");
+        //            if (ViewState["SinPermiso"].ToString() == "1")
+        //            {
+        //                //No tiene acceso a esta página
+        //                divMensaje.Visible = true;
+        //                paginasperfil.Visible = true;
+        //                divContenido.Visible = false;
+        //            }
+        //            else
+        //            {
+        //                //Si tiene acceso a esta página
+        //                divBotonesLista.Visible = false;
+        //                //btnAgregar.Visible = false;
+        //                if (ViewState["Consulta"].ToString() == "1")
+        //                {
+        //                    divBotonesLista.Visible = true;
+        //                    //CargarPlanes();
+        //                    //lbExportarExcel.Visible = false;
+        //                }
+        //                if (ViewState["Exportar"].ToString() == "1")
+        //                {
+        //                    divBotonesLista.Visible = true;
+        //                    //lbExportarExcel.Visible = true;
+        //                }
+        //               // await listaVentas();
+        //                if (ViewState["CrearModificar"].ToString() == "1")
+        //                {
+        //                    txbFechaIni.Text = DateTime.Today.ToString("yyyy-MM-dd");
+        //                    txbFechaFin.Text = DateTime.Today.ToString("yyyy-MM-dd");
+        //                }
+        //                RegisterAsyncTask(new PageAsyncTask(CargarPaginaAsync));
+        //            }
+
+        //        }
+        //        else
+        //        {
+        //            Response.Redirect("logout.aspx");
+        //        }
+        //    }
+        //}
+
+        protected void Page_Load(object sender, EventArgs e)
         {
             CultureInfo culture = new CultureInfo("es-CO");
             Thread.CurrentThread.CurrentCulture = culture;
@@ -23,48 +75,35 @@ namespace fpWebApp
 
             if (!IsPostBack)
             {
-                if (Session["idUsuario"] != null)
-                {
-                    ValidarPermisos("Mis ventas");
-                    if (ViewState["SinPermiso"].ToString() == "1")
-                    {
-                        //No tiene acceso a esta página
-                        divMensaje.Visible = true;
-                        paginasperfil.Visible = true;
-                        divContenido.Visible = false;
-                    }
-                    else
-                    {
-                        //Si tiene acceso a esta página
-                        divBotonesLista.Visible = false;
-                        //btnAgregar.Visible = false;
-                        if (ViewState["Consulta"].ToString() == "1")
-                        {
-                            divBotonesLista.Visible = true;
-                            //CargarPlanes();
-                            //lbExportarExcel.Visible = false;
-                        }
-                        if (ViewState["Exportar"].ToString() == "1")
-                        {
-                            divBotonesLista.Visible = true;
-                            //lbExportarExcel.Visible = true;
-                        }
-                        if (ViewState["CrearModificar"].ToString() == "1")
-                        {
-                            txbFechaIni.Attributes.Add("type", "date");
-                            txbFechaIni.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                            txbFechaFin.Attributes.Add("type", "date");
-                            txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
-                        }
-                    }
-
-                    await listaVentas();
-                }
-                else
+                if (Session["idUsuario"] == null)
                 {
                     Response.Redirect("logout.aspx");
+                    return;
                 }
+
+                ValidarPermisos("Mis ventas");
+
+                if (ViewState["SinPermiso"]?.ToString() == "1")
+                {
+                    divMensaje.Visible = true;
+                    paginasperfil.Visible = true;
+                    divContenido.Visible = false;
+                    return;
+                }
+
+                if (ViewState["CrearModificar"]?.ToString() == "1")
+                {
+                    txbFechaIni.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                    txbFechaFin.Text = DateTime.Today.ToString("yyyy-MM-dd");
+                }
+
+                // ⬇️ REGISTRO ASYNC CORRECTO
+                Page.RegisterAsyncTask(new PageAsyncTask(CargarPaginaAsync));
             }
+        }
+        private async Task CargarPaginaAsync()
+        {
+            await listaVentas();
         }
 
 
@@ -96,10 +135,6 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             try
             {
-                ltMes2.Text = ltMes1.Text;
-                ltMes3.Text = ltMes1.Text;
-                ltMes4.Text = ltMes1.Text;
-
                 int filtroMedioPago = Convert.ToInt32(ddlTipoPago.SelectedValue);
 
                 //DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago, txbFechaIni.Value, txbFechaFin.Value, out decimal valorTotal);
@@ -120,7 +155,7 @@ namespace fpWebApp
                     LEFT JOIN planes p ON p.idPlan = ap.idPlan
                     WHERE 
 	                    ppa.idUsuario = " + Session["IdUsuario"].ToString() + @"
-	                    AND DATE(ppa.FechaHoraPago) BETWEEN '" + txbFechaIni.Value.ToString() + @"' AND '" + txbFechaFin.Value.ToString() + @"' 
+	                    AND DATE(ppa.FechaHoraPago) BETWEEN '" + txbFechaIni.Text.ToString() + @"' AND '" + txbFechaFin.Text.ToString() + @"' 
                     GROUP BY ppa.idAfiliadoPlan 
                     ORDER BY FechaHora DESC";
 
@@ -164,7 +199,7 @@ namespace fpWebApp
                 // Validar que sí existan filas
                 if (filasHoy.Length > 0)
                 {
-                    ventasHoy = Convert.ToDecimal(filasHoy[0].ItemArray[3]);
+                    ventasHoy = filasHoy.Sum(f => f.Field<decimal>("Sumatoria"));
                 }
                 else
                 {
@@ -182,9 +217,7 @@ namespace fpWebApp
                 {
                     ventasAyer = filasAyer.Sum(f => Convert.ToDecimal(f["Valor"]));
                 }
-
-                ltVentasMes.Text = "$ " + ventasAyer.ToString("N0");
-
+              
                 // Ventas del mes
                 decimal ventasMes = filasMes.Length > 0 ? filasMes.Sum(r => r.Field<int>("Valor")) : 0;
 
@@ -226,7 +259,7 @@ namespace fpWebApp
                 int filtroMedioPago = Convert.ToInt32(ddlTipoPago.SelectedValue);
 
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago, txbFechaIni.Value, txbFechaFin.Value, out decimal valorTotal);
+                DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago, txbFechaIni.Text, txbFechaFin.Text, out decimal valorTotal);
 
                 string nombre = DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
@@ -249,8 +282,8 @@ namespace fpWebApp
                 DataSet ds = cg.ConsultarPagosPorTipoPorMedioPago(
                     Convert.ToInt32(Session["IdUsuario"]),
                     filtroMedioPago,
-                    txbFechaIni.Value,
-                    txbFechaFin.Value,
+                    txbFechaIni.Text,
+                    txbFechaFin.Text,
                     out decimal valorTotal
                 );
 
