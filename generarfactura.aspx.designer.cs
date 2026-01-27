@@ -114,31 +114,13 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBotonesLista;
 
         /// <summary>
-        /// Control ddlTipoReporte.
+        /// Control ddlEmpresa.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTipoReporte;
-
-        /// <summary>
-        /// Control txbFechaIni.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaIni;
-
-        /// <summary>
-        /// Control txbFechaFin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaFin;
+        protected global::System.Web.UI.WebControls.DropDownList ddlEmpresa;
 
         /// <summary>
         /// Control btnBuscar.
@@ -168,13 +150,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.LinkButton lbExportarPdf;
 
         /// <summary>
-        /// Control gvReporte.
+        /// Control gvCartera.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvReporte;
+        protected global::System.Web.UI.WebControls.GridView gvCartera;
 
         /// <summary>
         /// Control divPagosRechazados.
