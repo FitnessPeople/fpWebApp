@@ -94,6 +94,14 @@
         }
     </script>
 
+    <style>
+        .table-scroll-x {
+            width: 100%;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+    </style>
+
 </head>
 
 <body onload="changeClass()">
@@ -212,7 +220,7 @@
                                                         <div class="form-group">
                                                             <label>Prospecto:</label>
                                                             <asp:DropDownList CssClass="form-control input-sm required" ID="ddlProspectos" runat="server"
-                                                                DataValueField="DocumentoContacto" DataTextField="NombreContacto" AppendDataBoundItems="true">
+                                                                DataValueField="DocumentoContacto" DataTextField="NombreContacto" AppendDataBoundItems="false">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
@@ -307,7 +315,7 @@
                                                     <asp:HiddenField ID="hfModo" runat="server" />
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" ValidationGroup="agregar" OnClick="btnAgregar_Click"
-                                                        OnClientClick="return validarYConfirmar();"/>
+                                                        OnClientClick="return validarYConfirmar();" />
                                                 </div>
                                                 <asp:HiddenField ID="hfAccion" runat="server" />
                                                 <br />
@@ -345,73 +353,155 @@
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
+                                        <div class="table-scroll-x">
+                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                data-filter-min="3" data-filter-placeholder="Buscar"
+                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                                data-paging-limit="10" data-filtering="true"
+                                                data-filter-container="#filter-form-container" data-filter-delay="300"
+                                                data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                                data-empty="Sin resultados">
+                                                <thead>
+                                                    <tr>
+                                                        <th data-breakpoints="xs">id</th>
+                                                        <th data-breakpoints="xs">Nit</th>
+                                                        <th data-breakpoints="xs">Cliente</th>
+                                                        <th data-breakpoints="xs">Plan</th>
+                                                        <th data-breakpoints="xs">Fecha Ini</th>
+                                                        <th data-breakpoints="xs">Fecha Fin</th>
+                                                        <th data-breakpoints="xs">Valor</th>
+                                                        <th data-breakpoints="xs">Dscto.</th>
+                                                        <th data-breakpoints="xs">Usuario.</th>
+                                                        <th data-breakpoints="xs">Creado.</th>
+                                                        <th data-breakpoints="all" data-title="Info"></th>
+                                                        <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:Repeater ID="rpNegociaciones" runat="server" OnItemDataBound="rpNegociaciones_ItemDataBound">
+                                                        <ItemTemplate>
+                                                            <tr class="feed-element">
+                                                                <td><%# Eval("idNegociacion") %></td>
+                                                                <td><%# Eval("DocumentoEmpresa") %></td>
+                                                                <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
+                                                                <td><%# Eval("NombrePlan") %></td>
+                                                                <td><%# Convert.ToDateTime(Eval("FechaIni")).ToString("dd/MM/yyyy") %></td>
+                                                                <td><%# Convert.ToDateTime(Eval("FechaFin")).ToString("dd/MM/yyyy") %></td>
+                                                                <td><%# string.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("ValorNegociacion")) %></td>
+                                                                <td><%# Eval("Descuento") %>%</td>
+                                                                <td><%# Eval("NombreUsuario") %></td>
+                                                                <td><%# Eval("FechaCreacion") %></td>
+                                                                <td>
+                                                                    <table class="table table-bordered table-striped">
+                                                                        <tr>
+                                                                            <th width="50%"><i class="fa fa-city m-r-xs"></i>Razón social</th>
+                                                                            <th width="50%"><i class="fa fa-city m-r-xs"></i>Descripción</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><%# Eval("NombreEmpresa") %></td>
+                                                                            <td><%# Eval("Descripcion") %></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                                                                <td style="display: flex; flex-wrap: nowrap;">
+                                                                    <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                    <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
 
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
-                                            data-filter-min="3" data-filter-placeholder="Buscar"
-                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                            data-paging-limit="10" data-filtering="true"
-                                            data-filter-container="#filter-form-container" data-filter-delay="300"
-                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                            data-empty="Sin resultados">
-                                            <thead>
-                                                <tr>
-                                                    <th data-breakpoints="xs">id</th>
-                                                    <th data-breakpoints="xs">Nit</th>
-                                                    <th data-breakpoints="xs">Cliente</th>
-                                                    <th data-breakpoints="xs">Plan</th>
-                                                    <th data-breakpoints="xs">Fecha Ini</th>
-                                                    <th data-breakpoints="xs">Fecha Fin</th>
-                                                    <th data-breakpoints="xs">Valor</th>
-                                                    <th data-breakpoints="xs">Dscto.</th>
-                                                    <th data-breakpoints="xs">Usuario.</th>
-                                                    <th data-breakpoints="xs">Creado.</th>
-                                                    <th data-breakpoints="all" data-title="Info"></th>
-                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <asp:Repeater ID="rpNegociaciones" runat="server" OnItemDataBound="rpNegociaciones_ItemDataBound">
-                                                    <ItemTemplate>
-                                                        <tr class="feed-element">
-                                                            <td><%# Eval("idNegociacion") %></td>
-                                                            <td><%# Eval("DocumentoEmpresa") %></td>
-                                                            <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
-                                                            <td><%# Eval("NombrePlan") %></td>
-                                                            <td><%# Convert.ToDateTime(Eval("FechaIni")).ToString("dd/MM/yyyy") %></td>
-                                                            <td><%# Convert.ToDateTime(Eval("FechaFin")).ToString("dd/MM/yyyy") %></td>
-                                                            <td><%# string.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("ValorNegociacion")) %></td>
-                                                            <td><%# Eval("Descuento") %>%</td>
-                                                            <td><%# Eval("NombreUsuario") %></td>
-                                                            <td><%# Eval("FechaCreacion") %></td>
-                                                            <td>
-                                                                <table class="table table-bordered table-striped">
-                                                                    <tr>
-                                                                        <th width="50%"><i class="fa fa-city m-r-xs"></i>Razón social</th>
-                                                                        <th width="50%"><i class="fa fa-city m-r-xs"></i>Descripción</th>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <td><%# Eval("NombreEmpresa") %></td>
-                                                                        <td><%# Eval("Descripcion") %></td>
-                                                                    </tr>
-                                                                </table>
-                                                            </td>
-                                                            <td style="display: flex; flex-wrap: nowrap;">
-                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
-                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
-                                                            </td>
-                                                        </tr>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </tbody>
-                                        </table>
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <h5>Negociaciones en cartera</h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+
+                                        <div class="row" style="font-size: 12px;" runat="server" id="div1">
+                                            <div class="col-lg-6 form-horizontal">
+                                                <div class="form-group">
+                                                    <div class="form-group" id="filter-form-container1" style="margin-left: 28px;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="table-scroll-x">
+                                            <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                                data-filter-min="3" data-filter-placeholder="Buscar"
+                                                data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                                data-paging-limit="10" data-filtering="true"
+                                                data-filter-container="#filter-form-container1" data-filter-delay="300"
+                                                data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                                data-empty="Sin resultados">
+                                                <thead>
+                                                    <tr>
+                                                        <th data-breakpoints="xs">id</th>
+                                                        <th data-breakpoints="xs">Nit</th>
+                                                        <th data-breakpoints="xs">Cliente</th>
+                                                        <th data-breakpoints="xs">Plan</th>
+                                                        <th data-breakpoints="xs">Fecha Ini</th>
+                                                        <th data-breakpoints="xs">Fecha Fin</th>
+                                                        <th data-breakpoints="xs">Valor</th>
+                                                        <th data-breakpoints="xs">Dscto.</th>
+                                                        <th data-breakpoints="xs">Usuario.</th>
+                                                        <th data-breakpoints="xs">Creado.</th>
+                                                        <th data-breakpoints="all" data-title="Info"></th>
+<%--                                                        <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>--%>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <asp:Repeater ID="rpNegociacionesCerradas" runat="server" OnItemDataBound="rpNegociacionesCerradas_ItemDataBound">
+                                                        <ItemTemplate>
+                                                            <tr class="feed-element">
+                                                                <td><%# Eval("idNegociacion") %></td>
+                                                                <td><%# Eval("DocumentoEmpresa") %></td>
+                                                                <td><%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %></td>
+                                                                <td><%# Eval("NombrePlan") %></td>
+                                                                <td><%# Convert.ToDateTime(Eval("FechaIni")).ToString("dd/MM/yyyy") %></td>
+                                                                <td><%# Convert.ToDateTime(Eval("FechaFin")).ToString("dd/MM/yyyy") %></td>
+                                                                <td><%# string.Format(new System.Globalization.CultureInfo("es-CO"), "{0:C0}", Eval("ValorNegociacion")) %></td>
+                                                                <td><%# Eval("Descuento") %>%</td>
+                                                                <td><%# Eval("NombreUsuario") %></td>
+                                                                <td><%# Eval("FechaCreacion") %></td>
+                                                                <td>
+                                                                    <table class="table table-bordered table-striped">
+                                                                        <tr>
+                                                                            <th width="50%"><i class="fa fa-city m-r-xs"></i>Razón social</th>
+                                                                            <th width="50%"><i class="fa fa-city m-r-xs"></i>Descripción</th>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td><%# Eval("NombreEmpresa") %></td>
+                                                                            <td><%# Eval("Descripcion") %></td>
+                                                                        </tr>
+                                                                    </table>
+                                                                </td>
+                      <%--                                          <td style="display: flex; flex-wrap: nowrap;">
+                                                                    <a runat="server" id="btnDeshacer" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                        style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                </td>--%>
+                                                            </tr>
+                                                        </ItemTemplate>
+                                                    </asp:Repeater>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-  <%--                      <script>
+                        <%--                      <script>
                             function inicializarDescuentos() {
                                 // Formateo de moneda colombiana
                                 function formatCOP(valor) {
@@ -550,7 +640,7 @@
                             }
                         </script>--%>
 
-<%--                    <script>
+                        <%--                    <script>
                         function inicializarPlanes() {
 
                             const modo = document.getElementById('<%= hfModo.ClientID %>').value;
@@ -712,38 +802,76 @@
                             Sys.Application.add_load(inicializarPlanes);
                         </script>
 
-                    <script>
-                        function obtenerSeleccionPlan() {
+                        <script>
+                            function obtenerSeleccionPlan() {
 
-                            const radio = document.querySelector(".rdDescuento:checked");
-                            if (!radio) {
-                                alert("Debe seleccionar un plan.");
+                                const radio = document.querySelector(".rdDescuento:checked");
+                                if (!radio) {
+                                    alert("Debe seleccionar un plan.");
+                                    return false;
+                                }
+
+                                const fila = radio.closest("tr");
+                                const idPlan = fila.cells[0].innerText.trim();
+
+                                const descuentoInput = fila.querySelector(".inputDescuento");
+                                const descuento = parseFloat(descuentoInput.value) || 0;
+
+                                const celdaValorFinal = fila.querySelector(".valorConDescuento");
+                                const valorFinal = Number(
+                                    celdaValorFinal.innerText.replace(/[^0-9]/g, '')
+                                );
+
+                                document.getElementById("<%= hfIdPlan.ClientID %>").value = idPlan;
+                            document.getElementById("<%= hfDescuento.ClientID %>").value = descuento;
+                            document.getElementById("<%= hfValorNegociacion.ClientID %>").value = valorFinal;
+
+                                return true;
+                            }
+                        </script>
+                        <script>
+                            function confirmarEliminacion() {
+
+                                Swal.fire({
+                                    title: '¿Eliminar negociación?',
+                                    text: 'Esta acción no se puede deshacer.',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Sí, eliminar',
+                                    cancelButtonText: 'Cancelar',
+                                    confirmButtonColor: '#d33'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+
+                                        // Redirige pasando el deleteid
+                                        window.location.href = 'negociarconvenio.aspx?deleteid=<%= Request.QueryString["editid"] %>';
+                                }
+                            });
+
+                                return false; // 
+                            }
+                        </script>
+                        <script>
+                            function validarYConfirmar() {
+
+                                const accion = document.getElementById('<%= hfAccion.ClientID %>').value;
+
+                            // ✔ Guardar editor siempre
+                            guardarContenidoEditor();
+
+                            // ✔ Validar plan siempre
+                            if (!obtenerSeleccionPlan()) {
                                 return false;
                             }
 
-                            const fila = radio.closest("tr");
-                            const idPlan = fila.cells[0].innerText.trim();
+                            // 🟢 SI NO ES ELIMINAR → POSTBACK NORMAL
+                            if (accion !== "eliminar") {
+                                return true;
+                            }
 
-                            const descuentoInput = fila.querySelector(".inputDescuento");
-                            const descuento = parseFloat(descuentoInput.value) || 0;
-
-                            const celdaValorFinal = fila.querySelector(".valorConDescuento");
-                            const valorFinal = Number(
-                                celdaValorFinal.innerText.replace(/[^0-9]/g, '')
-                            );
-
-                            document.getElementById("<%= hfIdPlan.ClientID %>").value = idPlan;
-                        document.getElementById("<%= hfDescuento.ClientID %>").value = descuento;
-                        document.getElementById("<%= hfValorNegociacion.ClientID %>").value = valorFinal;
-
-                            return true;
-                        }
-                    </script>
-                    <script>
-                        function confirmarEliminacion() {
-
+                            // 🔴 SOLO SI ES ELIMINAR
                             Swal.fire({
-                                title: '¿Eliminar negociación?',
+                                title: '¿Desea eliminar esta negociación?',
                                 text: 'Esta acción no se puede deshacer.',
                                 icon: 'warning',
                                 showCancelButton: true,
@@ -752,51 +880,13 @@
                                 confirmButtonColor: '#d33'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-
-                                    // Redirige pasando el deleteid
-                                    window.location.href = 'negociarconvenio.aspx?deleteid=<%= Request.QueryString["editid"] %>';
-                                    }
-                                });
-
-                            return false; // 
-                        }
-                    </script>
-                    <script>
-                        function validarYConfirmar() {
-
-                            const accion = document.getElementById('<%= hfAccion.ClientID %>').value;
-
-                        // ✔ Guardar editor siempre
-                        guardarContenidoEditor();
-
-                        // ✔ Validar plan siempre
-                        if (!obtenerSeleccionPlan()) {
-                            return false;
-                        }
-
-                        // 🟢 SI NO ES ELIMINAR → POSTBACK NORMAL
-                        if (accion !== "eliminar") {
-                            return true;
-                        }
-
-                        // 🔴 SOLO SI ES ELIMINAR
-                        Swal.fire({
-                            title: '¿Desea eliminar esta negociación?',
-                            text: 'Esta acción no se puede deshacer.',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: 'Sí, eliminar',
-                            cancelButtonText: 'Cancelar',
-                            confirmButtonColor: '#d33'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                __doPostBack('<%= btnAgregar.UniqueID %>', '');
+                                    __doPostBack('<%= btnAgregar.UniqueID %>', '');
                             }
                         });
 
-                            return false; // ⛔ detener postback automático
-                        }
-                    </script>
+                                return false; // ⛔ detener postback automático
+                            }
+                        </script>
 
 
 

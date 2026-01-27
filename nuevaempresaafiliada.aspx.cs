@@ -154,7 +154,7 @@ namespace fpWebApp
                     txbNombrepagador.Text.Trim().ToUpper(),txbCelularPagador.Text.Trim(),txbCorreoPagador.Text.Trim(), txbDireccion.Text.Trim(),
                     Convert.ToInt32(ddlCiudadEmpresa.SelectedValue), Convert.ToInt32(txbNroEmpleados.Text), ddlTipoNegociacion.SelectedValue,
                     Convert.ToInt32(ddlDiasCredito.SelectedValue), strFilenameContrato, "", strFilenameCamara, strFilenameRut, strFilenameCedRep,
-                    rblActivo.SelectedValue, Convert.ToInt32(Session["IdUsuario"]), out respuesta,out mensaje);
+                    rblActivo.SelectedValue, Convert.ToInt32(Session["IdUsuario"]), contenidoEditor,out respuesta,out mensaje);
 
                 if (!respuesta)
                 {                    

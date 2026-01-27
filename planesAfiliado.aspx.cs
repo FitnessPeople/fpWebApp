@@ -65,6 +65,24 @@ namespace fpWebApp
                         CargarPlanesAfiliado();
                         ConsultarCodDatafono();
                         CargarEmpresas();
+                        clasesglobales cg = new clasesglobales();
+                        bool rtacrm = false;
+                        DataTable _rtacrm = new DataTable();
+                        _rtacrm = cg.ConsultarContactosCRMPorId(Convert.ToInt32(Request.QueryString["idcrm"]), out rtacrm);
+                        int idPregestion = 0;
+                        DataTable _rtaPregestion = new DataTable();
+                        //int idNegociacion = 0;
+                        if (_rtacrm.Rows.Count > 0)
+                        {
+                            if (Convert.ToInt32(_rtacrm.Rows[0]["idEmpresaCRM"].ToString()) > 0)
+                            {
+                                idPregestion = Convert.ToInt32(_rtacrm.Rows[0]["idPregestion"].ToString());
+                                txbCredito.Text = _rtacrm.Rows[0]["ValorPropuesta"].ToString();
+                                ddlEmpresa.SelectedValue = _rtacrm.Rows[0]["idEmpresaCRM"].ToString();
+                            }
+                        }
+
+
 
                         txbWompi.Enabled = false;
                         txbDatafono.Enabled = false;
@@ -1043,6 +1061,9 @@ namespace fpWebApp
             ddlEmpresa.DataBind();
             dt.Dispose();
         }
+
+
+
         protected async void lbAgregarPlan_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -1068,6 +1089,11 @@ namespace fpWebApp
             bool usaEmpresaAfiliada = false;
             //string rtaCartera = "";
             int totalIngresado, precioMax, precioMin;
+            bool rtacrm = false;
+            DataTable _rtacrm = new DataTable();
+            int idPregestion = 0;
+            DataTable _rtaPregestion = new DataTable();
+            int idNegociacion = 0;
 
             // 1️⃣ Validar valor en crédito
             int valorCredito = Convert.ToInt32(
@@ -1155,15 +1181,36 @@ namespace fpWebApp
 
             if (usaCredito || usaEmpresaAfiliada)
             {
+                //ddlProspectos.SelectedValue = dt1.Rows[0]["idPregestion"].ToString();
+                
                 string rtaPlan = cg.InsertarAfiliadoPlan(idAfiliado, Convert.ToInt32(ViewState["idPlan"]), fechaInicio.ToString("yyyy-MM-dd"), fechaFinalPlan.ToString("yyyy-MM-dd"), Convert.ToInt32(ViewState["meses"]),
                                 Convert.ToInt32(ViewState["precioTotal"]), ViewState["observaciones"].ToString(), estadoPago);
+                string[] partes = rtaPlan.Split('|');
 
-                string rtaCartera = cg.InsertarCarteraPlan(idAfiliado, idcrm, 0, Convert.ToInt32(ViewState["idPlan"]), ddlEmpresa.SelectedValue,
+                int _idAfiliadPlan = Convert.ToInt32(partes[1]);
+
+                _rtacrm = cg.ConsultarContactosCRMPorId(idcrm, out rtacrm);
+                if(_rtacrm.Rows.Count > 0)
+                {
+                    if  (Convert.ToInt32(_rtacrm.Rows[0]["idEmpresaCRM"].ToString()) > 0)
+                    {
+                        idPregestion = Convert.ToInt32(_rtacrm.Rows[0]["idPregestion"].ToString());
+                        txbCredito.Text = _rtacrm.Rows[0]["ValorPropuesta"].ToString();
+                        ddlEmpresa.SelectedValue = _rtacrm.Rows[0]["idEmpresaCRM"].ToString();
+                    }                    
+                }
+
+                
+
+                _rtaPregestion = cg.ConsultarPregestionCRMPorId(idPregestion);
+                if (_rtaPregestion.Rows.Count > 0) idNegociacion = Convert.ToInt32(_rtaPregestion.Rows[0]["idNegociacion"].ToString());
+
+                string rtaCartera = cg.InsertarCarteraPlan(idcrm, idPregestion, idNegociacion, Convert.ToInt32(ViewState["idPlan"]), ddlEmpresa.SelectedValue,
                         valorCredito, 0, valorCredito, Convert.ToInt32(ViewState["meses"]), fechaInicio, fechaFinalPlan, 6, "ACTIVA",
-                        false, null, null, idUsuario);
+                        false, null, null, idUsuario, _idAfiliadPlan);
 
                 DataTable _dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
-                string rtaCRM = cg.ActualizarEstadoCRMPagoPlan(idcrm, _dtActivo.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32(ViewState["precioTotal"]), idUsuario, 3);
+                string rtaCRM = cg.ActualizarEstadoCRMPagoPlan(idcrm, _dtActivo.Rows[0]["NombrePlan"].ToString(), Convert.ToInt32(txbCredito.Text), idUsuario, 3);
 
                 if (!rtaCartera.StartsWith("OK"))
                 {
@@ -1198,7 +1245,7 @@ namespace fpWebApp
                 MostrarMensajeCounter(idcrm, idAfiliado);
                 return;
             }
-
+            
             int idAfiliadoPlan = int.Parse(rta.Split('|')[1]);
 
             int idCanalVenta = 0;

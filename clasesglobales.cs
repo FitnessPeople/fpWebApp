@@ -3430,6 +3430,36 @@ namespace fpWebApp
 
             return dt;
         }
+
+        public DataTable ConsultarNegociacionesCerradasPorUsuario(int idUsuario)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_NEGOCIACION_CERRADA_POR_USUARIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
         public DataTable ConsultarNegociacionPorId(int idNegociacion)
         {
             DataTable dt = new DataTable();
@@ -3800,7 +3830,7 @@ namespace fpWebApp
             DateTime fechaConvenio, DateTime? fechaFinConvenio, string nombreContacto, string cargoContacto, string celularEmpresa, string correoEmpresa,
             string nombrePagador, string telefonoPagador, string correoPagador, string direccionEmpresa, int idCiudadEmpresa, int nroEmpleados,
             string tipoNegociacion, int diasCredito, string contrato, string imagen, string camaraComercio, string rut, string cedulaRepLegal,
-            string retornoAdm, int idUsuario, out bool respuesta, out string mensaje)
+            string retornoAdm, int idUsuario, string descripcion, out bool respuesta, out string mensaje)
         {
             respuesta = false;
             mensaje = string.Empty;
@@ -3842,6 +3872,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_cedula_rep_leg", cedulaRepLegal);
                         cmd.Parameters.AddWithValue("@p_retorno_adm", retornoAdm);
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_descripcion", descripcion);
 
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 50);
                         pMensaje.Direction = ParameterDirection.Output;
@@ -3895,7 +3926,7 @@ namespace fpWebApp
 
         public string InsertarCarteraPlan(int idContacto, int idPregestion, int idNegociacion, int idPlan, string documentoEmpresa, decimal valorPlan, decimal descuento,
         decimal valorFacturar, int mesesPlan, DateTime fechaInicio, DateTime fechaFin, int idMedioPago, string estadoCartera, bool facturadoMesActual,
-        DateTime? fechaUltimaFactura, string numeroFactura, int idUsuario)
+        DateTime? fechaUltimaFactura, string numeroFactura, int idUsuario, int idAfiliadoPlan)
         {
             string respuesta = string.Empty;
 
@@ -3928,6 +3959,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_FechaUltimaFactura", (object)fechaUltimaFactura ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@p_NumeroFactura", (object)numeroFactura ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@p_idUsuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_idAfiliadoPlan", idAfiliadoPlan);
 
                         // Parámetro de salida
                         MySqlParameter mensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 200);

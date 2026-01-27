@@ -65,9 +65,10 @@ namespace fpWebApp
                             DateTime ultimoDiaMes = new DateTime(hoy.Year, hoy.Month, DateTime.DaysInMonth(hoy.Year, hoy.Month));
                             txbFechaFin.Value = ultimoDiaMes.ToString("yyyy-MM-dd");
                         }
-                        
+
                         CargarPlanes();
                         CargarNegociaciones(Convert.ToInt32(Session["idUsuario"].ToString()));
+                        CargarNegociacionesCerradas(Convert.ToInt32(Session["idUsuario"].ToString()));
 
                         ltTitulo.Text = "Establecer condiciones";
                         string descifradoEdit = null;
@@ -126,7 +127,7 @@ namespace fpWebApp
                                     CargarPlanes();
                                     ddlEmpresas.Enabled = false;
                                     ddlProspectos.Enabled = false;
-                                    
+
                                     hfModo.Value = "edicion";// edicion ó lectura
                                     hfIdPlan.Value = dt.Rows[0]["idPlan"].ToString();
                                     hfDescuento.Value = dt.Rows[0]["Descuento"].ToString();
@@ -134,7 +135,7 @@ namespace fpWebApp
                                     ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt.Rows[0]["DocumentoEmpresa"].ToString()));
 
                                     ListaProspectos(ddlEmpresas.SelectedValue);
-                                    ddlProspectos.SelectedValue = dt.Rows[0]["idPregestion"].ToString();  
+                                    ddlProspectos.SelectedValue = dt.Rows[0]["idPregestion"].ToString();
                                     hiddenEditor.Value = dt.Rows[0]["Descripcion"].ToString();
                                     txbFechaIni.Value = Convert.ToDateTime(dt.Rows[0]["FechaIni"]).ToString("yyyy-MM-dd");
                                     txbFechaFin.Value = Convert.ToDateTime(dt.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
@@ -146,30 +147,30 @@ namespace fpWebApp
 
                             if (descifradoDelete != null)
                             {
-                                
-                                    //Borrar
-                                    DataTable dt1 = new DataTable();
-                                    dt1 = cg.ConsultarNegociacionPorId(int.Parse(descifradoDelete));
-                                    if (dt1.Rows.Count > 0)
-                                    {
-                                        CargarPlanes();
-                                        hfModo.Value = "edicion";// edicion ó lectura
-                                        hfIdPlan.Value = dt1.Rows[0]["idPlan"].ToString();
-                                        hfDescuento.Value = dt1.Rows[0]["Descuento"].ToString();
-                                        hfValorNegociacion.Value = dt1.Rows[0]["ValorNegociacion"].ToString();
-                                        ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt1.Rows[0]["DocumentoEmpresa"].ToString()));
-                                        ddlEmpresas.Enabled = false;
-                                        ListaProspectos(ddlEmpresas.SelectedValue);
-                                        ddlProspectos.SelectedValue = dt1.Rows[0]["idPregestion"].ToString();
-                                        ddlProspectos.Enabled = false;
-                                        hiddenEditor.Value = dt1.Rows[0]["Descripcion"].ToString();                                    
-                                        txbFechaIni.Value = Convert.ToDateTime(dt1.Rows[0]["FechaIni"]).ToString("yyyy-MM-dd");
-                                        txbFechaIni.Disabled = true;
-                                        txbFechaFin.Value = Convert.ToDateTime(dt1.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
-                                        txbFechaFin.Disabled = true;
-                                        btnAgregar.Text = "Eliminar";
-                                        hfAccion.Value = "eliminar";
-                                        ltTitulo.Text = "Eliminar negociación";
+
+                                //Borrar
+                                DataTable dt1 = new DataTable();
+                                dt1 = cg.ConsultarNegociacionPorId(int.Parse(descifradoDelete));
+                                if (dt1.Rows.Count > 0)
+                                {
+                                    CargarPlanes();
+                                    hfModo.Value = "edicion";// edicion ó lectura
+                                    hfIdPlan.Value = dt1.Rows[0]["idPlan"].ToString();
+                                    hfDescuento.Value = dt1.Rows[0]["Descuento"].ToString();
+                                    hfValorNegociacion.Value = dt1.Rows[0]["ValorNegociacion"].ToString();
+                                    ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt1.Rows[0]["DocumentoEmpresa"].ToString()));
+                                    ddlEmpresas.Enabled = false;
+                                    ListaProspectos(ddlEmpresas.SelectedValue);
+                                    ddlProspectos.SelectedValue = dt1.Rows[0]["idPregestion"].ToString();
+                                    ddlProspectos.Enabled = false;
+                                    hiddenEditor.Value = dt1.Rows[0]["Descripcion"].ToString();
+                                    txbFechaIni.Value = Convert.ToDateTime(dt1.Rows[0]["FechaIni"]).ToString("yyyy-MM-dd");
+                                    txbFechaIni.Disabled = true;
+                                    txbFechaFin.Value = Convert.ToDateTime(dt1.Rows[0]["FechaFin"]).ToString("yyyy-MM-dd");
+                                    txbFechaFin.Disabled = true;
+                                    btnAgregar.Text = "Eliminar";
+                                    hfAccion.Value = "eliminar";
+                                    ltTitulo.Text = "Eliminar negociación";
                                 }
                             }
                         }
@@ -212,10 +213,29 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             try
-            {                
+            {
                 DataTable dt = cg.ConsultarNegociacionesPorUsuario(idUsuario);
                 rpNegociaciones.DataSource = dt;
                 rpNegociaciones.DataBind();
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+
+        }
+
+        private void CargarNegociacionesCerradas(int idUsuario)
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarNegociacionesCerradasPorUsuario(idUsuario);
+                rpNegociacionesCerradas.DataSource = dt;
+                rpNegociacionesCerradas.DataBind();
 
                 dt.Dispose();
             }
@@ -249,7 +269,7 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             try
-            {               
+            {
                 DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
                 ddlEmpresas.DataSource = dt;
@@ -266,7 +286,7 @@ namespace fpWebApp
                 //{
                 //    if (!string.IsNullOrEmpty(item.Value))  
                 //    {
-                        
+
                 //        DataRow[] row = dt.Select($"DocumentoEmpresa = '{item.Value}'");
 
                 //        if (row.Length > 0)
@@ -294,7 +314,7 @@ namespace fpWebApp
                 if (!string.IsNullOrEmpty(documento))
                 {
                     ListaProspectos(documento);
-                   
+
                     DataTable dtEmpresa = cg.ConsultarEmpresaAfiliadaPorDocumento(documento);
 
                     if (dtEmpresa.Rows.Count > 0)
@@ -316,7 +336,7 @@ namespace fpWebApp
                         }
 
                         hiddenEditor.Value = descripcion;
-                        
+
                         ScriptManager.RegisterStartupScript(
                             this,
                             this.GetType(),
@@ -327,7 +347,8 @@ namespace fpWebApp
 
 
                     }
-            }}
+                }
+            }
             catch (Exception ex)
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
@@ -336,30 +357,68 @@ namespace fpWebApp
 
         }
 
+        //private void ListaProspectos(string documentoEmpresa)
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    try
+        //    {
+        //        DataTable dt = cg.ConsultarProspectoClienteCorporativo(documentoEmpresa);
+
+        //        dt.Columns.Add("NombreCompleto", typeof(string));
+
+        //        foreach (DataRow row in dt.Rows)
+        //        {
+        //            row["NombreCompleto"] = row["NombreContacto"].ToString() + " " +
+        //                                    row["ApellidoContacto"].ToString();
+        //        }
+
+        //        ddlProspectos.DataSource = dt;
+        //        ddlProspectos.DataTextField = "NombreCompleto"; // ajusta según tu tabla
+        //        ddlProspectos.DataValueField = "IdPregestion";    // ajusta según tu tabla
+        //        ddlProspectos.DataBind();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+        //    }
+        //}
+
         private void ListaProspectos(string documentoEmpresa)
         {
             clasesglobales cg = new clasesglobales();
+
             try
-            {               
+            {
                 DataTable dt = cg.ConsultarProspectoClienteCorporativo(documentoEmpresa);
+
+                ddlProspectos.Items.Clear();
+                ddlProspectos.DataSource = null;
+                ddlProspectos.DataBind();
 
                 dt.Columns.Add("NombreCompleto", typeof(string));
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    row["NombreCompleto"] = row["NombreContacto"].ToString() + " " +
-                                            row["ApellidoContacto"].ToString();
+                    row["NombreCompleto"] = row["NombreContacto"] + " " + row["ApellidoContacto"];
                 }
 
                 ddlProspectos.DataSource = dt;
-                ddlProspectos.DataTextField = "NombreCompleto"; // ajusta según tu tabla
-                ddlProspectos.DataValueField = "IdPregestion";    // ajusta según tu tabla
+                ddlProspectos.DataTextField = "NombreCompleto";
+                ddlProspectos.DataValueField = "IdPregestion";
                 ddlProspectos.DataBind();
+
+                //// Opcional: ítem por defecto
+                ddlProspectos.Items.Insert(0, new ListItem("Seleccione", ""));
             }
             catch (Exception ex)
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+                MostrarAlerta(
+                    "Error de proceso",
+                    "Ocurrió un inconveniente. Código: " + idLog,
+                    "error"
+                );
             }
         }
 
@@ -412,7 +471,7 @@ namespace fpWebApp
                     descifradoEdit = cg.Decrypt(cifrado);
                 }
                 catch
-                {                    
+                {
                     MostrarAlerta(
                         "Error",
                         "El enlace de edición no es válido.",
@@ -454,10 +513,10 @@ namespace fpWebApp
                     string strInitData = TraerData();
                     try
                     {
-                        string respuesta = cg.ActualizarNegociacionCorporativa(Convert.ToInt32(descifradoEdit),ddlEmpresas.SelectedItem.Value,  
-                        Convert.ToInt32(ddlProspectos.SelectedValue),contenidoEditor, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, out codigo, out mensaje);
+                        string respuesta = cg.ActualizarNegociacionCorporativa(Convert.ToInt32(descifradoEdit), ddlEmpresas.SelectedItem.Value,
+                        Convert.ToInt32(ddlProspectos.SelectedValue), contenidoEditor, txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, out codigo, out mensaje);
 
-                        if (codigo==1)
+                        if (codigo == 1)
                         {
                             string script = @"
                                     Swal.fire({
@@ -571,7 +630,7 @@ namespace fpWebApp
                         if (tdValorDesc != null)
                             valorFinal = ParseCOP(tdValorDesc.InnerText);
 
-                        break; 
+                        break;
                     }
                 }
 
@@ -583,9 +642,9 @@ namespace fpWebApp
                     valorFinal = Convert.ToDecimal(hfValorNegociacion.Value);
                     codigo = 0;
 
-                    string respuesta = cg.InsertarNegociacionCorporativo(ddlEmpresas.SelectedItem.Value, Convert.ToInt32(ddlProspectos.SelectedValue.ToString()), contenidoEditor, 
-                    txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, Convert.ToInt32(Session["idUsuario"]),out codigo, out  mensaje);
-                    if (respuesta=="OK")
+                    string respuesta = cg.InsertarNegociacionCorporativo(ddlEmpresas.SelectedItem.Value, Convert.ToInt32(ddlProspectos.SelectedValue.ToString()), contenidoEditor,
+                    txbFechaIni.Value.ToString(), txbFechaFin.Value.ToString(), idPlan, descuento, valorFinal, Convert.ToInt32(Session["idUsuario"]), out codigo, out mensaje);
+                    if (respuesta == "OK")
                     {
                         string script = @"
                                     Swal.fire({
@@ -723,5 +782,33 @@ namespace fpWebApp
             }
 
         }
+
+        protected void rpNegociacionesCerradas_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+                {
+
+                    if (ViewState["Borrar"].ToString() == "1")
+                    {
+                        string valor = ((DataRowView)e.Item.DataItem).Row[0].ToString();
+                        string cifrado = HttpUtility.UrlEncode(cg.Encrypt(valor).Replace("+", "-").Replace("/", "_").Replace("=", ""));
+
+                        //HtmlAnchor btnDeshacer = (HtmlAnchor)e.Item.FindControl("btnDeshacer");
+                        //btnDeshacer.Attributes.Add("href", "negociarconvenio?deleteid=" + cifrado);
+                        //btnDeshacer.Visible = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+        }
+
+
     }
 }
