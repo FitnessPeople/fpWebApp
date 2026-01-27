@@ -195,7 +195,6 @@
                                         data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados" id="miTabla">
                                         <thead>
                                             <tr>
-                                                <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">ID</th>
                                                 <th data-sortable="false" data-breakpoints="xs" style="width: 140px;">Documento</th>
                                                 <th data-sortable="false" data-breakpoints="xs">Afiliado</th>
                                                 <th data-breakpoints="xs sm md" style="width: 110px;">Celular</th>
@@ -203,6 +202,7 @@
                                                 <th data-breakpoints="xs sm md">Valor</th>
                                                 <th data-breakpoints="xs sm md">Plan</th>
                                                 <th data-breakpoints="xs sm md">Debito automático</th>
+                                                <th data-breakpoints="xs sm md">Intentos de Cobro</th>
                                                 <th data-breakpoints="xs sm md">Acciones</th>
                                             </tr>
                                         </thead>
@@ -210,7 +210,6 @@
                                             <asp:Repeater ID="rpAfiliadosPlanes" runat="server" OnItemDataBound="rpAfiliadosPlanes_ItemDataBound">
                                                 <ItemTemplate>
                                                     <tr class="feed-element">
-                                                        <td><%# Eval("idAfiliado") %></td>
                                                         <td><%# Eval("DocumentoAfiliado") %></td>
                                                         <td><span class="text-capitalize"><%# Eval("NombreAfiliado").ToString().ToLower() %> <%# Eval("ApellidoAfiliado").ToString().ToLower() %></span></td>
                                                         <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/<%# Eval("CelularAfiliado") %>" target="_blank"><%# Eval("CelularAfiliado") %></a></td>
@@ -218,6 +217,7 @@
                                                         <td>$<%# Eval("Valor", "{0:N0}") %></td>
                                                         <td><%# Eval("NombrePlan") %></td>
                                                         <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("da") %></span></td>
+                                                        <td><%# Eval("Intentos") %></td>
                                                         <td>
                                                             <asp:Button ID="btnCancelar" runat="server" Text="Cancelar"
                                                             CssClass="btn btn-danger btn-xs"

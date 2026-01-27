@@ -76,13 +76,24 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
             string strQuery = @"
-                SELECT *, 
-                IF(p.DebitoAutomatico=1,'Si','No') da, 
-                IF(p.DebitoAutomatico=1,'info','warning') badge  
+                SELECT 
+	                ap.*, 
+	                p.*, 
+	                a.*, 
+	                IF(p.DebitoAutomatico = 1,'Si', 'No') da, 
+	                IF(p.DebitoAutomatico = 1,'info', 'warning') badge, 
+	                IFNULL(hcr_cnt.Intentos, 0) AS Intentos 
                 FROM AfiliadosPlanes ap 
                 INNER JOIN Planes p ON p.idPlan = ap.idPlan 
                 INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
-                WHERE ap.EstadoPlan = 'Activo' ";
+                LEFT JOIN (
+	                SELECT 
+		                hcr.idAfiliadoPlan, 
+		                COUNT(*) AS Intentos 
+	                FROM HistorialCobrosRechazados hcr 
+	                GROUP BY hcr.idAfiliadoPlan
+                ) hcr_cnt ON hcr_cnt.idAfiliadoPlan = ap.idAfiliadoPlan 
+                WHERE ap.EstadoPlan <> 'Archivado'";
             DataTable dt = cg.TraerDatos(strQuery);
 
             rpAfiliadosPlanes.DataSource = dt;
