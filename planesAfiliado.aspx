@@ -299,13 +299,30 @@
                                                                     <tbody>
                                                                         <asp:Repeater ID="rpPlanes" runat="server" OnItemCommand="rpPlanes_ItemCommand" OnItemDataBound="rpPlanes_ItemDataBound">
                                                                             <ItemTemplate>
-                                                                                <tr class="feed-element">
+                                                                                <%--                                                              <tr class="feed-element">
                                                                                     <td>
                                                                                         <asp:LinkButton runat="server" ID="btnSeleccionarPlan" CommandArgument='<%# Eval("idPlan") %>'
                                                                                             CommandName="SeleccionarPlan"><%# Eval("NombrePlan") %></asp:LinkButton>
                                                                                     <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
                                                                                     <td><%# Eval("Vigencia") %></td>
                                                                                     <td style="text-align: right;">$<%# Eval("PrecioTotal","{0:N0}") %></td>
+                                                                                </tr>--%>
+                                                                                <tr class="feed-element">
+                                                                                    <td>
+                                                                                        <asp:LinkButton runat="server" ID="btnSeleccionarPlan"
+                                                                                            CommandArgument='<%# Eval("idPlan") %>'
+                                                                                            CommandName="SeleccionarPlan">
+                                                                                             <%# Eval("NombrePlan") %>
+                                                                                        </asp:LinkButton>
+                                                                                    </td>
+
+                                                                                    <td><i class="fa fa-note-sticky m-r-xs font-bold"></i><%# Eval("DescripcionPlan") %></td>
+                                                                                    <td><%# Eval("Vigencia") %></td>
+
+                                                                                    <td style="text-align: right;">
+                                                                                        <asp:Label ID="lblPrecio" runat="server" Visible="false"
+                                                                                            Text='<%# "$" + Eval("PrecioTotal","{0:N0}") %>' CssClass="font-bold text-success" />
+                                                                                    </td>
                                                                                 </tr>
                                                                             </ItemTemplate>
                                                                         </asp:Repeater>
@@ -558,7 +575,7 @@
                                                                             <asp:Button ID="btnBancolombia" runat="server" Text="Bancolombia" CssClass="btn btn-info btn-outline"
                                                                                 Style="font-size: 10px;" OnClick="btnBancolombia_Click" />
                                                                             <asp:Button ID="btnDavivienda" runat="server" Text="Davivienda" CssClass="btn btn-danger btn-outline"
-                                                                                Style="font-size: 10px;" OnClick="btnDavivienda_Click"/>
+                                                                                Style="font-size: 10px;" OnClick="btnDavivienda_Click" />
                                                                             <asp:Button ID="btnBBVA" runat="server" Text="BBVA" CssClass="btn btn-warning btn-outline"
                                                                                 Style="font-size: 10px;" OnClick="btnBBVA_Click" />
                                                                             <asp:Button ID="btnBogota" runat="server" Text="Bogotá" CssClass="btn btn-success btn-outline"
@@ -594,7 +611,7 @@
                                                                         </td>
                                                                         <td>
                                                                             <asp:TextBox ID="txbCredito" CssClass="form-control input-sm"
-                                                                                runat="server" Text="$0" 
+                                                                                runat="server" Text="$0"
                                                                                 onclick="if(this.value === '$0') this.value=''" placeholder="$0"
                                                                                 onkeyup="formatCurrency(this)" autocomplete="off"
                                                                                 onblur="if(this.value.replace(/\D/g, '') === '') this.value = '$0'; else keepFormatted(this);"
