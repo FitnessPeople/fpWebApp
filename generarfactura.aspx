@@ -26,6 +26,12 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+        <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style type="text/css" media="print">
         body {
             visibility: hidden;

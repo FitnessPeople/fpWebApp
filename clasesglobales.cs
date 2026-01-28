@@ -3987,8 +3987,7 @@ namespace fpWebApp
 
             try
             {
-                string strConexion = WebConfigurationManager
-                    .ConnectionStrings["ConnectionFP"].ConnectionString;
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
 
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
