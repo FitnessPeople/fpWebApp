@@ -201,6 +201,9 @@
                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
+                                                    <asp:RequiredFieldValidator ID="rfvEmpresa" runat="server"
+                                                        ErrorMessage="* Campo requerido" ControlToValidate="ddlEmpresa"
+                                                        CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                             </div>
 
@@ -236,13 +239,14 @@
                                                     CausesValidation="false"
                                                     CssClass="btn btn-success pull-right dim m-l-md"
                                                     Style="font-size: 12px;"
-                                                    OnClick="lbExportarPdf_Click">
+                                                    OnClick="lbExportarPdf_Click"
+                                                    ValidationGroup="agregar">
                                                     <i class="fa fa-file-pdf m-r-xs"></i>PDF
                                                 </asp:LinkButton>
 
                                             </div>
                                         </div>
-                                        <asp:GridView
+                                        <%--<asp:GridView
                                             ID="gvCartera"
                                             runat="server"
                                             AutoGenerateColumns="false"
@@ -252,6 +256,10 @@
                                                 <asp:BoundField
                                                     DataField="IdAfiliadoPlan"
                                                     HeaderText="IdAfiliadoPlan" />
+
+                                                <asp:BoundField
+                                                    DataField="DocumentoAfiliado"
+                                                    HeaderText="Documento" />
 
                                                 <asp:BoundField
                                                     DataField="NombreAfiliado"
@@ -280,9 +288,56 @@
                                                     HeaderText="Estado" />
 
                                             </Columns>
+                                        </asp:GridView>--%>
+
+                                        <asp:GridView
+                                            ID="gvCartera"
+                                            runat="server"
+                                            AutoGenerateColumns="false"
+                                            CssClass="table table-bordered">
+
+                                            <Columns>
+
+
+                                                <asp:TemplateField HeaderStyle-Width="40px">
+                                                    <HeaderTemplate>
+                                                        <asp:CheckBox
+                                                            ID="chkTodos"
+                                                            runat="server"
+                                                            onclick="SeleccionarTodos(this);" />
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:CheckBox
+                                                            ID="chkItem"
+                                                            runat="server" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:BoundField DataField="IdAfiliadoPlan" HeaderText="IdAfiliadoPlan" />
+                                                <asp:BoundField DataField="DocumentoAfiliado" HeaderText="Documento" />
+                                                <asp:BoundField DataField="NombreAfiliado" HeaderText="Afiliado" />
+                                                <asp:BoundField DataField="NombrePlan" HeaderText="Plan" />
+                                                <asp:BoundField DataField="FechaElaboracion" HeaderText="Fecha Elaboración"
+                                                    DataFormatString="{0:dd/MM/yyyy}" />
+                                                <asp:BoundField DataField="DiasTranscurridos" HeaderText="Días" />
+                                                <asp:BoundField DataField="ValorFacturar" HeaderText="Valor"
+                                                    DataFormatString="{0:C0}" />
+                                                <asp:BoundField DataField="EstadoVencimiento" HeaderText="Estado" />
+
+                                            </Columns>
                                         </asp:GridView>
+                                        <asp:Button
+                                            ID="btnGenerarLiquidacion"
+                                            runat="server"
+                                            Text="Generar liquidación"
+                                            CssClass="btn btn-success btn-sm"
+                                            OnClick="btnGenerarLiquidacion_Click"
+                                            Visible="false" />
                                     </div>
+
                                 </div>
+
+
 
                                 <div class="ibox float-e-margins" id="divPagosRechazados" runat="server" visible="false">
                                     <div class="ibox-title">
@@ -411,6 +466,20 @@
             }
         }
     </script>
+
+    <script type="text/javascript">
+        function SeleccionarTodos(chk) {
+            var grid = document.getElementById('<%= gvCartera.ClientID %>');
+            var checkboxes = grid.getElementsByTagName("input");
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].type === "checkbox" && checkboxes[i] !== chk) {
+                    checkboxes[i].checked = chk.checked;
+                }
+            }
+        }
+    </script>
+
 
 </body>
 

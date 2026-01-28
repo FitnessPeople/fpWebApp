@@ -3981,6 +3981,43 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public int GenerarLiquidacionCartera(string documentoEmpresa, int idUsuario)
+        {
+            int idLiquidacion = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager
+                    .ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_GENERAR_LIQUIDACION_CARTERA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("p_DocumentoEmpresa", documentoEmpresa);
+                        cmd.Parameters.AddWithValue("p_idUsuario", idUsuario);
+
+                        // El SP retorna el idLiquidacion con SELECT
+                        object result = cmd.ExecuteScalar();
+
+                        if (result != null)
+                            idLiquidacion = Convert.ToInt32(result);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al generar la liquidación: " + ex.Message, ex);
+            }
+
+            return idLiquidacion;
+        }
+
+
         public DataTable CargarCarteraPorNit(string documentoEmpresa)
         {
             DataTable dt = new DataTable();

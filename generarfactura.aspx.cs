@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Web;
+using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -120,6 +121,23 @@ namespace fpWebApp
             ddlEmpresa.DataTextField = "NombreComercial";
             ddlEmpresa.DataBind();
             dt.Dispose();
+        }
+
+        protected void btnGestionar_Click(object sender, EventArgs e)
+        {
+            foreach (GridViewRow row in gvCartera.Rows)
+            {
+                CheckBox chk = (CheckBox)row.FindControl("chkItem");
+
+                if (chk != null && chk.Checked)
+                {
+                    string idAfiliadoPlan = row.Cells[1].Text; // ojo índice
+                    string documento = row.Cells[2].Text;
+
+                    // 👉 Aquí haces lo que necesites
+                    // Ej: enviar a otro SP, marcar gestionado, etc.
+                }
+            }
         }
 
         //private DataTable ObtenerReporteSeleccionado()
@@ -285,6 +303,14 @@ namespace fpWebApp
             }
         }
 
+
+        protected void ddlEmpresa_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            gvCartera.DataSource = null;
+            gvCartera.DataBind();
+            btnGenerarLiquidacion.Visible = false;
+        }
+
         protected void lbExportarPdf_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
@@ -378,7 +404,7 @@ namespace fpWebApp
                     return;
                 DataTable dt = new DataTable();
                 dt = cg.CargarCarteraPorNit(documentoEmpresa);
-
+                btnGenerarLiquidacion.Visible = dt.Rows.Count > 0;
                 gvCartera.DataSource = dt;
                 gvCartera.DataBind();
             }
@@ -389,6 +415,53 @@ namespace fpWebApp
             }
         }
 
+        protected void btnGenerarLiquidacion_Click(object sender, EventArgs e)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                string documentoEmpresa = ddlEmpresa.SelectedValue;
+                int idUsuario = Convert.ToInt32(Session["idUsuario"]);
+
+                int idLiquidacion = cg.GenerarLiquidacionCartera(documentoEmpresa, idUsuario);
+
+                if (idLiquidacion > 0)
+                {
+                    string script = $@"
+                                Swal.fire({{
+                                    title: '¡Liquidación generada correctamente!',
+                                    text: 'Liquidación N° {idLiquidacion} creada correctamente.',
+                                    icon: 'success',
+                                    timer: 3000,
+                                    showConfirmButton: false,
+                                    timerProgressBar: true
+                                }}).then(() => {{
+                                    window.location.href = 'generarfactura';
+                                }});
+                            ";
+
+                    ScriptManager.RegisterStartupScript(
+                        this,
+                        GetType(),
+                        "ExitoMensaje",
+                        script,
+                        true
+                    );
+                }
+
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+
+            }
+
+
+
+
+        }
     }
 
 
