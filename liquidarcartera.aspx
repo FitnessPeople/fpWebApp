@@ -1,4 +1,5 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="generarfactura.aspx.cs" Inherits="fpWebApp.generarfactura" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="liquidarcartera.aspx.cs" Inherits="fpWebApp.liquidarcartera" %>
+
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -41,7 +42,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#generarfactura");
+            var element1 = document.querySelector("#liquidarcartera");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#corporativo");
             element2.classList.remove("collapse");
@@ -117,11 +118,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-sheet-plastic text-success m-r-sm"></i>Generar factura</h2>
+                    <h2><i class="fas fa-sheet-plastic text-success m-r-sm"></i>Liquidar cartera</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Corporativo</li>
-                        <li class="active"><strong>Generar factura</strong></li>
+                        <li class="active"><strong>Liquidar cartera</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -177,13 +178,65 @@
                             <div class="col-lg-12">
 
                                 <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-success">
+
+                                                <h5>Empresas con cartera pendiente:
+                                                    <asp:Literal ID="lblEmpresas1" runat="server"></asp:Literal></h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblEmpresas" runat="server"></asp:Literal></h1>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-success">
+                                                <h5>Total cartera pendiente: </h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblCartera" runat="server"></asp:Literal></h1>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-success">
+                                                <h5>Liquidaciones pendientes de facturar:
+                                                    <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblPendientes" runat="server"></asp:Literal></h1>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-success">
+                                                <h5>Liquidaciones generadas este mes:
+                                                    <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblMes" runat="server"></asp:Literal></h1>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- INDICADORES FINAL -->
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Reporte de ventas
+                                        <h5>Pendientes de liquidación
                                             <asp:Literal ID="ltMes4" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
@@ -340,7 +393,7 @@
                                             OnClick="btnGenerarLiquidacion_Click"
                                             Visible="false" />
                                     </div>
-
+                                    <asp:Label ID="lblSinDatos" runat="server" CssClass="text-warning font-bold" Visible="false" Text="No se encontraron datos o registros."></asp:Label>
                                 </div>
 
 

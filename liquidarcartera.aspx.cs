@@ -1,19 +1,16 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Web;
-using System.Web.Services.Description;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
-    public partial class generarfactura : System.Web.UI.Page
+    public partial class liquidarcartera : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,7 +23,7 @@ namespace fpWebApp
                 //ObtenerReporteSeleccionado();
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Generar factura");
+                    ValidarPermisos("Liquidar cartera");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página
@@ -57,6 +54,7 @@ namespace fpWebApp
                             //txbFechaFin.Attributes.Add("type", "date");
                             //txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             CargarEmpresas();
+                            CargarIndicadores();
                         }
                     }
 
@@ -111,16 +109,55 @@ namespace fpWebApp
         //    gvReporte.DataBind();
         //}
 
+        //private void CargarEmpresas()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    DataTable dt = cg.ConsultarEmpresasAfiliadas();
+
+        //    ddlEmpresa.DataSource = dt;
+        //    ddlEmpresa.DataValueField = "DocumentoEmpresa";
+        //    ddlEmpresa.DataTextField = "NombreComercial";
+        //    ddlEmpresa.DataBind();
+        //    dt.Dispose();
+        //}
+
+        private void CargarIndicadores()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarIndicadoresGenerarLiquidacion();
+
+                lblEmpresas.Text = dt.Rows[0]["EmpresasConCarteraPendiente"].ToString();
+                lblCartera.Text = string.Format("{0:C}", dt.Rows[0]["TotalCarteraPendiente"]);
+                lblPendientes.Text = dt.Rows[0]["LiquidacionesPendientesFacturar"].ToString();
+                lblMes.Text = dt.Rows[0]["LiquidacionesGeneradasMes"].ToString();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+        }
+
         private void CargarEmpresas()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEmpresasAfiliadas();
+            try
+            {
+                DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
-            ddlEmpresa.DataSource = dt;
-            ddlEmpresa.DataValueField = "DocumentoEmpresa";
-            ddlEmpresa.DataTextField = "NombreComercial";
-            ddlEmpresa.DataBind();
-            dt.Dispose();
+                ddlEmpresa.DataSource = dt;
+                ddlEmpresa.DataValueField = "DocumentoEmpresa";
+                ddlEmpresa.DataTextField = "NombreComercial";
+                ddlEmpresa.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog,"error");
+            } 
         }
 
         protected void btnGestionar_Click(object sender, EventArgs e)
@@ -206,13 +243,6 @@ namespace fpWebApp
 
             ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
-
-        private void CargarGrid(DataTable dt)
-        {
-            gvCartera.DataSource = dt;
-            gvCartera.DataBind();
-        }
-
 
 
 
@@ -304,11 +334,21 @@ namespace fpWebApp
         }
 
 
+        //protected void ddlEmpresa_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    gvCartera.DataSource = null;
+        //    gvCartera.DataBind();
+        //    btnGenerarLiquidacion.Visible = false;
+        //}
+
         protected void ddlEmpresa_SelectedIndexChanged(object sender, EventArgs e)
         {
             gvCartera.DataSource = null;
             gvCartera.DataBind();
+
+            gvCartera.Visible = false;
             btnGenerarLiquidacion.Visible = false;
+            lblSinDatos.Visible = false;
         }
 
         protected void lbExportarPdf_Click(object sender, EventArgs e)
@@ -393,6 +433,28 @@ namespace fpWebApp
             }
         }
 
+        //protected void btnBuscar_Click(object sender, EventArgs e)
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    try
+        //    {
+        //        string documentoEmpresa = ddlEmpresa.SelectedValue;
+
+        //        if (string.IsNullOrEmpty(documentoEmpresa))
+        //            return;
+        //        DataTable dt = new DataTable();
+        //        dt = cg.CargarCarteraPorNit(documentoEmpresa);
+        //        btnGenerarLiquidacion.Visible = dt.Rows.Count > 0;
+        //        gvCartera.DataSource = dt;
+        //        gvCartera.DataBind();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+        //    }
+        //}
+
         protected void btnBuscar_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
@@ -402,16 +464,29 @@ namespace fpWebApp
 
                 if (string.IsNullOrEmpty(documentoEmpresa))
                     return;
-                DataTable dt = new DataTable();
-                dt = cg.CargarCarteraPorNit(documentoEmpresa);
-                btnGenerarLiquidacion.Visible = dt.Rows.Count > 0;
+
+                DataTable dt = cg.CargarCarteraPorNit(documentoEmpresa);
+
                 gvCartera.DataSource = dt;
                 gvCartera.DataBind();
+
+                bool hayDatos = dt != null && dt.Rows.Count > 0;
+
+                btnGenerarLiquidacion.Visible = hayDatos;
+                gvCartera.Visible = hayDatos;
+
+                lblSinDatos.Visible = !hayDatos;
+                if (!hayDatos)
+                {
+                    lblSinDatos.Text = "<div class=\"alert alert-info text-center\">\r\n    <i class=\"fa fa-info-circle\"></i> No existen registros asociados a la empresa seleccionada.\r\n</div>\r\n";
+                }
             }
             catch (Exception ex)
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+                MostrarAlerta("Error de proceso",
+                    "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog,
+                    "error");
             }
         }
 
@@ -437,7 +512,7 @@ namespace fpWebApp
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }}).then(() => {{
-                                    window.location.href = 'generarfactura';
+                                    window.location.href = 'liquidarcartera';
                                 }});
                             ";
 
@@ -467,101 +542,101 @@ namespace fpWebApp
 
 
 
-        //public void ExportarPDF(DataTable dtDetalle, DataTable dtTotales, string nombreArchivo)
-        //{
-        //    if (dtDetalle == null || dtDetalle.Rows.Count == 0)
-        //        throw new Exception("No hay datos para exportar");
+    //public void ExportarPDF(DataTable dtDetalle, DataTable dtTotales, string nombreArchivo)
+    //{
+    //    if (dtDetalle == null || dtDetalle.Rows.Count == 0)
+    //        throw new Exception("No hay datos para exportar");
 
-        //    // Crear documento
-        //    Document doc = new Document(PageSize.A4.Rotate(), 10, 10, 10, 10);
-        //    PdfWriter.GetInstance(doc, HttpContext.Current.Response.OutputStream);
-        //    doc.Open();
+    //    // Crear documento
+    //    Document doc = new Document(PageSize.A4.Rotate(), 10, 10, 10, 10);
+    //    PdfWriter.GetInstance(doc, HttpContext.Current.Response.OutputStream);
+    //    doc.Open();
 
-        //    // Título
-        //    Paragraph titulo = new Paragraph("Reporte generado",
-        //        FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14));
-        //    titulo.Alignment = Element.ALIGN_CENTER;
-        //    doc.Add(titulo);
-        //    doc.Add(new Paragraph(" "));
+    //    // Título
+    //    Paragraph titulo = new Paragraph("Reporte generado",
+    //        FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14));
+    //    titulo.Alignment = Element.ALIGN_CENTER;
+    //    doc.Add(titulo);
+    //    doc.Add(new Paragraph(" "));
 
-        //    // Tabla dinámica
-        //    PdfPTable tabla = new PdfPTable(dtDetalle.Columns.Count);
-        //    tabla.WidthPercentage = 100;
+    //    // Tabla dinámica
+    //    PdfPTable tabla = new PdfPTable(dtDetalle.Columns.Count);
+    //    tabla.WidthPercentage = 100;
 
-        //    // Encabezados
-        //    foreach (DataColumn col in dtDetalle.Columns)
-        //    {
-        //        tabla.AddCell(new PdfPCell(new Phrase(col.ColumnName))
-        //        {
-        //            BackgroundColor = BaseColor.LIGHT_GRAY
-        //        });
-        //    }
+    //    // Encabezados
+    //    foreach (DataColumn col in dtDetalle.Columns)
+    //    {
+    //        tabla.AddCell(new PdfPCell(new Phrase(col.ColumnName))
+    //        {
+    //            BackgroundColor = BaseColor.LIGHT_GRAY
+    //        });
+    //    }
 
-        //    // Datos
-        //    foreach (DataRow row in dtDetalle.Rows)
-        //    {
-        //        foreach (var item in row.ItemArray)
-        //            tabla.AddCell(item?.ToString() ?? "");
-        //    }
+    //    // Datos
+    //    foreach (DataRow row in dtDetalle.Rows)
+    //    {
+    //        foreach (var item in row.ItemArray)
+    //            tabla.AddCell(item?.ToString() ?? "");
+    //    }
 
-        //    doc.Add(tabla);
+    //    doc.Add(tabla);
 
-        //    // Totales (SI EXISTEN)
-        //    if (dtTotales != null && dtTotales.Rows.Count > 0)
-        //    {
-        //        doc.Add(new Paragraph(" "));
-        //        doc.Add(new Paragraph("Totales", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
+    //    // Totales (SI EXISTEN)
+    //    if (dtTotales != null && dtTotales.Rows.Count > 0)
+    //    {
+    //        doc.Add(new Paragraph(" "));
+    //        doc.Add(new Paragraph("Totales", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
 
-        //        foreach (DataColumn col in dtTotales.Columns)
-        //        {
-        //            doc.Add(new Paragraph($"{col.ColumnName}: {dtTotales.Rows[0][col]}"));
-        //        }
-        //    }
+    //        foreach (DataColumn col in dtTotales.Columns)
+    //        {
+    //            doc.Add(new Paragraph($"{col.ColumnName}: {dtTotales.Rows[0][col]}"));
+    //        }
+    //    }
 
-        //    doc.Close();
+    //    doc.Close();
 
-        //    HttpContext.Current.Response.ContentType = "application/pdf";
-        //    HttpContext.Current.Response.AddHeader("content-disposition",
-        //        $"attachment;filename={nombreArchivo}.pdf");
-        //    HttpContext.Current.Response.End();
-        //}
+    //    HttpContext.Current.Response.ContentType = "application/pdf";
+    //    HttpContext.Current.Response.AddHeader("content-disposition",
+    //        $"attachment;filename={nombreArchivo}.pdf");
+    //    HttpContext.Current.Response.End();
+    //}
 
 
 
-        //protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        DataRowView row = (DataRowView)e.Item.DataItem;
-        //        int idAfilPlan;
-        //        if (row["idAfilPlan"] is DBNull)
-        //        {
-        //            idAfilPlan = 0;
-        //        }
-        //        else
-        //        {
-        //            idAfilPlan = Convert.ToInt32(row["idAfilPlan"]);
-        //        }
+    //protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+    //{
+    //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+    //    {
+    //        DataRowView row = (DataRowView)e.Item.DataItem;
+    //        int idAfilPlan;
+    //        if (row["idAfilPlan"] is DBNull)
+    //        {
+    //            idAfilPlan = 0;
+    //        }
+    //        else
+    //        {
+    //            idAfilPlan = Convert.ToInt32(row["idAfilPlan"]);
+    //        }
 
-        //        string strQuery = @"
-        //            SELECT  
-        //                ppa.idPago AS Pago, 
-        //                ppa.IdReferencia AS Ref, 
-        //                ppa.FechaHoraPago AS Fecha, 
-        //                ppa.Valor,
-        //                mp.NombreMedioPago AS 'Medio de pago'
-        //            FROM PagosPlanAfiliado ppa
-        //                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-        //                INNER JOIN MediosDePago mp ON mp.idMedioPago = ppa.idMedioPago
-        //            WHERE 
-        //                ppa.idAfiliadoPlan = " + idAfilPlan.ToString() + @"";
+    //        string strQuery = @"
+    //            SELECT  
+    //                ppa.idPago AS Pago, 
+    //                ppa.IdReferencia AS Ref, 
+    //                ppa.FechaHoraPago AS Fecha, 
+    //                ppa.Valor,
+    //                mp.NombreMedioPago AS 'Medio de pago'
+    //            FROM PagosPlanAfiliado ppa
+    //                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+    //                INNER JOIN MediosDePago mp ON mp.idMedioPago = ppa.idMedioPago
+    //            WHERE 
+    //                ppa.idAfiliadoPlan = " + idAfilPlan.ToString() + @"";
 
-        //        clasesglobales cg = new clasesglobales();
-        //        DataTable dt = cg.TraerDatos(strQuery);
+    //        clasesglobales cg = new clasesglobales();
+    //        DataTable dt = cg.TraerDatos(strQuery);
 
-        //        Repeater rpDetallesPago = (Repeater)e.Item.FindControl("rpDetallesPago");
-        //        rpDetallesPago.DataSource = dt;
-        //        rpDetallesPago.DataBind();
-        //    }
-        //}
-    }
+    //        Repeater rpDetallesPago = (Repeater)e.Item.FindControl("rpDetallesPago");
+    //        rpDetallesPago.DataSource = dt;
+    //        rpDetallesPago.DataBind();
+    //    }
+    //}
+}
