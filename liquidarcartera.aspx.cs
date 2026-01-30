@@ -512,7 +512,7 @@ namespace fpWebApp
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }}).then(() => {{
-                                    window.location.href = 'liquidarcartera';
+                                    window.location.href = 'liquidacionesgeneradas';
                                 }});
                             ";
 
