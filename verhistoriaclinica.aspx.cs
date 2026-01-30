@@ -33,7 +33,6 @@ namespace fpWebApp
 
                             txbFum.Attributes.Add("type", "date");
                             txbCigarrillos.Attributes.Add("type", "number");
-                            txbBebidas.Attributes.Add("type", "number");
                             
                             btnAgregar.Visible = true;
                         }
@@ -203,7 +202,8 @@ namespace fpWebApp
             rblFuma.SelectedIndex = Convert.ToInt32(rblFuma.Items.IndexOf(rblFuma.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Tabaquismo"]).ToString())));
             txbCigarrillos.Text = dt.Rows[0]["Cigarrillos"].ToString();
             rblToma.SelectedIndex = Convert.ToInt32(rblToma.Items.IndexOf(rblToma.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Alcoholismo"]).ToString())));
-            txbBebidas.Text = dt.Rows[0]["Bebidas"].ToString();
+            //txbBebidas.Text = dt.Rows[0]["Bebidas"].ToString();
+            ddlBebidas.SelectedIndex = Convert.ToInt32(ddlBebidas.Items.IndexOf(ddlBebidas.Items.FindByValue(dt.Rows[0]["Bebidas"].ToString())));
             rblSedentarismo.SelectedIndex = Convert.ToInt32(rblSedentarismo.Items.IndexOf(rblSedentarismo.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Sedentarismo"]).ToString())));
             rblDiabetes.SelectedIndex = Convert.ToInt32(rblDiabetes.Items.IndexOf(rblDiabetes.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Diabetes"]).ToString())));
             rblColesterol.SelectedIndex = Convert.ToInt32(rblColesterol.Items.IndexOf(rblColesterol.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Colesterol"]).ToString())));
@@ -248,7 +248,7 @@ namespace fpWebApp
                 "'" + txbAnteFarmacologico.Text.ToString() + "', '" + txbAnteActividadFisica.Text.ToString() + "', " +
                 "'" + txbAnteGinecoObstetricio.Text.ToString() + "', '" + txbFum.Text.ToString() + "', " +
                 "" + rblFuma.SelectedItem.Value.ToString() + ", " + txbCigarrillos.Text.ToString() + ", " +
-                "" + rblToma.SelectedItem.Value.ToString() + ", " + txbBebidas.Text.ToString() + ", " +
+                "" + rblToma.SelectedItem.Value.ToString() + ", '" + ddlTipoConsulta.SelectedItem.Value.ToString() + "', " +
                 "" + rblSedentarismo.SelectedItem.Value.ToString() + ", " + rblDiabetes.SelectedItem.Value.ToString() + ", " +
                 "" + rblColesterol.SelectedItem.Value.ToString() + ", " + rblTrigliceridos.SelectedItem.Value.ToString() + ", " +
                 "" + rblHTA.SelectedItem.Value.ToString() + ") ";

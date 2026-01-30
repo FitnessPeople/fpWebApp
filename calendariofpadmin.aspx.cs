@@ -123,7 +123,9 @@ namespace fpWebApp
 
             dt.Dispose();
 
-            AgregarFestivos(_strEventos, "2025");
+            AgregarFestivos(_strEventos, "2026");
+
+            _strEventos += "],\r\n";
 
         }
 

@@ -562,8 +562,13 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Bebidas x mes</label>
-                                                            <asp:TextBox ID="txbBebidas" CssClass="form-control input-sm" runat="server" Text="0"></asp:TextBox>
+                                                            <label>Frecuencia de bebida</label>
+                                                            <asp:DropDownList ID="ddlBebidas" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Diario" Value="Diario"></asp:ListItem>
+                                                                <asp:ListItem Text="Semanal" Value="Semanal"></asp:ListItem>
+                                                                <asp:ListItem Text="Mensual" Value="Mensual"></asp:ListItem>
+                                                            </asp:DropDownList>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -577,6 +582,7 @@
                                                             <asp:RadioButtonList ID="rblSedentarismo" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
                                                                 <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
                                                                 <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;NS/NR" Value="2" style="margin-right: 10px;"></asp:ListItem>
                                                             </asp:RadioButtonList>
                                                         </div>
                                                     </div>
@@ -586,6 +592,7 @@
                                                             <asp:RadioButtonList ID="rblDiabetes" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
                                                                 <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
                                                                 <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;NS/NR" Value="2" style="margin-right: 10px;"></asp:ListItem>
                                                             </asp:RadioButtonList>
                                                         </div>
                                                     </div>
@@ -728,7 +735,7 @@
                 rblToma: {
                     required: true
                 },
-                txbBebidas: {
+                ddlBebidas: {
                     required: true
                 },
                 rblSedentarismo: {
