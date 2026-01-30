@@ -1,4 +1,5 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="generarfactura.ascx.cs" Inherits="fpWebApp.generarfactura" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="liquidarcartera.aspx.cs" Inherits="fpWebApp.liquidarcartera" %>
+
 
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
@@ -26,6 +27,12 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+        <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style type="text/css" media="print">
         body {
             visibility: hidden;
@@ -35,9 +42,9 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#reportesoperativos");
+            var element1 = document.querySelector("#liquidarcartera");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#reportes");
+            var element2 = document.querySelector("#corporativo");
             element2.classList.remove("collapse");
         }
     </script>
@@ -111,11 +118,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-sheet-plastic text-success m-r-sm"></i>Reportes operativos</h2>
+                    <h2><i class="fas fa-sheet-plastic text-success m-r-sm"></i>Liquidar cartera</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Reportes</li>
-                        <li class="active"><strong>Reportes operativos</strong></li>
+                        <li>Corporativo</li>
+                        <li class="active"><strong>Liquidar cartera</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -171,14 +178,65 @@
                             <div class="col-lg-12">
 
                                 <div class="row">
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-success">
 
+                                                <h5>Empresas con cartera pendiente:
+                                                    <asp:Literal ID="lblEmpresas1" runat="server"></asp:Literal></h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblEmpresas" runat="server"></asp:Literal></h1>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-success">
+                                                <h5>Total cartera pendiente: </h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblCartera" runat="server"></asp:Literal></h1>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-success">
+                                                <h5>Liquidaciones pendientes de facturar:
+                                                    <asp:Literal ID="ltMes2" runat="server"></asp:Literal></h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblPendientes" runat="server"></asp:Literal></h1>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-success">
+                                                <h5>Liquidaciones generadas este mes:
+                                                    <asp:Literal ID="ltMes3" runat="server"></asp:Literal></h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblMes" runat="server"></asp:Literal></h1>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- INDICADORES FINAL -->
 
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Reporte de ventas
+                                        <h5>Pendientes de liquidación
                                             <asp:Literal ID="ltMes4" runat="server"></asp:Literal>:</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
@@ -191,40 +249,24 @@
 
                                             <div class="col-lg-2">
                                                 <div class="form-group">
-                                                    <input type="text" id="txtBuscarGrid" class="form-control input-sm" placeholder="Buscar en el reporte..."
+                                                    <input type="text" id="txtBuscarGrid" class="form-control input-sm" placeholder="Buscar"
                                                         onkeyup="filtrarGridView()" />
                                                 </div>
                                             </div>
 
-
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <asp:DropDownList ID="ddlTipoReporte" runat="server" AppendDataBoundItems="true"
-                                                        DataTextField="TipoDocumento" DataValueField="idTipoRep" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Ventas por Asesor" Value="1" Selected="True"></asp:ListItem>
-                                                        <asp:ListItem Text="Ventas por Sede" Value="2"></asp:ListItem>
-                                                        <asp:ListItem Text="Ventas totales" Value="3"></asp:ListItem>
-                                                        <asp:ListItem Text="Ventas por Planes" Value="4"></asp:ListItem>
-                                                        <asp:ListItem Text="Ventas Usuarios planes" Value="5"></asp:ListItem>
-                                                        <asp:ListItem Text="Metas vs Ventas Asesor" Value="6"></asp:ListItem>
-                                                        <asp:ListItem Text="Ventas Corporativo" Value="7"></asp:ListItem>
-                                                        <asp:ListItem Text="Ventas por CRM" Value="8"></asp:ListItem>
-                                                        <asp:ListItem Text="Afiliados activos/inactivos" Value="9"></asp:ListItem>
-                                                        <asp:ListItem Text="Clientes corporativos" Value="10"></asp:ListItem>
-                                                        <asp:ListItem Text="Negociaciones por cliente" Value="11"></asp:ListItem>
-                                                        <asp:ListItem Text="Estado de cuenta por cliente" Value="12"></asp:ListItem>
-                                                        <asp:ListItem Text="Estado de cuenta general" Value="13"></asp:ListItem>
-                                                        <asp:ListItem Text="Gestión diaria de asesores" Value="14"></asp:ListItem>
-                                                        <asp:ListItem Text="Tiempos de respuesta" Value="15"></asp:ListItem>
-                                                        <asp:ListItem Text="Negociaciones creadas / eliminadas" Value="16"></asp:ListItem>
-                                                        <asp:ListItem Text="Empresas con mayor facturación" Value="17"></asp:ListItem>
-                                                        <asp:ListItem Text="Estado de contratos empresariales" Value="18"></asp:ListItem>
-                                                        <asp:ListItem Text="Usuarios activos / inactivos" Value="19"></asp:ListItem>
-                                                        <asp:ListItem Text="Roles y permisos" Value="20"></asp:ListItem>
+                                                    <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreComercial" DataValueField="DocumentoEmpresa"
+                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
+                                                    <asp:RequiredFieldValidator ID="rfvEmpresa" runat="server"
+                                                        ErrorMessage="* Campo requerido" ControlToValidate="ddlEmpresa"
+                                                        CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                 </div>
                                             </div>
-                                            <div class="col-lg-2">
+
+                                            <%--                                            <div class="col-lg-2">
                                                 <div class="form-group">
                                                     <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" placeholder="Fecha inicial" />
                                                 </div>
@@ -234,10 +276,11 @@
                                                 <div class="form-group">
                                                     <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" placeholder="Fecha final" />
                                                 </div>
-                                            </div>
+                                            </div>--%>
                                             <div class="col-lg-1">
                                                 <div class="form-group">
-                                                    <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary btn-sm" OnClick="btnBuscar_Click" />
+                                                    <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary btn-sm"
+                                                        OnClick="btnBuscar_Click" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-1">
@@ -255,23 +298,105 @@
                                                     CausesValidation="false"
                                                     CssClass="btn btn-success pull-right dim m-l-md"
                                                     Style="font-size: 12px;"
-                                                    OnClick="lbExportarPdf_Click">
+                                                    OnClick="lbExportarPdf_Click"
+                                                    ValidationGroup="agregar">
                                                     <i class="fa fa-file-pdf m-r-xs"></i>PDF
                                                 </asp:LinkButton>
 
                                             </div>
                                         </div>
+                                        <%--<asp:GridView
+                                            ID="gvCartera"
+                                            runat="server"
+                                            AutoGenerateColumns="false"
+                                            CssClass="table table-bordered">
+
+                                            <Columns>
+                                                <asp:BoundField
+                                                    DataField="IdAfiliadoPlan"
+                                                    HeaderText="IdAfiliadoPlan" />
+
+                                                <asp:BoundField
+                                                    DataField="DocumentoAfiliado"
+                                                    HeaderText="Documento" />
+
+                                                <asp:BoundField
+                                                    DataField="NombreAfiliado"
+                                                    HeaderText="Afiliado" />
+
+                                                <asp:BoundField
+                                                    DataField="NombrePlan"
+                                                    HeaderText="Plan" />
+
+                                                <asp:BoundField
+                                                    DataField="FechaElaboracion"
+                                                    HeaderText="Fecha Elaboración"
+                                                    DataFormatString="{0:dd/MM/yyyy}" />
+
+                                                <asp:BoundField
+                                                    DataField="DiasTranscurridos"
+                                                    HeaderText="Días" />
+
+                                                <asp:BoundField
+                                                    DataField="ValorFacturar"
+                                                    HeaderText="Valor"
+                                                    DataFormatString="{0:C0}" />
+
+                                                <asp:BoundField
+                                                    DataField="EstadoVencimiento"
+                                                    HeaderText="Estado" />
+
+                                            </Columns>
+                                        </asp:GridView>--%>
 
                                         <asp:GridView
-                                            ID="gvReporte"
+                                            ID="gvCartera"
                                             runat="server"
-                                            CssClass="table table-striped table-bordered"
-                                            AutoGenerateColumns="true"
-                                            EmptyDataText="No hay información para mostrar">
-                                        </asp:GridView>
+                                            AutoGenerateColumns="false"
+                                            CssClass="table table-bordered">
 
+                                            <Columns>
+
+
+                                                <asp:TemplateField HeaderStyle-Width="40px">
+                                                    <HeaderTemplate>
+                                                        <asp:CheckBox
+                                                            ID="chkTodos"
+                                                            runat="server"
+                                                            onclick="SeleccionarTodos(this);" />
+                                                    </HeaderTemplate>
+                                                    <ItemTemplate>
+                                                        <asp:CheckBox
+                                                            ID="chkItem"
+                                                            runat="server" />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+
+                                                <asp:BoundField DataField="IdAfiliadoPlan" HeaderText="IdAfiliadoPlan" />
+                                                <asp:BoundField DataField="DocumentoAfiliado" HeaderText="Documento" />
+                                                <asp:BoundField DataField="NombreAfiliado" HeaderText="Afiliado" />
+                                                <asp:BoundField DataField="NombrePlan" HeaderText="Plan" />
+                                                <asp:BoundField DataField="FechaElaboracion" HeaderText="Fecha Elaboración"
+                                                    DataFormatString="{0:dd/MM/yyyy}" />
+                                                <asp:BoundField DataField="DiasTranscurridos" HeaderText="Días" />
+                                                <asp:BoundField DataField="ValorFacturar" HeaderText="Valor"
+                                                    DataFormatString="{0:C0}" />
+                                                <asp:BoundField DataField="EstadoVencimiento" HeaderText="Estado" />
+
+                                            </Columns>
+                                        </asp:GridView>
+                                        <asp:Button
+                                            ID="btnGenerarLiquidacion"
+                                            runat="server"
+                                            Text="Generar liquidación"
+                                            CssClass="btn btn-success btn-sm"
+                                            OnClick="btnGenerarLiquidacion_Click"
+                                            Visible="false" />
                                     </div>
+                                    <asp:Label ID="lblSinDatos" runat="server" CssClass="text-warning font-bold" Visible="false" Text="No se encontraron datos o registros."></asp:Label>
                                 </div>
+
+
 
                                 <div class="ibox float-e-margins" id="divPagosRechazados" runat="server" visible="false">
                                     <div class="ibox-title">
@@ -378,7 +503,7 @@
             var input = document.getElementById("txtBuscarGrid");
             var filtro = input.value.toLowerCase();
 
-            var grid = document.getElementById("<%= gvReporte.ClientID %>");
+            var grid = document.getElementById("<%= gvCartera.ClientID %>");
             if (!grid) return;
 
             var filas = grid.getElementsByTagName("tr");
@@ -401,8 +526,23 @@
         }
     </script>
 
+    <script type="text/javascript">
+        function SeleccionarTodos(chk) {
+            var grid = document.getElementById('<%= gvCartera.ClientID %>');
+            var checkboxes = grid.getElementsByTagName("input");
+
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].type === "checkbox" && checkboxes[i] !== chk) {
+                    checkboxes[i].checked = chk.checked;
+                }
+            }
+        }
+    </script>
+
+
 </body>
 
 </html>
+
 
 

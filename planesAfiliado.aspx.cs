@@ -860,61 +860,6 @@ namespace fpWebApp
             ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
 
-        //private void CalculoPrecios()
-        //{
-        //    double intPrecio = Convert.ToInt32(ViewState["precioTotal"]);
-        //    double intPrecioBase = Convert.ToInt32(ViewState["precioBase"]);
-        //    double intMeses = Convert.ToInt32(ViewState["meses"]);
-        //    double dobDescuento = (1 - (intPrecio / intMeses) / intPrecioBase) * 100;
-        //    double intConDescuento = (intPrecioBase * intMeses) - intPrecio;
-        //    double dobPrecioMesDescuento = intPrecio / intMeses;
-
-        //    ltPrecioBase.Text = "$" + string.Format("{0:N0}", intPrecioBase);
-        //    ltDescuento.Text = string.Format("{0:N2}", dobDescuento) + "%";
-        //    ltPrecioFinal.Text = "$" + string.Format("{0:N0}", intPrecio);
-        //    ltAhorro.Text = "$" + string.Format("{0:N0}", intConDescuento);
-        //    ltConDescuento.Text = "$" + string.Format("{0:N0}", dobPrecioMesDescuento) + " / mes";
-
-        //    //Ojo poner tipo plan
-        //    if (ViewState["precioTotal"].ToString() == "99000")
-        //    {
-        //        ltTipoPlan.Text = "Debito automático";
-        //    }
-        //    else
-        //    {
-        //        ltTipoPlan.Text = "Único pago";
-        //    }
-
-        //    ltObservaciones.Text = "Valor sin descuento: $" + string.Format("{0:N0}", intPrecioBase) + "<br /><br />";
-        //    ltObservaciones.Text += "<b>Meses</b>: " + intMeses.ToString() + ".<br />";
-        //    ltObservaciones.Text += "<b>Descuento</b>: " + string.Format("{0:N2}", dobDescuento) + "%.<br />";
-        //    ltObservaciones.Text += "<b>Valor del mes con descuento</b>: $" + string.Format("{0:N0}", dobPrecioMesDescuento) + "<br />";
-        //    ltObservaciones.Text += "<b>Valor Total</b>: $" + string.Format("{0:N0}", intPrecio) + ".<br />";
-
-        //    ViewState["observaciones"] = ltObservaciones.Text.ToString().Replace("<b>", "").Replace("</b>", "").Replace("<br />", "\r\n");
-
-
-
-
-
-        //    bool rtacrm = false;
-        //    DataTable _rtacrm = new DataTable();
-        //    _rtacrm = cg.ConsultarContactosCRMPorId(Convert.ToInt32(Request.QueryString["idcrm"]), out rtacrm);
-        //    DataTable _rtaPregestion = new DataTable();
-        //    //int idNegociacion = 0;
-        //    if (_rtacrm.Rows.Count > 0)
-        //    {
-        //        if (Convert.ToInt32(_rtacrm.Rows[0]["idEmpresaCRM"].ToString()) > 0)                                    
-        //            ltValorTotal.Text = "($" + string.Format("{0:N0}", Convert.ToInt32(_rtacrm.Rows[0]["ValorPropuesta"].ToString())) + ")";               
-        //        else               
-        //            ltValorTotal.Text = "($" + string.Format("{0:N0}", intPrecio) + ")";
-
-        //    }
-
-
-        //}
-
-
         private void CalculoPrecios()
         {
             clasesglobales cg = new clasesglobales();
@@ -951,10 +896,7 @@ namespace fpWebApp
                 .Replace("</b>", "")
                 .Replace("<br />", "\r\n");
 
-            // =====================================================
-            // 🔥 LÓGICA DE CRÉDITO / VALOR TOTAL A MOSTRAR
-            // =====================================================
-
+ 
             bool usaCredito = false;
             bool usaEmpresaAfiliada = false;
 
@@ -1318,16 +1260,14 @@ namespace fpWebApp
                         txbCredito.Text = _rtacrm.Rows[0]["ValorPropuesta"].ToString();
                         ddlEmpresa.SelectedValue = _rtacrm.Rows[0]["idEmpresaCRM"].ToString();                       
                     }                    
-                }
-
-                
+                }               
 
                 _rtaPregestion = cg.ConsultarPregestionCRMPorId(idPregestion);
                 if (_rtaPregestion.Rows.Count > 0) idNegociacion = Convert.ToInt32(_rtaPregestion.Rows[0]["idNegociacion"].ToString());
 
                 string rtaCartera = cg.InsertarCarteraPlan(idcrm, idPregestion, idNegociacion, Convert.ToInt32(ViewState["idPlan"]), ddlEmpresa.SelectedValue,
                         valorCredito, 0, valorCredito, Convert.ToInt32(ViewState["meses"]), fechaInicio, fechaFinalPlan, 6, "ACTIVA",
-                        false, null, null, idUsuario, _idAfiliadPlan);
+                        false, null, null, idUsuario, _idAfiliadPlan, _docAfiliado);
 
                 DataTable _dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
                 string valorCreditoLimpio = Regex.Replace(txbCredito.Text, @"[^\d]", "");
@@ -1495,74 +1435,15 @@ namespace fpWebApp
         }
         protected void rpPlanes_ItemCommand(object source, RepeaterCommandEventArgs e)
         {
-            //if (e.CommandName == "SeleccionarPlan")
-            //{
-            //    txbWompi.Enabled = true;
-            //    txbDatafono.Enabled = true;
-            //    txbEfectivo.Enabled = true;
-            //    txbTransferencia.Enabled = true;
-            //    cbPagaCounter.Enabled = true;
-
-            //    int idPlan = Convert.ToInt32(e.CommandArgument.ToString());
-            //    clasesglobales cg = new clasesglobales();
-            //    DataTable dt = cg.ConsultarPlanPorId(idPlan);
-
-            //    ViewState["idPlan"] = dt.Rows[0]["idPlan"].ToString();
-            //    ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"].ToString();
-            //    ViewState["codSiigoPlan"] = dt.Rows[0]["CodSiigoPlan"].ToString();
-            //    ViewState["precioTotal"] = Convert.ToInt32(dt.Rows[0]["PrecioTotal"].ToString());
-            //    ViewState["precioMinimo"] = Convert.ToInt32(dt.Rows[0]["PrecioMinimo"].ToString());
-            //    ViewState["precioBase"] = Convert.ToInt32(dt.Rows[0]["PrecioBase"].ToString());
-            //    ViewState["meses"] = Convert.ToDouble(dt.Rows[0]["Meses"].ToString());
-            //    ViewState["mesesCortesia"] = Convert.ToDouble(dt.Rows[0]["MesesCortesia"].ToString());
-            //    ViewState["DebitoAutomatico"] = Convert.ToDouble(dt.Rows[0]["DebitoAutomatico"].ToString());
-
-            //    ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
-            //    ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
-
-            //    CalculoPrecios();
-            //    ActivarCortesia(ViewState["mesesCortesia"].ToString());
-
-            //    ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"].ToString() + "<br />";
-
-            //    ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"].ToString() + "</b>";
-
-            //    idPlan = Convert.ToInt32(e.CommandArgument);
-            //    ViewState["IdPlanSeleccionado"] = idPlan;
-            //    CargarPlan(idPlan);                      
-            //    rpPlanes.DataBind();         
-            //    ReconstruirVistaPlan();
-
-            //}
             if (e.CommandName == "SeleccionarPlan")
             {
                 int idPlan = Convert.ToInt32(e.CommandArgument);
-
-                // 🔑 una sola fuente de verdad
+             
                 CargarPlan(idPlan);
 
                 ViewState["IdPlanSeleccionado"] = idPlan;
             }
         }
-
-        private void ReconstruirVistaPlan()
-        {
-            if (ViewState["idPlan"] == null) return;
-
-            txbWompi.Enabled = true;
-            txbDatafono.Enabled = true;
-            txbEfectivo.Enabled = true;
-            txbTransferencia.Enabled = true;
-            cbPagaCounter.Enabled = true;
-
-            ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
-            ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
-
-            ActivarCortesia(ViewState["mesesCortesia"].ToString());
-
-            ltNombrePlan.Text = "<b>Plan " + ViewState["nombrePlan"] + "</b>";
-        }
-
 
         private void CargarPlan(int idPlan)
         {
@@ -1576,7 +1457,7 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarPlanPorId(idPlan);
             if (dt.Rows.Count == 0) return;
 
-            // 🔐 ViewState
+            
             ViewState["idPlan"] = idPlan;
             ViewState["nombrePlan"] = dt.Rows[0]["NombrePlan"];
             ViewState["codSiigoPlan"] = dt.Rows[0]["CodSiigoPlan"];
@@ -1587,7 +1468,7 @@ namespace fpWebApp
             ViewState["mesesCortesia"] = dt.Rows[0]["MesesCortesia"];
             ViewState["DebitoAutomatico"] = dt.Rows[0]["DebitoAutomatico"];
 
-            // 🎨 UI
+            
             ltPrecioBase.Text = "$" + String.Format("{0:N0}", ViewState["precioBase"]);
             ltPrecioFinal.Text = "$" + String.Format("{0:N0}", ViewState["precioTotal"]);
             ltDescripcion.Text = "<b>Características</b>: " + dt.Rows[0]["DescripcionPlan"];
@@ -1598,17 +1479,6 @@ namespace fpWebApp
         }
 
 
-        //protected void rpPlanes_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        if (ViewState["CrearModificar"].ToString() == "1")
-        //        {
-        //            LinkButton lnkPlan = (LinkButton)e.Item.FindControl("btnSeleccionarPlan");
-        //            lnkPlan.Attributes.Add("class", "btn btn-outline btn-" + ((DataRowView)e.Item.DataItem).Row["NombreColorPlan"].ToString() + " btn-block btn-sm");
-        //        }
-        //    }
-        //}
         protected void rpPlanes_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item ||
@@ -1619,17 +1489,17 @@ namespace fpWebApp
                 var row = (DataRowView)e.Item.DataItem;
                 int idPlan = Convert.ToInt32(row["idPlan"]);
 
-                // Clase base
+              
                 string css = "btn btn-outline btn-" + row["NombreColorPlan"] + " btn-block btn-sm";
 
-                // ¿Hay plan seleccionado?
+               
                 if (ViewState["IdPlanSeleccionado"] != null &&
                     Convert.ToInt32(ViewState["IdPlanSeleccionado"]) == idPlan)
                 {
-                    css += " active"; // visualmente seleccionado
+                    css += " active"; 
                     lnkPlan.Text = "✔ " + row["NombrePlan"];
 
-                    // Mostrar precio del plan seleccionado
+                   
                     Label lblPrecio = (Label)e.Item.FindControl("lblPrecio");
                     lblPrecio.Visible = true;
                 }

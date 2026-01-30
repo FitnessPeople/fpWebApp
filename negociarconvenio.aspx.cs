@@ -357,33 +357,6 @@ namespace fpWebApp
 
         }
 
-        //private void ListaProspectos(string documentoEmpresa)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    try
-        //    {
-        //        DataTable dt = cg.ConsultarProspectoClienteCorporativo(documentoEmpresa);
-
-        //        dt.Columns.Add("NombreCompleto", typeof(string));
-
-        //        foreach (DataRow row in dt.Rows)
-        //        {
-        //            row["NombreCompleto"] = row["NombreContacto"].ToString() + " " +
-        //                                    row["ApellidoContacto"].ToString();
-        //        }
-
-        //        ddlProspectos.DataSource = dt;
-        //        ddlProspectos.DataTextField = "NombreCompleto"; // ajusta según tu tabla
-        //        ddlProspectos.DataValueField = "IdPregestion";    // ajusta según tu tabla
-        //        ddlProspectos.DataBind();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-        //    }
-        //}
-
         private void ListaProspectos(string documentoEmpresa)
         {
             clasesglobales cg = new clasesglobales();

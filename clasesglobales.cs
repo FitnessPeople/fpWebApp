@@ -3926,7 +3926,7 @@ namespace fpWebApp
 
         public string InsertarCarteraPlan(int idContacto, int idPregestion, int idNegociacion, int idPlan, string documentoEmpresa, decimal valorPlan, decimal descuento,
         decimal valorFacturar, int mesesPlan, DateTime fechaInicio, DateTime fechaFin, int idMedioPago, string estadoCartera, bool facturadoMesActual,
-        DateTime? fechaUltimaFactura, string numeroFactura, int idUsuario, int idAfiliadoPlan)
+        DateTime? fechaUltimaFactura, string numeroFactura, int idUsuario, int idAfiliadoPlan, string DocumentoAfiliado)
         {
             string respuesta = string.Empty;
 
@@ -3960,6 +3960,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_NumeroFactura", (object)numeroFactura ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("@p_idUsuario", idUsuario);
                         cmd.Parameters.AddWithValue("@p_idAfiliadoPlan", idAfiliadoPlan);
+                        cmd.Parameters.AddWithValue("@p_DocumentoAfiliado", DocumentoAfiliado);
 
                         // Parámetro de salida
                         MySqlParameter mensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 200);
@@ -3980,7 +3981,132 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public int GenerarLiquidacionCartera(string documentoEmpresa, int idUsuario)
+        {
+            int idLiquidacion = 0;
 
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_GENERAR_LIQUIDACION_CARTERA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("p_DocumentoEmpresa", documentoEmpresa);
+                        cmd.Parameters.AddWithValue("p_idUsuario", idUsuario);
+
+                        // El SP retorna el idLiquidacion con SELECT
+                        object result = cmd.ExecuteScalar();
+
+                        if (result != null)
+                            idLiquidacion = Convert.ToInt32(result);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al generar la liquidación: " + ex.Message, ex);
+            }
+
+            return idLiquidacion;
+        }
+
+
+        public DataTable CargarCarteraPorNit(string documentoEmpresa)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CARTERA_AFILIADOS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("p_documento_empresa", documentoEmpresa);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarIndicadoresGenerarLiquidacion()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INDICADORES_LIQUIDACION_CARTERA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarLiquidacionesCarteraPendientes()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_LIQUIDACIONES_VIGENTES", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
         #endregion
 
         #region Cortesias

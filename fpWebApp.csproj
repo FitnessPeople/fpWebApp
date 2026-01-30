@@ -478,7 +478,6 @@
     <Content Include="estudiafit.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="generarfactura.ascx" />
     <Content Include="genero.aspx" />
     <Content Include="Global.asax" />
     <Content Include="gympass.aspx" />
@@ -961,6 +960,8 @@
     <Content Include="js\plugins\wompi\wompi.js" />
     <Content Include="js\plugins\wow\wow.min.js" />
     <Content Include="landing.html" />
+    <Content Include="liquidacionesgeneradas.aspx" />
+    <Content Include="liquidarcartera.aspx" />
     <Content Include="listacontactoscrm.aspx" />
     <Content Include="logactividades.aspx" />
     <Content Include="logout.aspx" />
@@ -1762,13 +1763,6 @@
     <Compile Include="estudiafit.aspx.designer.cs">
       <DependentUpon>estudiafit.aspx</DependentUpon>
     </Compile>
-    <Compile Include="generarfactura.ascx.cs">
-      <DependentUpon>generarfactura.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="generarfactura.ascx.designer.cs">
-      <DependentUpon>generarfactura.ascx</DependentUpon>
-    </Compile>
     <Compile Include="genero.aspx.cs">
       <DependentUpon>genero.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1932,6 +1926,20 @@
     </Compile>
     <Compile Include="inicio.aspx.designer.cs">
       <DependentUpon>inicio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="liquidacionesgeneradas.aspx.cs">
+      <DependentUpon>liquidacionesgeneradas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="liquidacionesgeneradas.aspx.designer.cs">
+      <DependentUpon>liquidacionesgeneradas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="liquidarcartera.aspx.cs">
+      <DependentUpon>liquidarcartera.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="liquidarcartera.aspx.designer.cs">
+      <DependentUpon>liquidarcartera.aspx</DependentUpon>
     </Compile>
     <Compile Include="listacontactoscrm.aspx.cs">
       <DependentUpon>listacontactoscrm.aspx</DependentUpon>
