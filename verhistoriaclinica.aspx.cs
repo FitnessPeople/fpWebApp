@@ -233,34 +233,65 @@ namespace fpWebApp
             //Inserta datos en la tabla HistoriasClinicas
             try
             {
-                string strQuery = "INSERT INTO HistoriasClinicas " +
-                "(idAfiliado, FechaHora, MedicinaPrepagada, idObjetivoIngreso, DescripcionObjetivoIngreso, " +
-                "Remision, TipoConsulta, MotivoConsulta, AnteFamiliar, AntePatologico, " +
-                "AnteQuirurgico, AnteToxicologico, AnteHospitalario, AnteTraumatologico, AnteFarmacologico, AnteActividadFisica, AnteGineco, " +
-                "AnteFUM, Tabaquismo, Cigarrillos, Alcoholismo, Bebidas, Sedentarismo, Diabetes, Colesterol, Trigliceridos, HTA) " +
-                "VALUES (" + Request.QueryString["idAfiliado"].ToString() + ", CURRENT_TIMESTAMP(), '" + txbMedicinaPrepagada.Text.ToString() + "', " +
-                "" + ddlObjetivo.SelectedItem.Value.ToString() + ", '" + txbDescripcionObjetivo.Text.ToString() + "', " +
-                "'" + txbRemision.Text.ToString() + "', '" + ddlTipoConsulta.SelectedItem.Value.ToString() + "', " +
-                "'" + txbMotivoConsulta.Text.ToString() + "', " +
-                "'" + txbAnteFamiliares.Text.ToString() + "', '" + txbAntePatologico.Text.ToString() + "', " +
-                "'" + txbAnteQuirurgico.Text.ToString() + "', '" + txbAnteToxicologico.Text.ToString() + "', " +
-                "'" + txbAnteHospitalario.Text.ToString() + "', '" + txbAnteTraumatologico.Text.ToString() + "', " +
-                "'" + txbAnteFarmacologico.Text.ToString() + "', '" + txbAnteActividadFisica.Text.ToString() + "', " +
-                "'" + txbAnteGinecoObstetricio.Text.ToString() + "', '" + txbFum.Text.ToString() + "', " +
-                "" + rblFuma.SelectedItem.Value.ToString() + ", " + txbCigarrillos.Text.ToString() + ", " +
-                "" + rblToma.SelectedItem.Value.ToString() + ", '" + ddlTipoConsulta.SelectedItem.Value.ToString() + "', " +
-                "" + rblSedentarismo.SelectedItem.Value.ToString() + ", " + rblDiabetes.SelectedItem.Value.ToString() + ", " +
-                "" + rblColesterol.SelectedItem.Value.ToString() + ", " + rblTrigliceridos.SelectedItem.Value.ToString() + ", " +
-                "" + rblHTA.SelectedItem.Value.ToString() + ") ";
+                //string strQuery = "INSERT INTO HistoriasClinicas " +
+                //"(idAfiliado, FechaHora, MedicinaPrepagada, idObjetivoIngreso, DescripcionObjetivoIngreso, " +
+                //"Remision, TipoConsulta, MotivoConsulta, AnteFamiliar, AntePatologico, " +
+                //"AnteQuirurgico, AnteToxicologico, AnteHospitalario, AnteTraumatologico, AnteFarmacologico, AnteActividadFisica, AnteGineco, " +
+                //"AnteFUM, Tabaquismo, Cigarrillos, Alcoholismo, Bebidas, Sedentarismo, Diabetes, Colesterol, Trigliceridos, HTA) " +
+                //"VALUES (" + Request.QueryString["idAfiliado"].ToString() + ", CURRENT_TIMESTAMP(), '" + txbMedicinaPrepagada.Text.ToString() + "', " +
+                //"" + ddlObjetivo.SelectedItem.Value.ToString() + ", '" + txbDescripcionObjetivo.Text.ToString() + "', " +
+                //"'" + txbRemision.Text.ToString() + "', '" + ddlTipoConsulta.SelectedItem.Value.ToString() + "', " +
+                //"'" + txbMotivoConsulta.Text.ToString() + "', " +
+                //"'" + txbAnteFamiliares.Text.ToString() + "', '" + txbAntePatologico.Text.ToString() + "', " +
+                //"'" + txbAnteQuirurgico.Text.ToString() + "', '" + txbAnteToxicologico.Text.ToString() + "', " +
+                //"'" + txbAnteHospitalario.Text.ToString() + "', '" + txbAnteTraumatologico.Text.ToString() + "', " +
+                //"'" + txbAnteFarmacologico.Text.ToString() + "', '" + txbAnteActividadFisica.Text.ToString() + "', " +
+                //"'" + txbAnteGinecoObstetricio.Text.ToString() + "', '" + txbFum.Text.ToString() + "', " +
+                //"" + rblFuma.SelectedItem.Value.ToString() + ", " + txbCigarrillos.Text.ToString() + ", " +
+                //"" + rblToma.SelectedItem.Value.ToString() + ", '" + ddlBebidas.SelectedItem.Value.ToString() + "', " +
+                //"" + rblSedentarismo.SelectedItem.Value.ToString() + ", " + rblDiabetes.SelectedItem.Value.ToString() + ", " +
+                //"" + rblColesterol.SelectedItem.Value.ToString() + ", " + rblTrigliceridos.SelectedItem.Value.ToString() + ", " +
+                //"" + rblHTA.SelectedItem.Value.ToString() + ") ";
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.InsertarHistoriaClinica(Convert.ToInt32(Request.QueryString["idAfiliado"].ToString()),
+                    txbMedicinaPrepagada.Text.ToString(),
+                    Convert.ToInt32(ddlObjetivo.SelectedItem.Value.ToString()),
+                    txbDescripcionObjetivo.Text.ToString(),
+                    txbRemision.Text.ToString(),
+                    ddlTipoConsulta.SelectedItem.Value.ToString(),
+                    txbMotivoConsulta.Text.ToString(),
+                    txbAnteFamiliares.Text.ToString(),
+                    txbAntePatologico.Text.ToString(),
+                    txbAnteQuirurgico.Text.ToString(),
+                    txbAnteToxicologico.Text.ToString(),
+                    txbAnteHospitalario.Text.ToString(),
+                    txbAnteTraumatologico.Text.ToString(),
+                    txbAnteFarmacologico.Text.ToString(),
+                    txbAnteActividadFisica.Text.ToString(),
+                    txbAnteGinecoObstetricio.Text.ToString(),
+                    txbFum.Text.ToString(),
+                    Convert.ToInt16(rblFuma.SelectedItem.Value.ToString()),
+                    txbCigarrillos.Text.ToString() != "" ? Convert.ToInt16(rblFuma.SelectedItem.Value.ToString()) : 0,
+                    Convert.ToInt16(rblToma.SelectedItem.Value.ToString()),
+                    ddlBebidas.SelectedItem.Value.ToString(),
+                    Convert.ToInt16(rblSedentarismo.SelectedItem.Value.ToString()),
+                    Convert.ToInt16(rblDiabetes.SelectedItem.Value.ToString()),
+                    Convert.ToInt16(rblColesterol.SelectedItem.Value.ToString()),
+                    Convert.ToInt16(rblTrigliceridos.SelectedItem.Value.ToString()),
+                    Convert.ToInt16(rblHTA.SelectedItem.Value.ToString())
+                    );
+                //string mensaje = cg.TraerDatosStr(strQuery);
 
-                strQuery = "SELECT idHistoria FROM HistoriasClinicas WHERE idAfiliado = " + Request.QueryString["idAfiliado"].ToString() + " ORDER BY idHistoria DESC LIMIT 1";
-                DataTable dt = cg.TraerDatos(strQuery);
-                string idHistoria = dt.Rows[0]["idHistoria"].ToString();
-                dt.Dispose();
+                string[] partes = mensaje.Split('|');
 
-                if (mensaje == "OK")
+                string idHistoria = partes[1];
+
+                //strQuery = "SELECT idHistoria FROM HistoriasClinicas WHERE idAfiliado = " + Request.QueryString["idAfiliado"].ToString() + " ORDER BY idHistoria DESC LIMIT 1";
+                //DataTable dt = cg.TraerDatos(strQuery);
+                //string idHistoria = dt.Rows[0]["idHistoria"].ToString();
+                //dt.Dispose();
+
+                if (partes[0] == "OK")
                 {
                     //Avanzamos según el perfil
                     if (Session["idPerfil"].ToString() == "5") //Medico deportologo
@@ -278,7 +309,6 @@ namespace fpWebApp
                             });
                             ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        //Response.Redirect("histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
                     if (Session["idPerfil"].ToString() == "8") //Fisioterapeuta
                     {
@@ -295,7 +325,6 @@ namespace fpWebApp
                             });
                             ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        //Response.Redirect("histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
                     if (Session["idPerfil"].ToString() == "9") //Nutricionista
                     {
@@ -312,7 +341,6 @@ namespace fpWebApp
                             });
                             ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
                     
                     //OJO comentar esta condición

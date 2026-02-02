@@ -9192,6 +9192,7 @@ namespace fpWebApp
         #endregion
 
         #region Historias Clínicas
+
         public DataTable ConsultarHistoriasClinicas()
         {
             DataTable dt = new DataTable();
@@ -9202,6 +9203,100 @@ namespace fpWebApp
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_HISTORIAS_CLINICAS", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public string InsertarHistoriaClinica(int idAfiliado, string MedicinaPrepagada, int idObjetivoIngreso, 
+            string DescripcionObjetivoIngreso, string Remision, string TipoConsulta, string MotivoConsulta, string AnteFamiliar, 
+            string AntePatologico, string AnteQuirurgico, string AnteToxicologico, string AnteHospitalario, string AnteTraumatologico,
+            string AnteFarmacologico, string AnteActividadFisica, string AnteGineco, string AnteFUM, int Tabaquismo, int Cigarrillos, 
+            int Alcoholismo, string Bebidas, int Sedentarismo, int Diabetes, int Colesterol, int Trigliceridos, int HTA)
+        {
+            string respuesta = string.Empty;
+            int idHistoriaClinica = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_HISTORIA_CLINICA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+                        cmd.Parameters.AddWithValue("@p_medicina_prepagada", MedicinaPrepagada);
+                        cmd.Parameters.AddWithValue("@p_id_objetivo_ingreso", idObjetivoIngreso);
+                        cmd.Parameters.AddWithValue("@p_descripcion_objetivo_ingreso", DescripcionObjetivoIngreso);
+                        cmd.Parameters.AddWithValue("@p_remision", Remision);
+                        cmd.Parameters.AddWithValue("@p_tipo_consulta", TipoConsulta);
+                        cmd.Parameters.AddWithValue("@p_motivo_consulta", MotivoConsulta);
+                        cmd.Parameters.AddWithValue("@p_ante_familiar", AnteFamiliar);
+                        cmd.Parameters.AddWithValue("@p_ante_patologico", AntePatologico);
+                        cmd.Parameters.AddWithValue("@p_ante_quirurgico", AnteQuirurgico);
+                        cmd.Parameters.AddWithValue("@p_ante_toxicologico", AnteToxicologico);
+                        cmd.Parameters.AddWithValue("@p_ante_hospitalario", AnteHospitalario);
+                        cmd.Parameters.AddWithValue("@p_ante_traumatologico", AnteTraumatologico);
+                        cmd.Parameters.AddWithValue("@p_ante_farmacologico", AnteFarmacologico);
+                        cmd.Parameters.AddWithValue("@p_ante_actividad_fisica", AnteActividadFisica);
+                        cmd.Parameters.AddWithValue("@p_ante_gineco", AnteGineco);
+                        cmd.Parameters.AddWithValue("@p_ante_fum", AnteFUM);
+                        cmd.Parameters.AddWithValue("@p_tabaquismo", Tabaquismo);
+                        cmd.Parameters.AddWithValue("@p_cigarrillos", Cigarrillos);
+                        cmd.Parameters.AddWithValue("@p_alcoholismo", Alcoholismo);
+                        cmd.Parameters.AddWithValue("@p_bebidas", Bebidas != "" ? Bebidas : (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@p_sedentarismo", Sedentarismo);
+                        cmd.Parameters.AddWithValue("@p_diabetes", Diabetes);
+                        cmd.Parameters.AddWithValue("@p_colesterol", Colesterol);
+                        cmd.Parameters.AddWithValue("@p_trigliceridos", Trigliceridos);
+                        cmd.Parameters.AddWithValue("@p_hta", HTA);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                idHistoriaClinica = Convert.ToInt32(reader["idHistoriaClinica"]);
+                            }
+                        }
+                    }
+                }
+                respuesta = $"OK|{idHistoriaClinica}";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataTable CargarCie10()
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_CIE10", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))

@@ -149,21 +149,21 @@
                             <table class="table small m-b-xs">
                                 <tbody>
                                     <tr>
-                                        <td><strong><i class="fab fa-whatsapp"></i></strong>
+                                        <td><strong><i class="fab fa-whatsapp m-r-xs"></i></strong>
                                             <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
-                                        <td><strong><i class="fa fa-shield"></i></strong> Estado: 
+                                        <td><strong><i class="fa fa-shield m-r-xs"></i></strong>Estado: 
                         <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
                                     </tr>
                                     <tr>
-                                        <td><strong><i class="fa fa-building"></i></strong> Sede:
+                                        <td><strong><i class="fa fa-building m-r-xs"></i></strong>Sede:
                         <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
-                                        <td><strong><i class="fa fa-venus-mars"></i></strong> Género:
+                                        <td><strong><i class="fa fa-venus-mars m-r-xs"></i></strong>Género:
                                             <asp:Literal ID="ltGenero" runat="server"></asp:Literal></td>
                                     </tr>
                                     <tr>
                                         <td><strong><i class="fa fa-cake"></i></strong>
                                             <asp:Literal ID="ltCumple" runat="server"></asp:Literal></td>
-                                        <td><strong><i class="fa fa-house-medical"></i></strong> EPS:
+                                        <td><strong><i class="fa fa-house-medical m-r-xs"></i></strong>EPS:
                                             <asp:Literal ID="ltEPS" runat="server"></asp:Literal></td>
                                     </tr>
                                 </tbody>
@@ -193,7 +193,7 @@
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
                                                             <h5 class="panel-title">
-                                                                <span class="label label-warning-light pull-right"><i class="fa fa-calendar-day"></i> <%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i> <%# Eval("FechaHora", "{0:HH:mm}") %></span>
+                                                                <span class="label label-warning-light pull-right"><i class="fa fa-calendar-day"></i><%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i><%# Eval("FechaHora", "{0:HH:mm}") %></span>
                                                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%# Eval("idHistoria") %>">Historia Clínica #<%# Eval("idHistoria") %></a>
                                                             </h5>
                                                         </div>
@@ -221,7 +221,7 @@
                                                                     </li>
 
                                                                     <br />
-                                                                    <h4><i class="fa fa-clock-rotate-left text-success"></i> ANTECEDENTES</h4>
+                                                                    <h4><i class="fa fa-clock-rotate-left text-success"></i>ANTECEDENTES</h4>
 
                                                                     <li class="info-element"><b>Familiares</b>
                                                                         <div class="agile-detail">
@@ -275,7 +275,7 @@
                                                                     </li>
 
                                                                     <br />
-                                                                    <h4><i class="fa fa-heart-circle-exclamation text-navy"></i> FACTORES DE RIESGO CARDIOVASCULAR</h4>
+                                                                    <h4><i class="fa fa-heart-circle-exclamation text-navy"></i>FACTORES DE RIESGO CARDIOVASCULAR</h4>
 
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
@@ -350,7 +350,7 @@
                                                                             <%# Eval("hipertenso") %>
                                                                         </div>
                                                                     </li>
-                                                                    
+
                                                                 </ul>
 
                                                             </div>
@@ -383,7 +383,7 @@
                                         <form role="form" id="form" runat="server">
                                             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                                             <div class="col-sm-12">
-                                                
+
                                                 <div class="row">
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
@@ -563,7 +563,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Frecuencia de bebida</label>
-                                                            <asp:DropDownList ID="ddlBebidas" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                            <asp:DropDownList ID="ddlBebidas" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b" Enabled="false">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                 <asp:ListItem Text="Diario" Value="Diario"></asp:ListItem>
                                                                 <asp:ListItem Text="Semanal" Value="Semanal"></asp:ListItem>
@@ -635,7 +635,9 @@
                                             </div>
 
                                             <div class="col-sm-12">
-                                                <div><br /></div>
+                                                <div>
+                                                    <br />
+                                                </div>
                                             </div>
 
                                             <div class="col-sm-12">
@@ -766,6 +768,38 @@
         });
 
         $('.chosen-select').chosen({ width: "100%" });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            function configurarRadio(controlRadioID, controlObjetivoID, valorSi) {
+
+                var radio = document.getElementById(controlRadioID);
+                var objetivo = document.getElementById(controlObjetivoID);
+
+                function actualizar() {
+                    var seleccionado = radio.querySelector("input[type='radio']:checked");
+
+                    if (seleccionado && seleccionado.value === valorSi) {
+                        objetivo.disabled = false;
+                    } else {
+                        objetivo.disabled = true;
+
+                        // Reset según tipo
+                        if (objetivo.tagName === "INPUT") objetivo.value = "0";
+                        if (objetivo.tagName === "SELECT") objetivo.value = "";
+                    }
+                }
+
+                radio.addEventListener("change", actualizar);
+                actualizar();
+            }
+
+            configurarRadio("<%= rblFuma.ClientID %>", "<%= txbCigarrillos.ClientID %>", "1");
+            configurarRadio("<%= rblToma.ClientID %>", "<%= ddlBebidas.ClientID %>", "1");
+
+        });
     </script>
 
 </body>

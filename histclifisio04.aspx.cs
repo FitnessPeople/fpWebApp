@@ -28,6 +28,7 @@ namespace fpWebApp
                             {
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+                                CargarCie10();
                             }
 
                             btnAgregar.Visible = true;
@@ -146,6 +147,15 @@ namespace fpWebApp
                 //ltMensaje.Text = "Afiliado sin historias clínicas.";
             }
 
+            dt.Dispose();
+        }
+
+        private void CargarCie10()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.CargarCie10();
+            ddlCie10.DataSource = dt;
+            ddlCie10.DataBind();
             dt.Dispose();
         }
 

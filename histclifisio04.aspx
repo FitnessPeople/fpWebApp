@@ -595,9 +595,10 @@
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>CIE10</label>
-                                                            <asp:DropDownList ID="ddlCie10" runat="server" CssClass="form-control input-sm">
+                                                            <asp:DropDownList ID="ddlCie10" runat="server" 
+                                                                CssClass="form-control input-sm" AppendDataBoundItems="true" 
+                                                                DataTextField="NombreCIE" DataValueField="idCie10">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                <asp:ListItem Text="Hipo" Value="1"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>

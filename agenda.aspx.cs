@@ -237,7 +237,7 @@ namespace fpWebApp
         }
 
         /// <summary>
-        /// Inserta en la tabola DisponibilidadEspecialistas
+        /// Inserta en la tabla DisponibilidadEspecialistas
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
