@@ -141,15 +141,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltGenero;
 
         /// <summary>
-        /// Control hfGenero.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden hfGenero;
-
-        /// <summary>
         /// Control ltCumple.
         /// </summary>
         /// <remarks>
@@ -157,15 +148,6 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltCumple;
-
-        /// <summary>
-        /// Control hfEdad.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden hfEdad;
 
         /// <summary>
         /// Control ltEPS.

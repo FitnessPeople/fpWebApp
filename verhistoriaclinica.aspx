@@ -140,7 +140,7 @@
                                             <asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
                                         <small>
                                             <asp:Literal ID="ltDireccion" runat="server"></asp:Literal>,
-                        <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
+                                            <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
                                     </div>
                                 </div>
                             </div>
@@ -152,11 +152,11 @@
                                         <td><strong><i class="fab fa-whatsapp m-r-xs"></i></strong>
                                             <asp:Literal ID="ltCelular" runat="server"></asp:Literal></td>
                                         <td><strong><i class="fa fa-shield m-r-xs"></i></strong>Estado: 
-                        <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
+                                            <asp:Literal ID="ltEstado" runat="server"></asp:Literal></td>
                                     </tr>
                                     <tr>
                                         <td><strong><i class="fa fa-building m-r-xs"></i></strong>Sede:
-                        <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
+                                            <asp:Literal ID="ltSede" runat="server"></asp:Literal></td>
                                         <td><strong><i class="fa fa-venus-mars m-r-xs"></i></strong>Género:
                                             <asp:Literal ID="ltGenero" runat="server"></asp:Literal></td>
                                     </tr>
@@ -193,7 +193,7 @@
                                                     <div class="panel panel-default">
                                                         <div class="panel-heading">
                                                             <h5 class="panel-title">
-                                                                <span class="label label-warning-light pull-right"><i class="fa fa-calendar-day"></i><%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i><%# Eval("FechaHora", "{0:HH:mm}") %></span>
+                                                                <span class="label label-warning-light pull-right"><i class="fa fa-calendar-day m-r-xs"></i><%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock m-r-xs"></i><%# Eval("FechaHora", "{0:HH:mm}") %></span>
                                                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%# Eval("idHistoria") %>">Historia Clínica #<%# Eval("idHistoria") %></a>
                                                             </h5>
                                                         </div>
@@ -221,7 +221,7 @@
                                                                     </li>
 
                                                                     <br />
-                                                                    <h4><i class="fa fa-clock-rotate-left text-success"></i>ANTECEDENTES</h4>
+                                                                    <h4><i class="fa fa-clock-rotate-left text-success m-r-xs"></i>ANTECEDENTES</h4>
 
                                                                     <li class="info-element"><b>Familiares</b>
                                                                         <div class="agile-detail">
@@ -275,13 +275,15 @@
                                                                     </li>
 
                                                                     <br />
-                                                                    <h4><i class="fa fa-heart-circle-exclamation text-navy"></i>FACTORES DE RIESGO CARDIOVASCULAR</h4>
+                                                                    <h4><i class="fa fa-heart-circle-exclamation text-navy m-r-xs"></i>FACTORES DE RIESGO CARDIOVASCULAR</h4>
 
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
                                                                             <li class="success-element"><b>Fuma?</b>
                                                                                 <div class="agile-detail">
-                                                                                    <%# Eval("fuma") %>
+                                                                                    <%# Eval("Tabaquismo").ToString() == "1"
+                                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                                        : "<i class='fa fa-square text-navy'></i> No" %>
                                                                                 </div>
                                                                             </li>
                                                                         </div>
@@ -298,12 +300,14 @@
                                                                         <div class="col-lg-6">
                                                                             <li class="success-element"><b>Toma?</b>
                                                                                 <div class="agile-detail">
-                                                                                    <%# Eval("toma") %>
+                                                                                    <%# Eval("Alcoholismo").ToString() == "1"
+                                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                                        : "<i class='fa fa-square text-navy'></i> No" %>
                                                                                 </div>
                                                                             </li>
                                                                         </div>
                                                                         <div class="col-lg-6">
-                                                                            <li class="success-element"><b>Bebidas x mes</b>
+                                                                            <li class="success-element"><b>Frecuencia de bebida</b>
                                                                                 <div class="agile-detail">
                                                                                     <%# Eval("Bebidas") %>
                                                                                 </div>
@@ -315,14 +319,20 @@
                                                                         <div class="col-lg-6">
                                                                             <li class="success-element"><b>Sedentarismo</b>
                                                                                 <div class="agile-detail">
-                                                                                    <%# Eval("sedentario") %>
+                                                                                    <%# Eval("Sedentarismo").ToString() == "1"
+                                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                                        : "<i class='fa fa-square text-navy'></i> No" %>
                                                                                 </div>
                                                                             </li>
                                                                         </div>
                                                                         <div class="col-lg-6">
                                                                             <li class="success-element"><b>Diabetes</b>
                                                                                 <div class="agile-detail">
-                                                                                    <%# Eval("diabetico") %>
+                                                                                    <%# Eval("Diabetes").ToString() == "1"
+                                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                                        : Eval("Diabetes").ToString() == "2"
+                                                                                            ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                                                                            : "<i class='fa fa-square text-navy'></i> No" %>
                                                                                 </div>
                                                                             </li>
                                                                         </div>
@@ -332,14 +342,22 @@
                                                                         <div class="col-lg-6">
                                                                             <li class="success-element"><b>Colesterol</b>
                                                                                 <div class="agile-detail">
-                                                                                    <%# Eval("colesterado") %>
+                                                                                    <%# Eval("Colesterol").ToString() == "1"
+                                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                                        : Eval("Colesterol").ToString() == "2"
+                                                                                            ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                                                                            : "<i class='fa fa-square text-navy'></i> No" %>
                                                                                 </div>
                                                                             </li>
                                                                         </div>
                                                                         <div class="col-lg-6">
                                                                             <li class="success-element"><b>Triglicéridos</b>
                                                                                 <div class="agile-detail">
-                                                                                    <%# Eval("triglicerado") %>
+                                                                                    <%# Eval("Trigliceridos").ToString() == "1"
+                                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                                        : Eval("Trigliceridos").ToString() == "2"
+                                                                                            ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                                                                            : "<i class='fa fa-square text-navy'></i> No" %>
                                                                                 </div>
                                                                             </li>
                                                                         </div>
@@ -347,7 +365,11 @@
 
                                                                     <li class="success-element"><b>H.T.A.</b>
                                                                         <div class="agile-detail">
-                                                                            <%# Eval("hipertenso") %>
+                                                                            <%# Eval("HTA").ToString() == "1"
+                                                                                ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                                : Eval("HTA").ToString() == "2"
+                                                                                    ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                                                                    : "<i class='fa fa-square text-navy'></i> No" %>
                                                                         </div>
                                                                     </li>
 
@@ -582,7 +604,7 @@
                                                             <asp:RadioButtonList ID="rblSedentarismo" runat="server" CssClass="i-checks input-sm" RepeatDirection="Horizontal">
                                                                 <asp:ListItem Text="&nbsp;Si" Value="1" style="margin-right: 10px;"></asp:ListItem>
                                                                 <asp:ListItem Text="&nbsp;No" Value="0" style="margin-right: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;NS/NR" Value="2" style="margin-right: 10px;"></asp:ListItem>
+                                                                <%--<asp:ListItem Text="&nbsp;NS/NR" Value="2" style="margin-right: 10px;"></asp:ListItem>--%>
                                                             </asp:RadioButtonList>
                                                         </div>
                                                     </div>
@@ -702,6 +724,12 @@
                     required: true,
                 },
                 txbDescripcionObjetivo: {
+                    required: true,
+                },
+                ddlTipoConsulta: {
+                    required: true,
+                },
+                txbMotivoConsulta: {
                     required: true,
                 },
                 txbAnteFamiliares: {
