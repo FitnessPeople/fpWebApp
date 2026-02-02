@@ -32,6 +32,13 @@
     <!-- Sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
     <style type="text/css" media="print">
         body {
             visibility: hidden;
@@ -304,114 +311,73 @@
 
                                             </div>
                                         </div>
-                                        <%--<asp:GridView
-                                            ID="gvCartera"
-                                            runat="server"
-                                            AutoGenerateColumns="false"
-                                            CssClass="table table-bordered">
-
-                                            <Columns>
-                                                <asp:BoundField
-                                                    DataField="IdAfiliadoPlan"
-                                                    HeaderText="IdAfiliadoPlan" />
-
-                                                <asp:BoundField
-                                                    DataField="DocumentoAfiliado"
-                                                    HeaderText="Documento" />
-
-                                                <asp:BoundField
-                                                    DataField="NombreAfiliado"
-                                                    HeaderText="Afiliado" />
-
-                                                <asp:BoundField
-                                                    DataField="NombrePlan"
-                                                    HeaderText="Plan" />
-
-                                                <asp:BoundField
-                                                    DataField="FechaElaboracion"
-                                                    HeaderText="Fecha Elaboración"
-                                                    DataFormatString="{0:dd/MM/yyyy}" />
-
-                                                <asp:BoundField
-                                                    DataField="DiasTranscurridos"
-                                                    HeaderText="Días" />
-
-                                                <asp:BoundField
-                                                    DataField="ValorFacturar"
-                                                    HeaderText="Valor"
-                                                    DataFormatString="{0:C0}" />
-
-                                                <asp:BoundField
-                                                    DataField="EstadoVencimiento"
-                                                    HeaderText="Estado" />
-
-                                            </Columns>
-                                        </asp:GridView>--%>
 
                                         <asp:GridView
                                             ID="gvLiquidaciones"
                                             runat="server"
                                             AutoGenerateColumns="false"
-                                            CssClass="table table-bordered table-striped table-hover"
-                                            EmptyDataText="">
+                                            CssClass="table table-hover table-bordered"
+                                            OnRowCommand="gvLiquidaciones_RowCommand">
+
                                             <Columns>
 
-                                                <asp:BoundField DataField="idLiquidacion" HeaderText="Liquidación" />
-
-                                                <asp:BoundField DataField="DocumentoEmpresa" HeaderText="NIT" />
-
-                                                <asp:BoundField DataField="NombreComercial" HeaderText="Empresa" />
-
-                                                <asp:BoundField
-                                                    DataField="FechaLiquidacion"
-                                                    HeaderText="Fecha"
-                                                    DataFormatString="{0:dd/MM/yyyy HH:mm}" />
-
-                                                <asp:BoundField
-                                                    DataField="TotalRegistros"
-                                                    HeaderText="Registros"
-                                                    ItemStyle-HorizontalAlign="Center" />
-
-                                                <asp:BoundField
-                                                    DataField="Subtotal"
-                                                    HeaderText="Subtotal"
-                                                    DataFormatString="{0:C0}"
-                                                    ItemStyle-HorizontalAlign="Right" />
-
-                                                <asp:BoundField
-                                                    DataField="DescuentoTotal"
-                                                    HeaderText="Descuento"
-                                                    DataFormatString="{0:C0}"
-                                                    ItemStyle-HorizontalAlign="Right" />
-
-                                                <asp:BoundField
-                                                    DataField="TotalLiquidado"
-                                                    HeaderText="Total"
-                                                    DataFormatString="{0:C0}"
-                                                    ItemStyle-HorizontalAlign="Right" />
-
-                                                <asp:BoundField
-                                                    DataField="EstadoLiquidacion"
-                                                    HeaderText="Estado" />
-
-
-                                                <asp:TemplateField HeaderText="Acciones">
+                                                <asp:TemplateField HeaderText="">
                                                     <ItemTemplate>
                                                         <asp:LinkButton
-                                                            ID="btnFacturar"
                                                             runat="server"
-                                                            CssClass="btn btn-primary btn-xs"
-                                                            CommandArgument='<%# Eval("idLiquidacion") %>'
-                                                            OnClick="btnFacturar_Click"
-                                                            OnClientClick="return confirmarFacturacion(this);">
-                                                            Facturar
-                                                        </asp:LinkButton>
+                                                            CssClass="btn btn-link p-0"
+                                                            Text="▶"
+                                                            CommandName="ToggleDetalle"
+                                                            CommandArgument='<%# Eval("idLiquidacion") %>' />
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
 
+                                                <asp:BoundField DataField="idLiquidacion" HeaderText="Liquidación" />
+                                                <asp:BoundField DataField="DocumentoEmpresa" HeaderText="NIT" />
+                                                <asp:BoundField DataField="NombreComercial" HeaderText="Empresa" />
+                                                <asp:BoundField DataField="TotalLiquidado" HeaderText="Total" DataFormatString="{0:C0}" />
+                                                <asp:BoundField DataField="EstadoLiquidacion" HeaderText="Estado" />
 
                                             </Columns>
                                         </asp:GridView>
+
+
+                                        <asp:Panel ID="pnlDetalle" runat="server" Visible="false"
+                                            CssClass="border rounded bg-light p-3 mt-2">
+
+                                            <h6 class="mb-2 text-secondary">Detalle de la liquidación</h6>
+
+                                            <asp:GridView
+                                                ID="gvDetalle"
+                                                runat="server"
+                                                AutoGenerateColumns="false"
+                                                CssClass="table table-sm table-striped">
+
+                                                <Columns>
+                                                    <asp:BoundField DataField="NombreAfiliado" HeaderText="Afiliado" />
+                                                    <asp:BoundField DataField="DocumentoAfiliado" HeaderText="Documento" />
+                                                    <asp:BoundField DataField="NombrePlan" HeaderText="Plan" />
+                                                    <asp:BoundField DataField="ValorFacturar" HeaderText="Valor"
+                                                        DataFormatString="{0:C0}" ItemStyle-HorizontalAlign="Right" />
+
+                                                    <asp:TemplateField HeaderText="DCR">
+                                                        <ItemTemplate>
+                                                            <asp:LinkButton
+                                                                runat="server"
+                                                                CssClass="btn btn-outline-danger btn-xs"
+                                                                Text="📄"
+                                                                CommandArgument='<%# Eval("idLiquidacionDetalle") %>'
+                                                                OnClick="btnVerDCRDetalle_Click" />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                </Columns>
+
+                                            </asp:GridView>
+                                        </asp:Panel>
+
+
+
+
                                     </div>
                                     <asp:Label ID="lblSinDatos" runat="server" CssClass="text-warning font-bold" Visible="false" Text="No se encontraron datos o registros."></asp:Label>
                                 </div>
@@ -492,7 +458,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Page-Level Scripts -->
-    <script>
+    <%--    <script>
         $('.footable').footable();
 
         const miTabla = document.getElementById('miTabla');
@@ -500,7 +466,7 @@
         const numeroRegistros = tbody.rows.length;
 
         console.log("Número total de registros:", numeroRegistros);
-    </script>
+    </script>--%>
 
     <script>
         $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" })
@@ -546,7 +512,7 @@
         }
     </script>
 
-    <script type="text/javascript">
+    <%--    <script type="text/javascript">
         function SeleccionarTodos(chk) {
             var grid = document.getElementById('<%= gvLiquidaciones.ClientID %>');
             var checkboxes = grid.getElementsByTagName("input");
@@ -557,7 +523,7 @@
                 }
             }
         }
-    </script>
+    </script>--%>
 
 
     <script type="text/javascript">

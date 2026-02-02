@@ -115,7 +115,6 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
@@ -140,7 +139,38 @@ namespace fpWebApp
             }
         }
 
-  
+        //protected void btnVerDetalle_Click(object sender, EventArgs e)
+        //{
+        //    clasesglobales cg = new clasesglobales();
+        //    try
+        //    {
+        //        LinkButton btn = (LinkButton)sender;
+        //        GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+        //        int idLiquidacion = Convert.ToInt32(btn.CommandArgument);
+
+        //        Panel pnlDetalle = (Panel)row.FindControl("pnlDetalle");
+        //        GridView gvDetalle = (GridView)row.FindControl("gvDetalle");
+
+
+
+        //        DataTable dtDetalle = cg.ConsultarDetalleLiquidacionesPorIdLiq(idLiquidacion);
+
+        //        gvDetalle.DataSource = dtDetalle;
+        //        gvDetalle.DataBind();
+
+        //        pnlDetalle.Visible = !pnlDetalle.Visible;
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+        //    }
+        //}
+
+
+
         private void MostrarAlerta(string titulo, string mensaje, string tipo)
         {
 
@@ -224,16 +254,84 @@ namespace fpWebApp
 
         protected void gvLiquidaciones_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow)
+            if (e.Row.RowType != DataControlRowType.DataRow)
+                return;
+
+            // PANEL OCULTO
+            Panel pnl = new Panel();
+            pnl.ID = "pnlDetalle";
+            pnl.Visible = false;
+            pnl.CssClass = "p-2 bg-light";
+
+            GridView gvDetalle = new GridView();
+            gvDetalle.ID = "gvDetalle";
+            gvDetalle.AutoGenerateColumns = false;
+            gvDetalle.CssClass = "table table-sm table-bordered";
+
+            gvDetalle.Columns.Add(new BoundField { DataField = "NombreAfiliado", HeaderText = "Afiliado" });
+            gvDetalle.Columns.Add(new BoundField { DataField = "DocumentoAfiliado", HeaderText = "Documento" });
+            gvDetalle.Columns.Add(new BoundField { DataField = "NombrePlan", HeaderText = "Plan" });
+            gvDetalle.Columns.Add(new BoundField
             {
-                string estado = DataBinder.Eval(e.Row.DataItem, "EstadoLiquidacion").ToString();
+                DataField = "ValorFacturar",
+                HeaderText = "Valor",
+                DataFormatString = "{0:C0}",
+                ItemStyle = { HorizontalAlign = HorizontalAlign.Right }
+            });
 
-                LinkButton btnFacturar = (LinkButton)e.Row.FindControl("btnFacturar");
+            TemplateField tf = new TemplateField { HeaderText = "DCR" };
+            tf.ItemTemplate = new CompiledTemplateBuilder(container =>
+            {
+                LinkButton btn = new LinkButton();
+                btn.Text = "📄 DCR";
+                btn.CssClass = "btn btn-danger btn-xs";
+                btn.DataBinding += (s, ev) =>
+                {
+                    GridViewRow row = (GridViewRow)btn.NamingContainer;
+                    btn.CommandArgument =
+                        DataBinder.Eval(row.DataItem, "idLiquidacionDetalle").ToString();
+                };
+                btn.Click += btnVerDCRDetalle_Click;
 
-                btnFacturar.Visible = (estado == "GENERADA");
-            }
+                container.Controls.Add(btn);
+            });
+
+            gvDetalle.Columns.Add(tf);
+
+            pnl.Controls.Add(gvDetalle);
+
+            TableCell cell = new TableCell();
+            cell.ColumnSpan = gvLiquidaciones.Columns.Count;
+            cell.Controls.Add(pnl);
+
+            e.Row.Cells[e.Row.Cells.Count - 1].Controls.Add(cell.Controls[0]);
         }
 
+        protected void gvLiquidaciones_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName != "ToggleDetalle")
+                return;
+
+            int idLiquidacion = Convert.ToInt32(e.CommandArgument);
+
+            clasesglobales cg = new clasesglobales();
+            gvDetalle.DataSource = cg.ConsultarDetalleLiquidacionesPorIdLiq(idLiquidacion);
+            gvDetalle.DataBind();
+
+            pnlDetalle.Visible = !pnlDetalle.Visible;
+        }
+
+
+
+
+
+        protected void btnVerDCRDetalle_Click(object sender, EventArgs e)
+        {
+            LinkButton btn = (LinkButton)sender;
+            int idDetalle = Convert.ToInt32(btn.CommandArgument);
+
+            //GenerarPdfDCRPorDetalle(idDetalle);
+        }
 
         protected async void btnFacturar_Click(object sender, EventArgs e)
         {
@@ -428,7 +526,12 @@ namespace fpWebApp
                 .ToString()
                 .Normalize(NormalizationForm.FormC)
                 .Trim();
-        } 
+        }
+
+        protected void Unnamed_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
 
