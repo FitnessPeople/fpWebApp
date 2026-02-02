@@ -1,9 +1,15 @@
-﻿using System;
+﻿using fpWebApp.Services;
+using NPOI.SS.Formula.Functions;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -55,6 +61,7 @@ namespace fpWebApp
                             //txbFechaFin.Value = DateTime.Now.ToString("yyyy-MM-dd").ToString();
                             //CargarEmpresas();
                             CargarLiquidacionesVigentes();
+                            CargarIndicadores();
                         }
                     }
 
@@ -91,49 +98,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-
-
-        //protected void btnBuscar_Click(object sender, EventArgs e)
-        //{
-        //    //DataTable dt = ObtenerReporteSeleccionado();
-
-        //    if (dt == null || dt.Rows.Count == 0)
-        //    {
-        //        MostrarAlerta("Info", "No hay datos para mostrar", "info");
-        //        return;
-        //    }
-
-        //    ViewState["ReporteActual"] = dt;
-
-        //    gvReporte.DataSource = dt;
-        //    gvReporte.DataBind();
-        //}
-
-        //private void CargarEmpresas()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = cg.ConsultarEmpresasAfiliadas();
-
-        //    ddlEmpresa.DataSource = dt;
-        //    ddlEmpresa.DataValueField = "DocumentoEmpresa";
-        //    ddlEmpresa.DataTextField = "NombreComercial";
-        //    ddlEmpresa.DataBind();
-        //    dt.Dispose();
-        //}
-
-        //private void CargarLiquidaciones()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    try
-        //    {
-        //        DataTable dt = cg.ConsultarLiquidacionesCarteraPendientes();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-        //    }
-        //}
         protected void CargarLiquidacionesVigentes()
         {
             clasesglobales cg = new clasesglobales();
@@ -155,76 +119,28 @@ namespace fpWebApp
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
-
         }
 
+        private void CargarIndicadores()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarIndicadoresLiquidacionesGeneradas();
 
-        //protected void btnGestionar_Click(object sender, EventArgs e)
-        //{
-        //    foreach (GridViewRow row in gvCartera.Rows)
-        //    {
-        //        CheckBox chk = (CheckBox)row.FindControl("chkItem");
+                lblEmpresas.Text = dt.Rows[0]["EmpresasConCarteraPendiente"].ToString();
+                lblCartera.Text = string.Format("{0:C}", dt.Rows[0]["TotalCarteraPendiente"]);
+                lblPendientes.Text = dt.Rows[0]["LiquidacionesPendientesFacturar"].ToString();
+                lblMes.Text = dt.Rows[0]["LiquidacionesMesActual"].ToString();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+        }
 
-        //        if (chk != null && chk.Checked)
-        //        {
-        //            string idAfiliadoPlan = row.Cells[1].Text; // ojo índice
-        //            string documento = row.Cells[2].Text;
-
-        //            // 👉 Aquí haces lo que necesites
-        //            // Ej: enviar a otro SP, marcar gestionado, etc.
-        //        }
-        //    }
-        //}
-
-        //private DataTable ObtenerReporteSeleccionado()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-
-        //    DateTime fechaIni, fechaFin;
-
-        //    if (!DateTime.TryParse(txbFechaIni.Value, out fechaIni) ||
-        //        !DateTime.TryParse(txbFechaFin.Value, out fechaFin))
-        //    {
-        //        MostrarAlerta("Error", "Rango de fechas inválido", "warning");
-        //        return null;
-        //    }
-
-        //    int tipoReporte = Convert.ToInt32(ddlTipoReporte.SelectedValue);
-        //    DataTable dt = null;
-
-        //    switch (tipoReporte)
-        //    {
-        //        case 1: // Ventas por asesor
-        //            dt = cg.ConsultarRankingAsesoresPorFecha(fechaIni, fechaFin);
-        //            break;
-
-        //        case 2:
-        //            dt = cg.ConsultarRankingCanalesDeVentaPorFecha(fechaIni, fechaFin);
-        //            break;
-
-        //        case 3:
-        //            dt = cg.ConsultarRankingVentasTotalesPorFecha(fechaIni, fechaFin);
-        //            break;
-        //        case 4:
-        //            dt = cg.ConsultarRankingPlanesPorFecha(fechaIni, fechaFin);
-        //            break;
-        //        case 5:
-        //            dt = cg.ConsultarUsuariosPlanesPorFecha(fechaIni, fechaFin);
-        //            break;
-        //        case 6:
-        //            dt = cg.ConsultarVentasVsMetasPorFecha(fechaIni, fechaFin);
-        //            break;
-        //        case 9:
-        //            dt = cg.ConsultarAfiliadosActivosInactivosPorFecha(fechaIni, fechaFin);
-        //            break;
-
-
-        //    }
-
-        //    return dt;
-        //}
-
-
+  
         private void MostrarAlerta(string titulo, string mensaje, string tipo)
         {
 
@@ -257,66 +173,12 @@ namespace fpWebApp
                     return;
                 }
 
-                //DateTime fechaIni, fechaFin;
-                //if (!DateTime.TryParse(txbFechaIni.Value, out fechaIni) ||
-                //    !DateTime.TryParse(txbFechaFin.Value, out fechaFin))
-                //{
-                //    MostrarAlerta("Error", "Rango de fechas inválido.", "warning");
-                //    return;
-                //}
-
-                //int tipoReporte = Convert.ToInt32(ddlTipoReporte.SelectedValue);
                 string tituloReporte = string.Empty;
                 string nombreArchivo = string.Empty;
                 string usuario = Session["NombreUsuario"] as string ?? "Usuario";
 
                 DataTable dt = null;
 
-                //switch (tipoReporte)
-                //{
-                //    case 1:
-                //        dt = cg.ConsultarRankingAsesoresPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Asesores desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Asesores_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-
-                //    case 2:
-                //        dt = cg.ConsultarRankingCanalesDeVentaPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Canales de venta desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Canales_venta_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-
-                //    case 3:
-                //        dt = cg.ConsultarRankingVentasTotalesPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Ventas totales desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Ventas_totales_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-
-                //    case 4:
-                //        dt = cg.ConsultarRankingPlanesPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Planes desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Planes_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-                //    case 5:
-                //        dt = cg.ConsultarRankingPlanesPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Usuarios Planes desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Usuarios_Planes_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-                //    case 6:
-                //        dt = cg.ConsultarVentasVsMetasPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Metas vs ventas Asesores desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Metas_Vs_Ventas_Asesores{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-                //    case 9:
-                //        dt = cg.ConsultarAfiliadosActivosInactivosPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Afiliados activos/inactivos desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Afiliados_Activos/Inactivos{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-
-                //    default:
-                //        MostrarAlerta("Info", "Este reporte aún no tiene exportación PDF.", "info");
-                //        return;
-                //}
 
                 if (dt == null || dt.Rows.Count == 0)
                 {
@@ -333,23 +195,6 @@ namespace fpWebApp
         }
 
 
-        //protected void ddlEmpresa_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    gvCartera.DataSource = null;
-        //    gvCartera.DataBind();
-        //    btnGenerarLiquidacion.Visible = false;
-        //}
-
-        //protected void ddlEmpresa_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    gvCartera.DataSource = null;
-        //    gvCartera.DataBind();
-
-        //    gvCartera.Visible = false;
-        //    btnGenerarLiquidacion.Visible = false;
-        //    lblSinDatos.Visible = false;
-        //}
-
         protected void lbExportarPdf_Click(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
@@ -361,62 +206,7 @@ namespace fpWebApp
                 string nombreArchivo = string.Empty;
                 string usuario = Session["NombreUsuario"] as string ?? "Usuario";
 
-                ////if (!DateTime.TryParse(txbFechaIni.Value, out fechaIni) ||
-                ////    !DateTime.TryParse(txbFechaFin.Value, out fechaFin))
-                ////{
-                ////    MostrarAlerta("Error", "Debe seleccionar un rango de fechas válido.", "warning");
-                ////    return;
-                ////}
-
-                //int tipoReporte = Convert.ToInt32(ddlTipoReporte.SelectedValue);
-
                 DataTable dt = null;
-
-                //switch (tipoReporte)
-                //{
-                //    case 1:
-                //        dt = cg.ConsultarRankingAsesoresPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Asesores desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Asesores_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-
-                //    case 2:
-                //        dt = cg.ConsultarRankingCanalesDeVentaPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Canales de venta desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Canales_venta_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-
-                //    case 3:
-                //        dt = cg.ConsultarRankingVentasTotalesPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Ventas totales desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Ventas_totales_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-
-                //    case 4:
-                //        dt = cg.ConsultarRankingPlanesPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Planes desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Planes_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-                //    case 5:
-                //        dt = cg.ConsultarRankingPlanesPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Usuarios Planes desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Usuarios_Planes_{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-                //    case 6:
-                //        dt = cg.ConsultarVentasVsMetasPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Metas vs ventas Asesres desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Metas_Vs_Ventas_Asesres{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-                //    case 9:
-                //        dt = cg.ConsultarAfiliadosActivosInactivosPorFecha(fechaIni, fechaFin);
-                //        tituloReporte = $"Reporte Afiliados activos/inactivos desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
-                //        nombreArchivo = $"Reporte_Afiliados_Activos/Inactivos{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
-                //        break;
-
-                //    default:
-                //        MostrarAlerta("Info", "Este reporte aún no tiene exportación PDF.", "info");
-                //        return;
-                //}
 
                 if (dt == null || dt.Rows.Count == 0)
                 {
@@ -432,112 +222,6 @@ namespace fpWebApp
             }
         }
 
-        //protected void btnBuscar_Click(object sender, EventArgs e)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    try
-        //    {
-        //        string documentoEmpresa = ddlEmpresa.SelectedValue;
-
-        //        if (string.IsNullOrEmpty(documentoEmpresa))
-        //            return;
-        //        DataTable dt = new DataTable();
-        //        dt = cg.CargarCarteraPorNit(documentoEmpresa);
-        //        btnGenerarLiquidacion.Visible = dt.Rows.Count > 0;
-        //        gvCartera.DataSource = dt;
-        //        gvCartera.DataBind();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-        //    }
-        //}
-
-        //protected void btnBuscar_Click(object sender, EventArgs e)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    try
-        //    {
-        //        string documentoEmpresa = ddlEmpresa.SelectedValue;
-
-        //        if (string.IsNullOrEmpty(documentoEmpresa))
-        //            return;
-
-        //        DataTable dt = cg.CargarCarteraPorNit(documentoEmpresa);
-
-        //        gvCartera.DataSource = dt;
-        //        gvCartera.DataBind();
-
-        //        bool hayDatos = dt != null && dt.Rows.Count > 0;
-
-        //        btnGenerarLiquidacion.Visible = hayDatos;
-        //        gvCartera.Visible = hayDatos;
-
-        //        lblSinDatos.Visible = !hayDatos;
-        //        if (!hayDatos)
-        //        {
-        //            lblSinDatos.Text = "<div class=\"alert alert-info text-center\">\r\n    <i class=\"fa fa-info-circle\"></i> No existen registros asociados a la empresa seleccionada.\r\n</div>\r\n";
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-        //        MostrarAlerta("Error de proceso",
-        //            "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog,
-        //            "error");
-        //    }
-        //}
-
-        //protected void btnGenerarLiquidacion_Click(object sender, EventArgs e)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-
-        //    try
-        //    {
-        //        string documentoEmpresa = ddlEmpresa.SelectedValue;
-        //        int idUsuario = Convert.ToInt32(Session["idUsuario"]);
-
-        //        int idLiquidacion = cg.GenerarLiquidacionCartera(documentoEmpresa, idUsuario);
-
-        //        if (idLiquidacion > 0)
-        //        {
-        //            string script = $@"
-        //                        Swal.fire({{
-        //                            title: '¡Liquidación generada correctamente!',
-        //                            text: 'Liquidación N° {idLiquidacion} creada correctamente.',
-        //                            icon: 'success',
-        //                            timer: 3000,
-        //                            showConfirmButton: false,
-        //                            timerProgressBar: true
-        //                        }}).then(() => {{
-        //                            window.location.href = 'generarfactura';
-        //                        }});
-        //                    ";
-
-        //            ScriptManager.RegisterStartupScript(
-        //                this,
-        //                GetType(),
-        //                "ExitoMensaje",
-        //                script,
-        //                true
-        //            );
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-
-        //    }
-
-
-
-
-        //}
-
-
         protected void gvLiquidaciones_RowDataBound(object sender, GridViewRowEventArgs e)
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
@@ -550,115 +234,299 @@ namespace fpWebApp
             }
         }
 
-        protected void btnFacturar_Click1(object sender, EventArgs e)
-        {
 
+        protected async void btnFacturar_Click(object sender, EventArgs e)
+        {
+            LinkButton btn = (LinkButton)sender;
+            int idLiquidacion = Convert.ToInt32(btn.CommandArgument);
+            clasesglobales cg = new clasesglobales();
+
+            int idAfiliado = Convert.ToInt32(Session["IdAfiliado"]);
+            int idUsuario = Convert.ToInt32(Session["idusuario"]);
+
+
+            int idAfiliadoPlan = 0;
+
+            int idCanalVenta = 0;
+            DataTable dtCanal = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
+            if (dtCanal.Rows.Count > 0)
+                idCanalVenta = Convert.ToInt32(dtCanal.Rows[0]["idCanalVenta"]);
+
+            DataTable mediosPago = cg.ConsultarMediosDePago();
+            DataTable dtAfiliado = cg.ConsultarAfiliadoPorId(idAfiliado);
+            string docAfiliado = dtAfiliado.Rows[0]["DocumentoAfiliado"].ToString();
+            string valorPagadoTexto = "0";
+            string valorLimpio = Regex.Replace(valorPagadoTexto, @"[^\d]", "");
+            int valorPagado;
+            int.TryParse(valorLimpio, out valorPagado);
+
+           
+                DataTable dtActivo = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
+                //string rtaCRM = cg.ActualizarEstadoCRMPagoPlan(idcrm, dtActivo.Rows[0]["NombrePlan"].ToString(), valorPagado, idUsuario, 3);
+                //RegistrarPagos(cg, mediosPago, idAfiliadoPlan, idUsuario, idCanalVenta, idcrm, null);
+
+
+                var resultado = await GenerarFacturacorporativoAsync(idAfiliadoPlan, ViewState["codSiigoPlan"].ToString(), ViewState["nombrePlan"].ToString(), valorPagado.ToString());
+
+                if (!resultado.ok)
+                {
+                    MostrarAlerta(
+                        "Error",
+                        "No se pudo generar la factura en Siigo. Puede reintentarse.",
+                        "warning"
+                    );
+                    return;
+                }
+            }
+    
+
+           private async Task<(bool ok, string idSiigoFactura)> GenerarFacturacorporativoAsync(int idAfiliadoPlan, string codSiigoPlan, string nombrePlan, string precioPlan)
+        {
+            string idAfiliado = Session["IdAfiliado"].ToString();
+            string urlRedirect = $"planesAfiliado?id={idAfiliado}";
+
+            try
+            {
+                string observaciones = $"Pago correspondiente del plan {nombrePlan} por valor de ${precioPlan}.";
+
+                string fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
+
+                clasesglobales cg = new clasesglobales();
+
+                string ambiente = cg.GetAppSetting("AmbienteSiigo");
+                string idIntegracionSiigoStr = cg.GetAppSetting("idIntegracionSiigo");
+                int idIntegracionSiigo = Convert.ToInt32(idIntegracionSiigoStr);
+
+                DataTable dtIntegracion = cg.ConsultarIntegracionPorId(idIntegracionSiigo);
+                string url = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["url"].ToString() : null;
+                string username = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["username"].ToString() : null;
+                string accessKey = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["accessKey"].ToString() : null;
+                string partnerId = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["partnerId"].ToString() : null;
+
+                int idDocumentType = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idDocumentType"].ToString()) : 0;
+                int idSellerUser = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idSellerUser"].ToString()) : 0;
+                int idPayment = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idPayment"].ToString()) : 0;
+                dtIntegracion.Dispose();
+
+
+                // 1. Creación de factura en Siigo
+                var siigoClient = new SiigoClient(
+                    new HttpClient(),
+                    url,
+                    username,
+                    accessKey,
+                    partnerId
+                );
+
+                DataTable dtAfi = cg.ConsultarAfiliadoPorId(Convert.ToInt32(idAfiliado));
+
+                if (dtAfi.Rows.Count == 0) return (false, null);
+                string nroDoc = dtAfi.Rows[0]["DocumentoAfiliado"].ToString();
+                string strNombre = LimpiarTextoSiigo(dtAfi.Rows[0]["NombreAfiliado"].ToString());
+                string strApellido = LimpiarTextoSiigo(dtAfi.Rows[0]["ApellidoAfiliado"].ToString());
+                string strCelular = Regex.Replace(dtAfi.Rows[0]["CelularAfiliado"].ToString(), @"[^\d]", "");
+                string strEmail = dtAfi.Rows[0]["EmailAfiliado"].ToString();
+
+                int idSede = Convert.ToInt32(dtAfi.Rows[0]["idSede"].ToString());
+                dtAfi.Dispose();
+
+                DataTable dtCodSiigoDocumento = cg.ConsultarCodigoSiigoPorDocumento(nroDoc);
+                string idTipoDocSiigo = dtCodSiigoDocumento.Rows[0]["CodSiigo"].ToString();
+                dtCodSiigoDocumento.Dispose();
+
+                DataTable dtSede = cg.ConsultarSedePorId(idSede);
+                string direccion = dtSede.Rows[0]["DireccionSede"].ToString();
+                int idCiudad = Convert.ToInt32(dtSede.Rows[0]["idCiudadSede"].ToString());
+                dtSede.Dispose();
+
+                DataTable dtCiudad = cg.ConsultarCiudadSedeSiigoPorId(idCiudad);
+                string codEstado = dtCiudad.Rows[0]["CodigoEstado"].ToString();
+                string codCiudad = dtCiudad.Rows[0]["CodigoCiudad"].ToString();
+                dtCiudad.Dispose();
+
+                await siigoClient.ManageCustomerAsync(idTipoDocSiigo, nroDoc, strNombre, strApellido, direccion, codEstado, codCiudad, strCelular, strEmail);
+
+                DataTable dtSedeCostCenter = cg.ConsultarSedePorId(idSede);
+                int idCostCenter = dtSedeCostCenter != null && dtSedeCostCenter.Rows.Count > 0 ? Convert.ToInt32(dtSedeCostCenter.Rows[0]["idCostCenterSiigo"].ToString()) : 0;
+                dtSedeCostCenter.Dispose();
+
+                string _codSiigoPlan;
+                string _nombrePlan;
+                int _precioPlan;
+
+                //  PRUEBAS
+                if (idIntegracionSiigo == 3)
+                {
+                    idCostCenter = 621;
+                    _codSiigoPlan = "COD2433";
+                    _nombrePlan = "Pago de suscripción";
+                    _precioPlan = 10000;
+                }
+                //  PRODUCCIÓN
+                else if (idIntegracionSiigo == 6)
+                {
+                    _codSiigoPlan = codSiigoPlan;
+                    _nombrePlan = nombrePlan;
+                    _precioPlan = int.Parse(precioPlan);
+                }
+                else
+                {
+                    throw new Exception("Id de integración Siigo no válido.");
+                }
+                string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
+                    nroDoc,
+                    _codSiigoPlan,
+                    _nombrePlan,
+                    _precioPlan,
+                    observaciones,
+                    idSellerUser,
+                    idDocumentType,
+                    fechaActual,
+                    idCostCenter,
+                    idPayment
+                );
+
+                //Session["idAfiliadoPlan"] = idAfiliadoPlan;
+                //string referencia = Session["documentoAfiliado"].ToString() + "-" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                //string codDatafono = Session["codDatafono"].ToString();
+
+                return (true, idSiigoFactura);
+            }
+            catch (Exception ex)
+            {
+                //MostrarAlerta("Error", "El pago fue aprobado, pero ocurrió un error en el registro interno. Por favor, comunicarse con el área de sistemas.", "error");
+                System.Diagnostics.Debug.WriteLine("Error en ProcesarPagoExitosoAsync: " + ex.ToString());
+                return (false, null);
+            }
         }
 
-        protected void btnFacturar_Click(object sender, EventArgs e)
+        public static string LimpiarTextoSiigo(string texto)
         {
+            if (string.IsNullOrWhiteSpace(texto))
+                return string.Empty;
 
-        }
+            // Normaliza (separa acentos)
+            texto = texto.Normalize(NormalizationForm.FormD);
+
+            var sb = new StringBuilder();
+
+            foreach (char c in texto)
+            {
+                var categoria = Char.GetUnicodeCategory(c);
+
+                // Letras, números, espacio
+                if (categoria == UnicodeCategory.UppercaseLetter ||
+                    categoria == UnicodeCategory.LowercaseLetter ||
+                    categoria == UnicodeCategory.DecimalDigitNumber ||
+                    categoria == UnicodeCategory.SpaceSeparator)
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb
+                .ToString()
+                .Normalize(NormalizationForm.FormC)
+                .Trim();
+        } 
     }
 
 
+        //public void ExportarPDF(DataTable dtDetalle, DataTable dtTotales, string nombreArchivo)
+        //{
+        //    if (dtDetalle == null || dtDetalle.Rows.Count == 0)
+        //        throw new Exception("No hay datos para exportar");
 
+        //    // Crear documento
+        //    Document doc = new Document(PageSize.A4.Rotate(), 10, 10, 10, 10);
+        //    PdfWriter.GetInstance(doc, HttpContext.Current.Response.OutputStream);
+        //    doc.Open();
 
-    //public void ExportarPDF(DataTable dtDetalle, DataTable dtTotales, string nombreArchivo)
-    //{
-    //    if (dtDetalle == null || dtDetalle.Rows.Count == 0)
-    //        throw new Exception("No hay datos para exportar");
+        //    // Título
+        //    Paragraph titulo = new Paragraph("Reporte generado",
+        //        FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14));
+        //    titulo.Alignment = Element.ALIGN_CENTER;
+        //    doc.Add(titulo);
+        //    doc.Add(new Paragraph(" "));
 
-    //    // Crear documento
-    //    Document doc = new Document(PageSize.A4.Rotate(), 10, 10, 10, 10);
-    //    PdfWriter.GetInstance(doc, HttpContext.Current.Response.OutputStream);
-    //    doc.Open();
+        //    // Tabla dinámica
+        //    PdfPTable tabla = new PdfPTable(dtDetalle.Columns.Count);
+        //    tabla.WidthPercentage = 100;
 
-    //    // Título
-    //    Paragraph titulo = new Paragraph("Reporte generado",
-    //        FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14));
-    //    titulo.Alignment = Element.ALIGN_CENTER;
-    //    doc.Add(titulo);
-    //    doc.Add(new Paragraph(" "));
+        //    // Encabezados
+        //    foreach (DataColumn col in dtDetalle.Columns)
+        //    {
+        //        tabla.AddCell(new PdfPCell(new Phrase(col.ColumnName))
+        //        {
+        //            BackgroundColor = BaseColor.LIGHT_GRAY
+        //        });
+        //    }
 
-    //    // Tabla dinámica
-    //    PdfPTable tabla = new PdfPTable(dtDetalle.Columns.Count);
-    //    tabla.WidthPercentage = 100;
+        //    // Datos
+        //    foreach (DataRow row in dtDetalle.Rows)
+        //    {
+        //        foreach (var item in row.ItemArray)
+        //            tabla.AddCell(item?.ToString() ?? "");
+        //    }
 
-    //    // Encabezados
-    //    foreach (DataColumn col in dtDetalle.Columns)
-    //    {
-    //        tabla.AddCell(new PdfPCell(new Phrase(col.ColumnName))
-    //        {
-    //            BackgroundColor = BaseColor.LIGHT_GRAY
-    //        });
-    //    }
+        //    doc.Add(tabla);
 
-    //    // Datos
-    //    foreach (DataRow row in dtDetalle.Rows)
-    //    {
-    //        foreach (var item in row.ItemArray)
-    //            tabla.AddCell(item?.ToString() ?? "");
-    //    }
+        //    // Totales (SI EXISTEN)
+        //    if (dtTotales != null && dtTotales.Rows.Count > 0)
+        //    {
+        //        doc.Add(new Paragraph(" "));
+        //        doc.Add(new Paragraph("Totales", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
 
-    //    doc.Add(tabla);
+        //        foreach (DataColumn col in dtTotales.Columns)
+        //        {
+        //            doc.Add(new Paragraph($"{col.ColumnName}: {dtTotales.Rows[0][col]}"));
+        //        }
+        //    }
 
-    //    // Totales (SI EXISTEN)
-    //    if (dtTotales != null && dtTotales.Rows.Count > 0)
-    //    {
-    //        doc.Add(new Paragraph(" "));
-    //        doc.Add(new Paragraph("Totales", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
+        //    doc.Close();
 
-    //        foreach (DataColumn col in dtTotales.Columns)
-    //        {
-    //            doc.Add(new Paragraph($"{col.ColumnName}: {dtTotales.Rows[0][col]}"));
-    //        }
-    //    }
-
-    //    doc.Close();
-
-    //    HttpContext.Current.Response.ContentType = "application/pdf";
-    //    HttpContext.Current.Response.AddHeader("content-disposition",
-    //        $"attachment;filename={nombreArchivo}.pdf");
-    //    HttpContext.Current.Response.End();
-    //}
+        //    HttpContext.Current.Response.ContentType = "application/pdf";
+        //    HttpContext.Current.Response.AddHeader("content-disposition",
+        //        $"attachment;filename={nombreArchivo}.pdf");
+        //    HttpContext.Current.Response.End();
+        //}
 
 
 
-    //protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
-    //{
-    //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-    //    {
-    //        DataRowView row = (DataRowView)e.Item.DataItem;
-    //        int idAfilPlan;
-    //        if (row["idAfilPlan"] is DBNull)
-    //        {
-    //            idAfilPlan = 0;
-    //        }
-    //        else
-    //        {
-    //            idAfilPlan = Convert.ToInt32(row["idAfilPlan"]);
-    //        }
+        //protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        //{
+        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //    {
+        //        DataRowView row = (DataRowView)e.Item.DataItem;
+        //        int idAfilPlan;
+        //        if (row["idAfilPlan"] is DBNull)
+        //        {
+        //            idAfilPlan = 0;
+        //        }
+        //        else
+        //        {
+        //            idAfilPlan = Convert.ToInt32(row["idAfilPlan"]);
+        //        }
 
-    //        string strQuery = @"
-    //            SELECT  
-    //                ppa.idPago AS Pago, 
-    //                ppa.IdReferencia AS Ref, 
-    //                ppa.FechaHoraPago AS Fecha, 
-    //                ppa.Valor,
-    //                mp.NombreMedioPago AS 'Medio de pago'
-    //            FROM PagosPlanAfiliado ppa
-    //                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-    //                INNER JOIN MediosDePago mp ON mp.idMedioPago = ppa.idMedioPago
-    //            WHERE 
-    //                ppa.idAfiliadoPlan = " + idAfilPlan.ToString() + @"";
+        //        string strQuery = @"
+        //            SELECT  
+        //                ppa.idPago AS Pago, 
+        //                ppa.IdReferencia AS Ref, 
+        //                ppa.FechaHoraPago AS Fecha, 
+        //                ppa.Valor,
+        //                mp.NombreMedioPago AS 'Medio de pago'
+        //            FROM PagosPlanAfiliado ppa
+        //                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+        //                INNER JOIN MediosDePago mp ON mp.idMedioPago = ppa.idMedioPago
+        //            WHERE 
+        //                ppa.idAfiliadoPlan = " + idAfilPlan.ToString() + @"";
 
-    //        clasesglobales cg = new clasesglobales();
-    //        DataTable dt = cg.TraerDatos(strQuery);
+        //        clasesglobales cg = new clasesglobales();
+        //        DataTable dt = cg.TraerDatos(strQuery);
 
-    //        Repeater rpDetallesPago = (Repeater)e.Item.FindControl("rpDetallesPago");
-    //        rpDetallesPago.DataSource = dt;
-    //        rpDetallesPago.DataBind();
-    //    }
-    //}
-}
+        //        Repeater rpDetallesPago = (Repeater)e.Item.FindControl("rpDetallesPago");
+        //        rpDetallesPago.DataSource = dt;
+        //        rpDetallesPago.DataBind();
+        //    }
+        //}
+    }

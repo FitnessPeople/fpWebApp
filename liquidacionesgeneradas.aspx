@@ -15,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Mis ventas</title>
+    <title>Fitness People | Facturar liquidación</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -41,7 +41,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#liquidarcartera");
+            var element1 = document.querySelector("#liquidacionesgeneradas");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#corporativo");
             element2.classList.remove("collapse");
@@ -117,11 +117,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fas fa-sheet-plastic text-success m-r-sm"></i>Liquidar cartera</h2>
+                    <h2><i class="fas fa-sheet-plastic text-success m-r-sm"></i>Facturar liquidación</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Corporativo</li>
-                        <li class="active"><strong>Liquidar cartera</strong></li>
+                        <li class="active"><strong>Facturar liquidación</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -253,7 +253,7 @@
                                                 </div>
                                             </div>
 
-<%--                                            <div class="col-lg-6">
+                                            <%--                                            <div class="col-lg-6">
                                                 <div class="form-group">
                                                     <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreComercial" DataValueField="DocumentoEmpresa"
                                                         runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
@@ -394,7 +394,7 @@
                                                     DataField="EstadoLiquidacion"
                                                     HeaderText="Estado" />
 
-                                            
+
                                                 <asp:TemplateField HeaderText="Acciones">
                                                     <ItemTemplate>
                                                         <asp:LinkButton
@@ -402,11 +402,13 @@
                                                             runat="server"
                                                             CssClass="btn btn-primary btn-xs"
                                                             CommandArgument='<%# Eval("idLiquidacion") %>'
-                                                            OnClick="btnFacturar_Click">
+                                                            OnClick="btnFacturar_Click"
+                                                            OnClientClick="return confirmarFacturacion(this);">
                                                             Facturar
                                                         </asp:LinkButton>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
+
 
                                             </Columns>
                                         </asp:GridView>
@@ -556,6 +558,19 @@
             }
         }
     </script>
+
+
+    <script type="text/javascript">
+        function confirmarFacturacion(btn) {
+            if (confirm("¿Está seguro de que desea facturar esta liquidación?")) {
+                btn.onclick = null;
+                btn.innerHTML = 'Procesando...';
+                return true;
+            }
+            return false;
+        }
+    </script>
+
 
 
 </body>
