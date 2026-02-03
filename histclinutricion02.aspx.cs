@@ -131,21 +131,6 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        public class HtmlTemplate : ITemplate
-        {
-            private string _html;
-
-            public HtmlTemplate(string html)
-            {
-                _html = html;
-            }
-
-            public void InstantiateIn(Control container)
-            {
-                container.Controls.Add(new LiteralControl(_html));
-            }
-        }
-
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             //Actualiza datos en la tabla HistoriaAlimentaria

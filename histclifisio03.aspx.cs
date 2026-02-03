@@ -76,19 +76,9 @@ namespace fpWebApp
 
         private void MostrarDatosAfiliado(string idAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),'') AS edad " +
-                "FROM Afiliados a " +
-                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-                "LEFT JOIN ciudades c ON c.idCiudad = a.idCiudadAfiliado " +
-                "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
-                "LEFT JOIN eps ON eps.idEps = a.idEps " +
-                "WHERE idAfiliado = '" + idAfiliado + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarAfiliadoPorIdEncabezado(Convert.ToInt32(idAfiliado));
 
-            //ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
             ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
             ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
@@ -98,11 +88,21 @@ namespace fpWebApp
             ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
             ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
             ltGenero.Text = dt.Rows[0]["Genero"].ToString();
-            hfGenero.Value = dt.Rows[0]["idGenero"].ToString();
-            hfEdad.Value = dt.Rows[0]["edad"].ToString();
             ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
-            ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
-            //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+
+            string label = "warning";
+            if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Activo")
+            {
+                label = "info";
+            }
+            else
+            {
+                if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Inactivo")
+                {
+                    label = "danger";
+                }
+            }
+            ltEstado.Text = "<span class=\"label label-" + label + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
 
             if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
             {
@@ -141,21 +141,6 @@ namespace fpWebApp
             }
 
             dt.Dispose();
-        }
-
-        public class HtmlTemplate : ITemplate
-        {
-            private string _html;
-
-            public HtmlTemplate(string html)
-            {
-                _html = html;
-            }
-
-            public void InstantiateIn(Control container)
-            {
-                container.Controls.Add(new LiteralControl(_html));
-            }
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)

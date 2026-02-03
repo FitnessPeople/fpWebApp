@@ -200,45 +200,26 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        public class HtmlTemplate : ITemplate
-        {
-            private string _html;
+        //public class HtmlTemplate : ITemplate
+        //{
+        //    private string _html;
 
-            public HtmlTemplate(string html)
-            {
-                _html = html;
-            }
+        //    public HtmlTemplate(string html)
+        //    {
+        //        _html = html;
+        //    }
 
-            public void InstantiateIn(Control container)
-            {
-                container.Controls.Add(new LiteralControl(_html));
-            }
-        }
+        //    public void InstantiateIn(Control container)
+        //    {
+        //        container.Controls.Add(new LiteralControl(_html));
+        //    }
+        //}
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             //Inserta datos en la tabla HistoriasClinicas
             try
             {
-                //string strQuery = "INSERT INTO HistoriasClinicas " +
-                //"(idAfiliado, FechaHora, MedicinaPrepagada, idObjetivoIngreso, DescripcionObjetivoIngreso, " +
-                //"Remision, TipoConsulta, MotivoConsulta, AnteFamiliar, AntePatologico, " +
-                //"AnteQuirurgico, AnteToxicologico, AnteHospitalario, AnteTraumatologico, AnteFarmacologico, AnteActividadFisica, AnteGineco, " +
-                //"AnteFUM, Tabaquismo, Cigarrillos, Alcoholismo, Bebidas, Sedentarismo, Diabetes, Colesterol, Trigliceridos, HTA) " +
-                //"VALUES (" + Request.QueryString["idAfiliado"].ToString() + ", CURRENT_TIMESTAMP(), '" + txbMedicinaPrepagada.Text.ToString() + "', " +
-                //"" + ddlObjetivo.SelectedItem.Value.ToString() + ", '" + txbDescripcionObjetivo.Text.ToString() + "', " +
-                //"'" + txbRemision.Text.ToString() + "', '" + ddlTipoConsulta.SelectedItem.Value.ToString() + "', " +
-                //"'" + txbMotivoConsulta.Text.ToString() + "', " +
-                //"'" + txbAnteFamiliares.Text.ToString() + "', '" + txbAntePatologico.Text.ToString() + "', " +
-                //"'" + txbAnteQuirurgico.Text.ToString() + "', '" + txbAnteToxicologico.Text.ToString() + "', " +
-                //"'" + txbAnteHospitalario.Text.ToString() + "', '" + txbAnteTraumatologico.Text.ToString() + "', " +
-                //"'" + txbAnteFarmacologico.Text.ToString() + "', '" + txbAnteActividadFisica.Text.ToString() + "', " +
-                //"'" + txbAnteGinecoObstetricio.Text.ToString() + "', '" + txbFum.Text.ToString() + "', " +
-                //"" + rblFuma.SelectedItem.Value.ToString() + ", " + txbCigarrillos.Text.ToString() + ", " +
-                //"" + rblToma.SelectedItem.Value.ToString() + ", '" + ddlBebidas.SelectedItem.Value.ToString() + "', " +
-                //"" + rblSedentarismo.SelectedItem.Value.ToString() + ", " + rblDiabetes.SelectedItem.Value.ToString() + ", " +
-                //"" + rblColesterol.SelectedItem.Value.ToString() + ", " + rblTrigliceridos.SelectedItem.Value.ToString() + ", " +
-                //"" + rblHTA.SelectedItem.Value.ToString() + ") ";
                 clasesglobales cg = new clasesglobales();
                 string mensaje = cg.InsertarHistoriaClinica(Convert.ToInt32(Request.QueryString["idAfiliado"].ToString()),
                     txbMedicinaPrepagada.Text.ToString(),
@@ -272,11 +253,6 @@ namespace fpWebApp
                 string[] partes = mensaje.Split('|');
 
                 string idHistoria = partes[1];
-
-                //strQuery = "SELECT idHistoria FROM HistoriasClinicas WHERE idAfiliado = " + Request.QueryString["idAfiliado"].ToString() + " ORDER BY idHistoria DESC LIMIT 1";
-                //DataTable dt = cg.TraerDatos(strQuery);
-                //string idHistoria = dt.Rows[0]["idHistoria"].ToString();
-                //dt.Dispose();
 
                 if (partes[0] == "OK")
                 {
