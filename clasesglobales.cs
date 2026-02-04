@@ -9772,6 +9772,92 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public string ActualizarHistoriaFisioterapeuta3(int idHistoria, double wells, double testPushup, double testSentadillas, 
+            double nivel, double testCore, double fcReposoPrc, double fcTerminaPrueba, double fcMinuto, double indiceRend)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_FISIOTERAPEUTA_3", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_wells", wells);
+                        cmd.Parameters.AddWithValue("@p_test_push_up", testPushup);
+                        cmd.Parameters.AddWithValue("@p_test_sentadillas", testSentadillas);
+                        cmd.Parameters.AddWithValue("@p_nivel", nivel);
+                        cmd.Parameters.AddWithValue("@p_test_core", testCore);
+                        cmd.Parameters.AddWithValue("@p_fc_reposo_prc", fcReposoPrc);
+                        cmd.Parameters.AddWithValue("@p_fc_termina_prueba", fcTerminaPrueba);
+                        cmd.Parameters.AddWithValue("@p_fc_minuto", fcMinuto);
+                        cmd.Parameters.AddWithValue("@p_indice_rend", indiceRend);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaFisioterapeuta4(int idHistoria, string cabezaAdelantada, string hombrosDesalineados, 
+            string hipercifosisDorsal, string escoliosis, string dismetrias, string genuValgus, string genuVarus, 
+            string genuRecurbatum, string genuAntecurbatum, string piePlano, string pieCavus, string apto, 
+            string restricciones, string diagnostico, string observaciones, string recomendaciones, int idCie10)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_FISIOTERAPEUTA_4", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_cabeza_adelantada", cabezaAdelantada);
+                        cmd.Parameters.AddWithValue("@p_hombros_desalineados", hombrosDesalineados);
+                        cmd.Parameters.AddWithValue("@p_hipercifosis_dorsal", hipercifosisDorsal);
+                        cmd.Parameters.AddWithValue("@p_escoliosis", escoliosis);
+                        cmd.Parameters.AddWithValue("@p_dismetrias", dismetrias);
+                        cmd.Parameters.AddWithValue("@p_genu_valgus", genuValgus);
+                        cmd.Parameters.AddWithValue("@p_genu_varus", genuVarus);
+                        cmd.Parameters.AddWithValue("@p_genu_recurbatum", genuRecurbatum);
+                        cmd.Parameters.AddWithValue("@p_genu_antecurbatum", genuAntecurbatum);
+                        cmd.Parameters.AddWithValue("@p_pie_plano", piePlano);
+                        cmd.Parameters.AddWithValue("@p_pie_cavus", pieCavus);
+                        cmd.Parameters.AddWithValue("@p_apto", apto);
+                        cmd.Parameters.AddWithValue("@p_restricciones", restricciones);
+                        cmd.Parameters.AddWithValue("@p_diagnostico", diagnostico);
+                        cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
+                        cmd.Parameters.AddWithValue("@p_recomendaciones", recomendaciones);
+                        cmd.Parameters.AddWithValue("@p_idCie10", idCie10);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
         public DataTable CargarCie10()
         {
             DataTable dt = new DataTable();

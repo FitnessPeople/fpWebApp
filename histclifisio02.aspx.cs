@@ -169,32 +169,7 @@ namespace fpWebApp
             //Actualiza datos en la tabla HistoriaFisioterapeuta
             try
             {
-                //string strQuery = "UPDATE HistoriaFisioterapeuta SET " +
-                //    "Peso = " + txbPeso.Text.ToString() + ", " +
-                //    "Talla = " + txbTalla.Text.ToString() + ", " +
-                //    "IMC = " + txbIMC.Text.ToString() + ", " +
-                //    "PerimCintura = '" + txbPerimCintura.Text.ToString() + "', " +
-                //    "PerimCadera = '" + txbPerimCadera.Text.ToString() + "', " +
-                //    "PerimAbdomen = '" + txbPerimAbdomen.Text.ToString() + "', " +
-                //    "PerimPecho = '" + txbPerimPecho.Text.ToString() + "', " +
-                //    "PerimMuslo = '" + txbPerimMuslo.Text.ToString() + "', " +
-                //    "PerimPantorrilla = '" + txbPerimPantorrilla.Text.ToString() + "', " +
-                //    "PerimBrazo = '" + txbPerimBrazo.Text.ToString() + "', " +
-                //    "PliegueTricipital = '" + txbPliegueTricipital.Text.ToString() + "', " +
-                //    "PliegueIliocrestal = '" + txbPliegueIliocrestal.Text.ToString() + "', " +
-                //    "PliegueAbdominal = '" + txbPliegueAbdominal.Text.ToString() + "', " +
-                //    "PliegueSubescapular = '" + txbPliegueSubescapular.Text.ToString() + "', " +
-                //    "PliegueMuslo = '" + txbPliegueMuslo.Text.ToString() + "', " +
-                //    "PlieguePantorrilla = '" + txbPlieguePantorrilla.Text.ToString() + "', " +
-                //    "PorcGrasa = '" + txbPorcGrasa.Text.ToString() + "', " +
-                //    "PorcMuscular = '" + txbPorcMuscular.Text.ToString() + "', " +
-                //    "FCETanaka = '" + txbFCETanaka.Text.ToString() + "', " +
-                //    "PesoEsperado = '" + txbPesoEsperado.Text.ToString() + "', " +
-                //    "PesoGraso = '" + txbPesoGraso.Text.ToString() + "', " +
-                //    "PesoMagro = '" + txbPesoMagro.Text.ToString() + "' " +
-                //    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
-                //string mensaje = cg.TraerDatosStr(strQuery);
                 string mensaje = cg.ActualizarHistoriaFisioterapeuta2(
                     Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
                     Convert.ToDouble(txbPeso.Text.ToString()),

@@ -150,27 +150,27 @@ namespace fpWebApp
             //Actualiza datos en la tabla HistoriaFisioterapeuta
             try
             {
-                string strQuery = "UPDATE HistoriaFisioterapeuta SET " +
-                    "CabezaAdelantada = '" + txbCabezaAdelantada.Text.ToString() + "', " +
-                    "HombrosDesalineados = '" + txbHombrosDesalineados.Text.ToString() + "', " +
-                    "HipercifosisDorsal = '" + txbHipercifosisDorsal.Text.ToString() + "', " +
-                    "Escoliosis = '" + txbEscoliosis.Text.ToString() + "', " +
-                    "Dismetrias = '" + txbDismetrias.Text.ToString() + "', " +
-                    "GenuValgus = '" + txbGenuValgus.Text.ToString() + "', " +
-                    "GenuVarus = '" + txbGenuVarus.Text.ToString() + "', " +
-                    "GenuRecurbatum = '" + txbGenuRecurbatum.Text.ToString() + "', " +
-                    "GenuAntecurbatum = '" + txbGenuAntecurbatum.Text.ToString() + "', " +
-                    "PiePlano = '" + txbPiePlano.Text.ToString() + "', " +
-                    "PieCavus = '" + txbPieCavus.Text.ToString() + "', " +
-                    "Apto = '" + ddlApto.SelectedItem.Value.ToString() + "', " +
-                    "Restricciones = '" + txbRestricciones.Text.ToString() + "', " +
-                    "Diagnostico = '" + txbDiagnostico.Text.ToString() + "', " +
-                    "Observaciones = '" + txbObservaciones.Text.ToString() + "', " +
-                    "Recomendaciones = '" + txbRecomendaciones.Text.ToString() + "', " +
-                    "idCie10 = " + ddlCie10.SelectedItem.Value.ToString() + " " +
-                    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.ActualizarHistoriaFisioterapeuta4(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                    txbCabezaAdelantada.Text.ToString(),
+                    txbHombrosDesalineados.Text.ToString(),
+                    txbHipercifosisDorsal.Text.ToString(),
+                    txbEscoliosis.Text.ToString(),
+                    txbDismetrias.Text.ToString(),
+                    txbGenuValgus.Text.ToString(),
+                    txbGenuVarus.Text.ToString(),
+                    txbGenuRecurbatum.Text.ToString(),
+                    txbGenuAntecurbatum.Text.ToString(),
+                    txbPiePlano.Text.ToString(),
+                    txbPieCavus.Text.ToString(),
+                    ddlApto.SelectedItem.Value.ToString(),
+                    txbRestricciones.Text.ToString(),
+                    txbDiagnostico.Text.ToString(),
+                    txbObservaciones.Text.ToString(),
+                    txbRecomendaciones.Text.ToString(),
+                    Convert.ToInt32(ddlCie10.SelectedItem.Value.ToString())
+                    );
 
                 if (mensaje == "OK")
                 {

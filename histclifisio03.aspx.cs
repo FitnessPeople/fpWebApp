@@ -150,19 +150,31 @@ namespace fpWebApp
             //Actualiza datos en la tabla HistoriaFisioterapeuta
             try
             {
-                string strQuery = "UPDATE HistoriaFisioterapeuta SET " +
-                    "Wells = " + txbWells.Text.ToString() + ", " +
-                    "TestPushup = " + txbTestPushup.Text.ToString() + ", " +
-                    "TestSentadillas = " + txbTestSentadillas.Text.ToString() + ", " +
-                    "Nivel = " + txbNivel.Text.ToString() + ", " +
-                    "TestCore = " + txbTestCore.Text.ToString() + ", " +
-                    "FCReposoPRC = " + txbFCReposo.Text.ToString() + ", " +
-                    "FCTerminaPrueba = " + txbFCTerminaPrueba.Text.ToString() + ", " +
-                    "FCMinuto = " + txbFCMinuto.Text.ToString() + ", " +
-                    "IndiceRend = " + txbIndiceRend.Text.ToString() + " " +
-                    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
+                //string strQuery = "UPDATE HistoriaFisioterapeuta SET " +
+                //    "Wells = " + txbWells.Text.ToString() + ", " +
+                //    "TestPushup = " + txbTestPushup.Text.ToString() + ", " +
+                //    "TestSentadillas = " + txbTestSentadillas.Text.ToString() + ", " +
+                //    "Nivel = " + txbNivel.Text.ToString() + ", " +
+                //    "TestCore = " + txbTestCore.Text.ToString() + ", " +
+                //    "FCReposoPRC = " + txbFCReposo.Text.ToString() + ", " +
+                //    "FCTerminaPrueba = " + txbFCTerminaPrueba.Text.ToString() + ", " +
+                //    "FCMinuto = " + txbFCMinuto.Text.ToString() + ", " +
+                //    "IndiceRend = " + txbIndiceRend.Text.ToString() + " " +
+                //    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                //string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.ActualizarHistoriaFisioterapeuta3(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                    Convert.ToDouble(txbWells.Text.ToString()),
+                    Convert.ToDouble(txbTestPushup.Text.ToString()),
+                    Convert.ToDouble(txbTestSentadillas.Text.ToString()),
+                    Convert.ToDouble(txbNivel.Text.ToString()),
+                    Convert.ToDouble(txbTestCore.Text.ToString()),
+                    Convert.ToDouble(txbFCReposo.Text.ToString()),
+                    Convert.ToDouble(txbFCTerminaPrueba.Text.ToString()),
+                    Convert.ToDouble(txbFCMinuto.Text.ToString()),
+                    Convert.ToDouble(txbIndiceRend.Text.ToString())
+                    );
 
                 if (mensaje == "OK")
                 {
