@@ -9,62 +9,129 @@
     ****************
 --%>
 <div class="row">
+
+    <!-- 1. Ingresos reales -->
     <div class="col-lg-3">
-        <div class="widget style1 bg-success">
-            <div class="row">
-                <div class="col-xs-4">
-                    <i class="fa fa-person-arrow-down-to-line fa-5x"></i>
-                </div>
-                <div class="col-xs-8 text-right">
-                    <span>Asistencia promedio diaria</span>
-                    <h2 class="font-bold">
-                        <asp:Literal ID="ltCuantos1" runat="server"></asp:Literal></h2>
-                </div>
+        <div class="ibox">
+            <div class="ibox-title text-primary">
+                <h5>Ingresos reales</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblIngresos" runat="server"></asp:Literal>
+                </h1>
+                <small>Ingresos del mes</small>
             </div>
         </div>
     </div>
+
+    <!-- 2. Meta mensual -->
     <div class="col-lg-3">
-        <div class="widget style1 lazur-bg">
-            <div class="row">
-                <div class="col-xs-4">
-                    <i class="fa fa-person-running fa-5x"></i>
-                </div>
-                <div class="col-xs-8 text-right">
-                    <span>Clases realizadas vs programadas</span>
-                    <h2 class="font-bold">
-                        <asp:Literal ID="ltCuantos2" runat="server"></asp:Literal>
-                    </h2>
-                </div>
+        <div class="ibox">
+            <div class="ibox-title text-info">
+                <h5>Meta mensual</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblMetaMensual" runat="server"></asp:Literal>
+                </h1>
+                <small>Objetivo operativo</small>
             </div>
         </div>
     </div>
+
+    <!-- 3. Cumplimiento ingresos -->
     <div class="col-lg-3">
-        <div class="widget style1 yellow-bg">
-            <div class="row">
-                <div class="col-xs-4">
-                    <i class="fa fa-users-line fa-5x"></i>
-                </div>
-                <div class="col-xs-8 text-right">
-                    <span>Ocupación promedio por sede</span>
-                    <h2 class="font-bold">
-                        <asp:Literal ID="ltCuantos3" runat="server"></asp:Literal>
-                    </h2>
-                </div>
+        <div class="ibox">
+            <div class="ibox-title text-success">
+                <h5>Cumplimiento ingresos</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblCumplimiento" runat="server"></asp:Literal>%
+                </h1>
+                <small>Ingresos vs meta</small>
             </div>
         </div>
     </div>
+
+    <!-- 4. Tasa de retención -->
     <div class="col-lg-3">
-        <div class="widget style1 navy-bg">
-            <div class="row">
-                <div class="col-xs-4">
-                    <i class="fa fa-users-viewfinder fa-5x"></i>
-                </div>
-                <div class="col-xs-8 text-right">
-                    <span>Incidentes operativos abiertos</span>
-                    <h2 class="font-bold">
-                        <asp:Literal ID="ltCuantos4" runat="server"></asp:Literal></h2>
-                </div>
+        <div class="ibox">
+            <div class="ibox-title text-success">
+                <h5>Tasa de retención</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblRetencion" runat="server"></asp:Literal>%
+                </h1>
+                <small>Clientes activos</small>
             </div>
         </div>
     </div>
+
+</div>
+
+<div class="row">
+
+    <!-- 5. Churn -->
+    <div class="col-lg-3">
+        <div class="ibox">
+            <div class="ibox-title text-danger">
+                <h5>Churn</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblChurn" runat="server"></asp:Literal>%
+                </h1>
+                <small>Cancelaciones del mes</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Ocupación -->
+    <div class="col-lg-3">
+        <div class="ibox">
+            <div class="ibox-title text-warning">
+                <h5>Ocupación promedio</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblOcupacion" runat="server"></asp:Literal>%
+                </h1>
+                <small>Capacidad utilizada</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. Ticket promedio -->
+    <div class="col-lg-3">
+        <div class="ibox">
+            <div class="ibox-title text-info">
+                <h5>Ticket promedio</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblTicketPromedio" runat="server"></asp:Literal>
+                </h1>
+                <small>Ingreso por cliente</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. Cumplimiento por sede -->
+    <div class="col-lg-3">
+        <div class="ibox">
+            <div class="ibox-title text-primary">
+                <h5>Cumplimiento por sede</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblCumplimientoSede" runat="server"></asp:Literal>%
+                </h1>
+                <small>Promedio general</small>
+            </div>
+        </div>
+    </div>
+
 </div>
