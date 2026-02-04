@@ -26,6 +26,10 @@ namespace fpWebApp
                         {
                             if (Request.QueryString.Count > 0)
                             {
+                                txbFCReposo.Attributes.Add("type", "number");
+                                txbTAReposo.Attributes.Add("type", "number");
+                                txbFCMax.Attributes.Add("type", "number");
+
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
                             }
@@ -138,15 +142,14 @@ namespace fpWebApp
             //Inserta datos en la tabla HistoriaDeportiva
             try
             {
-                string strQuery = "INSERT INTO HistoriaDeportiva " +
-                "(idHistoria, AHA, FCReposo, TAReposo, FCMax) " +
-                "VALUES (" + Request.QueryString["idHistoria"].ToString() + ", " +
-                "'" + ddlClasificacionRiesgo.SelectedItem.Value.ToString() + "', " +
-                "'" + txbFCReposo.Text.ToString() + "', " +
-                "'" + txbTAReposo.Text.ToString() + "', " +
-                "'" + txbFCMax.Text.ToString() + "') ";
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.InsertarHistoriaDeportologo1(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                    ddlClasificacionRiesgo.SelectedItem.Value.ToString(),
+                    txbFCReposo.Text.ToString(),
+                    txbTAReposo.Text.ToString(),
+                    txbFCMax.Text.ToString()
+                    );
 
                 if (mensaje == "OK")
                 {

@@ -245,6 +245,8 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <input id="hfEdad" type="hidden" runat="server" />
+                            <input id="hfGenero" type="hidden" runat="server" />
                         </div>
                     </div>
 

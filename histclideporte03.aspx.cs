@@ -81,6 +81,8 @@ namespace fpWebApp
             ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
             ltGenero.Text = dt.Rows[0]["Genero"].ToString();
             ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
+            hfGenero.Value = dt.Rows[0]["idGenero"].ToString();
+            hfEdad.Value = dt.Rows[0]["edad"].ToString();
 
             string label = "warning";
             if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Activo")
@@ -140,16 +142,24 @@ namespace fpWebApp
             //Actualiza datos en la tabla HistoriaDeportiva
             try
             {
-                string strQuery = "UPDATE HistoriaDeportiva SET " +
-                    "Wells = '" + txbWells.Text.ToString() + "', " +
-                    "Osteomuscular = '" + txbOsteomuscular.Text.ToString() + "', " +
-                    "Cardiovascular = '" + txbCardiovascular.Text.ToString() + "', " +
-                    "Otros = '" + txbOtros.Text.ToString() + "', " +
-                    "Diagnostico = '" + txbDiagnostico.Text.ToString() + "', " +
-                    "Nivel = '" + txbNivel.Text.ToString() + "' " +
-                    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
+                //string strQuery = "UPDATE HistoriaDeportiva SET " +
+                //    "Wells = '" + txbWells.Text.ToString() + "', " +
+                //    "Osteomuscular = '" + txbOsteomuscular.Text.ToString() + "', " +
+                //    "Cardiovascular = '" + txbCardiovascular.Text.ToString() + "', " +
+                //    "Otros = '" + txbOtros.Text.ToString() + "', " +
+                //    "Diagnostico = '" + txbDiagnostico.Text.ToString() + "', " +
+                //    "Nivel = '" + txbNivel.Text.ToString() + "' " +
+                //    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.ActualizarHistoriaDeportologo3(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                    txbWells.Text.ToString(),
+                    txbOsteomuscular.Text.ToString(),
+                    txbCardiovascular.Text.ToString(),
+                    txbOtros.Text.ToString(),
+                    txbDiagnostico.Text.ToString(),
+                    txbNivel.Text.ToString()
+                    );
 
                 if (mensaje == "OK")
                 {
@@ -166,7 +176,6 @@ namespace fpWebApp
                     });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                    //Response.Redirect("histclinutricion02?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + Request.QueryString["idHistoria"].ToString());
                 }
                 else
                 {

@@ -95,7 +95,6 @@ namespace fpWebApp
                     btnEditar.Visible = true;
 
                     HtmlButton btnAgregar = (HtmlButton)e.Item.FindControl("btnAgregar");
-                    //btnAgregar.Attributes.Add("onClick", "window.location.href='agregarcontrol?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
                     btnAgregar.Attributes.Add("onClick", "window.location.href='verhistoriaclinica?idAfiliado=" + ((DataRowView)e.Item.DataItem).Row[1].ToString() + "'");
                     btnAgregar.Visible = true;
                 }

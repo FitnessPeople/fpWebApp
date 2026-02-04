@@ -3,6 +3,7 @@ using DocumentFormat.OpenXml.Presentation;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using K4os.Compression.LZ4.Internal;
+using MathNet.Numerics.LinearAlgebra;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -18,6 +19,7 @@ using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -27,7 +29,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Configuration;
-using System.Drawing.Configuration;
 using System.Web.Services.Description;
 using System.Web.UI;
 
@@ -9461,6 +9462,246 @@ namespace fpWebApp
                     }
                 }
                 respuesta = $"OK|{idHistoriaClinica}";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string InsertarHistoriaDeportologo1(int idHistoria, string AHA, string FCReposo,
+            string TAReposo, string FCMax)
+        {
+            string respuesta = string.Empty;
+            
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_HISTORIA_DEPORTOLOGO_1", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_aha", AHA);
+                        cmd.Parameters.AddWithValue("@p_FCReposo", FCReposo);
+                        cmd.Parameters.AddWithValue("@p_TAReposo", TAReposo);
+                        cmd.Parameters.AddWithValue("@p_FCMax", FCMax);
+                        
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaDeportologo2(int idHistoria, double peso, double talla,
+            double imc, double perimCintura, double perimCadera, double perimAbdomen, double perimPecho, 
+            double perimMuslo, double perimPantorrilla, double perimBrazo, double pliegueTricipital, 
+            double pliegueIliocrestal, double pliegueAbdominal, double pliegueSubescapular, 
+            double pliegueMuslo, double plieguePantorrilla, double porcGrasa, double porcMuscular, 
+            double FCETanaka, double pesoEsperado, double pesoGraso, double pesoMagro)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_DEPORTOLOGO_2", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_peso", peso);
+                        cmd.Parameters.AddWithValue("@p_talla", talla);
+                        cmd.Parameters.AddWithValue("@p_imc", imc);
+                        cmd.Parameters.AddWithValue("@p_perim_cintura", perimCintura);
+                        cmd.Parameters.AddWithValue("@p_perim_cadera", perimCadera);
+                        cmd.Parameters.AddWithValue("@p_perim_abdomen", perimAbdomen);
+                        cmd.Parameters.AddWithValue("@p_perim_pecho", perimPecho);
+                        cmd.Parameters.AddWithValue("@p_perim_muslo", perimMuslo);
+                        cmd.Parameters.AddWithValue("@p_perim_pantorrilla", perimPantorrilla);
+                        cmd.Parameters.AddWithValue("@p_perim_brazo", perimBrazo);
+                        cmd.Parameters.AddWithValue("@p_pliegue_tricipital", pliegueTricipital);
+                        cmd.Parameters.AddWithValue("@p_pliegue_iliocrestal", pliegueIliocrestal);
+                        cmd.Parameters.AddWithValue("@p_pliegue_abdominal", pliegueAbdominal);
+                        cmd.Parameters.AddWithValue("@p_pliegue_subescapular", pliegueSubescapular);
+                        cmd.Parameters.AddWithValue("@p_pliegue_muslo", pliegueMuslo);
+                        cmd.Parameters.AddWithValue("@p_pliegue_pantorrilla", plieguePantorrilla);
+                        cmd.Parameters.AddWithValue("@p_porc_grasa", porcGrasa);
+                        cmd.Parameters.AddWithValue("@p_porc_muscular", porcMuscular);
+                        cmd.Parameters.AddWithValue("@p_FCETanaka", FCETanaka);
+                        cmd.Parameters.AddWithValue("@p_peso_esperado", pesoEsperado);
+                        cmd.Parameters.AddWithValue("@p_peso_graso", pesoGraso);
+                        cmd.Parameters.AddWithValue("@p_peso_magro", pesoMagro);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaDeportologo3(int idHistoria, string wells, string osteomuscular, string cardiovascular,
+            string Otros, string Diagnostico, string Nivel)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_DEPORTOLOGO_3", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_wells", wells);
+                        cmd.Parameters.AddWithValue("@p_osteomuscular", osteomuscular);
+                        cmd.Parameters.AddWithValue("@p_cardiovascular", cardiovascular);
+                        cmd.Parameters.AddWithValue("@p_otros", Otros);
+                        cmd.Parameters.AddWithValue("@p_diagnostico", Diagnostico);
+                        cmd.Parameters.AddWithValue("@p_nivel", Nivel);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaDeportologo4(int idHistoria, string origenEnfermedad, string tratamiento, string observaciones)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_DEPORTOLOGO_4", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_origen_enfermedad", origenEnfermedad);
+                        cmd.Parameters.AddWithValue("@p_tratamiento", tratamiento);
+                        cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string InsertarHistoriaFisioterapeuta1(int idHistoria, string FCReposo, string TAReposo, string FCMax)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_HISTORIA_FISIOTERAPEUTA_1", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_FCReposo", FCReposo);
+                        cmd.Parameters.AddWithValue("@p_TAReposo", TAReposo);
+                        cmd.Parameters.AddWithValue("@p_FCMax", FCMax);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaFisioterapeuta2(int idHistoria, double peso, double talla,
+            double imc, double perimCintura, double perimCadera, double perimAbdomen, double perimPecho,
+            double perimMuslo, double perimPantorrilla, double perimBrazo, double pliegueTricipital,
+            double pliegueIliocrestal, double pliegueAbdominal, double pliegueSubescapular,
+            double pliegueMuslo, double plieguePantorrilla, double porcGrasa, double porcMuscular,
+            double FCETanaka, double pesoEsperado, double pesoGraso, double pesoMagro)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_FISIOTERAPEUTA_2", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_peso", peso);
+                        cmd.Parameters.AddWithValue("@p_talla", talla);
+                        cmd.Parameters.AddWithValue("@p_imc", imc);
+                        cmd.Parameters.AddWithValue("@p_perim_cintura", perimCintura);
+                        cmd.Parameters.AddWithValue("@p_perim_cadera", perimCadera);
+                        cmd.Parameters.AddWithValue("@p_perim_abdomen", perimAbdomen);
+                        cmd.Parameters.AddWithValue("@p_perim_pecho", perimPecho);
+                        cmd.Parameters.AddWithValue("@p_perim_muslo", perimMuslo);
+                        cmd.Parameters.AddWithValue("@p_perim_pantorrilla", perimPantorrilla);
+                        cmd.Parameters.AddWithValue("@p_perim_brazo", perimBrazo);
+                        cmd.Parameters.AddWithValue("@p_pliegue_tricipital", pliegueTricipital);
+                        cmd.Parameters.AddWithValue("@p_pliegue_iliocrestal", pliegueIliocrestal);
+                        cmd.Parameters.AddWithValue("@p_pliegue_abdominal", pliegueAbdominal);
+                        cmd.Parameters.AddWithValue("@p_pliegue_subescapular", pliegueSubescapular);
+                        cmd.Parameters.AddWithValue("@p_pliegue_muslo", pliegueMuslo);
+                        cmd.Parameters.AddWithValue("@p_pliegue_pantorrilla", plieguePantorrilla);
+                        cmd.Parameters.AddWithValue("@p_porc_grasa", porcGrasa);
+                        cmd.Parameters.AddWithValue("@p_porc_muscular", porcMuscular);
+                        cmd.Parameters.AddWithValue("@p_FCETanaka", FCETanaka);
+                        cmd.Parameters.AddWithValue("@p_peso_esperado", pesoEsperado);
+                        cmd.Parameters.AddWithValue("@p_peso_graso", pesoGraso);
+                        cmd.Parameters.AddWithValue("@p_peso_magro", pesoMagro);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
             }
             catch (Exception ex)
             {

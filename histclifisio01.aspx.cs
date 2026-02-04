@@ -142,14 +142,20 @@ namespace fpWebApp
             //Inserta datos en la tabla HistoriaFisioterapeuta
             try
             {
-                string strQuery = "INSERT INTO HistoriaFisioterapeuta " +
-                "(idHistoria, FCReposo, TAReposo, FCMax) " +
-                "VALUES (" + Request.QueryString["idHistoria"].ToString() + ", " +
-                "'" + txbFCReposo.Text.ToString() + "', " +
-                "'" + txbTAReposo.Text.ToString() + "', " +
-                "'" + txbFCMax.Text.ToString() + "') ";
+                //string strQuery = "INSERT INTO HistoriaFisioterapeuta " +
+                //"(idHistoria, FCReposo, TAReposo, FCMax) " +
+                //"VALUES (" + Request.QueryString["idHistoria"].ToString() + ", " +
+                //"'" + txbFCReposo.Text.ToString() + "', " +
+                //"'" + txbTAReposo.Text.ToString() + "', " +
+                //"'" + txbFCMax.Text.ToString() + "') ";
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                //string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.InsertarHistoriaFisioterapeuta1(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                    txbFCReposo.Text.ToString(),
+                    txbTAReposo.Text.ToString(),
+                    txbFCMax.Text.ToString()
+                    );
 
                 if (mensaje == "OK")
                 {

@@ -108,6 +108,8 @@ namespace fpWebApp
             ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
             ltGenero.Text = dt.Rows[0]["Genero"].ToString();
             ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
+            hfGenero.Value = dt.Rows[0]["idGenero"].ToString();
+            hfEdad.Value = dt.Rows[0]["edad"].ToString();
 
             string label = "warning";
             if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Activo")
@@ -162,38 +164,37 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             //Actualiza datos en la tabla HistoriaDeportiva
             try
             {
-                string strQuery = "UPDATE HistoriaDeportiva SET " +
-                    "Peso = " + txbPeso.Text.ToString() + ", " +
-                    "Talla = " + txbTalla.Text.ToString() + ", " +
-                    "IMC = " + txbIMC.Text.ToString() + ", " +
-                    "PerimCintura = '" + txbPerimCintura.Text.ToString() + "', " +
-                    "PerimCadera = '" + txbPerimCadera.Text.ToString() + "', " +
-                    "PerimAbdomen = '" + txbPerimAbdomen.Text.ToString() + "', " +
-                    "PerimPecho = '" + txbPerimPecho.Text.ToString() + "', " +
-                    "PerimMuslo = '" + txbPerimMuslo.Text.ToString() + "', " +
-                    "PerimPantorrilla = '" + txbPerimPantorrilla.Text.ToString() + "', " +
-                    "PerimBrazo = '" + txbPerimBrazo.Text.ToString() + "', " +
-                    "PliegueTricipital = '" + txbPliegueTricipital.Text.ToString() + "', " +
-                    "PliegueIliocrestal = '" + txbPliegueIliocrestal.Text.ToString() + "', " +
-                    "PliegueAbdominal = '" + txbPliegueAbdominal.Text.ToString() + "', " +
-                    "PliegueSubescapular = '" + txbPliegueSubescapular.Text.ToString() + "', " +
-                    "PliegueMuslo = '" + txbPliegueMuslo.Text.ToString() + "', " +
-                    "PlieguePantorrilla = '" + txbPlieguePantorrilla.Text.ToString() + "', " +
-                    "PorcGrasa = '" + txbPorcGrasa.Text.ToString() + "', " +
-                    "PorcMuscular = '" + txbPorcMuscular.Text.ToString() + "', " +
-                    "FCETanaka = '" + txbFCETanaka.Text.ToString() + "', " +
-                    "PesoEsperado = '" + txbPesoEsperado.Text.ToString() + "', " +
-                    "PesoGraso = '" + txbPesoGraso.Text.ToString() + "', " +
-                    "PesoMagro = '" + txbPesoMagro.Text.ToString() + "' " +
-                    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.ActualizarHistoriaDeportologo2(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()), 
+                    Convert.ToDouble(txbPeso.Text.ToString()),
+                    Convert.ToDouble(txbTalla.Text.ToString()),
+                    Convert.ToDouble(txbIMC.Text.ToString()),
+                    Convert.ToDouble(txbPerimCintura.Text.ToString()),
+                    Convert.ToDouble(txbPerimCadera.Text.ToString()),
+                    Convert.ToDouble(txbPerimAbdomen.Text.ToString()),
+                    Convert.ToDouble(txbPerimPecho.Text.ToString()),
+                    Convert.ToDouble(txbPerimMuslo.Text.ToString()),
+                    Convert.ToDouble(txbPerimPantorrilla.Text.ToString()),
+                    Convert.ToDouble(txbPerimBrazo.Text.ToString()),
+                    Convert.ToDouble(txbPliegueTricipital.Text.ToString()),
+                    Convert.ToDouble(txbPliegueIliocrestal.Text.ToString()),
+                    Convert.ToDouble(txbPliegueAbdominal.Text.ToString()),
+                    Convert.ToDouble(txbPliegueSubescapular.Text.ToString()),
+                    Convert.ToDouble(txbPliegueMuslo.Text.ToString()),
+                    Convert.ToDouble(txbPlieguePantorrilla.Text.ToString()),
+                    Convert.ToDouble(txbPorcGrasa.Text.ToString()),
+                    Convert.ToDouble(txbPorcMuscular.Text.ToString()),
+                    Convert.ToDouble(txbFCETanaka.Text.ToString()),
+                    Convert.ToDouble(txbPesoEsperado.Text.ToString()),
+                    Convert.ToDouble(txbPesoGraso.Text.ToString()),
+                    Convert.ToDouble(txbPesoMagro.Text.ToString())
+                    );
 
                 if (mensaje == "OK")
                 {

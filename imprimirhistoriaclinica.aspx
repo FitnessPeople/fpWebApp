@@ -29,7 +29,7 @@
                             <th>Edad</th>
                         </tr>
                         <tr>
-                            <td><i class="fa fa-calendar-day"></i><%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock"></i><%# Eval("FechaHora", "{0:HH:mm}") %></td>
+                            <td><i class="fa fa-calendar-day m-r-xs"></i><%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock m-r-xs"></i><%# Eval("FechaHora", "{0:HH:mm}") %></td>
                             <td><%# Eval("DocumentoAfiliado") %></td>
                             <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
                             <td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>
@@ -76,9 +76,13 @@
                             <th width="25%"><i class="fa fa-wine-bottle m-r-sm"></i>Bebidas/mes</th>
                         </tr>
                         <tr>
-                            <td><%# Eval("fuma") %></td>
+                            <td> <%# Eval("Tabaquismo").ToString() == "1"
+                                 ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                 : "<i class='fa fa-square text-navy'></i> No" %></td>
                             <td><%# Eval("Cigarrillos") %></td>
-                            <td><%# Eval("toma") %></td>
+                            <td><%# Eval("Alcoholismo").ToString() == "1"
+                                ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                : "<i class='fa fa-square text-navy'></i> No" %></td>
                             <td><%# Eval("Bebidas") %></td>
                         </tr>
                     </table>
@@ -91,11 +95,29 @@
                             <th width="20%"><i class="fa fa-stethoscope m-r-sm"></i>H.T.A.</th>
                         </tr>
                         <tr>
-                            <td><%# Eval("sedentario") %></td>
-                            <td><%# Eval("diabetico") %></td>
-                            <td><%# Eval("colesterado") %></td>
-                            <td><%# Eval("triglicerado") %></td>
-                            <td><%# Eval("hipertenso") %></td>
+                            <td><%# Eval("Sedentarismo").ToString() == "1"
+                                ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                : "<i class='fa fa-square text-navy'></i> No" %></td>
+                            <td><%# Eval("Diabetes").ToString() == "1"
+                                ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                : Eval("Diabetes").ToString() == "2"
+                                    ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                    : "<i class='fa fa-square text-navy'></i> No" %></td>
+                            <td><%# Eval("Colesterol").ToString() == "1"
+                                ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                : Eval("Colesterol").ToString() == "2"
+                                    ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                    : "<i class='fa fa-square text-navy'></i> No" %></td>
+                            <td><%# Eval("Trigliceridos").ToString() == "1"
+                                ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                : Eval("Trigliceridos").ToString() == "2"
+                                    ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                    : "<i class='fa fa-square text-navy'></i> No" %></td>
+                            <td><%# Eval("HTA").ToString() == "1"
+                                ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                : Eval("HTA").ToString() == "2"
+                                    ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                    : "<i class='fa fa-square text-navy'></i> No" %></td>
                         </tr>
                     </table>
                     <h3 class="text-info"><i class="fa fa-utensils"></i> Historia alimentaria</h3>
@@ -106,9 +128,15 @@
                             <th width="34%">Estreñimiento</th>
                         </tr>
                         <tr>
-                            <td><%# Eval("gastritico") %></td>
-                            <td><%# Eval("colonico") %></td>
-                            <td><%# Eval("estrenido") %></td>
+                            <td><%# Eval("Gastritis").ToString() == "1"
+                                ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                : "<i class='fa fa-square text-navy'></i> No" %></td>
+                            <td><%# Eval("Colon").ToString() == "1"
+                                ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                : "<i class='fa fa-square text-navy'></i> No" %></td>
+                            <td><%# Eval("Estrenimiento").ToString() == "1"
+                                ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                : "<i class='fa fa-square text-navy'></i> No" %></td>
                         </tr>
                     </table>
                     <table class="table table-bordered table-striped">
@@ -401,13 +429,23 @@
                     <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
                         <tr>
                             <th width="33%">FC Reposo</th>
-                            <th width="33%">TA Repoos</th>
+                            <th width="33%">TA Reposo</th>
                             <th width="34%">FC Max</th>
                         </tr>
                         <tr>
-                            <td><%# Eval("FCReposo") %> Kg</td>
-                            <td><%# Eval("TAReposo") %> cms</td>
+                            <td><%# Eval("FCReposo") %></td>
+                            <td><%# Eval("TAReposo") %></td>
                             <td><%# Eval("FCMax") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Peso</th>
+                            <th width="33%">Talla</th>
+                            <th width="34%">IMC</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("Peso") %> Kg</td>
+                            <td><%# Eval("Talla") %> cms</td>
+                            <td><%# Eval("IMC") %></td>
                         </tr>
                     </table>
                 </ItemTemplate>

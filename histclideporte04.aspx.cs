@@ -137,13 +137,19 @@ namespace fpWebApp
             //Actualiza datos en la tabla HistoriaDeportiva
             try
             {
-                string strQuery = "UPDATE HistoriaDeportiva SET " +
-                    "OrigenEnfermedad = '" + ddlOrigenEnfermedad.SelectedItem.Value.ToString() + "', " +
-                    "Tratamiento = '" + txbTratamiento.Text.ToString() + "', " +
-                    "Observaciones = '" + txbObservaciones.Text.ToString() + "' " +
-                    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
+                //string strQuery = "UPDATE HistoriaDeportiva SET " +
+                //    "OrigenEnfermedad = '" + ddlOrigenEnfermedad.SelectedItem.Value.ToString() + "', " +
+                //    "Tratamiento = '" + txbTratamiento.Text.ToString() + "', " +
+                //    "Observaciones = '" + txbObservaciones.Text.ToString() + "' " +
+                //    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                //string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.ActualizarHistoriaDeportologo4(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                    ddlOrigenEnfermedad.SelectedItem.Value.ToString(),
+                    txbTratamiento.Text.ToString(),
+                    txbObservaciones.Text.ToString()
+                    );
 
                 if (mensaje == "OK")
                 {
@@ -160,7 +166,6 @@ namespace fpWebApp
                     });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                    //Response.Redirect("histclinutricion02?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + Request.QueryString["idHistoria"].ToString());
                 }
                 else
                 {

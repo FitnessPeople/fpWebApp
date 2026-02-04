@@ -80,6 +80,8 @@ namespace fpWebApp
             ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
             ltGenero.Text = dt.Rows[0]["Genero"].ToString();
             ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
+            hfGenero.Value = dt.Rows[0]["idGenero"].ToString();
+            hfEdad.Value = dt.Rows[0]["edad"].ToString();
 
             string label = "warning";
             if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Activo")

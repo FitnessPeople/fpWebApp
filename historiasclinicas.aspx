@@ -97,7 +97,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-notes-medical text-success m-r-sm"></i>Historias Clínicas</h2>
+                    <h2><i class="fa fa-notes-medical text-success m-r-xs"></i>Historias Clínicas</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Asistencial</li>
@@ -197,11 +197,11 @@
                                                             <h3 class="text-info">Antecedentes</h3>
                                                             <table class="table table-bordered table-striped">
                                                                 <tr>
-                                                                    <th width="20%"><i class="fa fa-people-roof m-r-sm"></i>Familiares</th>
-                                                                    <th width="20%"><i class="fa fa-virus m-r-sm"></i>Patológicos</th>
-                                                                    <th width="20%"><i class="fa fa-syringe m-r-sm"></i>Quirúrgicos</th>
-                                                                    <th width="20%"><i class="fa fa-biohazard m-r-sm"></i>Toxicológico</th>
-                                                                    <th width="20%"><i class="fa fa-hospital m-r-sm"></i>Hospitalario</th>
+                                                                    <th width="20%"><i class="fa fa-people-roof m-r-xs"></i>Familiares</th>
+                                                                    <th width="20%"><i class="fa fa-virus m-r-xs"></i>Patológicos</th>
+                                                                    <th width="20%"><i class="fa fa-syringe m-r-xs"></i>Quirúrgicos</th>
+                                                                    <th width="20%"><i class="fa fa-biohazard m-r-xs"></i>Toxicológico</th>
+                                                                    <th width="20%"><i class="fa fa-hospital m-r-xs"></i>Hospitalario</th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><%# Eval("AnteFamiliar") %></td>
@@ -211,11 +211,11 @@
                                                                     <td><%# Eval("AnteHospitalario") %></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <th width="20%"><i class="fa fa-crutch m-r-sm"></i>Traumatológico</th>
-                                                                    <th width="20%"><i class="fa fa-capsules m-r-sm"></i>Farmacológico</th>
-                                                                    <th width="20%"><i class="fa fa-person-running m-r-sm"></i>Actividad Física</th>
-                                                                    <th width="20%"><i class="fa fa-person-pregnant m-r-sm"></i>Gineco-Obstetricia</th>
-                                                                    <th width="20%"><i class="fa fa-droplet m-r-sm"></i>F.U.M.</th>
+                                                                    <th width="20%"><i class="fa fa-crutch m-r-xs"></i>Traumatológico</th>
+                                                                    <th width="20%"><i class="fa fa-capsules m-r-xs"></i>Farmacológico</th>
+                                                                    <th width="20%"><i class="fa fa-person-running m-r-xs"></i>Actividad Física</th>
+                                                                    <th width="20%"><i class="fa fa-person-pregnant m-r-xs"></i>Gineco-Obstetricia</th>
+                                                                    <th width="20%"><i class="fa fa-droplet m-r-xs"></i>F.U.M.</th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><%# Eval("AnteTraumatologico") %></td>
@@ -228,44 +228,48 @@
                                                             <h3 class="text-info">Factores de Riesgo Cardiovascular</h3>
                                                             <table class="table table-bordered table-striped">
                                                                 <tr>
-                                                                    <th width="10%"><i class="fa fa-smoking m-r-sm"></i>Tabaco</th>
-                                                                    <th width="13%"><i class="fa fa-smoking m-r-sm"></i>Cigarrillos/día</th>
-                                                                    <th width="10%"><i class="fa fa-wine-bottle m-r-sm"></i>Alcohol</th>
-                                                                    <th width="12%"><i class="fa fa-wine-bottle m-r-sm"></i>Bebidas/mes</th>
-                                                                    <th width="13%"><i class="fa fa-chair m-r-sm"></i>Sedentarismo</th>
-                                                                    <th width="10%"><i class="fa fa-vial m-r-sm"></i>Diabetes</th>
-                                                                    <th width="10%"><i class="fa fa-heart-pulse m-r-sm"></i>Colesterol</th>
-                                                                    <th width="12%"><i class="fa fa-heart-circle-bolt m-r-sm"></i>Triglicéridos</th>
-                                                                    <th width="10%"><i class="fa fa-stethoscope m-r-sm"></i>H.T.A.</th>
+                                                                    <th width="10%"><i class="fa fa-smoking m-r-xs"></i>Tabaco</th>
+                                                                    <th width="13%"><i class="fa fa-smoking m-r-xs"></i>Cigarrillos/día</th>
+                                                                    <th width="10%"><i class="fa fa-wine-bottle m-r-xs"></i>Alcohol</th>
+                                                                    <th width="12%"><i class="fa fa-wine-bottle m-r-xs"></i>Bebidas/mes</th>
+                                                                    <th width="13%"><i class="fa fa-chair m-r-xs"></i>Sedentarismo</th>
+                                                                    <th width="10%"><i class="fa fa-vial m-r-xs"></i>Diabetes</th>
+                                                                    <th width="10%"><i class="fa fa-heart-pulse m-r-xs"></i>Colesterol</th>
+                                                                    <th width="12%"><i class="fa fa-heart-circle-bolt m-r-xs"></i>Triglicéridos</th>
+                                                                    <th width="10%"><i class="fa fa-stethoscope m-r-xs"></i>H.T.A.</th>
                                                                 </tr>
                                                                 <tr>
                                                                     <td><%# Eval("Tabaquismo").ToString() == "1"
-                                                                        ? "<i class='fa fa-check text-danger'></i>"
-                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
-                                                                    <td><%# Eval("Cigarrillos").ToString() == "1"
-                                                                        ? "<i class='fa fa-check text-danger'></i>"
-                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                        : "<i class='fa fa-square text-navy'></i> No" %></td>
+                                                                    <td><%# Eval("Cigarrillos").ToString() %></td>
                                                                     <td><%# Eval("Alcoholismo").ToString() == "1"
-                                                                        ? "<i class='fa fa-check text-danger'></i>"
-                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
-                                                                    <td><%# Eval("Bebidas").ToString() == "1"
-                                                                        ? "<i class='fa fa-check text-danger'></i>"
-                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                        : "<i class='fa fa-square text-navy'></i> No" %></td>
+                                                                    <td><%# Eval("Bebidas").ToString() %></td>
                                                                     <td><%# Eval("Sedentarismo").ToString() == "1"
-                                                                        ? "<i class='fa fa-check text-danger'></i>"
-                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                        : "<i class='fa fa-square text-navy'></i> No" %></td>
                                                                     <td><%# Eval("Diabetes").ToString() == "1"
-                                                                        ? "<i class='fa fa-check text-danger'></i>"
-                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                        : Eval("Diabetes").ToString() == "2"
+                                                                            ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                                                            : "<i class='fa fa-square text-navy'></i> No" %></td>
                                                                     <td><%# Eval("Colesterol").ToString() == "1"
-                                                                        ? "<i class='fa fa-check text-danger'></i>"
-                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                        : Eval("Colesterol").ToString() == "2"
+                                                                            ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                                                            : "<i class='fa fa-square text-navy'></i> No" %></td>
                                                                     <td><%# Eval("Trigliceridos").ToString() == "1"
-                                                                        ? "<i class='fa fa-check text-danger'></i>"
-                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                        : Eval("Trigliceridos").ToString() == "2"
+                                                                            ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                                                            : "<i class='fa fa-square text-navy'></i> No" %></td>
                                                                     <td><%# Eval("HTA").ToString() == "1"
-                                                                        ? "<i class='fa fa-check text-danger'></i>"
-                                                                        : "<i class='fa fa-xmark text-navy'></i>" %></td>
+                                                                        ? "<i class='fa fa-square-check text-danger'></i> Si"
+                                                                        : Eval("HTA").ToString() == "2"
+                                                                            ? "<i class='fa fa-comment-slash text-warning'></i> NS/NR"
+                                                                            : "<i class='fa fa-square text-navy'></i> No" %></td>
                                                                 </tr>
                                                             </table>
                                                         </td>
