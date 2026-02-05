@@ -499,7 +499,7 @@ namespace fpWebApp
                     if (dt.Rows[i]["idGenero"].ToString() == "2")
                         strGenero = "F";
 
-                    if (dt.Rows[i]["EstadoPlan"].ToString() != "Archivado")
+                    if (dt.Rows[i]["EstadoPlan"].ToString() == "Activo" || dt.Rows[i]["EstadoPlan"].ToString() == "Pendiente")
                     {
                         if (!string.IsNullOrEmpty(dt.Rows[i]["FechaInicioPlan"].ToString()))
                         {

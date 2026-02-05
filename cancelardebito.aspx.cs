@@ -108,7 +108,7 @@ namespace fpWebApp
                 int idAfiliadoPlan = Convert.ToInt32(Request.QueryString["idAfiliadoPlan"].ToString());
 
                 string strQuery = "UPDATE afiliadosplanes " +
-                    "SET EstadoPlan = 'Archivado', " +
+                    "SET EstadoPlan = 'Cancelado', " +
                     "ObservacionesPlan = CONCAT(ObservacionesPlan, ', ', '" + txbObservaciones.Text.ToString() + "') " +
                     "WHERE IdAfiliadoPlan = " + idAfiliadoPlan;
                 clasesglobales cg = new clasesglobales();

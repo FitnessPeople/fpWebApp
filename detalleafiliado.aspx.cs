@@ -353,8 +353,8 @@ namespace fpWebApp
         {
             string strQuery = @"
                 SELECT *, 
-                IF(ap.EstadoPlan='Archivado','danger',IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,'danger','info')) AS label1, 
-                IF(ap.EstadoPlan='Archivado','Archivado',IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,CONCAT(DATEDIFF(FechaFinalPlan, CURDATE())*(-1),' días vencidos'),CONCAT(DATEDIFF(FechaFinalPlan, CURDATE()),' días disponibles'))) AS diasquefaltan, 
+                IF(ap.EstadoPlan='Cancelado','danger',IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,'danger','info')) AS label1, 
+                IF(ap.EstadoPlan='Cancelado','Cancelado',IF(DATEDIFF(FechaFinalPlan, CURDATE())<=0,CONCAT(DATEDIFF(FechaFinalPlan, CURDATE())*(-1),' días vencidos'),CONCAT(DATEDIFF(FechaFinalPlan, CURDATE()),' días disponibles'))) AS diasquefaltan, 
                 DATEDIFF(CURDATE(), FechaInicioPlan) AS diasconsumidos, 
                 DATEDIFF(FechaFinalPlan, FechaInicioPlan) AS diastotales, 
                 ROUND(DATEDIFF(CURDATE(), FechaInicioPlan) / DATEDIFF(FechaFinalPlan, FechaInicioPlan) * 100) AS Porcentaje1, 
@@ -375,7 +375,7 @@ namespace fpWebApp
             //    "WHERE a.idAfiliado = " + strIdAfiliado + " " +
             //    "AND ap.idAfiliado = a.idAfiliado " +
             //    "AND ap.idPlan = p.idPlan " +
-            //    "AND ap.EstadoPlan NOT IN ('Archivado')";
+            //    "AND ap.EstadoPlan NOT IN ('Cancelado')";
             //"AND ap.EstadoPlan = 'Activo'";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);

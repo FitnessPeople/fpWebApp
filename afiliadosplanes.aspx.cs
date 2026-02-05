@@ -93,7 +93,7 @@ namespace fpWebApp
 	                FROM HistorialCobrosRechazados hcr 
 	                GROUP BY hcr.idAfiliadoPlan
                 ) hcr_cnt ON hcr_cnt.idAfiliadoPlan = ap.idAfiliadoPlan 
-                WHERE ap.EstadoPlan <> 'Archivado'";
+                WHERE ap.EstadoPlan IN ('Activo', 'Pendiente')";
             DataTable dt = cg.TraerDatos(strQuery);
 
             rpAfiliadosPlanes.DataSource = dt;
