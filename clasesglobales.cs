@@ -9472,7 +9472,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarHistoriaClinica(int idAfiliado, string MedicinaPrepagada, int idObjetivoIngreso, 
+        public string InsertarHistoriaClinica(int idUsuario, int idAfiliado, string MedicinaPrepagada, int idObjetivoIngreso, 
             string DescripcionObjetivoIngreso, string Remision, string TipoConsulta, string MotivoConsulta, string AnteFamiliar, 
             string AntePatologico, string AnteQuirurgico, string AnteToxicologico, string AnteHospitalario, string AnteTraumatologico,
             string AnteFarmacologico, string AnteActividadFisica, string AnteGineco, string AnteFUM, int Tabaquismo, int Cigarrillos, 
@@ -9490,6 +9490,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_HISTORIA_CLINICA", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
                         cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
                         cmd.Parameters.AddWithValue("@p_medicina_prepagada", MedicinaPrepagada);
                         cmd.Parameters.AddWithValue("@p_id_objetivo_ingreso", idObjetivoIngreso);

@@ -222,6 +222,24 @@
                                                                         </div>
                                                                     </li>
 
+                                                                    <li class="warning-element"><b>Remisión</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("Remision") %>
+                                                                        </div>
+                                                                    </li>
+
+                                                                    <li class="warning-element"><b>Tipo de consulta</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("TipoConsulta") %>
+                                                                        </div>
+                                                                    </li>
+
+                                                                    <li class="warning-element"><b>Motivo de consulta</b>
+                                                                        <div class="agile-detail">
+                                                                            <%# Eval("MotivoConsulta") %>
+                                                                        </div>
+                                                                    </li>
+
                                                                     <br />
                                                                     <h4><i class="fa fa-clock-rotate-left text-success m-r-xs"></i>ANTECEDENTES</h4>
 
