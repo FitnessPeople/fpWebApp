@@ -19,27 +19,22 @@ namespace fpWebApp.controles
         protected void CargarIndicadoresAdminSede()
         {
             clasesglobales cg = new clasesglobales();
-       
-            
-            DataTable dt = cg.ConsultarIndicadoresInicioAdminSede(Convert.ToInt32(Session["idcanalVenta"]));
+
+            DataTable dt = cg.ConsultarIndicadoresInicioAdminSede( Convert.ToInt32(Session["idcanalVenta"]));
 
             if (dt.Rows.Count > 0)
             {
                 DataRow row = dt.Rows[0];
 
-                lblVentasMes.Text = Convert.ToDecimal(row["VentasMes"])
-                                        .ToString("N0");
+                lblVentasMes.Text = Convert.ToDecimal(row["VentasMes"]).ToString("N0");
 
-                lblMetaMes.Text = Convert.ToDecimal(row["MetaMes"])
-                                        .ToString("N0");
+                lblMetaMes.Text = Convert.ToDecimal(row["MetaMes"]).ToString("N0");
 
-                lblCumplimientoMes.Text = Convert.ToDecimal(row["CumplimientoMes"])
-                                        .ToString("N2");
+                lblCumplimientoMes.Text = Convert.ToDecimal(row["CumplimientoMes"]).ToString("N2") + "%";
 
-                lblTicketPromedio.Text = Convert.ToDecimal(row["VentaEsperadaHoy"])
-                                        .ToString("N0");
-
+                lblTicketPromedio.Text = Convert.ToDecimal(row["TicketPromedio"]).ToString("N2");
             }
+
 
         }
     }
