@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Presentation;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -13,6 +14,7 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using Org.BouncyCastle.Crypto;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -31,6 +33,8 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Services.Description;
 using System.Web.UI;
+using static NPOI.HSSF.Util.HSSFColor;
+using Paragraph = iTextSharp.text.Paragraph;
 
 
 
@@ -9844,6 +9848,210 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
                         cmd.Parameters.AddWithValue("@p_recomendaciones", recomendaciones);
                         cmd.Parameters.AddWithValue("@p_idCie10", idCie10);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string InsertarHistoriaNutricionista1(int idHistoria, int gastritis, int colon, int estrenimiento, 
+            string cafeina, string alimNoTolerados, string complementos, string nutriAnterior, string paraclinicos, 
+            string apetito, string masticacion, string habitoIntestinal, string sintGastrointestinales, 
+            string alimPreferidos)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_HISTORIA_NUTRICIONISTA_1", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_gastritis", gastritis);
+                        cmd.Parameters.AddWithValue("@p_colon", colon);
+                        cmd.Parameters.AddWithValue("@p_estrenimiento", estrenimiento);
+                        cmd.Parameters.AddWithValue("@p_cafeina", cafeina);
+                        cmd.Parameters.AddWithValue("@p_alim_no_tolerados", alimNoTolerados);
+                        cmd.Parameters.AddWithValue("@p_complementos", complementos);
+                        cmd.Parameters.AddWithValue("@p_nutri_anterior", nutriAnterior);
+                        cmd.Parameters.AddWithValue("@p_paraclinicos", paraclinicos);
+                        cmd.Parameters.AddWithValue("@p_apetito", apetito);
+                        cmd.Parameters.AddWithValue("@p_masticacion", masticacion);
+                        cmd.Parameters.AddWithValue("@p_habito_intestinal", habitoIntestinal);
+                        cmd.Parameters.AddWithValue("@p_sint_gastrointestinales", sintGastrointestinales);
+                        cmd.Parameters.AddWithValue("@p_alim_preferidos", alimPreferidos);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaNutricionista2(int idHistoria, string desayuno, string nueves, string almuerzo, 
+            string onces, string cena, string merienda, string datosBioquimicos, string medicamentos, string alergias, 
+            string proteinas, string carbohidratos, string somatotipo, string horaLevanta, string horaDesayuno, 
+            string horaAcuesta)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_NUTRICIONISTA_2", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_desayuno", desayuno);
+                        cmd.Parameters.AddWithValue("@p_nueves", nueves);
+                        cmd.Parameters.AddWithValue("@p_almuerzo", almuerzo);
+                        cmd.Parameters.AddWithValue("@p_onces", onces);
+                        cmd.Parameters.AddWithValue("@p_cena", cena);
+                        cmd.Parameters.AddWithValue("@p_merienda", merienda);
+                        cmd.Parameters.AddWithValue("@p_datos_bioquimicos", datosBioquimicos);
+                        cmd.Parameters.AddWithValue("@p_medicamentos", medicamentos);
+                        cmd.Parameters.AddWithValue("@p_alergias", alergias);
+                        cmd.Parameters.AddWithValue("@p_proteinas", proteinas);
+                        cmd.Parameters.AddWithValue("@p_carbohidratos", carbohidratos);
+                        cmd.Parameters.AddWithValue("@p_somatotipo", somatotipo);
+                        cmd.Parameters.AddWithValue("@p_hora_levanta", horaLevanta);
+                        cmd.Parameters.AddWithValue("@p_hora_desayuno", horaDesayuno);
+                        cmd.Parameters.AddWithValue("@p_hora_acuesta", horaAcuesta);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaNutricionista3(int idHistoria, string lacteos, string azucares, string gaseosa, string verduras, 
+            string salsamentaria, string agua, string frutas, string carnes, string comidasRapidas, string cigarrillos, string psicoactivos, 
+            string huevos, string visceras, string sopas, string paquetes, string cereales, string raices, string pan, string grasas, 
+            string alcohol, string bebidaHidratante)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_NUTRICIONISTA_3", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_lacteos", lacteos);
+                        cmd.Parameters.AddWithValue("@p_azucares", azucares);
+                        cmd.Parameters.AddWithValue("@p_gaseosa", gaseosa);
+                        cmd.Parameters.AddWithValue("@p_verduras", verduras);
+                        cmd.Parameters.AddWithValue("@p_salsamentaria", salsamentaria);
+                        cmd.Parameters.AddWithValue("@p_agua", agua);
+                        cmd.Parameters.AddWithValue("@p_frutas", frutas);
+                        cmd.Parameters.AddWithValue("@p_carnes", carnes);
+                        cmd.Parameters.AddWithValue("@p_comidas_rapidas", comidasRapidas);
+                        cmd.Parameters.AddWithValue("@p_cigarrillos", cigarrillos);
+                        cmd.Parameters.AddWithValue("@p_psicoactivos", psicoactivos);
+                        cmd.Parameters.AddWithValue("@p_huevos", huevos);
+                        cmd.Parameters.AddWithValue("@p_visceras", visceras);
+                        cmd.Parameters.AddWithValue("@p_sopas", sopas);
+                        cmd.Parameters.AddWithValue("@p_paquetes", paquetes);
+                        cmd.Parameters.AddWithValue("@p_cereales", cereales);
+                        cmd.Parameters.AddWithValue("@p_raices", raices);
+                        cmd.Parameters.AddWithValue("@p_pan", pan);
+                        cmd.Parameters.AddWithValue("@p_grasas", grasas);
+                        cmd.Parameters.AddWithValue("@p_alcohol", alcohol);
+                        cmd.Parameters.AddWithValue("@p_bebida_hidratante", bebidaHidratante);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaNutricionista4(int idHistoria, double peso, double talla, double imc, double perimCintura, 
+            double perimCadera, double perimAbdomen, double perimPecho,double perimMuslo, double perimPantorrilla, double perimBrazo, 
+            double pliegueTricipital, double pliegueIliocrestal, double pliegueAbdominal, double pliegueSubescapular,
+            double pliegueMuslo, double plieguePantorrilla, double porcGrasa, double porcMuscular, double FCETanaka, double pesoEsperado, 
+            double pesoGraso, double pesoMagro, double gastoCalorico, string actividadFisica, double gastoTotal, string diagnostico, 
+            string planManejo, string recomendaciones, string observaciones)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_NUTRICIONISTA_4", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_peso", peso);
+                        cmd.Parameters.AddWithValue("@p_talla", talla);
+                        cmd.Parameters.AddWithValue("@p_imc", imc);
+                        cmd.Parameters.AddWithValue("@p_perim_cintura", perimCintura);
+                        cmd.Parameters.AddWithValue("@p_perim_cadera", perimCadera);
+                        cmd.Parameters.AddWithValue("@p_perim_abdomen", perimAbdomen);
+                        cmd.Parameters.AddWithValue("@p_perim_pecho", perimPecho);
+                        cmd.Parameters.AddWithValue("@p_perim_muslo", perimMuslo);
+                        cmd.Parameters.AddWithValue("@p_perim_pantorrilla", perimPantorrilla);
+                        cmd.Parameters.AddWithValue("@p_perim_brazo", perimBrazo);
+                        cmd.Parameters.AddWithValue("@p_pliegue_tricipital", pliegueTricipital);
+                        cmd.Parameters.AddWithValue("@p_pliegue_iliocrestal", pliegueIliocrestal);
+                        cmd.Parameters.AddWithValue("@p_pliegue_abdominal", pliegueAbdominal);
+                        cmd.Parameters.AddWithValue("@p_pliegue_subescapular", pliegueSubescapular);
+                        cmd.Parameters.AddWithValue("@p_pliegue_muslo", pliegueMuslo);
+                        cmd.Parameters.AddWithValue("@p_pliegue_pantorrilla", plieguePantorrilla);
+                        cmd.Parameters.AddWithValue("@p_porc_grasa", porcGrasa);
+                        cmd.Parameters.AddWithValue("@p_porc_muscular", porcMuscular);
+                        cmd.Parameters.AddWithValue("@p_FCETanaka", FCETanaka);
+                        cmd.Parameters.AddWithValue("@p_peso_esperado", pesoEsperado);
+                        cmd.Parameters.AddWithValue("@p_peso_graso", pesoGraso);
+                        cmd.Parameters.AddWithValue("@p_peso_magro", pesoMagro);
+                        cmd.Parameters.AddWithValue("@p_gasto_calorico", gastoCalorico);
+                        cmd.Parameters.AddWithValue("@p_actividad_fisica", actividadFisica);
+                        cmd.Parameters.AddWithValue("@p_gasto_total", gastoTotal);
+                        cmd.Parameters.AddWithValue("@p_diagnostico", diagnostico);
+                        cmd.Parameters.AddWithValue("@p_plan_manejo", planManejo);
+                        cmd.Parameters.AddWithValue("@p_recomendaciones", recomendaciones);
+                        cmd.Parameters.AddWithValue("@p_observaciones", observaciones);
 
                         cmd.ExecuteNonQuery();
                     }

@@ -66,19 +66,9 @@ namespace fpWebApp
 
         private void MostrarDatosAfiliado(string idAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),'') AS edad " +
-                "FROM Afiliados a " +
-                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-                "LEFT JOIN ciudades c ON c.idCiudad = a.idCiudadAfiliado " +
-                "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
-                "LEFT JOIN eps ON eps.idEps = a.idEps " +
-                "WHERE idAfiliado = '" + idAfiliado + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarAfiliadoPorIdEncabezado(Convert.ToInt32(idAfiliado));
 
-            //ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
             ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
             ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
@@ -89,8 +79,20 @@ namespace fpWebApp
             ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
             ltGenero.Text = dt.Rows[0]["Genero"].ToString();
             ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
-            ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
-            //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+
+            string label = "warning";
+            if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Activo")
+            {
+                label = "info";
+            }
+            else
+            {
+                if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Inactivo")
+                {
+                    label = "danger";
+                }
+            }
+            ltEstado.Text = "<span class=\"label label-" + label + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
 
             if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
             {
@@ -136,31 +138,31 @@ namespace fpWebApp
             //Actualiza datos en la tabla HistoriaAlimentaria
             try
             {
-                string strQuery = "UPDATE HistoriaAlimentaria SET " +
-                    "Lacteos = '" + txbLacteos.Text.ToString() + "', " +
-                    "Azucares = '" + txbAzucares.Text.ToString() + "', " +
-                    "Gaseosa = '" + txbGaseosa.Text.ToString() + "', " +
-                    "Verduras = '" + txbVerduras.Text.ToString() + "', " +
-                    "Salsamentaria = '" + txbSalsamentaria.Text.ToString() + "', " +
-                    "Agua = '" + txbAgua.Text.ToString() + "', " +
-                    "Frutas = '" + txbFrutas.Text.ToString() + "', " +
-                    "Carnes = '" + txbCarnes.Text.ToString() + "', " +
-                    "ComidasRapidas = '" + txbComidasRapidas.Text.ToString() + "', " +
-                    "Cigarrillos = '" + txbCigarrillos.Text.ToString() + "', " +
-                    "Psicoactivos = '" + txbPsicoactivos.Text.ToString() + "', " +
-                    "Huevos = '" + txbHuevos.Text.ToString() + "', " +
-                    "Visceras = '" + txbVisceras.Text.ToString() + "', " +
-                    "Sopas = '" + txbSopas.Text.ToString() + "', " +
-                    "Paquetes = '" + txbPaquetes.Text.ToString() + "', " +
-                    "Cereales = '" + txbCereales.Text.ToString() + "', " +
-                    "Raices = '" + txbRaices.Text.ToString() + "', " +
-                    "Pan = '" + txbPan.Text.ToString() + "', " +
-                    "Grasas = '" + txbGrasas.Text.ToString() + "', " +
-                    "Alcohol = '" + txbAlcohol.Text.ToString() + "', " +
-                    "BebidaHidratante = '" + txbBebidaHidratante.Text.ToString() + "' " +
-                    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.ActualizarHistoriaNutricionista3(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                    txbLacteos.Text.ToString(),
+                    txbAzucares.Text.ToString(),
+                    txbGaseosa.Text.ToString(),
+                    txbVerduras.Text.ToString(),
+                    txbSalsamentaria.Text.ToString(),
+                    txbAgua.Text.ToString(),
+                    txbFrutas.Text.ToString(),
+                    txbCarnes.Text.ToString(),
+                    txbComidasRapidas.Text.ToString(),
+                    txbCigarrillos.Text.ToString(),
+                    txbPsicoactivos.Text.ToString(),
+                    txbHuevos.Text.ToString(),
+                    txbVisceras.Text.ToString(),
+                    txbSopas.Text.ToString(),
+                    txbPaquetes.Text.ToString(),
+                    txbCereales.Text.ToString(),
+                    txbRaices.Text.ToString(),
+                    txbPan.Text.ToString(),
+                    txbGrasas.Text.ToString(),
+                    txbAlcohol.Text.ToString(),
+                    txbBebidaHidratante.Text.ToString()
+                    );
 
                 if (mensaje == "OK")
                 {
@@ -177,7 +179,6 @@ namespace fpWebApp
                     });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                    //Response.Redirect("histclinutricion03?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + Request.QueryString["idHistoria"].ToString());
                 }
                 else
                 {
@@ -211,8 +212,6 @@ namespace fpWebApp
                 ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
             }
-
-            //Response.Redirect("histclinutricion04?idAfiliado=" + Request.QueryString["idAfiliado"].ToString());
         }
     }
 }

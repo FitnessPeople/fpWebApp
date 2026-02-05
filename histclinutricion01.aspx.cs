@@ -66,19 +66,9 @@ namespace fpWebApp
 
         private void MostrarDatosAfiliado(string idAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),'') AS edad " +
-                "FROM Afiliados a " +
-                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-                "LEFT JOIN ciudades c ON c.idCiudad = a.idCiudadAfiliado " +
-                "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
-                "LEFT JOIN eps ON eps.idEps = a.idEps " +
-                "WHERE idAfiliado = '" + idAfiliado + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarAfiliadoPorIdEncabezado(Convert.ToInt32(idAfiliado));
 
-            //ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
             ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
             ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
@@ -89,8 +79,20 @@ namespace fpWebApp
             ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
             ltGenero.Text = dt.Rows[0]["Genero"].ToString();
             ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
-            ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
-            //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+
+            string label = "warning";
+            if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Activo")
+            {
+                label = "info";
+            }
+            else
+            {
+                if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Inactivo")
+                {
+                    label = "danger";
+                }
+            }
+            ltEstado.Text = "<span class=\"label label-" + label + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
 
             if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
             {
@@ -136,18 +138,23 @@ namespace fpWebApp
             //Inserta datos en la tabla HistoriaAlimentaria
             try
             {
-                string strQuery = "INSERT INTO HistoriaAlimentaria " +
-                "(idHistoria, Gastritis, Colon, Estrenimiento, Cafeina, AlimNoTolerados, Complementos, " +
-                "NutriAnterior, Paraclinicos, Apetito, Masticacion, HabitoIntestinal, SintGastrointestinales, AlimPreferidos) " +
-                "VALUES (" + Request.QueryString["idHistoria"].ToString() + ", " + rblGastritis.SelectedItem.Value.ToString() + ", " +
-                "" + rblColon.SelectedItem.Value.ToString() + ", " + rblEstrenimiento.SelectedItem.Value.ToString() + ", " +
-                "'" + txbCafeina.Text.ToString() + "', '" + txbAlimNoTolerados.Text.ToString() + "', " +
-                "'" + txbComplementos.Text.ToString() + "', '" + txbNutricionAnterior.Text.ToString() + "', " +
-                "'" + txbParaclinicos.Text.ToString() + "', '" + txbApetito.Text.ToString() + "', " +
-                "'" + txbMasticacion.Text.ToString() + "', '" + txbHabitoIntestinal.Text.ToString() + "', " +
-                "'" + txbSintGastrointestinales.Text.ToString() + "', '" + txbAlimPreferidos.Text.ToString() + "') ";
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.InsertarHistoriaNutricionista1(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                    Convert.ToInt16(rblGastritis.SelectedItem.Value.ToString()),
+                    Convert.ToInt16(rblColon.SelectedItem.Value.ToString()),
+                    Convert.ToInt16(rblEstrenimiento.SelectedItem.Value.ToString()),
+                    txbCafeina.Text.ToString(),
+                    txbAlimNoTolerados.Text.ToString(),
+                    txbComplementos.Text.ToString(),
+                    txbNutricionAnterior.Text.ToString(),
+                    txbParaclinicos.Text.ToString(),
+                    txbApetito.Text.ToString(),
+                    txbMasticacion.Text.ToString(),
+                    txbHabitoIntestinal.Text.ToString(),
+                    txbSintGastrointestinales.Text.ToString(),
+                    txbAlimPreferidos.Text.ToString()
+                    );
 
                 if (mensaje == "OK")
                 {
@@ -164,7 +171,6 @@ namespace fpWebApp
                     });
                     ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                    //Response.Redirect("histclinutricion02?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + Request.QueryString["idHistoria"].ToString());
                 }
                 else
                 {

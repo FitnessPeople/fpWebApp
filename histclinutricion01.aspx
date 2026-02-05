@@ -142,7 +142,7 @@
                                             <asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
                                         <small>
                                             <asp:Literal ID="ltDireccion" runat="server"></asp:Literal>,
-                        <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
+                                            <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
                                     </div>
                                 </div>
                             </div>

@@ -32,7 +32,10 @@
                             <td><i class="fa fa-calendar-day m-r-xs"></i><%# Eval("FechaHora", "{0:dd MMM yyyy}") %> <i class="fa fa-clock m-r-xs"></i><%# Eval("FechaHora", "{0:HH:mm}") %></td>
                             <td><%# Eval("DocumentoAfiliado") %></td>
                             <td><%# Eval("NombreAfiliado") %> <%# Eval("ApellidoAfiliado") %></td>
-                            <td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>
+                            <%--<td><%# Eval("iconGenero") %> <%# Eval("Genero") %></td>--%>
+                            <td><%# Eval("idGenero").ToString() == "1"
+                                ? "<i class='fa fa fa-mars'></i> Si"
+                                : "<i class='fa fa fa-venus'></i> No" %> <%# Eval("Genero") %></td>
                             <td><%# Eval("Edad") %> años</td>
                         </tr>
                     </table>
@@ -120,7 +123,7 @@
                                     : "<i class='fa fa-square text-navy'></i> No" %></td>
                         </tr>
                     </table>
-                    <h3 class="text-info"><i class="fa fa-utensils"></i> Historia alimentaria</h3>
+                    <h3 class="text-info"><i class="fa fa-utensils"></i> Historia alimentaria (Nutricionista)</h3>
                     <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
                         <tr>
                             <th width="33%">Gastritis</th>
@@ -425,6 +428,8 @@
                         </tr>
                     </table>
 
+                    <hr />
+
                     <h3 class="text-info"><i class="fa fa-person-arrow-up-from-line"></i> Historia Fisioterapéutica</h3>
                     <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
                         <tr>
@@ -446,6 +451,82 @@
                             <td><%# Eval("Peso") %> Kg</td>
                             <td><%# Eval("Talla") %> cms</td>
                             <td><%# Eval("IMC") %></td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                        <tr>
+                            <th width="25%">Perímetro de Cintura</th>
+                            <th width="25%">Perímetro de Cadera</th>
+                            <th width="25%">Perímetro de Abdomen</th>
+                            <th width="25%">Perímetro de Pecho</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PerimCintura") %> cms</td>
+                            <td><%# Eval("PerimCadera") %> cms</td>
+                            <td><%# Eval("PerimAbdomen") %> cms</td>
+                            <td><%# Eval("PerimPecho") %> cms</td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                        <tr>
+                            <th width="33%">Perímetro de Muslo</th>
+                            <th width="33%">Perímetro de Pantorrilla</th>
+                            <th width="34%">Perímetro de Brazo</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PerimMuslo") %></td>
+                            <td><%# Eval("PerimPantorrilla") %></td>
+                            <td><%# Eval("PerimBrazo") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Pliegue Tricipital</th>
+                            <th width="33%">Pliegue IlioCrestal</th>
+                            <th width="34%">Pliegue Abdominal</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PliegueTricipital") %></td>
+                            <td><%# Eval("PliegueIliocrestal") %></td>
+                            <td><%# Eval("PliegueAbdominal") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Pliegue Subescapular</th>
+                            <th width="33%">Pliegue Muslo</th>
+                            <th width="34%">Pliegue Pantorrilla</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PliegueSubescapular") %></td>
+                            <td><%# Eval("PliegueMuslo") %></td>
+                            <td><%# Eval("PlieguePantorrilla") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Porcentaje Graso</th>
+                            <th width="33%">Porcentaje Muscular</th>
+                            <th width="34%">FCE (Tanaka)</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PorcGrasa") %> %</td>
+                            <td><%# Eval("PorcMuscular") %> %</td>
+                            <td><%# Eval("FCETanaka") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Peso esperado</th>
+                            <th width="33%">Peso graso</th>
+                            <th width="34%">Peso magro</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PorcGrasa") %> Kg</td>
+                            <td><%# Eval("PorcMuscular") %> Kg</td>
+                            <td><%# Eval("FCETanaka") %> Kg</td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Gasto calórico</th>
+                            <th width="33%">Actividad física</th>
+                            <th width="34%">Gasto total</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("GastoCalorico") %></td>
+                            <td><%# Eval("ActividadFisica") %></td>
+                            <td><%# Eval("GastoTotal") %></td>
                         </tr>
                     </table>
                 </ItemTemplate>

@@ -616,7 +616,7 @@
                                                         <div class="form-group">
                                                             <label>CIE10</label>
                                                             <asp:DropDownList ID="ddlCie10" runat="server" 
-                                                                CssClass="form-control input-sm" AppendDataBoundItems="true" 
+                                                                CssClass="chosen-select input-sm" AppendDataBoundItems="true" 
                                                                 DataTextField="NombreCIE" DataValueField="idCie10">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
@@ -664,6 +664,9 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- Chosen -->
+    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+
     <!-- Jquery Validate -->
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
@@ -671,6 +674,9 @@
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <script>
+
+        $.validator.setDefaults({ ignore: ":hidden:not(.chosen-select)" });
+
         $("#form").validate({
             rules: {
                 txbCabezaAdelantada: {
@@ -725,7 +731,12 @@
                     required: true
                 },
             },
+            messages: {
+                ddlCie10: "*",
+            }
         });
+
+        $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
     </script>
 
 </body>

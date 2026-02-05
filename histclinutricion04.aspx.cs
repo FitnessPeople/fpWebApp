@@ -171,39 +171,39 @@ namespace fpWebApp
             //Actualiza datos en la tabla HistoriaAlimentaria
             try
             {
-                string strQuery = "UPDATE HistoriaAlimentaria SET " +
-                    "Peso = " + txbPeso.Text.ToString() + ", " +
-                    "Talla = " + txbTalla.Text.ToString() + ", " +
-                    "IMC = " + txbIMC.Text.ToString() + ", " +
-                    "PerimCintura = '" + txbPerimCintura.Text.ToString() + "', " +
-                    "PerimCadera = '" + txbPerimCadera.Text.ToString() + "', " +
-                    "PerimAbdomen = '" + txbPerimAbdomen.Text.ToString() + "', " +
-                    "PerimPecho = '" + txbPerimPecho.Text.ToString() + "', " +
-                    "PerimMuslo = '" + txbPerimMuslo.Text.ToString() + "', " +
-                    "PerimPantorrilla = '" + txbPerimPantorrilla.Text.ToString() + "', " +
-                    "PerimBrazo = '" + txbPerimBrazo.Text.ToString() + "', " +
-                    "PliegueTricipital = '" + txbPliegueTricipital.Text.ToString() + "', " +
-                    "PliegueIliocrestal = '" + txbPliegueIliocrestal.Text.ToString() + "', " +
-                    "PliegueAbdominal = '" + txbPliegueAbdominal.Text.ToString() + "', " +
-                    "PliegueSubescapular = '" + txbPliegueSubescapular.Text.ToString() + "', " +
-                    "PliegueMuslo = '" + txbPliegueMuslo.Text.ToString() + "', " +
-                    "PlieguePantorrilla = '" + txbPlieguePantorrilla.Text.ToString() + "', " +
-                    "PorcGrasa = '" + txbPorcGrasa.Text.ToString() + "', " +
-                    "PorcMuscular = '" + txbPorcMuscular.Text.ToString() + "', " +
-                    "FCETanaka = '" + txbFCETanaka.Text.ToString() + "', " +
-                    "PesoEsperado = '" + txbPesoEsperado.Text.ToString() + "', " +
-                    "PesoGraso = '" + txbPesoGraso.Text.ToString() + "', " +
-                    "PesoMagro = '" + txbPesoMagro.Text.ToString() + "', " +
-                    "GastoCalorico = '" + txbGastoCalorico.Text.ToString() + "', " +
-                    "ActividadFisica = '" + ddlActividadFisica.SelectedItem.Value.ToString() + "', " +
-                    "GastoTotal = '" + txbGastoTotal.Text.ToString() + "', " +
-                    "Diagnostico = '" + txbDiagnostico.Text.ToString() + "', " +
-                    "PlanManejo = '" + txbPlanManejo.Text.ToString() + "', " +
-                    "Recomendaciones = '" + txbRecomendaciones.Text.ToString() + "', " +
-                    "Observaciones = '" + txbObservaciones.Text.ToString() + "' " +
-                    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.ActualizarHistoriaNutricionista4(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                    Convert.ToDouble(txbPeso.Text.ToString()),
+                    Convert.ToDouble(txbTalla.Text.ToString()),
+                    Convert.ToDouble(txbIMC.Text.ToString()),
+                    Convert.ToDouble(txbPerimCintura.Text.ToString()),
+                    Convert.ToDouble(txbPerimCadera.Text.ToString()),
+                    Convert.ToDouble(txbPerimAbdomen.Text.ToString()),
+                    Convert.ToDouble(txbPerimPecho.Text.ToString()),
+                    Convert.ToDouble(txbPerimMuslo.Text.ToString()),
+                    Convert.ToDouble(txbPerimPantorrilla.Text.ToString()),
+                    Convert.ToDouble(txbPerimBrazo.Text.ToString()),
+                    Convert.ToDouble(txbPliegueTricipital.Text.ToString()),
+                    Convert.ToDouble(txbPliegueIliocrestal.Text.ToString()),
+                    Convert.ToDouble(txbPliegueAbdominal.Text.ToString()),
+                    Convert.ToDouble(txbPliegueSubescapular.Text.ToString()),
+                    Convert.ToDouble(txbPliegueMuslo.Text.ToString()),
+                    Convert.ToDouble(txbPlieguePantorrilla.Text.ToString()),
+                    Convert.ToDouble(txbPorcGrasa.Text.ToString()),
+                    Convert.ToDouble(txbPorcMuscular.Text.ToString()),
+                    Convert.ToDouble(txbFCETanaka.Text.ToString()),
+                    Convert.ToDouble(txbPesoEsperado.Text.ToString()),
+                    Convert.ToDouble(txbPesoGraso.Text.ToString()),
+                    Convert.ToDouble(txbPesoMagro.Text.ToString()),
+                    Convert.ToDouble(txbGastoCalorico.Text.ToString()),
+                    ddlActividadFisica.SelectedItem.Value.ToString(),
+                    Convert.ToDouble(txbGastoTotal.Text.ToString()),
+                    txbDiagnostico.Text.ToString(),
+                    txbPlanManejo.Text.ToString(),
+                    txbRecomendaciones.Text.ToString(),
+                    txbObservaciones.Text.ToString()
+                    );
 
                 if (mensaje == "OK")
                 {
@@ -253,8 +253,6 @@ namespace fpWebApp
                 ";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
             }
-
-            //Response.Redirect("historiasclinicas");
         }
     }
 }
