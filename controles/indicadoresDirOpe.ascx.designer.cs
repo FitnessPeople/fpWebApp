@@ -15,39 +15,75 @@ namespace fpWebApp.controles
     {
 
         /// <summary>
-        /// Control ltCuantos1.
+        /// Control lblIngresos.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCuantos1;
+        protected global::System.Web.UI.WebControls.Literal lblIngresos;
 
         /// <summary>
-        /// Control ltCuantos2.
+        /// Control lblMetaMensual.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCuantos2;
+        protected global::System.Web.UI.WebControls.Literal lblMetaMensual;
 
         /// <summary>
-        /// Control ltCuantos3.
+        /// Control lblCumplimiento.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCuantos3;
+        protected global::System.Web.UI.WebControls.Literal lblCumplimiento;
 
         /// <summary>
-        /// Control ltCuantos4.
+        /// Control lblRetencion.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltCuantos4;
+        protected global::System.Web.UI.WebControls.Literal lblRetencion;
+
+        /// <summary>
+        /// Control lblChurn.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblChurn;
+
+        /// <summary>
+        /// Control lblOcupacion.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblOcupacion;
+
+        /// <summary>
+        /// Control lblTicketPromedio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblTicketPromedio;
+
+        /// <summary>
+        /// Control lblCumplimientoSede.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal lblCumplimientoSede;
     }
 }

@@ -28,6 +28,7 @@ namespace fpWebApp
                             {
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+                                CargarCie10();
                             }
 
                             btnAgregar.Visible = true;
@@ -66,19 +67,9 @@ namespace fpWebApp
 
         private void MostrarDatosAfiliado(string idAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),'') AS edad " +
-                "FROM Afiliados a " +
-                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-                "LEFT JOIN ciudades c ON c.idCiudad = a.idCiudadAfiliado " +
-                "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
-                "LEFT JOIN eps ON eps.idEps = a.idEps " +
-                "WHERE idAfiliado = '" + idAfiliado + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarAfiliadoPorIdEncabezado(Convert.ToInt32(idAfiliado));
 
-            //ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
             ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
             ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
@@ -88,11 +79,23 @@ namespace fpWebApp
             ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
             ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
             ltGenero.Text = dt.Rows[0]["Genero"].ToString();
+            ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
             hfGenero.Value = dt.Rows[0]["idGenero"].ToString();
             hfEdad.Value = dt.Rows[0]["edad"].ToString();
-            ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
-            ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
-            //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+
+            string label = "warning";
+            if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Activo")
+            {
+                label = "info";
+            }
+            else
+            {
+                if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Inactivo")
+                {
+                    label = "danger";
+                }
+            }
+            ltEstado.Text = "<span class=\"label label-" + label + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
 
             if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
             {
@@ -113,23 +116,8 @@ namespace fpWebApp
 
         private void CargarHistoriasClinicas(string idAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(Tabaquismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS fuma, " +
-                "IF(Alcoholismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS toma, " +
-                "IF(Sedentarismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS sedentario, " +
-                "IF(Diabetes=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS diabetico, " +
-                "IF(Colesterol=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Colesterol=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS colesterado, " +
-                "IF(Trigliceridos=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Trigliceridos=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS triglicerado, " +
-                "IF(HTA=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(HTA=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS hipertenso, " +
-                "(@rownum := @rownum + 1) as nro_fila, " +
-                "IF(@rownum=1,'in','') AS clase " +
-                "FROM HistoriasClinicas hc " +
-                "LEFT JOIN ObjetivosAfiliado oa ON hc.idObjetivoIngreso = oa.idObjetivo " +
-                "CROSS JOIN (SELECT @rownum := 0) r " +
-                "WHERE idAfiliado = " + idAfiliado + " " +
-                "ORDER BY FechaHora DESC ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarHistoriaClinicaPorIdAfiliado(Convert.ToInt32(idAfiliado));
 
             if (dt.Rows.Count > 0)
             {
@@ -143,25 +131,18 @@ namespace fpWebApp
                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
                     "Afiliado sin historias clínicas." +
                     "</div></div>";
-                //ltMensaje.Text = "Afiliado sin historias clínicas.";
             }
 
             dt.Dispose();
         }
 
-        public class HtmlTemplate : ITemplate
+        private void CargarCie10()
         {
-            private string _html;
-
-            public HtmlTemplate(string html)
-            {
-                _html = html;
-            }
-
-            public void InstantiateIn(Control container)
-            {
-                container.Controls.Add(new LiteralControl(_html));
-            }
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.CargarCie10();
+            ddlCie10.DataSource = dt;
+            ddlCie10.DataBind();
+            dt.Dispose();
         }
 
         protected void btnAgregar_Click(object sender, EventArgs e)
@@ -169,27 +150,27 @@ namespace fpWebApp
             //Actualiza datos en la tabla HistoriaFisioterapeuta
             try
             {
-                string strQuery = "UPDATE HistoriaFisioterapeuta SET " +
-                    "CabezaAdelantada = '" + txbCabezaAdelantada.Text.ToString() + "', " +
-                    "HombrosDesalineados = '" + txbHombrosDesalineados.Text.ToString() + "', " +
-                    "HipercifosisDorsal = '" + txbHipercifosisDorsal.Text.ToString() + "', " +
-                    "Escoliosis = '" + txbEscoliosis.Text.ToString() + "', " +
-                    "Dismetrias = '" + txbDismetrias.Text.ToString() + "', " +
-                    "GenuValgus = '" + txbGenuValgus.Text.ToString() + "', " +
-                    "GenuVarus = '" + txbGenuVarus.Text.ToString() + "', " +
-                    "GenuRecurbatum = '" + txbGenuRecurbatum.Text.ToString() + "', " +
-                    "GenuAntecurbatum = '" + txbGenuAntecurbatum.Text.ToString() + "', " +
-                    "PiePlano = '" + txbPiePlano.Text.ToString() + "', " +
-                    "PieCavus = '" + txbPieCavus.Text.ToString() + "', " +
-                    "Apto = '" + ddlApto.SelectedItem.Value.ToString() + "', " +
-                    "Restricciones = '" + txbRestricciones.Text.ToString() + "', " +
-                    "Diagnostico = '" + txbDiagnostico.Text.ToString() + "', " +
-                    "Observaciones = '" + txbObservaciones.Text.ToString() + "', " +
-                    "Recomendaciones = '" + txbRecomendaciones.Text.ToString() + "', " +
-                    "idCie10 = " + ddlCie10.SelectedItem.Value.ToString() + " " +
-                    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.ActualizarHistoriaFisioterapeuta4(
+                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                    txbCabezaAdelantada.Text.ToString(),
+                    txbHombrosDesalineados.Text.ToString(),
+                    txbHipercifosisDorsal.Text.ToString(),
+                    txbEscoliosis.Text.ToString(),
+                    txbDismetrias.Text.ToString(),
+                    txbGenuValgus.Text.ToString(),
+                    txbGenuVarus.Text.ToString(),
+                    txbGenuRecurbatum.Text.ToString(),
+                    txbGenuAntecurbatum.Text.ToString(),
+                    txbPiePlano.Text.ToString(),
+                    txbPieCavus.Text.ToString(),
+                    ddlApto.SelectedItem.Value.ToString(),
+                    txbRestricciones.Text.ToString(),
+                    txbDiagnostico.Text.ToString(),
+                    txbObservaciones.Text.ToString(),
+                    txbRecomendaciones.Text.ToString(),
+                    Convert.ToInt32(ddlCie10.SelectedItem.Value.ToString())
+                    );
 
                 if (mensaje == "OK")
                 {

@@ -264,7 +264,12 @@ namespace fpWebApp
         private string TraerData()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarProfesionPorId(int.Parse(Request.QueryString["editid"].ToString()));
+            DataTable dt = new DataTable();
+            if (Request.QueryString["editid"] != null)
+                dt = cg.ConsultarProfesionPorId(int.Parse(Request.QueryString["editid"].ToString()));
+
+            if (Request.QueryString["deleteid"] != null)
+                dt = cg.ConsultarProfesionPorId(int.Parse(Request.QueryString["deleteid"].ToString()));
 
             string strData = "";
             foreach (DataColumn column in dt.Columns)

@@ -162,7 +162,7 @@ namespace fpWebApp
 
             dt.Dispose();
 
-            AgregarFestivos(_strEventos, "2025");
+            AgregarFestivos(_strEventos, "2026");
 
             _strEventos += "],\r\n";
 
@@ -237,7 +237,7 @@ namespace fpWebApp
         }
 
         /// <summary>
-        /// Inserta en la tabola DisponibilidadEspecialistas
+        /// Inserta en la tabla DisponibilidadEspecialistas
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

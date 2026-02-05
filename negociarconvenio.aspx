@@ -223,6 +223,9 @@
                                                                 DataValueField="DocumentoContacto" DataTextField="NombreContacto" AppendDataBoundItems="false">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
+                                                            <asp:RequiredFieldValidator ID="rfvDocumento" runat="server"
+                                                                ErrorMessage="* Campo requerido" ControlToValidate="ddlProspectos"
+                                                                CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -457,7 +460,7 @@
                                                         <th data-breakpoints="xs">Usuario.</th>
                                                         <th data-breakpoints="xs">Creado.</th>
                                                         <th data-breakpoints="all" data-title="Info"></th>
-<%--                                                        <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>--%>
+                                                        <%--                                                        <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>--%>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -486,7 +489,7 @@
                                                                         </tr>
                                                                     </table>
                                                                 </td>
-                      <%--                                          <td style="display: flex; flex-wrap: nowrap;">
+                                                                <%--                                          <td style="display: flex; flex-wrap: nowrap;">
                                                                     <a runat="server" id="btnDeshacer" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                         style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
                                                                 </td>--%>
@@ -823,8 +826,8 @@
                                 );
 
                                 document.getElementById("<%= hfIdPlan.ClientID %>").value = idPlan;
-                            document.getElementById("<%= hfDescuento.ClientID %>").value = descuento;
-                            document.getElementById("<%= hfValorNegociacion.ClientID %>").value = valorFinal;
+                                document.getElementById("<%= hfDescuento.ClientID %>").value = descuento;
+                                document.getElementById("<%= hfValorNegociacion.ClientID %>").value = valorFinal;
 
                                 return true;
                             }
@@ -845,8 +848,8 @@
 
                                         // Redirige pasando el deleteid
                                         window.location.href = 'negociarconvenio.aspx?deleteid=<%= Request.QueryString["editid"] %>';
-                                }
-                            });
+                                    }
+                                });
 
                                 return false; // 
                             }
@@ -856,33 +859,33 @@
 
                                 const accion = document.getElementById('<%= hfAccion.ClientID %>').value;
 
-                            // ✔ Guardar editor siempre
-                            guardarContenidoEditor();
+                                // ✔ Guardar editor siempre
+                                guardarContenidoEditor();
 
-                            // ✔ Validar plan siempre
-                            if (!obtenerSeleccionPlan()) {
-                                return false;
-                            }
+                                // ✔ Validar plan siempre
+                                if (!obtenerSeleccionPlan()) {
+                                    return false;
+                                }
 
-                            // 🟢 SI NO ES ELIMINAR → POSTBACK NORMAL
-                            if (accion !== "eliminar") {
-                                return true;
-                            }
+                                // 🟢 SI NO ES ELIMINAR → POSTBACK NORMAL
+                                if (accion !== "eliminar") {
+                                    return true;
+                                }
 
-                            // 🔴 SOLO SI ES ELIMINAR
-                            Swal.fire({
-                                title: '¿Desea eliminar esta negociación?',
-                                text: 'Esta acción no se puede deshacer.',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonText: 'Sí, eliminar',
-                                cancelButtonText: 'Cancelar',
-                                confirmButtonColor: '#d33'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    __doPostBack('<%= btnAgregar.UniqueID %>', '');
-                            }
-                        });
+                                // 🔴 SOLO SI ES ELIMINAR
+                                Swal.fire({
+                                    title: '¿Desea eliminar esta negociación?',
+                                    text: 'Esta acción no se puede deshacer.',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'Sí, eliminar',
+                                    cancelButtonText: 'Cancelar',
+                                    confirmButtonColor: '#d33'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        __doPostBack('<%= btnAgregar.UniqueID %>', '');
+                                }
+                            });
 
                                 return false; // ⛔ detener postback automático
                             }

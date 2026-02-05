@@ -133,6 +133,75 @@
 
                     <form role="form" id="form" runat="server">
                         <div class="row" id="divContenido" runat="server">
+                            <div class="col-lg-12">
+                                <div class="row">
+
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-warning">
+                                                <h5>Ritmo vs tiempo</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblRitmoReal" runat="server"></asp:Literal>%
+                                                </h1>
+                                                <small>Esperado:
+                                                    <asp:Literal ID="lblRitmoEsperado" runat="server"></asp:Literal>%
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-danger">
+                                                <h5>Proyección cierre mes</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblProyeccionCierre" runat="server"></asp:Literal>
+                                                </h1>
+                                                <small>Meta:
+                                                    <asp:Literal ID="lblMetaMes" runat="server"></asp:Literal>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-info">
+                                                <h5>Días hábiles restantes</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblDiasHabiles" runat="server"></asp:Literal>
+                                                </h1>
+                                                <small>Necesario por día:
+                                                    <asp:Literal ID="lblVentaNecesariaDia" runat="server"></asp:Literal>
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-3">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title text-danger">
+                                                <h5>Presión comercial</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="lblPresion" runat="server"></asp:Literal>x
+                                                </h1>
+                                                <small>vs promedio diario actual
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
@@ -149,8 +218,8 @@
                                             <div class="col-lg-12">
                                                 <div class="form-group">
                                                     <label>Canal de venta:</label>
-                                                    <asp:DropDownList ID="ddlCanalVenta" runat="server" 
-                                                        DataTextField="NombreCanalVenta" DataValueField="idCanalVenta" 
+                                                    <asp:DropDownList ID="ddlCanalVenta" runat="server"
+                                                        DataTextField="NombreCanalVenta" DataValueField="idCanalVenta"
                                                         CssClass="form-control input-sm" AppendDataBoundItems="true">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
@@ -159,7 +228,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label>Mes:</label>
-                                                            <asp:DropDownList ID="ddlMes" runat="server" 
+                                                            <asp:DropDownList ID="ddlMes" runat="server"
                                                                 CssClass="form-control input-sm" AppendDataBoundItems="true">
                                                                 <asp:ListItem Text="Enero" Value="1"></asp:ListItem>
                                                                 <asp:ListItem Text="Febrero" Value="2"></asp:ListItem>
@@ -179,7 +248,7 @@
                                                     <div class="col-md-3">
                                                         <div class="form-group">
                                                             <label>Año:</label>
-                                                            <asp:DropDownList ID="ddlAnnio" runat="server" 
+                                                            <asp:DropDownList ID="ddlAnnio" runat="server"
                                                                 CssClass="form-control input-sm" AppendDataBoundItems="true">
                                                                 <asp:ListItem Text="2025" Value="2025"></asp:ListItem>
                                                                 <asp:ListItem Text="2026" Value="2026"></asp:ListItem>
@@ -189,28 +258,28 @@
                                                     <div class="col-md-5">
                                                         <div class="form-group">
                                                             <label>&nbsp;</label>
-                                                            <asp:CheckBox ID="chbTodoElAnnio" runat="server" 
+                                                            <asp:CheckBox ID="chbTodoElAnnio" runat="server"
                                                                 CssClass="form-control input-sm" Text="&nbsp;Todo el año" />
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Presupuesto mensual:</label>
-                                                    <asp:TextBox ID="txbPresupuesto" runat="server" CssClass="form-control input-sm" 
+                                                    <asp:TextBox ID="txbPresupuesto" runat="server" CssClass="form-control input-sm"
                                                         onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XXX.000.000"></asp:TextBox>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Asesor Senior:</label>
-                                                            <asp:TextBox ID="txbAsesorSenior" runat="server" CssClass="form-control input-sm" 
+                                                            <asp:TextBox ID="txbAsesorSenior" runat="server" CssClass="form-control input-sm"
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Asesor Junior:</label>
-                                                            <asp:TextBox ID="txbAsesorJunior" runat="server" CssClass="form-control input-sm" 
+                                                            <asp:TextBox ID="txbAsesorJunior" runat="server" CssClass="form-control input-sm"
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
@@ -219,14 +288,14 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Asesor Elite:</label>
-                                                            <asp:TextBox ID="txbAsesorElite" runat="server" CssClass="form-control input-sm" 
+                                                            <asp:TextBox ID="txbAsesorElite" runat="server" CssClass="form-control input-sm"
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Asesor Online:</label>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -234,12 +303,11 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Director sede:</label>
-                                                            <asp:TextBox ID="txbDirectorSede" runat="server" CssClass="form-control input-sm" 
+                                                            <asp:TextBox ID="txbDirectorSede" runat="server" CssClass="form-control input-sm"
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        
                                                     </div>
                                                 </div>
                                                 <div class="form-group">

@@ -10,61 +10,132 @@
 --%>
 <div class="row">
     <div class="col-lg-3">
-        <div class="widget style1 bg-success">
-            <div class="row">
-                <div class="col-xs-4">
-                    <i class="fa fa-money-bill-trend-up fa-5x"></i>
-                </div>
-                <div class="col-xs-8 text-right">
-                    <span>Ventas del mes</span>
-                    <h2 class="font-bold">
-                        <asp:Literal ID="ltCuantos1" runat="server"></asp:Literal></h2>
-                </div>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title text-warning">
+                <h5>Ritmo vs tiempo</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblRitmoReal" runat="server"></asp:Literal>%
+                </h1>
+                <small>Esperado:
+                 <asp:Literal ID="lblRitmoEsperado" runat="server"></asp:Literal>%
+                </small>
             </div>
         </div>
     </div>
+
     <div class="col-lg-3">
-        <div class="widget style1 lazur-bg">
-            <div class="row">
-                <div class="col-xs-4">
-                    <i class="fa fa-person-circle-plus fa-5x"></i>
-                </div>
-                <div class="col-xs-8 text-right">
-                    <span>Nuevas afiliaciones</span>
-                    <h2 class="font-bold">
-                        <asp:Literal ID="ltCuantos2" runat="server"></asp:Literal>
-                    </h2>
-                </div>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title text-danger">
+                <h5>Proyección cierre mes</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblProyeccionCierre" runat="server"></asp:Literal>
+                </h1>
+                <small>Meta:
+                 <asp:Literal ID="lblMetaMes" runat="server"></asp:Literal>
+                </small>
             </div>
         </div>
     </div>
+
     <div class="col-lg-3">
-        <div class="widget style1 yellow-bg">
-            <div class="row">
-                <div class="col-xs-4">
-                    <i class="fa fa-people-arrows fa-5x"></i>
-                </div>
-                <div class="col-xs-8 text-right">
-                    <span>Tasa de conversión (%)</span>
-                    <h2 class="font-bold">
-                        <asp:Literal ID="ltCuantos3" runat="server"></asp:Literal>
-                    </h2>
-                </div>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title text-info">
+                <h5>Días hábiles restantes</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblDiasHabiles" runat="server"></asp:Literal>
+                </h1>
+                <small>Necesario por día:
+              <asp:Literal ID="lblVentaNecesariaDia" runat="server"></asp:Literal>
+                </small>
             </div>
         </div>
     </div>
+
     <div class="col-lg-3">
-        <div class="widget style1 navy-bg">
-            <div class="row">
-                <div class="col-xs-4">
-                    <i class="fa fa-sack-dollar fa-5x"></i>
-                </div>
-                <div class="col-xs-8 text-right">
-                    <span>Meta del mes</span>
-                    <h2 class="font-bold">
-                        <asp:Literal ID="ltCuantos4" runat="server"></asp:Literal></h2>
-                </div>
+        <div class="ibox float-e-margins">
+            <div class="ibox-title text-danger">
+                <h5>Presión comercial</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins">
+                    <asp:Literal ID="lblPresion" runat="server"></asp:Literal>x
+                </h1>
+                <small>vs promedio diario actual
+                </small>
             </div>
         </div>
     </div>
+    <%--  --%>
+</div>
+
+<div class="row">
+    <div class="col-lg-3">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title text-primary">
+            <h5>Presupuesto total del período</h5>
+        </div>
+        <div class="ibox-content">
+            <h1 class="no-margins">
+                <asp:Literal ID="lblPresupuestoTotal" runat="server"></asp:Literal>
+            </h1>
+            <small>Total canales / sedes</small>
+        </div>
+    </div>
+</div>
+
+    <div class="col-lg-3">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title text-info">
+            <h5>Variación vs mes anterior</h5>
+        </div>
+        <div class="ibox-content">
+            <h1 class="no-margins">
+                <asp:Literal ID="lblVariacionMes" runat="server"></asp:Literal>%
+            </h1>
+            <small>
+                Presupuesto comparativo
+            </small>
+        </div>
+    </div>
+</div>
+
+    <div class="col-lg-3">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title text-warning">
+            <h5>Canal con mayor meta</h5>
+        </div>
+        <div class="ibox-content">
+            <h1 class="no-margins">
+                <asp:Literal ID="lblCanalTop" runat="server"></asp:Literal>
+            </h1>
+            <small>
+                <asp:Literal ID="lblMetaCanalTop" runat="server"></asp:Literal>
+            </small>
+        </div>
+    </div>
+</div>
+
+    <div class="col-lg-3">
+    <div class="ibox float-e-margins">
+        <div class="ibox-title text-danger">
+            <h5>Concentración de metas</h5>
+        </div>
+        <div class="ibox-content">
+            <h1 class="no-margins">
+                <asp:Literal ID="lblConcentracion" runat="server"></asp:Literal>%
+            </h1>
+            <small>
+                Top 3 canales
+            </small>
+        </div>
+    </div>
+</div>
+
+
 </div>

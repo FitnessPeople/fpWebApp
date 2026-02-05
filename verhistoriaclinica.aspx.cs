@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq.Expressions;
 using System.Web.UI;
 
 namespace fpWebApp
@@ -33,7 +34,6 @@ namespace fpWebApp
 
                             txbFum.Attributes.Add("type", "date");
                             txbCigarrillos.Attributes.Add("type", "number");
-                            txbBebidas.Attributes.Add("type", "number");
                             
                             btnAgregar.Visible = true;
                         }
@@ -83,19 +83,9 @@ namespace fpWebApp
 
         private void MostrarDatosAfiliado(string idAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(EstadoAfiliado='Activo','info',IF(EstadoAfiliado='Inactivo','danger','warning')) AS label, " +
-                "IF(TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()) IS NOT NULL, TIMESTAMPDIFF(YEAR, FechaNacAfiliado, CURDATE()),'') AS edad " +
-                "FROM Afiliados a " +
-                "RIGHT JOIN Sedes s ON a.idSede = s.idSede " +
-                "LEFT JOIN ciudades c ON c.idCiudad = a.idCiudadAfiliado " +
-                "LEFT JOIN generos g ON g.idGenero = a.idGenero " +
-                "LEFT JOIN eps ON eps.idEps = a.idEps " +
-                "WHERE idAfiliado = '" + idAfiliado + "' ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarAfiliadoPorIdEncabezado(Convert.ToInt32(idAfiliado));
 
-            //ViewState["DocumentoAfiliado"] = dt.Rows[0]["DocumentoAfiliado"].ToString();
             ltNombre.Text = dt.Rows[0]["NombreAfiliado"].ToString();
             ltApellido.Text = dt.Rows[0]["ApellidoAfiliado"].ToString();
             ltEmail.Text = dt.Rows[0]["EmailAfiliado"].ToString();
@@ -106,8 +96,20 @@ namespace fpWebApp
             ltCumple.Text = String.Format("{0:dd MMM yyyy}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"])) + " (" + dt.Rows[0]["edad"].ToString() + " años)";
             ltGenero.Text = dt.Rows[0]["Genero"].ToString();
             ltEPS.Text = dt.Rows[0]["NombreEps"].ToString();
-            ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
-            //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+            
+            string label = "warning";
+            if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Activo")
+            {
+                label = "info";
+            }
+            else
+            {
+                if (dt.Rows[0]["EstadoAfiliado"].ToString() == "Inactivo")
+                {
+                    label = "danger";
+                }
+            }
+            ltEstado.Text = "<span class=\"label label-" + label + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
 
             if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
             {
@@ -128,30 +130,15 @@ namespace fpWebApp
 
         private void CargarHistoriasClinicas(string idAfiliado)
         {
-            string strQuery = "SELECT *, " +
-                "IF(Tabaquismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS fuma, " +
-                "IF(Alcoholismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS toma, " +
-                "IF(Sedentarismo=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS sedentario, " +
-                "IF(Diabetes=0,'<i class=\"fa fa-xmark text-navy\"></i>','<i class=\"fa fa-check text-danger\"></i>') AS diabetico, " +
-                "IF(Colesterol=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Colesterol=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS colesterado, " +
-                "IF(Trigliceridos=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(Trigliceridos=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS triglicerado, " +
-                "IF(HTA=0,'<i class=\"fa fa-xmark text-navy\"></i>',IF(HTA=1,'<i class=\"fa fa-check text-danger\"></i>','<i class=\"fa fa-comment-slash text-primary\"></i>')) AS hipertenso, " +
-                "(@rownum := @rownum + 1) as nro_fila, " +
-                "IF(@rownum=1,'in','') AS clase " +
-                "FROM HistoriasClinicas hc " +
-                "LEFT JOIN ObjetivosAfiliado oa ON hc.idObjetivoIngreso = oa.idObjetivo " +
-                "CROSS JOIN (SELECT @rownum := 0) r " +
-                "WHERE idAfiliado = " + idAfiliado + " " +
-                "ORDER BY FechaHora DESC ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarHistoriaClinicaPorIdAfiliado(Convert.ToInt32(idAfiliado));
 
             if (dt.Rows.Count > 0)
             {
                 rpHistorias.DataSource = dt;
                 rpHistorias.DataBind();
 
-                LlenarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+                LlenarHistoriaClinica(idAfiliado);
                 btnContinuar.Visible = true;
             }
             else
@@ -161,13 +148,12 @@ namespace fpWebApp
                     "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
                     "Afiliado sin historias clínicas." +
                     "</div></div>";
-                //ltMensaje.Text = "Afiliado sin historias clínicas.";
             }
 
             dt.Dispose();
         }
 
-        private void LlenarHistoriasClinicas(string idAfiliado)
+        private void LlenarHistoriaClinica(string idAfiliado)
         {
             string strQuery = "SELECT * " +
                 "FROM HistoriasClinicas hc " +
@@ -203,7 +189,8 @@ namespace fpWebApp
             rblFuma.SelectedIndex = Convert.ToInt32(rblFuma.Items.IndexOf(rblFuma.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Tabaquismo"]).ToString())));
             txbCigarrillos.Text = dt.Rows[0]["Cigarrillos"].ToString();
             rblToma.SelectedIndex = Convert.ToInt32(rblToma.Items.IndexOf(rblToma.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Alcoholismo"]).ToString())));
-            txbBebidas.Text = dt.Rows[0]["Bebidas"].ToString();
+            //txbBebidas.Text = dt.Rows[0]["Bebidas"].ToString();
+            ddlBebidas.SelectedIndex = Convert.ToInt32(ddlBebidas.Items.IndexOf(ddlBebidas.Items.FindByValue(dt.Rows[0]["Bebidas"].ToString())));
             rblSedentarismo.SelectedIndex = Convert.ToInt32(rblSedentarismo.Items.IndexOf(rblSedentarismo.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Sedentarismo"]).ToString())));
             rblDiabetes.SelectedIndex = Convert.ToInt32(rblDiabetes.Items.IndexOf(rblDiabetes.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Diabetes"]).ToString())));
             rblColesterol.SelectedIndex = Convert.ToInt32(rblColesterol.Items.IndexOf(rblColesterol.Items.FindByValue(Convert.ToInt16(dt.Rows[0]["Colesterol"]).ToString())));
@@ -213,54 +200,61 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        public class HtmlTemplate : ITemplate
-        {
-            private string _html;
+        //public class HtmlTemplate : ITemplate
+        //{
+        //    private string _html;
 
-            public HtmlTemplate(string html)
-            {
-                _html = html;
-            }
+        //    public HtmlTemplate(string html)
+        //    {
+        //        _html = html;
+        //    }
 
-            public void InstantiateIn(Control container)
-            {
-                container.Controls.Add(new LiteralControl(_html));
-            }
-        }
+        //    public void InstantiateIn(Control container)
+        //    {
+        //        container.Controls.Add(new LiteralControl(_html));
+        //    }
+        //}
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             //Inserta datos en la tabla HistoriasClinicas
             try
             {
-                string strQuery = "INSERT INTO HistoriasClinicas " +
-                "(idAfiliado, FechaHora, MedicinaPrepagada, idObjetivoIngreso, DescripcionObjetivoIngreso, " +
-                "Remision, TipoConsulta, MotivoConsulta, AnteFamiliar, AntePatologico, " +
-                "AnteQuirurgico, AnteToxicologico, AnteHospitalario, AnteTraumatologico, AnteFarmacologico, AnteActividadFisica, AnteGineco, " +
-                "AnteFUM, Tabaquismo, Cigarrillos, Alcoholismo, Bebidas, Sedentarismo, Diabetes, Colesterol, Trigliceridos, HTA) " +
-                "VALUES (" + Request.QueryString["idAfiliado"].ToString() + ", CURRENT_TIMESTAMP(), '" + txbMedicinaPrepagada.Text.ToString() + "', " +
-                "" + ddlObjetivo.SelectedItem.Value.ToString() + ", '" + txbDescripcionObjetivo.Text.ToString() + "', " +
-                "'" + txbRemision.Text.ToString() + "', '" + ddlTipoConsulta.SelectedItem.Value.ToString() + "', " +
-                "'" + txbMotivoConsulta.Text.ToString() + "', " +
-                "'" + txbAnteFamiliares.Text.ToString() + "', '" + txbAntePatologico.Text.ToString() + "', " +
-                "'" + txbAnteQuirurgico.Text.ToString() + "', '" + txbAnteToxicologico.Text.ToString() + "', " +
-                "'" + txbAnteHospitalario.Text.ToString() + "', '" + txbAnteTraumatologico.Text.ToString() + "', " +
-                "'" + txbAnteFarmacologico.Text.ToString() + "', '" + txbAnteActividadFisica.Text.ToString() + "', " +
-                "'" + txbAnteGinecoObstetricio.Text.ToString() + "', '" + txbFum.Text.ToString() + "', " +
-                "" + rblFuma.SelectedItem.Value.ToString() + ", " + txbCigarrillos.Text.ToString() + ", " +
-                "" + rblToma.SelectedItem.Value.ToString() + ", " + txbBebidas.Text.ToString() + ", " +
-                "" + rblSedentarismo.SelectedItem.Value.ToString() + ", " + rblDiabetes.SelectedItem.Value.ToString() + ", " +
-                "" + rblColesterol.SelectedItem.Value.ToString() + ", " + rblTrigliceridos.SelectedItem.Value.ToString() + ", " +
-                "" + rblHTA.SelectedItem.Value.ToString() + ") ";
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
+                string mensaje = cg.InsertarHistoriaClinica(Convert.ToInt32(Request.QueryString["idAfiliado"].ToString()),
+                    txbMedicinaPrepagada.Text.ToString(),
+                    Convert.ToInt32(ddlObjetivo.SelectedItem.Value.ToString()),
+                    txbDescripcionObjetivo.Text.ToString(),
+                    txbRemision.Text.ToString(),
+                    ddlTipoConsulta.SelectedItem.Value.ToString(),
+                    txbMotivoConsulta.Text.ToString(),
+                    txbAnteFamiliares.Text.ToString(),
+                    txbAntePatologico.Text.ToString(),
+                    txbAnteQuirurgico.Text.ToString(),
+                    txbAnteToxicologico.Text.ToString(),
+                    txbAnteHospitalario.Text.ToString(),
+                    txbAnteTraumatologico.Text.ToString(),
+                    txbAnteFarmacologico.Text.ToString(),
+                    txbAnteActividadFisica.Text.ToString(),
+                    txbAnteGinecoObstetricio.Text.ToString(),
+                    txbFum.Text.ToString(),
+                    Convert.ToInt16(rblFuma.SelectedItem.Value.ToString()),
+                    txbCigarrillos.Text.ToString() != "" ? Convert.ToInt16(rblFuma.SelectedItem.Value.ToString()) : 0,
+                    Convert.ToInt16(rblToma.SelectedItem.Value.ToString()),
+                    ddlBebidas.SelectedItem.Value.ToString(),
+                    Convert.ToInt16(rblSedentarismo.SelectedItem.Value.ToString()),
+                    Convert.ToInt16(rblDiabetes.SelectedItem.Value.ToString()),
+                    Convert.ToInt16(rblColesterol.SelectedItem.Value.ToString()),
+                    Convert.ToInt16(rblTrigliceridos.SelectedItem.Value.ToString()),
+                    Convert.ToInt16(rblHTA.SelectedItem.Value.ToString())
+                    );
+                //string mensaje = cg.TraerDatosStr(strQuery);
 
-                strQuery = "SELECT idHistoria FROM HistoriasClinicas WHERE idAfiliado = " + Request.QueryString["idAfiliado"].ToString() + " ORDER BY idHistoria DESC LIMIT 1";
-                DataTable dt = cg.TraerDatos(strQuery);
-                string idHistoria = dt.Rows[0]["idHistoria"].ToString();
-                dt.Dispose();
+                string[] partes = mensaje.Split('|');
 
-                if (mensaje == "OK")
+                string idHistoria = partes[1];
+
+                if (partes[0] == "OK")
                 {
                     //Avanzamos según el perfil
                     if (Session["idPerfil"].ToString() == "5") //Medico deportologo
@@ -278,7 +272,6 @@ namespace fpWebApp
                             });
                             ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        //Response.Redirect("histclideporte01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
                     if (Session["idPerfil"].ToString() == "8") //Fisioterapeuta
                     {
@@ -295,7 +288,6 @@ namespace fpWebApp
                             });
                             ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        //Response.Redirect("histclifisio01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
                     if (Session["idPerfil"].ToString() == "9") //Nutricionista
                     {
@@ -312,7 +304,6 @@ namespace fpWebApp
                             });
                             ";
                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                        //Response.Redirect("histclinutricion01?idAfiliado=" + Request.QueryString["idAfiliado"].ToString() + "&idHistoria=" + idHistoria);
                     }
                     
                     //OJO comentar esta condición
