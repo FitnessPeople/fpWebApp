@@ -67,7 +67,7 @@
                         <b>Paso 2: Visualiza</b><br />
                         Usa el buscador que está a la <b>derecha</b> para encontrar lo que buscas.<br />
                         <i class="fa-solid fa-magnifying-glass"></i> Filtra por 
-                        <i class="fa-solid fa-person-falling-burst" style="color: #0D6EFD;"></i> <b>ARL</b>
+                        <i class="fa-solid fa-person-falling-burst" style="color: #0D6EFD;"></i> <b>Consultorio</b>
                     <br />
                         <br />
                         <b>Paso 3: Gestiona</b><br />
@@ -172,7 +172,7 @@
                             <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Lista de ARLs</h5>
+                                        <h5>Lista de Consultorios</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -268,7 +268,7 @@
 
         $("#form1").validate({
             rules: {
-                txbArl: {
+                txbConsultorio: {
                     required: true,
                     minlength: 3
                 },
