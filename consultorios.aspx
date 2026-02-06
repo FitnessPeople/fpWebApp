@@ -1,9 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="soporte.aspx.cs" Inherits="fpWebApp.soporte" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="consultorios.aspx.cs" Inherits="fpWebApp.consultorios" %>
 
-<%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
 <%@ Register Src="~/controles/header.ascx" TagPrefix="uc1" TagName="header" %>
 <%@ Register Src="~/controles/rightsidebar.ascx" TagPrefix="uc1" TagName="rightsidebar" %>
+<%@ Register Src="~/controles/indicadoresCEO.ascx" TagPrefix="uc1" TagName="indicadores01" %>
 <%@ Register Src="~/controles/paginasperfil.ascx" TagPrefix="uc1" TagName="paginasperfil" %>
 
 <!DOCTYPE html>
@@ -14,28 +14,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Soporte FP+</title>
+    <title>Fitness People | Consultorios</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
-
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
+    
     <!-- FooTable -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
-
-    <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
+    <link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-    <!-- SweetAlert2 CDN -->
+    <!-- Sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style type="text/css" media="print">
+        body {
+            visibility: hidden;
+            display: none
+        }
+    </style>
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#usuarios");
+            var element1 = document.querySelector("#consultorios");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#configuracion");
+            var element2 = document.querySelector("#medico");
             element2.classList.remove("collapse");
         }
     </script>
@@ -47,36 +52,36 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-person-chalkboard modal-icon"></i>
-                    <h4 class="modal-title">Guía para editar un especialista</h4>
-                    <small class="font-bold">¡Bienvenido! A continuación, te ofrecemos una guía sencilla para ayudarte a completar el formulario de manera correcta y eficiente. Sigue estos pasos para asegurarte de que toda la información se registre de forma adecuada.</small>
+                    <i class="fa fa-person-falling-burst modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para visualizar los Consultorios</h4>
+                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar los Consultorios de manera clara y eficiente.</small>
                 </div>
                 <div class="modal-body">
                     <p>
-                        <b>1. Lee las Instrucciones</b><br />
-                        Antes de comenzar, es importante que leas todas las instrucciones del formulario. Esto te ayudará a entender qué información se requiere y cómo debe ser presentada.
+                        <b>Paso 1: Crea una nueva</b><br />
+                        Usa el campo que está a la <b>izquierda</b> para digitar el nombre que quieres registrar.<br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
+                    <br />
                         <br />
+                        <b>Paso 2: Visualiza</b><br />
+                        Usa el buscador que está a la <b>derecha</b> para encontrar lo que buscas.<br />
+                        <i class="fa-solid fa-magnifying-glass"></i> Filtra por 
+                        <i class="fa-solid fa-person-falling-burst" style="color: #0D6EFD;"></i> <b>ARL</b>
+                    <br />
                         <br />
-                        <b>2. Reúne la Información Necesaria</b><br />
-                        Asegúrate de tener a mano todos los documentos e información que necesitas, como:
-                        Datos personales (nombre, dirección, número de teléfono, etc.)
-                        Información específica relacionada con el propósito del formulario (por ejemplo, detalles de empleo, historial médico, etc.)
+                        <b>Paso 3: Gestiona</b><br />
+                        En la columna <b>Acciones</b> encontrarás estas opciones:<br />
+                        <i class="fa fa-edit" style="color: #1AB394;"></i> <b>Editar:</b> Modifica los datos necesarios.<br />
+                        <i class="fa fa-trash" style="color: #DC3545;"></i> <b>Eliminar:</b> Borra lo que creas innecesario.
+                    <br />
                         <br />
+                        <b>Paso 4: Acción adicional</b><br />
+                        Al lado opuesto del buscador encontrarás un botón útil:<br />
+                        <i class="fa-solid fa-file-export" style="color: #212529;"></i> <b>Exportar a Excel:</b> 
+                    <br />
                         <br />
-                        <b>3. Completa los Campos Requeridos</b><br />
-                        Campos Obligatorios: Identifica cuáles son los campos obligatorios (generalmente marcados con un asterisco *) y asegúrate de completarlos.
-                        Campos Opcionales: Si hay campos opcionales, completa solo los que consideres relevantes.
-                        <br />
-                        <br />
-                        <b>4. Confirma la Información</b><br />
-                        Asegúrate de que todos los datos ingresados son correctos y actualizados. Una revisión final puede evitar errores que podrían complicar el proceso.
-                        <br />
-                        <br />
-                        <b>5. Envía el Formulario</b><br />
-                        Asegúrate de seguir el proceso de envío indicado (hacer clic en "Agregar").
-                        <br />
-                        <br />
-                        ¡Siguiendo estos pasos, estarás listo para diligenciar tu formulario sin problemas! Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -97,10 +102,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-laptop text-success m-r-sm"></i>Soporte FP+</h2>
+                    <h2><i class="fa fa-bed-pulse text-success m-r-sm"></i>Consultorios</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong>Soporte FP+</strong></li>
+                        <li>Asistencial</li>
+                        <li class="active"><strong>Consultorios</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -123,7 +129,7 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form role="form" id="form" runat="server">
+                    <form id="form1" runat="server">
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -140,29 +146,23 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="form-group">
-                                                    <label>Página reportada:</label>
-                                                    <%--<asp:DropDownList ID="ddlPaginas" runat="server" 
-                                                        CssClass="chosen-select input-sm"
-                                                        AppendDataBoundItems="true">
-                                                    </asp:DropDownList>--%>
-                                                    <div runat="server" id="contenedorSelect"></div>
+                                                    <label>Sede:</label>
+                                                    <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true"
+                                                        DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-group">
+                                                    <label>Nombre del consultorio:</label>
+                                                    <asp:TextBox ID="txbConsultorio" runat="server" CssClass="form-control input-sm"></asp:TextBox>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Descripción:</label>
-                                                    <p class="text-info">Indique claramente, paso a paso, como se llega al error.</p>
-                                                    <asp:TextBox ID="txtDescripcion" runat="server" CssClass="form-control input-sm" 
-                                                        TextMode="MultiLine" Rows="4" />
-                                                </div>
-                                                <div class="form-group">
-                                                    <a href="soporte" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
-                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
+                                                    <a href="consultorios" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
+                                                    <asp:Button ID="btnAgregar" runat="server" Text="Agregar" 
                                                         CssClass="btn btn-sm btn-primary pull-right m-t-n-xs" 
-                                                        OnClick="btnAgregar_Click" />
-                                                </div>
-                                                <br />
-                                                <br />
-                                                <div class="form-group">
-                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                        OnClick="btnAgregar_Click" Visible="false" />
                                                 </div>
                                             </div>
                                         </div>
@@ -172,7 +172,7 @@
                             <div class="col-lg-8">
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
-                                        <h5>Lista de Tickets de Soporte FP+</h5>
+                                        <h5>Lista de ARLs</h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
@@ -187,55 +187,43 @@
                                                     <div class="form-group" id="filter-form-container" style="margin-left: 28px;"></div>
                                                 </div>
                                             </div>
-
+ 
                                             <div class="col-lg-6 form-horizontal">
-                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
-                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false" 
+                                                    CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;" 
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                        <table class="footable table table-striped" data-paging-size="15"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                            data-paging-limit="10" data-filtering="true"
+                                            data-paging-limit="15" data-filtering="true"
                                             data-filter-container="#filter-form-container" data-filter-delay="300"
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left"
                                             data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sortable="true" data-breakpoints="xs">Página</th>
-                                                    <th data-breakpoints="xs sm md">Descripción</th>
-                                                    <th data-breakpoints="xs sm md">Estado</th>
-                                                    <th class="text-nowrap" data-breakpoints="xs" width="150px">Fecha</th>
-                                                    <th class="text-nowrap" data-breakpoints="xs" width="150px">Hace cuánto?</th>
-                                                    <th data-sortable="false" class="text-right">Acciones</th>
+                                                    <th width="5%" data-type="number">ID</th>
+                                                    <th width="80%">Sede</th>
+                                                    <th width="80%">Nombre</th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <asp:Repeater ID="rpTickets" runat="server" OnItemDataBound="rpTickets_ItemDataBound">
+                                                <asp:Repeater ID="rpConsultorios" runat="server" OnItemDataBound="rpConsultorios_ItemDataBound">
                                                     <ItemTemplate>
-                                                        <tr>
-                                                            <td><%# Eval("Pagina") %><br /></td>
-                                                            <td><%# Eval("DescripcionTicket") %></td>
-                                                            <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("EstadoTicket") %></span></td>
-                                                            <td><%# Eval("FechaCreacionTicket", "{0:dd MMM yyyy}") %></br>
-                                                                <%# Eval("FechaCreacionTicket", "{0:hh:mm:ss}") %>
-                                                            </td>
-                                                            <td><asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
+                                                        <tr class="feed-element">
+                                                            <td><%# Eval("idConsultorio") %></td>
+                                                            <td><%# Eval("NombreSede") %></td>
+                                                            <td><%# Eval("NombreConsultorio") %></td>
                                                             <td>
-                                                                <!-- Botón asignar -->
-                                                                <button type="button" runat="server" id="btnAsignar"
-                                                                    class="btn btn-outline btn-warning pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;"
-                                                                    title="Asignar responsable">
-                                                                    <i class="fa fa-user-plus"></i>
-                                                                </button>
-
-                                                                <!-- Ingeniero -->
-                                                                <asp:Literal ID="ltIngeniero" runat="server"></asp:Literal>
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false"><i class="fa fa-edit"></i></a>
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
@@ -250,9 +238,6 @@
                     <%--Fin Contenido!!!!--%>
                 </div>
             </div>
-
-            <uc1:footer runat="server" ID="footer" />
-
         </div>
         <uc1:rightsidebar runat="server" ID="rightsidebar" />
     </div>
@@ -262,6 +247,7 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
@@ -270,34 +256,23 @@
     <!-- FooTable -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.min.js"></script>
 
-    <!-- Chosen -->
-    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+    <!-- Jquery Validate -->
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <!-- Jasny -->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
-    <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
-
+    <!-- Page-Level Scripts -->
     <script>
         $('.footable').footable();
 
-        $("#form").validate({
+        $("#form1").validate({
             rules: {
-                ddlPaginas: {
+                txbArl: {
                     required: true,
-                },
-                txtDescripcion: {
-                    required: true,
+                    minlength: 3
                 },
             }
-        });
-
-        $('.chosen-select').chosen({
-            width: "100%",
-            disable_search_threshold: 10,
-            no_results_text: "Sin resultados",
-            placeholder_text_single: "Seleccione una página"
         });
     </script>
 

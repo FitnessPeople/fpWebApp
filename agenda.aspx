@@ -178,10 +178,10 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
-                                                <label>Sede:</label>
+                                                <label>Consultorio:</label>
                                                 <div class="form-group">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedesCita" runat="server"
-                                                        DataValueField="idSede" DataTextField="NombreSede" AppendDataBoundItems="true">
+                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlConsultorios" runat="server"
+                                                        DataValueField="idConsultorio" DataTextField="ConsultorioSede" AppendDataBoundItems="true">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -278,7 +278,7 @@
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Agenda
-                                            <asp:Literal ID="ltSede" runat="server"></asp:Literal></h5>
+                                            <asp:Literal ID="ltConsultorio" runat="server"></asp:Literal></h5>
                                         <div class="ibox-tools">
                                             <%--<a class="collapse-link">
                                                         <i class="fa fa-chevron-up"></i>
@@ -297,9 +297,9 @@
                                             <div class="form-group m-b-n-sm">
                                                 <label class="col-sm-2 col-sm-2 control-label">Sede</label>
                                                 <div class="col-sm-10">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                                        OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                        DataValueField="idSede" DataTextField="NombreSede"
+                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlConsultoriosAgenda" runat="server"
+                                                        OnSelectedIndexChanged="ddlConsultoriosAgenda_SelectedIndexChanged" 
+                                                        DataValueField="idConsultorio" DataTextField="ConsultorioSede"
                                                         AutoPostBack="true" AppendDataBoundItems="true">
                                                     </asp:DropDownList>
                                                 </div>

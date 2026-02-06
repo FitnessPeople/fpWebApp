@@ -90,16 +90,16 @@ namespace fpWebApp
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
-                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("onClick", "window.location.href='editarhistoria?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
-                    btnEditar.Visible = true;
-
                     HtmlButton btnAgregar = (HtmlButton)e.Item.FindControl("btnAgregar");
                     btnAgregar.Attributes.Add("onClick", "window.location.href='verhistoriaclinica?idAfiliado=" + ((DataRowView)e.Item.DataItem).Row[1].ToString() + "'");
                     btnAgregar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
+                    HtmlButton btnEditar = (HtmlButton)e.Item.FindControl("btnEditar");
+                    btnEditar.Attributes.Add("onClick", "window.location.href='verhistoriaclinica?idAfiliado=" + ((DataRowView)e.Item.DataItem).Row[1].ToString() + "'");
+                    btnEditar.Visible = true;
+
                     HtmlButton btnEliminar = (HtmlButton)e.Item.FindControl("btnEliminar");
                     btnEliminar.Attributes.Add("onClick", "window.location.href='eliminarhistoria?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "'");
                     btnEliminar.Visible = true;
@@ -107,7 +107,7 @@ namespace fpWebApp
                 if (ViewState["Exportar"].ToString() == "1")
                 {
                     HtmlButton btnImprimir = (HtmlButton)e.Item.FindControl("btnImprimir");
-                    btnImprimir.Attributes.Add("onClick", "window.open('imprimirhistoriaclinica?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "','_blank')");
+                    btnImprimir.Attributes.Add("onClick", "window.open('imprimirhistoriaclinica?idHistoria=" + ((DataRowView)e.Item.DataItem).Row[0].ToString() + "','_blank')");
                     btnImprimir.Visible = true;
                 }
             }

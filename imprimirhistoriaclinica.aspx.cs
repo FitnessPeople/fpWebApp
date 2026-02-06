@@ -15,7 +15,7 @@ namespace fpWebApp
                 "LEFT JOIN HistoriaAlimentaria ha on hc.idHistoria = ha.idHistoria " +
                 "LEFT JOIN HistoriaDeportiva hd on hc.idHistoria = hd.idHistoria " +
                 "LEFT JOIN HistoriaFisioterapeuta hf on hc.idHistoria = hf.idHistoria " +
-                "WHERE hc.idHistoria = " + Request.QueryString["editid"].ToString();
+                "WHERE hc.idHistoria = " + Request.QueryString["idHistoria"].ToString();
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 

@@ -66,11 +66,6 @@ namespace fpWebApp
                             DataTable dt = cg.ValidarArlEmpleados(int.Parse(Request.QueryString["deleteid"].ToString()));
                             if (dt.Rows.Count > 0)
                             {
-                                //ltMensaje.Text = "<div class=\"ibox-content\">" +
-                                //    "<div class=\"alert alert-danger alert-dismissable\">" +
-                                //    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                                //    "Esta ARL no se puede borrar, hay empleados asociados a ella." +
-                                //    "</div></div>";
                                 MostrarAlerta("Mensaje", "Esta ARL no se puede borrar, hay empleados asociados a ella.", "warning");
 
                                 DataTable dt1 = new DataTable();
