@@ -47,7 +47,7 @@
                                 <h6 class="text-info font-bold m-b-xxs"><%# Eval("NombrePlan") %></h6>
                                 <asp:Literal ID="ltEnlacePago" runat="server"></asp:Literal>
                                 <%--<asp:HiddenField ID="hdEnlacePago" runat="server" ClientIDMode="Static" />--%>
-                                <button type="button" class="btn btn-success btn-xs" id="btnPortapaleles" 
+                                <button type="button" class="btn btn-success btn-xs" id="btnPortapapeles" 
                                     onclick='copyToClipboard(this)' title="Copiar enlace">
                                     <i class="fa fa-copy"></i>
                                 </button>
@@ -59,10 +59,9 @@
                     <!-- Enlace para cambio de método de pago -->
                     <li style="padding: 1px 20px;">
                         <h6 class="text-info font-bold m-b-xxs">Cambio de método de pago</h6>
-                        cambioMetodoPago
-                        <input type="hidden" id='hdEnlaceCambio' value='https://fitnesspeoplecolombia.com/cambioMetodoPago'>
-                        <button type="button" class="btn btn-success btn-xs" id="btnPortapaleles"
-                            onclick='copyToClipboard("hdEnlaceCambio")' title="Copiar enlace">
+                        <asp:Literal ID="ltEnlaceCambio" runat="server"></asp:Literal>
+                        <button type="button" class="btn btn-success btn-xs" id="btnPortapapeles"
+                            onclick='copyToClipboard(this)' title="Copiar enlace">
                             <i class="fa fa-copy"></i>
                         </button>
                     </li>
