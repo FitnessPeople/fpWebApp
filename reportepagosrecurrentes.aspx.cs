@@ -23,14 +23,11 @@ namespace fpWebApp
 {
 	public partial class reportepagosrecurrentes : System.Web.UI.Page
 	{
-        // PRUEBAS
-        //static int idIntegracionWompi = 1; // WOMPI
-        //static int idIntegracionSiigo = 3; // SIIGO
-
-
-        // PRODUCCIÓN
-        static int idIntegracionWompi = 4; // WOMPI
-        static int idIntegracionSiigo = 6; // SIIGO
+        protected int IdCanalVenta
+        {
+            get { return ViewState["idCanalVenta"] != null ? (int)ViewState["idCanalVenta"] : 0; }
+            set { ViewState["idCanalVenta"] = value; }
+        }
 
         protected string EstadoCobroRechazado
         {
@@ -116,6 +113,12 @@ namespace fpWebApp
             set { ViewState["idPayment"] = value; }
         }
 
+        protected int IdCostCenter
+        {
+            get { return ViewState["idCostCenter"] != null ? (int)ViewState["idCostCenter"] : 0; }
+            set { ViewState["idCostCenter"] = value; }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
 		{
             CultureInfo culture = new CultureInfo("es-CO");
@@ -127,7 +130,6 @@ namespace fpWebApp
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Pagos recurrentes");
-                    ConsultarIntegracion();
 
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
@@ -166,27 +168,42 @@ namespace fpWebApp
             }
         }
 
-        private void ConsultarIntegracion()
+        private void GestionarIntegracion(int idVendedor)
         {
             clasesglobales cg = new clasesglobales();
 
-            DataTable dtIntegracionWompi = cg.ConsultarIntegracionPorId(idIntegracionWompi);
-            UrlWompi = dtIntegracionWompi != null && dtIntegracionWompi.Rows.Count > 0 ? dtIntegracionWompi.Rows[0]["url"].ToString() : null;
-            IntegritySecret = dtIntegracionWompi != null && dtIntegracionWompi.Rows.Count > 0 ? dtIntegracionWompi.Rows[0]["integrity_secret"].ToString() : null;
-            KeyPub = dtIntegracionWompi != null && dtIntegracionWompi.Rows.Count > 0 ? dtIntegracionWompi.Rows[0]["keyPub"].ToString() : null;
-            KeyPriv = dtIntegracionWompi != null && dtIntegracionWompi.Rows.Count > 0 ? dtIntegracionWompi.Rows[0]["keyPriv"].ToString() : null;
-            dtIntegracionWompi.Dispose();
+            DataTable dtVendedor = cg.ConsultarUsuarioEmpleadoPorId(idVendedor);
+            IdCanalVenta = dtVendedor.Rows.Count > 0 ? Convert.ToInt32(dtVendedor.Rows[0]["idCanalVenta"]) : 0;
+            dtVendedor.Dispose();
 
-            DataTable dtIntegracionSiigo = cg.ConsultarIntegracionPorId(idIntegracionSiigo);
-            UrlSiigo = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? dtIntegracionSiigo.Rows[0]["url"].ToString() : null;
-            UserName = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? dtIntegracionSiigo.Rows[0]["username"].ToString() : null;
-            AccessKey = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? dtIntegracionSiigo.Rows[0]["accessKey"].ToString() : null;
-            PartnerId = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? dtIntegracionSiigo.Rows[0]["partnerId"].ToString() : null;
+            DataTable dtIntegracion = cg.ConsultarIntegracionEmpresaPorIdCanalVenta(IdCanalVenta);
 
-            IdDocumentType = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? Convert.ToInt32(dtIntegracionSiigo.Rows[0]["idDocumentType"].ToString()) : 0;
-            IdSellerUser = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? Convert.ToInt32(dtIntegracionSiigo.Rows[0]["idSellerUser"].ToString()) : 0;
-            IdPayment = dtIntegracionSiigo != null && dtIntegracionSiigo.Rows.Count > 0 ? Convert.ToInt32(dtIntegracionSiigo.Rows[0]["idPayment"].ToString()) : 0;
-            dtIntegracionSiigo.Dispose();
+            foreach (DataRow row in dtIntegracion.Rows)
+            {
+                string codigo = row["codigo"].ToString();
+
+                switch (codigo)
+                {
+                    case "WOMPI":
+                        UrlWompi = row["url"].ToString();
+                        IntegritySecret = row["integrity_secret"].ToString();
+                        KeyPub = row["keyPub"].ToString();
+                        KeyPriv = row["keyPriv"].ToString();
+                        break;
+
+                    case "SIIGO":
+                        UrlSiigo = row["url"].ToString();
+                        UserName = row["username"].ToString();
+                        AccessKey = row["accessKey"].ToString();
+                        PartnerId = row["partnerId"].ToString();
+
+                        IdDocumentType = Convert.ToInt32(row["idDocumentTypeSiigo"].ToString());
+                        IdSellerUser = Convert.ToInt32(row["idSellerUser"].ToString());
+                        IdPayment = Convert.ToInt32(row["idPayment"].ToString());
+                        IdCostCenter = Convert.ToInt32(row["idCostCenterSiigo"].ToString());
+                        break;
+                }
+            }
         }
 
         private void ValidarPermisos(string strPagina)
@@ -230,8 +247,6 @@ namespace fpWebApp
                 DateTime fechaProximoCobro = Convert.ToDateTime(row["FechaProximoCobro"]);
 
                 int mesesAtraso = ((DateTime.Now.Year - fechaProximoCobro.Year) * 12) + DateTime.Now.Month - fechaProximoCobro.Month;
-
-                if (DateTime.Now.Day >= fechaProximoCobro.Day) mesesAtraso++;
 
                 if (mesesAtraso < 0) mesesAtraso = 0;
 
@@ -339,8 +354,11 @@ namespace fpWebApp
                 string codSiigoPlan = ((HiddenField)item.FindControl("hfCodSiigoPlan")).Value;
                 string nombrePlan = ((HiddenField)item.FindControl("hfNombrePlan")).Value;
                 string fuentePago = ((HiddenField)item.FindControl("hfFuentePago")).Value;
+                int idAfiliado = Convert.ToInt32(((HiddenField)item.FindControl("hfIdAfiliado")).Value);
                 string documentoAfiliado = ((HiddenField)item.FindControl("hfDocumentoAfiliado")).Value;
                 string correo = ((HiddenField)item.FindControl("hfEmail")).Value;
+
+                GestionarIntegracion(idVendedor);
                 
                 // Validaciones básicas
                 if (string.IsNullOrEmpty(fuentePago))
@@ -348,12 +366,6 @@ namespace fpWebApp
                     MostrarAlerta("Error", "Este afiliado no tiene una fuente de pago registrada.", "error");
                     return;
                 }
-
-                clasesglobales cg = new clasesglobales();
-
-                DataTable dtSede = cg.ConsultarSedePorId(idSede);
-                int idCostCenter = dtSede != null && dtSede.Rows.Count > 0 ? Convert.ToInt32(dtSede.Rows[0]["idCostCenterSiigo"].ToString()) : 0;
-                dtSede.Dispose();
 
                 int monto = valorACobrar * 100;
                 string moneda = "COP";
@@ -371,6 +383,8 @@ namespace fpWebApp
                     ? $"Pago correspondiente a {mesesACobrar} meses ({periodoCobrar}) del plan {nombrePlan}."
                     : $"Pago correspondiente a 1 mes ({periodoCobrar}) del plan {nombrePlan}.";
 
+                clasesglobales cg = new clasesglobales();
+
                 bool pagoExitoso = await CrearTransaccionRecurrenteAsync(
                     monto,
                     moneda,
@@ -386,6 +400,7 @@ namespace fpWebApp
                 {
                     RegistrarPago(
                         idAfiliadoPlan,
+                        idAfiliado,
                         documentoAfiliado,
                         codSiigoPlan,
                         nombrePlan,
@@ -396,7 +411,7 @@ namespace fpWebApp
                         idVendedor,
                         fuentePago, 
                         idSede,
-                        idCostCenter
+                        IdCostCenter
                     );
 
                     cg.InsertarLog(Session["idusuario"].ToString(), "PagoPlanAfiliado", "Agrega", "El usuario agregó pago.", "", "");
@@ -441,7 +456,7 @@ namespace fpWebApp
             }
         }
 
-        private async void RegistrarPago(int idAfiliadoPlan, string documentoAfiliado, string codSiigoPlan, string nombrePlan, string observaciones, int valor, int mesesCobrados, string referencia, int idVendedor, string idFuentePago, int idSede, int idCostCenter)
+        private async void RegistrarPago(int idAfiliadoPlan, int idAfiliado, string documentoAfiliado, string codSiigoPlan, string nombrePlan, string observaciones, int valor, int mesesCobrados, string referencia, int idVendedor, string idFuentePago, int idSede, int idCostCenter)
         {
             try
             {
@@ -456,6 +471,7 @@ namespace fpWebApp
                     idVendedor, 
                     "Aprobado",
                     null,
+                    IdCanalVenta,
                     null,
                     idFuentePago,
                     DataIdTransaccion,
@@ -466,7 +482,7 @@ namespace fpWebApp
 
                 cg.ActualizarMesesPagadosEnPagoPlanAfiliado(idPago, mesesCobrados);
 
-                cg.ActualizarFechaProximoCobro(idAfiliadoPlan, mesesCobrados);
+                GestionarAfiliadoPlan(idAfiliadoPlan, idAfiliado, mesesCobrados);
 
                 try
                 {
@@ -511,9 +527,11 @@ namespace fpWebApp
                     // COMENTADO HASTA NUEVO AVISO
 
 
-                    // PRODUCCIÓN
-                    // TODO: NO ELIMINAR ESTO, SE USA EN LA CREACIÓN DE LA FACTURA
-                    // ESTÁ COMENTADO PARA PRUEBAS LOCALES
+                    // PRUEBAS
+                    //codSiigoPlan = "COD2433";
+                    //nombrePlan = "Pago de suscripción";
+                    //valor = 1;
+
                     string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
                         documentoAfiliado,
                         codSiigoPlan,
@@ -527,26 +545,6 @@ namespace fpWebApp
                         IdPayment
                     );
 
-
-                    // PRUEBAS
-                    //if (idIntegracionSiigo == 3) idCostCenter = 621;
-
-                    //codSiigoPlan = "COD2433";
-                    //nombrePlan = "Pago de suscripción";
-                    //int precioPlan = 10000;
-                    //string idSiigoFactura = await siigoClient.RegisterInvoiceAsync(
-                    //    documentoAfiliado,
-                    //    codSiigoPlan,
-                    //    nombrePlan,
-                    //    precioPlan,
-                    //    observaciones,
-                    //    IdSellerUser,
-                    //    IdDocumentType,
-                    //    fechaActual,
-                    //    idCostCenter,
-                    //    IdPayment
-                    //);
-
                     // Actualizar pago con id de factura
                     cg.ActualizarIdSiigoFacturaDePagoPlanAfiliado(idPago, idSiigoFactura);
                 }
@@ -559,6 +557,28 @@ namespace fpWebApp
             {
                 MostrarAlerta("Error inesperado", "No fue posible realizar el cobro. Revisa los logs para más detalles.", "error");
                 System.Diagnostics.Debug.WriteLine($"[btnCobrar_Click] Error: {ex}");
+            }
+        }
+
+        private void GestionarAfiliadoPlan(int idAfiliadoPlan, int idAfiliado, int mesesCobrados)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dtAfiPlan = cg.ConsultarAfiliadoPlanPorId(idAfiliadoPlan);
+
+            if (dtAfiPlan.Rows.Count == 0) return;
+
+            int mesesPlan = dtAfiPlan.Rows.Count > 0 ? Convert.ToInt32(dtAfiPlan.Rows[0]["Meses"]) : 0;
+
+            int totalMesesPagados = cg.ConsultarCantidadMesesPagadosPorIdAfiliadoPlan(idAfiliadoPlan);
+
+            if (totalMesesPagados >= mesesPlan)
+            {
+                cg.ActualizarEstadoAfiliadoPlan("Finalizado", idAfiliado, idAfiliadoPlan);
+            }
+            else
+            {
+                cg.ActualizarFechaProximoCobro(idAfiliadoPlan, mesesCobrados);
             }
         }
 
