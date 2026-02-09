@@ -16,57 +16,6 @@ namespace fpWebApp
     public partial class reporteventasasesor : System.Web.UI.Page
     {
         protected Dictionary<string, string> FacturasUrls;
-        //protected async Task Page_Load(object sender, EventArgs e)
-        //{
-        //    CultureInfo culture = new CultureInfo("es-CO");
-        //    Thread.CurrentThread.CurrentCulture = culture;
-        //    Thread.CurrentThread.CurrentUICulture = culture;
-
-        //    if (!IsPostBack)
-        //    {
-        //        if (Session["idUsuario"] != null)
-        //        {
-        //            ValidarPermisos("Mis ventas");
-        //            if (ViewState["SinPermiso"].ToString() == "1")
-        //            {
-        //                //No tiene acceso a esta página
-        //                divMensaje.Visible = true;
-        //                paginasperfil.Visible = true;
-        //                divContenido.Visible = false;
-        //            }
-        //            else
-        //            {
-        //                //Si tiene acceso a esta página
-        //                divBotonesLista.Visible = false;
-        //                //btnAgregar.Visible = false;
-        //                if (ViewState["Consulta"].ToString() == "1")
-        //                {
-        //                    divBotonesLista.Visible = true;
-        //                    //CargarPlanes();
-        //                    //lbExportarExcel.Visible = false;
-        //                }
-        //                if (ViewState["Exportar"].ToString() == "1")
-        //                {
-        //                    divBotonesLista.Visible = true;
-        //                    //lbExportarExcel.Visible = true;
-        //                }
-        //               // await listaVentas();
-        //                if (ViewState["CrearModificar"].ToString() == "1")
-        //                {
-        //                    txbFechaIni.Text = DateTime.Today.ToString("yyyy-MM-dd");
-        //                    txbFechaFin.Text = DateTime.Today.ToString("yyyy-MM-dd");
-        //                }
-        //                RegisterAsyncTask(new PageAsyncTask(CargarPaginaAsync));
-        //            }
-
-        //        }
-        //        else
-        //        {
-        //            Response.Redirect("logout.aspx");
-        //        }
-        //    }
-        //}
-
         protected void Page_Load(object sender, EventArgs e)
         {
             CultureInfo culture = new CultureInfo("es-CO");
@@ -137,7 +86,7 @@ namespace fpWebApp
             {
                 int filtroMedioPago = Convert.ToInt32(ddlTipoPago.SelectedValue);
 
-                //DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago, txbFechaIni.Value, txbFechaFin.Value, out decimal valorTotal);
+                // DataTable dt = cg.ConsultarPagosPorTipoPorAsesor(Convert.ToInt32(Session["IdUsuario"].ToString()), filtroMedioPago, txbFechaIni.Text, txbFechaFin.Text, out decimal valorTotal);
 
                 string strQuery = @"
                     SELECT  
@@ -217,7 +166,7 @@ namespace fpWebApp
                 {
                     ventasAyer = filasAyer.Sum(f => Convert.ToDecimal(f["Valor"]));
                 }
-              
+
                 // Ventas del mes
                 decimal ventasMes = filasMes.Length > 0 ? filasMes.Sum(r => r.Field<int>("Valor")) : 0;
 
@@ -336,9 +285,12 @@ namespace fpWebApp
                 rpDetallesPago.DataSource = dt;
                 rpDetallesPago.DataBind();
 
-                HtmlAnchor lnkVerFactura =(HtmlAnchor)e.Item.FindControl("lnkVerFactura");
+                HtmlAnchor lnkVerFactura = (HtmlAnchor)e.Item.FindControl("lnkVerFactura");
 
-                string idFactura = ((DataRowView)e.Item.DataItem).Row["idSiigoFactura"].ToString();
+                //string idFactura = ((DataRowView)e.Item.DataItem).Row["idSiigoFactura"].ToString();
+                string idFactura = row["idSiigoFactura"] == DBNull.Value
+                ? string.Empty
+                : row["idSiigoFactura"].ToString().Trim();
 
                 string debug = $"ID: [{idFactura}] - Existe: {FacturasUrls.ContainsKey(idFactura)}";
                 System.Diagnostics.Debug.WriteLine(debug);
@@ -349,10 +301,18 @@ namespace fpWebApp
                     $"ID: [{idFactura}] | URL: [{url}] | IsNull: {url == null}"
                 );
 
-                if (FacturasUrls.ContainsKey(idFactura) &&
-                    !string.IsNullOrEmpty(FacturasUrls[idFactura]))
+                foreach (var f in FacturasUrls)
                 {
-                    lnkVerFactura.HRef = FacturasUrls[idFactura];
+                    System.Diagnostics.Debug.WriteLine(
+                        $"DICT → Key:[{f.Key}] | Value:[{f.Value}] | IsNull:{f.Value == null}"
+                    );
+                }
+
+                if (!string.IsNullOrEmpty(idFactura) &&
+                 FacturasUrls.TryGetValue(idFactura, out url) &&
+                 !string.IsNullOrEmpty(url))
+                {
+                    lnkVerFactura.HRef = url;
                     lnkVerFactura.Target = "_blank";
                     lnkVerFactura.Visible = true;
                 }
@@ -393,23 +353,31 @@ namespace fpWebApp
 
         private SiigoClient CrearClienteSiigo()
         {
+            clasesglobales cg = new clasesglobales();
+            string ambiente = cg.GetAppSetting("AmbienteSiigo");
+            string idIntegracionSiigoStr = cg.GetAppSetting("idIntegracionSiigo");
+            int idIntegracionSiigo = Convert.ToInt32(idIntegracionSiigoStr);
+
             //Pruebas
-            return new SiigoClient(
+            if (idIntegracionSiigo == 3)
+            {
+                return new SiigoClient(
                 new HttpClient(),
                 "https://api.siigo.com/",
                 "sandbox@siigoapi.com",
                 "YmEzYTcyOGYtN2JhZi00OTIzLWE5ZjktYTgxNTVhNWUxZDM2Ojc0ODllKUZrSFM=",
                 "SandboxSiigoApi"
             );
-
-            //Producción
-            //return new SiigoClient(
-            //       new HttpClient(),
-            //     "https://api.siigo.com/",
-            //     "contabilidad@fitnesspeoplecmd.com",
-            //     "NWFjNTQzN2QtNjkwZi00MTJiLWFiYTktZmU1ZTBkMmZkZGY4OnJ7WTU0LnVlY08=",
-            //     "ProductionSiigoApi"
-            //);
+            }
+            else
+                //Producción
+                return new SiigoClient(
+                       new HttpClient(),
+                     "https://api.siigo.com/",
+                     "contabilidad@fitnesspeoplecmd.com",
+                     "NWFjNTQzN2QtNjkwZi00MTJiLWFiYTktZmU1ZTBkMmZkZGY4OnJ7WTU0LnVlY08=",
+                     "ProductionSiigoApi"
+                );
         }
     }
 }
