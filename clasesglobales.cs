@@ -13125,6 +13125,36 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public DataTable ConsultarAfiliadoPlanPorId(int idAfiliadoPlan)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_AFILIADO_PLAN_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
 
         public DataTable ConsultarAfiliadoPlanPorDocumento(string nroDocumento)
         {
@@ -13155,6 +13185,38 @@ namespace fpWebApp
                 dt.Rows.Add(ex.Message);
             }
             return dt;
+        }
+
+        public string ActualizarEstadoAfiliadoPlan(string estado, int idAfiliado, int idAfiliadoPlan)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_AFILIADO_PLAN", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_estado", estado);
+                        cmd.Parameters.AddWithValue("@p_id_afiliado", idAfiliado);
+                        cmd.Parameters.AddWithValue("@p_id_afiliado_plan", idAfiliadoPlan);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
         }
 
         public DataTable ConsultarPreguntasPARQporIdAfiliado(int idAfiliado)
@@ -15634,7 +15696,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public int InsertarPagoPlanAfiliadoWebYDevolverId(int idAfiliadoPlan, int valor, int idMedioPago, string idReferencia, string banco, int idUsuario, string estado, string idSiigoFactura, string idDataToken, string idDataFuente, string idDataTransaccion, string codDatafono, string idTransaccionRRN, string numFacturaDatafono)
+        public int InsertarPagoPlanAfiliadoWebYDevolverId(int idAfiliadoPlan, int valor, int idMedioPago, string idReferencia, string banco, int idUsuario, string estado, string idSiigoFactura, int idCanalVenta, string idDataToken, string idDataFuente, string idDataTransaccion, string codDatafono, string idTransaccionRRN, string numFacturaDatafono)
         {
             int idPago = 0;
 
@@ -15655,6 +15717,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
                         cmd.Parameters.AddWithValue("@p_estado", estado);
                         cmd.Parameters.AddWithValue("@p_id_siigo_factura", idSiigoFactura);
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
                         cmd.Parameters.AddWithValue("@p_id_data_token", idDataToken);
                         cmd.Parameters.AddWithValue("@p_id_data_fuente", idDataFuente);
                         cmd.Parameters.AddWithValue("@p_id_data_transaction", idDataTransaccion);

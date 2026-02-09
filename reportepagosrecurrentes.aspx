@@ -242,6 +242,7 @@
 
                                                                     <!-- Hidden fields con información adicional -->
                                                                     <asp:HiddenField ID="hfIdAfiliadoPlan" runat="server" Value='<%# Eval("idAfiliadoPlan") %>' />
+                                                                    <asp:HiddenField ID="hfIdAfiliado" runat="server" Value='<%# Eval("idAfiliado") %>' />
                                                                     <asp:HiddenField ID="hfDocumentoAfiliado" runat="server" Value='<%# Eval("DocumentoAfiliado") %>' />
                                                                     <asp:HiddenField ID="hfEmail" runat="server" Value='<%# Eval("EmailAfiliado") %>' />
                                                                     <asp:HiddenField ID="hfIdVendedor" runat="server" Value='<%# Eval("idUsuario") %>' /> 
