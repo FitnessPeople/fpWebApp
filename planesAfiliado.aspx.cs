@@ -2,6 +2,7 @@
 using fpWebApp.Services;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using NPOI.POIFS.Crypt.Agile;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -545,30 +546,81 @@ namespace fpWebApp
 
         private async Task<(bool ok, string idSiigoFactura)> ProcesarPagoExitosoAsync(int idAfiliadoPlan, string codSiigoPlan, string nombrePlan, string precioPlan)
         {
+            clasesglobales cg = new clasesglobales();
             string idAfiliado = Session["IdAfiliado"].ToString();
             string urlRedirect = $"planesAfiliado?id={idAfiliado}";
+            int idCanalVenta = 0;
 
             try
             {
                 string observaciones = $"Pago correspondiente del plan {nombrePlan} por valor de ${precioPlan}.";
-
-                string fechaActual = DateTime.Now.ToString("yyyy-MM-dd");
-
-                clasesglobales cg = new clasesglobales();
+                string fechaActual = DateTime.Now.ToString("yyyy-MM-dd");                
 
                 string ambiente = cg.GetAppSetting("AmbienteSiigo");
                 string idIntegracionSiigoStr = cg.GetAppSetting("idIntegracionSiigo");
                 int idIntegracionSiigo = Convert.ToInt32(idIntegracionSiigoStr);
 
-                DataTable dtIntegracion = cg.ConsultarIntegracionPorId(idIntegracionSiigo);
-                string url = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["url"].ToString() : null;
-                string username = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["username"].ToString() : null;
-                string accessKey = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["accessKey"].ToString() : null;
-                string partnerId = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["partnerId"].ToString() : null;
+                if (idIntegracionSiigo==3)                
+                    idCanalVenta = 15;
+                else
+                    idCanalVenta = Convert.ToInt32(Session["idCanalVenta"]);
 
-                int idDocumentType = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idDocumentType"].ToString()) : 0;
-                int idSellerUser = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idSellerUser"].ToString()) : 0;
-                int idPayment = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idPayment"].ToString()) : 0;
+
+                //APLICA A WOMPI//
+                string UrlWompi = string.Empty;
+                string IntegritySecret = string.Empty;
+                string KeyPub = string.Empty;
+                string KeyPriv = string.Empty;
+                ///
+
+                string url = string.Empty;
+                string userName = string.Empty;
+                string accessKey = string.Empty;
+                string partnerId = string.Empty;
+
+                int idDocumentType = 0;
+                int IdSellerUser = 0;
+                int IdPayment = 0;
+                int IdCostCenter = 0;
+
+                // DataTable dtIntegracion = cg.ConsultarIntegracionPorId(idIntegracionSiigo);
+
+                DataTable dtIntegracion = cg.ConsultarIntegracionEmpresaPorIdCanalVenta(idCanalVenta);
+
+                foreach (DataRow row in dtIntegracion.Rows)
+                {
+                    string codigo = row["codigo"].ToString();
+
+                    switch (codigo)
+                    {
+                        case "WOMPI":
+                            UrlWompi = row["url"].ToString();
+                            IntegritySecret = row["integrity_secret"].ToString();
+                            KeyPub = row["keyPub"].ToString();
+                            KeyPriv = row["keyPriv"].ToString();
+                            break;
+
+                        case "SIIGO":
+                            url = row["url"].ToString();
+                            userName = row["username"].ToString();
+                            accessKey = row["accessKey"].ToString();
+                            partnerId = row["partnerId"].ToString();
+
+                            idDocumentType = Convert.ToInt32(row["idDocumentTypeSiigo"].ToString());
+                            IdSellerUser = Convert.ToInt32(row["idSellerUser"].ToString());
+                            IdPayment = Convert.ToInt32(row["idPayment"].ToString());
+                            IdCostCenter = Convert.ToInt32(row["idCostCenterSiigo"].ToString());
+                            break;
+                    }
+                }
+                //url = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["url"].ToString() : null;
+                //string username = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["username"].ToString() : null;
+                //string accessKey = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["accessKey"].ToString() : null;
+                //string partnerId = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? dtIntegracion.Rows[0]["partnerId"].ToString() : null;
+
+                //int idDocumentType = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idDocumentType"].ToString()) : 0;
+                //int idSellerUser = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idSellerUser"].ToString()) : 0;
+                //int idPayment = dtIntegracion != null && dtIntegracion.Rows.Count > 0 ? Convert.ToInt32(dtIntegracion.Rows[0]["idPayment"].ToString()) : 0;
                 dtIntegracion.Dispose();
 
 
@@ -576,7 +628,7 @@ namespace fpWebApp
                 var siigoClient = new SiigoClient(
                     new HttpClient(),
                     url,
-                    username,
+                    userName,
                     accessKey,
                     partnerId
                 );
@@ -609,9 +661,9 @@ namespace fpWebApp
 
                 await siigoClient.ManageCustomerAsync(idTipoDocSiigo, nroDoc, strNombre, strApellido, direccion, codEstado, codCiudad, strCelular, strEmail);
 
-                DataTable dtSedeCostCenter = cg.ConsultarSedePorId(idSede);
-                int idCostCenter = dtSedeCostCenter != null && dtSedeCostCenter.Rows.Count > 0 ? Convert.ToInt32(dtSedeCostCenter.Rows[0]["idCostCenterSiigo"].ToString()) : 0;
-                dtSedeCostCenter.Dispose();
+                //DataTable dtSedeCostCenter = cg.ConsultarSedePorId(idSede);
+                //int idCostCenter = dtSedeCostCenter != null && dtSedeCostCenter.Rows.Count > 0 ? Convert.ToInt32(dtSedeCostCenter.Rows[0]["idCostCenterSiigo"].ToString()) : 0;
+                //dtSedeCostCenter.Dispose();
 
                 string _codSiigoPlan;
                 string _nombrePlan;
@@ -620,7 +672,6 @@ namespace fpWebApp
                 //  PRUEBAS
                 if (idIntegracionSiigo == 3)
                 {
-                    idCostCenter = 621;
                     _codSiigoPlan = "COD2433";
                     _nombrePlan = "Pago de suscripción";
                     _precioPlan = 10000;
@@ -642,11 +693,11 @@ namespace fpWebApp
                     _nombrePlan,
                     _precioPlan,
                     observaciones,
-                    idSellerUser,
+                    IdSellerUser,
                     idDocumentType,
                     fechaActual,
-                    idCostCenter,
-                    idPayment
+                    IdCostCenter,
+                    IdPayment
                 );
 
                 //Session["idAfiliadoPlan"] = idAfiliadoPlan;
@@ -662,6 +713,45 @@ namespace fpWebApp
                 return (false, null);
             }
         }
+
+
+        //private void GestionarIntegracion()
+        //{
+        //    clasesglobales cg = new clasesglobales();
+
+        //    DataTable dtVendedor = cg.ConsultarUsuarioEmpleadoPorId(IdVendedor);
+        //    IdCanalVenta = dtVendedor.Rows.Count > 0 ? Convert.ToInt32(dtVendedor.Rows[0]["idCanalVenta"]) : 0;
+        //    dtVendedor.Dispose();
+
+        //    DataTable dtIntegracion = cg.ConsultarIntegracionEmpresaPorIdCanalVenta(IdCanalVenta);
+
+        //    foreach (DataRow row in dtIntegracion.Rows)
+        //    {
+        //        string codigo = row["codigo"].ToString();
+
+        //        switch (codigo)
+        //        {
+        //            case "WOMPI":
+        //                UrlWompi = row["url"].ToString();
+        //                IntegritySecret = row["integrity_secret"].ToString();
+        //                KeyPub = row["keyPub"].ToString();
+        //                KeyPriv = row["keyPriv"].ToString();
+        //                break;
+
+        //            case "SIIGO":
+        //                UrlSiigo = row["url"].ToString();
+        //                UserName = row["username"].ToString();
+        //                AccessKey = row["accessKey"].ToString();
+        //                PartnerId = row["partnerId"].ToString();
+
+        //                IdDocumentType = Convert.ToInt32(row["idDocumentTypeSiigo"].ToString());
+        //                IdSellerUser = Convert.ToInt32(row["idSellerUser"].ToString());
+        //                IdPayment = Convert.ToInt32(row["idPayment"].ToString());
+        //                IdCostCenter = Convert.ToInt32(row["idCostCenterSiigo"].ToString());
+        //                break;
+        //        }
+        //    }
+        //}
 
         private void LimpiarPago()
         {

@@ -11,17 +11,8 @@ namespace fpWebApp
 {
 
 
-    public partial class agenda
+    public partial class consultorios
     {
-
-        /// <summary>
-        /// Control btnEliminar.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton btnEliminar;
 
         /// <summary>
         /// Control navbar.
@@ -60,13 +51,13 @@ namespace fpWebApp
         protected global::fpWebApp.controles.paginasperfil paginasperfil;
 
         /// <summary>
-        /// Control form.
+        /// Control form1.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
         /// Control divContenido.
@@ -78,94 +69,31 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divContenido;
 
         /// <summary>
-        /// Control divCrear.
+        /// Control ltTitulo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divCrear;
+        protected global::System.Web.UI.WebControls.Literal ltTitulo;
 
         /// <summary>
-        /// Control ddlEspecialistas.
+        /// Control ddlSedes.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlEspecialistas;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSedes;
 
         /// <summary>
-        /// Control ddlConsultorios.
+        /// Control txbConsultorio.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlConsultorios;
-
-        /// <summary>
-        /// Control txbFechaIni.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaIni;
-
-        /// <summary>
-        /// Control txbFechaFin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbFechaFin;
-
-        /// <summary>
-        /// Control txbHoraIni.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbHoraIni;
-
-        /// <summary>
-        /// Control txbHoraFin.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txbHoraFin;
-
-        /// <summary>
-        /// Control ddlDuracion.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDuracion;
-
-        /// <summary>
-        /// Control cbDiasRepite.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList cbDiasRepite;
-
-        /// <summary>
-        /// Control ltMensaje.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltMensaje;
+        protected global::System.Web.UI.WebControls.TextBox txbConsultorio;
 
         /// <summary>
         /// Control btnAgregar.
@@ -177,31 +105,31 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Button btnAgregar;
 
         /// <summary>
-        /// Control ltConsultorio.
+        /// Control divBotonesLista.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltConsultorio;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBotonesLista;
 
         /// <summary>
-        /// Control ddlConsultoriosAgenda.
+        /// Control lbExportarExcel.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlConsultoriosAgenda;
+        protected global::System.Web.UI.WebControls.LinkButton lbExportarExcel;
 
         /// <summary>
-        /// Control footer.
+        /// Control rpConsultorios.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::fpWebApp.controles.footer footer;
+        protected global::System.Web.UI.WebControls.Repeater rpConsultorios;
 
         /// <summary>
         /// Control rightsidebar.

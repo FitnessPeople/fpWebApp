@@ -79,8 +79,8 @@ namespace fpWebApp.controles
             // 5️⃣ Presupuesto total
             lblPresupuestoTotal.Text = metaMensual.ToString("C0");
 
-            // 6️⃣ Variación vs mes anterior (placeholder)
-            lblVariacionMes.Text = "0.00";
+            // 6️⃣ Variación vs mes anterior (placeholder)         
+            lblVariacionMes.Text = Convert.ToDecimal(row["VariacionMesAnterior"]).ToString("N2");
 
             /* =========================================================
                CONCENTRACIÓN DE METAS (SP INDEPENDIENTE)

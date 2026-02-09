@@ -151,7 +151,10 @@ namespace fpWebApp
                     break; 
                 case 9:
                     dt = cg.ConsultarAfiliadosActivosInactivosPorFecha(fechaIni, fechaFin);
-                    break; 
+                    break;
+                case 18:
+                    dt = cg.ConsultarEmpleadosActivosInactivos();
+                    break;
 
 
             }
@@ -254,6 +257,11 @@ namespace fpWebApp
                         tituloReporte = $"Reporte Afiliados activos/inactivos desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
                         nombreArchivo = $"Reporte_Afiliados_Activos/Inactivos{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
                         break;
+                    case 18:
+                        dt = cg.ConsultarEmpleadosActivosInactivos();
+                        tituloReporte = $"Reporte empleados activos/inactivos";
+                        nombreArchivo = $"Reporte_empleados_activos/Inactivos";
+                        break;
 
                     default:
                         MostrarAlerta("Info", "Este reporte aún no tiene exportación PDF.", "info");
@@ -335,6 +343,11 @@ namespace fpWebApp
                         dt = cg.ConsultarAfiliadosActivosInactivosPorFecha(fechaIni, fechaFin);
                         tituloReporte = $"Reporte Afiliados activos/inactivos desde {fechaIni:yyyy/MM/dd} hasta {fechaFin:yyyy/MM/dd}";
                         nombreArchivo = $"Reporte_Afiliados_Activos/Inactivos{DateTime.Now:yyyyMMdd_HHmmss}_{usuario}";
+                        break;
+                    case 18:
+                        dt = cg.ConsultarEmpleadosActivosInactivos();
+                        tituloReporte = $"Reporte empleados activos/inactivos";
+                        nombreArchivo = $"Reporte_empleados_Activos/Inactivos";
                         break;
 
                     default:

@@ -219,6 +219,7 @@
                                                         <asp:ListItem Text="Negociaciones creadas / eliminadas" Value="16"></asp:ListItem>
                                                         <asp:ListItem Text="Empresas con mayor facturación" Value="17"></asp:ListItem>
                                                         <asp:ListItem Text="Estado de contratos empresariales" Value="18"></asp:ListItem>
+                                                        <asp:ListItem Text="Empleados activos / inactivos" Value="18"></asp:ListItem>
                                                         <asp:ListItem Text="Usuarios activos / inactivos" Value="19"></asp:ListItem>
                                                         <asp:ListItem Text="Roles y permisos" Value="20"></asp:ListItem>
                                                     </asp:DropDownList>

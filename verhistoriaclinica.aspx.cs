@@ -168,6 +168,9 @@ namespace fpWebApp
             ddlObjetivo.SelectedIndex = Convert.ToInt32(ddlObjetivo.Items.IndexOf(ddlObjetivo.Items.FindByValue(dt.Rows[0]["idObjetivoIngreso"].ToString())));
             txbDescripcionObjetivo.Text = dt.Rows[0]["DescripcionObjetivoIngreso"].ToString();
 
+            txbRemision.Text = dt.Rows[0]["Remision"].ToString();
+            txbMotivoConsulta.Text = dt.Rows[0]["MotivoConsulta"].ToString();
+
             //Antecedentes
             txbAnteFamiliares.Text = dt.Rows[0]["AnteFamiliar"].ToString();
             txbAntePatologico.Text = dt.Rows[0]["AntePatologico"].ToString();
@@ -221,7 +224,9 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.InsertarHistoriaClinica(Convert.ToInt32(Request.QueryString["idAfiliado"].ToString()),
+                string mensaje = cg.InsertarHistoriaClinica(
+                    Convert.ToInt32(Session["idUsuario"].ToString()),
+                    Convert.ToInt32(Request.QueryString["idAfiliado"].ToString()),
                     txbMedicinaPrepagada.Text.ToString(),
                     Convert.ToInt32(ddlObjetivo.SelectedItem.Value.ToString()),
                     txbDescripcionObjetivo.Text.ToString(),

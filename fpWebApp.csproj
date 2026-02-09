@@ -284,6 +284,7 @@
     <Content Include="confirmarcodigo.aspx" />
     <Content Include="congelaciones.aspx" />
     <Content Include="congelacionesAfil.aspx" />
+    <Content Include="consultorios.aspx" />
     <Content Include="contratoafiliado.aspx" />
     <Content Include="controles\footer.ascx" />
     <Content Include="controles\grafico01.ascx" />
@@ -1326,6 +1327,13 @@
     </Compile>
     <Compile Include="congelacionesAfil.aspx.designer.cs">
       <DependentUpon>congelacionesAfil.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="consultorios.aspx.cs">
+      <DependentUpon>consultorios.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="consultorios.aspx.designer.cs">
+      <DependentUpon>consultorios.aspx</DependentUpon>
     </Compile>
     <Compile Include="contratoafiliado.aspx.cs">
       <DependentUpon>contratoafiliado.aspx</DependentUpon>

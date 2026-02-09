@@ -27,7 +27,7 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        CargarSedes();
+                        CargarConsultorios();
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
@@ -37,7 +37,7 @@ namespace fpWebApp
                         txbFechaIni.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         txbFechaFin.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         divCrear.Visible = true;
-                        CargarSedes();
+                        CargarConsultorios();
                         CargarEspecialistas();
                     }
                     if (ViewState["Borrar"].ToString() == "1")
@@ -98,10 +98,10 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarAgenda()
+        private void CargarAgenda(string idConsultorio)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarAgenda(int.Parse(ddlSedes.SelectedItem.Value.ToString()));
+            DataTable dt = cg.ConsultaCargarAgenda(int.Parse(idConsultorio));
 
             _strEventos = "events: [\r\n";
 
@@ -197,23 +197,23 @@ namespace fpWebApp
             return eventos;
         }
 
-        private void CargarSedes()
+        private void CargarConsultorios()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarSedes("Gimnasio");
+            DataTable dt = cg.ConsultaConsultorios();
 
-            ddlSedes.Items.Clear();
-            ddlSedes.DataSource = dt;
-            ddlSedes.DataBind();
+            ddlConsultorios.Items.Clear();
+            ddlConsultorios.DataSource = dt;
+            ddlConsultorios.DataBind();
 
-            ddlSedesCita.Items.Clear();
-            ddlSedesCita.DataSource = dt;
-            ddlSedesCita.DataBind();
+            ddlConsultoriosAgenda.Items.Clear();
+            ddlConsultoriosAgenda.DataSource = dt;
+            ddlConsultoriosAgenda.DataBind();
 
             dt.Dispose();
 
-            ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
-            CargarAgenda();
+            ltConsultorio.Text = ddlConsultoriosAgenda.SelectedItem.Text.ToString();
+            CargarAgenda(ddlConsultoriosAgenda.SelectedItem.Value.ToString());
         }
 
         private void CargarEspecialistas()
@@ -225,15 +225,6 @@ namespace fpWebApp
             ddlEspecialistas.DataBind();
 
             dt.Dispose();
-        }
-
-        protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ddlSedes.SelectedItem.Value.ToString() != "")
-            {
-                ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
-                CargarAgenda();
-            }
         }
 
         /// <summary>
@@ -280,7 +271,7 @@ namespace fpWebApp
 
                             // Consulta si se cruza la cita en la sede con la fecha y hora de otra disponible
                             string strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
-                                "WHERE (idSede = " + ddlSedesCita.SelectedItem.Value.ToString() + " " +
+                                "WHERE (idConsultorio = " + ddlConsultorios.SelectedItem.Value.ToString() + " " +
                                 "OR DocumentoEmpleado = '" + ddlEspecialistas.SelectedItem.Value.ToString() + "') " +
                                 "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal) " +
                                 "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
@@ -296,7 +287,7 @@ namespace fpWebApp
                                 //    "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaHoraInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaHoraFinal))";
                                 strQuery = "SELECT * FROM DisponibilidadEspecialistas " +
                                     "WHERE DocumentoEmpleado = '" + ddlEspecialistas.SelectedItem.Value.ToString() + "' " +
-                                    "AND idSede != " + ddlSedes.SelectedItem.Value.ToString() + " " +
+                                    "AND idConsultorio != " + ddlConsultorios.SelectedItem.Value.ToString() + " " +
                                     "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 " +
                                     "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaHoraInicio) ";
                                 DataTable dt1 = cg.TraerDatos(strQuery);
@@ -328,8 +319,8 @@ namespace fpWebApp
                                                     if (Convert.ToInt16(dtFechaIniCita.DayOfWeek) == Convert.ToInt16(item.Value.ToString()))
                                                     {
                                                         strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                                            "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                                            "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
+                                                            "(DocumentoEmpleado, idConsultorio, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
+                                                            "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + ddlConsultorios.SelectedItem.Value.ToString() + ", " +
                                                             "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                             "" + Session["idusuario"].ToString() + ") ";
                                                         
@@ -341,8 +332,8 @@ namespace fpWebApp
                                         else
                                         {
                                             strQuery = "INSERT INTO DisponibilidadEspecialistas " +
-                                                "(DocumentoEmpleado, idSede, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
-                                                "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + ddlSedesCita.SelectedItem.Value.ToString() + ", " +
+                                                "(DocumentoEmpleado, idConsultorio, FechaHoraInicio, FechaHoraFinal, idUsuarioCrea) " +
+                                                "VALUES ('" + ddlEspecialistas.SelectedItem.Value.ToString() + "', " + ddlConsultorios.SelectedItem.Value.ToString() + ", " +
                                                 "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                 "" + Session["idusuario"].ToString() + ") ";
 
@@ -441,6 +432,15 @@ namespace fpWebApp
                 }
             }
             //Response.Redirect("agenda");
+        }
+
+        protected void ddlConsultoriosAgenda_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlConsultoriosAgenda.SelectedItem.Value.ToString() != "")
+            {
+                ltConsultorio.Text = ddlConsultoriosAgenda.SelectedItem.Text.ToString();
+                CargarAgenda(ddlConsultoriosAgenda.SelectedItem.Value.ToString());
+            }
         }
     }
 }
