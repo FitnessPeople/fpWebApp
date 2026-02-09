@@ -139,7 +139,7 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.ActualizarHistoriaNutricionista2(
+                string mensaje = cg.ActualizarHistoriaNutricionistaParteDos(
                     Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
                     txbDesayuno.Text.ToString(),
                     txbNueves.Text.ToString(),

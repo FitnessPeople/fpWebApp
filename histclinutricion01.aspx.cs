@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NPOI.Util;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web.UI;
@@ -28,6 +29,32 @@ namespace fpWebApp
                             {
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+
+                                //Consulta si tiene datos de nutrición asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaAlimentaria"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el nutricionista.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        rblGastritis.SelectedIndex = Convert.ToInt32(rblGastritis.Items.IndexOf(rblGastritis.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["Gastritis"]).ToString())));
+                                        rblColon.SelectedIndex = Convert.ToInt32(rblColon.Items.IndexOf(rblColon.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["Colon"]).ToString())));
+                                        rblEstrenimiento.SelectedIndex = Convert.ToInt32(rblEstrenimiento.Items.IndexOf(rblEstrenimiento.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["Estrenimiento"]).ToString())));
+                                        txbCafeina.Text = dtHistorias.Rows[0]["Cafeina"].ToString();
+                                        txbAlimNoTolerados.Text = dtHistorias.Rows[0]["AlimNoTolerados"].ToString();
+                                        txbComplementos.Text = dtHistorias.Rows[0]["Complementos"].ToString();
+                                        txbNutricionAnterior.Text = dtHistorias.Rows[0]["NutriAnterior"].ToString();
+                                        txbParaclinicos.Text = dtHistorias.Rows[0]["Paraclinicos"].ToString();
+                                        txbApetito.Text = dtHistorias.Rows[0]["Apetito"].ToString();
+                                        txbMasticacion.Text = dtHistorias.Rows[0]["Masticacion"].ToString();
+                                        txbHabitoIntestinal.Text = dtHistorias.Rows[0]["HabitoIntestinal"].ToString();
+                                        txbSintGastrointestinales.Text = dtHistorias.Rows[0]["SintGastrointestinales"].ToString();
+                                        txbAlimPreferidos.Text = dtHistorias.Rows[0]["AlimPreferidos"].ToString();
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;
@@ -139,22 +166,51 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.InsertarHistoriaNutricionista1(
-                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
-                    Convert.ToInt16(rblGastritis.SelectedItem.Value.ToString()),
-                    Convert.ToInt16(rblColon.SelectedItem.Value.ToString()),
-                    Convert.ToInt16(rblEstrenimiento.SelectedItem.Value.ToString()),
-                    txbCafeina.Text.ToString(),
-                    txbAlimNoTolerados.Text.ToString(),
-                    txbComplementos.Text.ToString(),
-                    txbNutricionAnterior.Text.ToString(),
-                    txbParaclinicos.Text.ToString(),
-                    txbApetito.Text.ToString(),
-                    txbMasticacion.Text.ToString(),
-                    txbHabitoIntestinal.Text.ToString(),
-                    txbSintGastrointestinales.Text.ToString(),
-                    txbAlimPreferidos.Text.ToString()
-                    );
+                string mensaje = string.Empty;
+
+                if (btnAgregar.Text == "Guardar y continuar")
+                {
+                    // Insertar
+                    mensaje = cg.InsertarHistoriaNutricionistaParteUno(
+                        Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                        Convert.ToInt16(rblGastritis.SelectedItem.Value.ToString()),
+                        Convert.ToInt16(rblColon.SelectedItem.Value.ToString()),
+                        Convert.ToInt16(rblEstrenimiento.SelectedItem.Value.ToString()),
+                        txbCafeina.Text.ToString(),
+                        txbAlimNoTolerados.Text.ToString(),
+                        txbComplementos.Text.ToString(),
+                        txbNutricionAnterior.Text.ToString(),
+                        txbParaclinicos.Text.ToString(),
+                        txbApetito.Text.ToString(),
+                        txbMasticacion.Text.ToString(),
+                        txbHabitoIntestinal.Text.ToString(),
+                        txbSintGastrointestinales.Text.ToString(),
+                        txbAlimPreferidos.Text.ToString()
+                        );
+                }
+                else
+                {
+                    if (btnAgregar.Text == "Actualizar y continuar")
+                    {
+                        //Actualizar
+                        mensaje = cg.ActualizarHistoriaNutricionistaParteUno(
+                            Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                            Convert.ToInt16(rblGastritis.SelectedItem.Value.ToString()),
+                            Convert.ToInt16(rblColon.SelectedItem.Value.ToString()),
+                            Convert.ToInt16(rblEstrenimiento.SelectedItem.Value.ToString()),
+                            txbCafeina.Text.ToString(),
+                            txbAlimNoTolerados.Text.ToString(),
+                            txbComplementos.Text.ToString(),
+                            txbNutricionAnterior.Text.ToString(),
+                            txbParaclinicos.Text.ToString(),
+                            txbApetito.Text.ToString(),
+                            txbMasticacion.Text.ToString(),
+                            txbHabitoIntestinal.Text.ToString(),
+                            txbSintGastrointestinales.Text.ToString(),
+                            txbAlimPreferidos.Text.ToString()
+                            );
+                    }
+                }
 
                 if (mensaje == "OK")
                 {

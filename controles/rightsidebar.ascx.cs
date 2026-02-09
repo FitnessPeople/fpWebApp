@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
 namespace fpWebApp.controles
 {
@@ -76,6 +78,25 @@ namespace fpWebApp.controles
                           .Select(s => s[_random.Next(s.Length)])
                           .ToArray()
             );
+        }
+
+        protected void rpEnlaces_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                DataRowView row = (DataRowView)e.Item.DataItem;
+                string token = row["token"].ToString();
+
+                clasesglobales cg = new clasesglobales();
+                string urlCorta = cg.AcortarURL(
+                    "https://fitnesspeoplecolombia.com/register?token=" + token
+                );
+
+                Literal lt = (Literal)e.Item.FindControl("ltEnlacePago");
+
+                // Inyectamos HTML puro
+                lt.Text = $"<span class='d-none enlace'>{urlCorta}</span>";
+            }
         }
     }
 }

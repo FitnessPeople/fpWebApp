@@ -41,14 +41,14 @@
                         </ItemTemplate>
                     </asp:Repeater>
 
-                    <asp:Repeater ID="rpEnlaces" runat="server">
+                    <asp:Repeater ID="rpEnlaces" runat="server" OnItemDataBound="rpEnlaces_ItemDataBound">
                         <ItemTemplate>
                             <li style="padding: 1px 20px;">
                                 <h6 class="text-info font-bold m-b-xxs"><%# Eval("NombrePlan") %></h6>
-                                <%# Eval("token") %>
-                                <input type="hidden" id='hdEnlacePago_<%# Eval("token") %>' value='https://fitnesspeoplecolombia.com/register?token=<%# Eval("token") %>'>
-                                <button type="button" class="btn btn-success btn-xs" id="btnPortapaleles"
-                                    onclick='copyToClipboard("hdEnlacePago_<%# Eval("token") %>")' title="Copiar enlace">
+                                <asp:Literal ID="ltEnlacePago" runat="server"></asp:Literal>
+                                <%--<asp:HiddenField ID="hdEnlacePago" runat="server" ClientIDMode="Static" />--%>
+                                <button type="button" class="btn btn-success btn-xs" id="btnPortapaleles" 
+                                    onclick='copyToClipboard(this)' title="Copiar enlace">
                                     <i class="fa fa-copy"></i>
                                 </button>
 
@@ -71,17 +71,9 @@
             </div>
 
             <script>
-                function copyToClipboard(hdEnlacePago) {
-                    //console.log(hdEnlacePago);
-                    // Get the text field
-                    var copyText = document.getElementById(hdEnlacePago);
-
-                    // Select the text field
-                    copyText.select();
-                    //copyText.setSelectionRange(0, 99999); // For mobile devices
-
-                    // Copy the text inside the text field
-                    navigator.clipboard.writeText(copyText.value);
+                function copyToClipboard(btn) {
+                    var url = btn.parentElement.querySelector(".enlace").innerText;
+                    navigator.clipboard.writeText(url);
                 }
             </script>
 

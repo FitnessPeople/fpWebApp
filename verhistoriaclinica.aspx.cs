@@ -168,8 +168,8 @@ namespace fpWebApp
             ddlObjetivo.SelectedIndex = Convert.ToInt32(ddlObjetivo.Items.IndexOf(ddlObjetivo.Items.FindByValue(dt.Rows[0]["idObjetivoIngreso"].ToString())));
             txbDescripcionObjetivo.Text = dt.Rows[0]["DescripcionObjetivoIngreso"].ToString();
 
-            txbRemision.Text = dt.Rows[0]["Remision"].ToString();
-            txbMotivoConsulta.Text = dt.Rows[0]["MotivoConsulta"].ToString();
+            //txbRemision.Text = dt.Rows[0]["Remision"].ToString();
+            //txbMotivoConsulta.Text = dt.Rows[0]["MotivoConsulta"].ToString();
 
             //Antecedentes
             txbAnteFamiliares.Text = dt.Rows[0]["AnteFamiliar"].ToString();

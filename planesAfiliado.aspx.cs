@@ -1062,46 +1062,23 @@ namespace fpWebApp
                 TimeSpan ttl = TimeSpan.FromMinutes(40); // Token válido 10 minutos
                 string token = UrlEncryptor.Encrypt(payload, ttl);
 
+                clasesglobales cg = new clasesglobales();
+
                 if (ViewState["DebitoAutomatico"].ToString() == "1")
                 {
-                    lbEnlaceWompi.Text = AcortarURL($"https://fitnesspeoplecmdcolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + @"&idVendedor=" + Session["idUsuario"].ToString() + @"");
-                    hdEnlaceWompi.Value = AcortarURL($"https://fitnesspeoplecmdcolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + @"&idVendedor=" + Session["idUsuario"].ToString() + @"");
+                    lbEnlaceWompi.Text = cg.AcortarURL($"https://fitnesspeoplecmdcolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + @"&idVendedor=" + Session["idUsuario"].ToString() + @"");
+                    hdEnlaceWompi.Value = cg.AcortarURL($"https://fitnesspeoplecmdcolombia.com/register?idPlan=" + ViewState["idPlan"].ToString() + @"&idVendedor=" + Session["idUsuario"].ToString() + @"");
                     btnPortapaleles.Visible = true;
                 }
                 else
                 {
                     //lbEnlaceWompi.Text = "https://fitnesspeoplecolombia.com/wompiplan?code=" + strDataWompi;
                     //lbEnlaceWompi.Text += AcortarURL("https://fitnesspeoplecmdcolombia.com/wompiplan?code=" + strDataWompi);
-                    lbEnlaceWompi.Text = AcortarURL($"https://fitnesspeoplecmdcolombia.com/wompiplan?data={HttpUtility.UrlEncode(token)}");
+                    lbEnlaceWompi.Text = cg.AcortarURL($"https://fitnesspeoplecmdcolombia.com/wompiplan?data={HttpUtility.UrlEncode(token)}");
                     //hdEnlaceWompi.Value = AcortarURL("https://fitnesspeoplecmdcolombia.com/wompiplan?code=" + strDataWompi);
-                    hdEnlaceWompi.Value = AcortarURL($"https://fitnesspeoplecmdcolombia.com/wompiplan?data={HttpUtility.UrlEncode(token)}");
+                    hdEnlaceWompi.Value = cg.AcortarURL($"https://fitnesspeoplecmdcolombia.com/wompiplan?data={HttpUtility.UrlEncode(token)}");
                     btnPortapaleles.Visible = true;
                 }
-            }
-        }
-
-
-        public static string AcortarURL(string url)
-        {
-            try
-            {
-                if (url.Length <= 30)
-                {
-                    return url;
-                }
-
-                string longUrl = url;
-                string apiUrl = "https://is.gd/create.php?format=simple&url=" + HttpUtility.UrlEncode(longUrl);
-
-                using (WebClient client = new WebClient())
-                {
-                    string shortUrl = client.DownloadString(apiUrl);
-                    return shortUrl;
-                }
-            }
-            catch (Exception ex)
-            {
-                return ex.Message.ToString();
             }
         }
 

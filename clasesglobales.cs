@@ -9565,6 +9565,37 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ConsultarHistoriaClinicaPorId(int idHistoria)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_HISTORIA_CLINICA_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
+
         public DataTable ConsultaConsultorios()
         {
             DataTable dt = new DataTable();
@@ -10171,7 +10202,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string InsertarHistoriaNutricionista1(int idHistoria, int gastritis, int colon, int estrenimiento, 
+        public string InsertarHistoriaNutricionistaParteUno(int idHistoria, int gastritis, int colon, int estrenimiento, 
             string cafeina, string alimNoTolerados, string complementos, string nutriAnterior, string paraclinicos, 
             string apetito, string masticacion, string habitoIntestinal, string sintGastrointestinales, 
             string alimPreferidos)
@@ -10215,7 +10246,51 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarHistoriaNutricionista2(int idHistoria, string desayuno, string nueves, string almuerzo, 
+        public string ActualizarHistoriaNutricionistaParteUno(int idHistoria, int gastritis, int colon, int estrenimiento,
+            string cafeina, string alimNoTolerados, string complementos, string nutriAnterior, string paraclinicos,
+            string apetito, string masticacion, string habitoIntestinal, string sintGastrointestinales,
+            string alimPreferidos)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_NUTRICIONISTA_1", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_gastritis", gastritis);
+                        cmd.Parameters.AddWithValue("@p_colon", colon);
+                        cmd.Parameters.AddWithValue("@p_estrenimiento", estrenimiento);
+                        cmd.Parameters.AddWithValue("@p_cafeina", cafeina);
+                        cmd.Parameters.AddWithValue("@p_alim_no_tolerados", alimNoTolerados);
+                        cmd.Parameters.AddWithValue("@p_complementos", complementos);
+                        cmd.Parameters.AddWithValue("@p_nutri_anterior", nutriAnterior);
+                        cmd.Parameters.AddWithValue("@p_paraclinicos", paraclinicos);
+                        cmd.Parameters.AddWithValue("@p_apetito", apetito);
+                        cmd.Parameters.AddWithValue("@p_masticacion", masticacion);
+                        cmd.Parameters.AddWithValue("@p_habito_intestinal", habitoIntestinal);
+                        cmd.Parameters.AddWithValue("@p_sint_gastrointestinales", sintGastrointestinales);
+                        cmd.Parameters.AddWithValue("@p_alim_preferidos", alimPreferidos);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaNutricionistaParteDos(int idHistoria, string desayuno, string nueves, string almuerzo, 
             string onces, string cena, string merienda, string datosBioquimicos, string medicamentos, string alergias, 
             string proteinas, string carbohidratos, string somatotipo, string horaLevanta, string horaDesayuno, 
             string horaAcuesta)
@@ -10728,6 +10803,30 @@ namespace fpWebApp
         #endregion
 
         #region Otros
+
+        public string AcortarURL(string url)
+        {
+            try
+            {
+                if (url.Length <= 30)
+                {
+                    return url;
+                }
+
+                string longUrl = url;
+                string apiUrl = "https://is.gd/create.php?format=simple&url=" + HttpUtility.UrlEncode(longUrl);
+
+                using (WebClient client = new WebClient())
+                {
+                    string shortUrl = client.DownloadString(apiUrl);
+                    return shortUrl;
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.Message.ToString();
+            }
+        }
 
         public string ObtenerIPReal()
         {

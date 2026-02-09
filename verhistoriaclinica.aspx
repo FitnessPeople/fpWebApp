@@ -691,7 +691,7 @@
                                                         ValidationGroup="agregar" OnClick="btnAgregar_Click" />
                                                     <asp:Button ID="btnContinuar" runat="server"
                                                         CssClass="btn btn-sm btn-success m-t-n-xs m-r-md pull-right"
-                                                        Text="Continuar sin guardar" Visible="false" OnClick="btnContinuar_Click" />
+                                                        Text="Continuar sin guardar" formnovalidate Visible="false" OnClick="btnContinuar_Click" />
                                                 </div>
                                             </div>
                                         </form>
