@@ -509,7 +509,10 @@ namespace fpWebApp.controles
                 var metas = new List<decimal>();
                 var ventas = new List<decimal>();
                 int _valorMetaHoy = 0;
-
+                decimal ventasAcumuladasMes = dt.AsEnumerable()
+                        .Sum(r => r.Field<decimal>("VentaDia"));
+                ltVendidoMes.Text = ventasAcumuladasMes.ToString("C0", new CultureInfo("es-CO"));
+                
                 if (dt.Rows.Count > 0)
                 {
 
@@ -536,7 +539,6 @@ namespace fpWebApp.controles
                                     ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
 
                                 }
-                                ltVendidoMes.Text = ventasAcumuladas.ToString("C0", new CultureInfo("es-CO"));
 
                                 ltValorMetaAsesorMes.Text = valorMetaSede.ToString("C0", new CultureInfo("es-CO"));
                                 ltValorMetaAsesorHoy.Text = _valorMetaHoy.ToString("C0", new CultureInfo("es-CO"));
@@ -556,7 +558,7 @@ namespace fpWebApp.controles
                                     Ventas = ventasAcumuladas
                                 };
                             }
-                        );
+                        );                   
 
                     int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
 
