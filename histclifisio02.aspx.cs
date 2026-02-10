@@ -57,6 +57,22 @@ namespace fpWebApp
 
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+
+                                //Consulta si tiene datos de fisioterapia asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaFisio"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el fisioterapeuta.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        txbPeso.Text = dtHistorias.Rows[0]["Cafeina"].ToString();
+                                        txbTalla.Text = dtHistorias.Rows[0]["AlimNoTolerados"].ToString();
+                                        txbIMC.Text = dtHistorias.Rows[0]["Complementos"].ToString();
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;

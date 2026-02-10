@@ -10030,7 +10030,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string InsertarHistoriaFisioterapeuta1(int idHistoria, string FCReposo, string TAReposo, string FCMax)
+        public string InsertarHistoriaFisioterapeutaParteUno(int idHistoria, string FCReposo, string TAReposo, string FCMax)
         {
             string respuesta = string.Empty;
 
@@ -10041,6 +10041,37 @@ namespace fpWebApp
                 {
                     mysqlConexion.Open();
                     using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_HISTORIA_FISIOTERAPEUTA_1", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_FCReposo", FCReposo);
+                        cmd.Parameters.AddWithValue("@p_TAReposo", TAReposo);
+                        cmd.Parameters.AddWithValue("@p_FCMax", FCMax);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaFisioterapeutaParteUno(int idHistoria, string FCReposo, string TAReposo, string FCMax)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_FISIOTERAPEUTA_1", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
