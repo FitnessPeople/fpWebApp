@@ -78,11 +78,19 @@ namespace fpWebApp
                             break;
                         case "Director comercial":
                             ctrIndicadores = LoadControl("controles/indicadoresDirCom.ascx");
-                            ctrGraficos = LoadControl("controles/graficosDirCom.ascx");
+                            ctrGraficos = LoadControl("controles/graficosCEO.ascx");
                             break;
                         case "Administrador sede":
                             ctrIndicadores = LoadControl("controles/indicadoresAdmSede.ascx");
                             ctrGraficos = LoadControl("controles/graficosAdmSede.ascx");
+                            break;
+                        case "Líder online":
+                            ctrIndicadores = LoadControl("controles/indicadoresAdmSede.ascx");
+                            ctrGraficos = LoadControl("controles/graficosAdmSede.ascx");
+                            break;
+                        case "Líder corporativo":
+                            ctrIndicadores = LoadControl("controles/indicadoresAseCom.ascx");
+                            ctrGraficos = LoadControl("controles/graficosAseCom.ascx");
                             break;
                         case "Asesor comercial":
                             ctrIndicadores = LoadControl("controles/indicadoresAseCom.ascx");
