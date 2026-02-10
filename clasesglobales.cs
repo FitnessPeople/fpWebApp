@@ -2250,37 +2250,37 @@ namespace fpWebApp
         }
 
 
-        //public DataTable ConsultarIntegracionEmpresaPorIdCanalVenta(int idCanalVenta)
-        //{
-        //    DataTable dt = new DataTable();
+        public DataTable ConsultarIntegracionEmpresaPorIdCanalVenta(int idCanalVenta)
+        {
+            DataTable dt = new DataTable();
 
-        //    try
-        //    {
-        //        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-        //        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-        //        {
-        //            using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_INTEGRACION_EMPRESA_POR_ID_CANAL_VENTA", mysqlConexion))
-        //            {
-        //                cmd.CommandType = CommandType.StoredProcedure;
-        //                cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_INTEGRACION_EMPRESA_POR_ID_CANAL_VENTA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_canal_venta", idCanalVenta);
 
-        //                using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
-        //                {
-        //                    mysqlConexion.Open();
-        //                    dataAdapter.Fill(dt);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        dt = new DataTable();
-        //        dt.Columns.Add("Error", typeof(string));
-        //        dt.Rows.Add(ex.Message);
-        //    }
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
 
-        //    return dt;
-        //}
+            return dt;
+        }
 
         #endregion
 
@@ -7976,36 +7976,36 @@ namespace fpWebApp
             return dt;
         }
 
-        //public DataTable ConsultarUsuarioEmpleadoPorId(int idUsuario)
-        //{
-        //    DataTable dt = new DataTable();
+        public DataTable ConsultarUsuarioEmpleadoPorId(int idUsuario)
+        {
+            DataTable dt = new DataTable();
 
-        //    try
-        //    {
-        //        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
-        //        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
-        //        {
-        //            using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_USUARIO_EMPLEADO_POR_ID", mysqlConexion))
-        //            {
-        //                cmd.CommandType = CommandType.StoredProcedure;
-        //                cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_USUARIO_EMPLEADO_POR_ID", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
-        //                using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
-        //                {
-        //                    mysqlConexion.Open();
-        //                    dataAdapter.Fill(dt);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        dt = new DataTable();
-        //        dt.Columns.Add("Error", typeof(string));
-        //        dt.Rows.Add(ex.Message);
-        //    }
-        //    return dt;
-        //}
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
+        }
 
         #endregion
 
