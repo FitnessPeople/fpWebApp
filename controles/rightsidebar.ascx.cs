@@ -32,6 +32,9 @@ namespace fpWebApp.controles
                 }
             }
 
+            string urlCorta = cg.AcortarURL("https://fitnesspeoplecolombia.com/cambioMetodoPago");
+            ltEnlaceCambio.Text = $"<span class='d-none enlace'>{urlCorta}</span>";
+
             DataTable dtTokens = cg.ConsultarTokensPorIdVendedor(Convert.ToInt32(Session["idUsuario"].ToString()));
 
             if (dtTokens.Rows.Count > 0)

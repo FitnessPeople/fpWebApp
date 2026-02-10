@@ -24,7 +24,7 @@ namespace fpWebApp.controles
             {
                 ObtenerGraficaVentasVsMetasDirectorComercial();
             }
-            else if (idPerfil == 2 || idPerfil == 11 || idPerfil == 36) //Administrador sede // Líder online // Líder corporativo
+            else if (idPerfil == 2 || idPerfil == 11 || idPerfil == 36 || idPerfil == 18) //Administrador sede // Líder online // Líder corporativo // Ing. Desarrollo
             {
                 ObtenerGraficaVentasVsMetasCanalDeVenta();
             }
@@ -127,6 +127,7 @@ namespace fpWebApp.controles
 
                         if (filaHoy != null)
                         {
+                            //Asesores comerciales
                             if (perfilUsuario == 4 && cargoUsuario == 48)
                             {
                                 valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorSeniorMes"]);
@@ -145,14 +146,53 @@ namespace fpWebApp.controles
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorEliteDia"]);
                             }
 
+                            //Asesores Online
+                            if (perfilUsuario == 4 && cargoUsuario == 4)
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorSeniorMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorSeniorDia"]);
+                            }
+
+                            if (perfilUsuario == 4 && cargoUsuario == 57)
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorJuniorMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorJuniorDia"]);
+                            }
+
+                            if (perfilUsuario == 4 && cargoUsuario == 58)
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorEliteMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorEliteDia"]);
+                            }
+
+                            //Asesores Corporativo
+                            if (perfilUsuario == 10 && cargoUsuario == 37)
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorSeniorMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorSeniorDia"]);
+                            }
+
+                            if (perfilUsuario == 10 && cargoUsuario == 55)
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorJuniorMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorJuniorDia"]);
+                            }
+
+                            if (perfilUsuario == 10 && cargoUsuario == 56)
+                            {
+                                valorMetaAsesorMes = Convert.ToInt32(filaHoy["MetaAsesorEliteMes"]);
+                                valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaAsesorEliteDia"]);
+                            }
+
+
+                            //Administrador de sede / Lider Online / 
                             if (perfilUsuario == 2 || perfilUsuario == 11 || perfilUsuario == 36 || perfilUsuario == 23)
                             {
                                 valorMetaAsesorMes = Convert.ToInt32(filaHoy["PresupuestoMes"]);
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaSedeDia"]);
                             }
 
-
-                            if (perfilUsuario == 21 || perfilUsuario == 1 || perfilUsuario == 37 )
+                            if (perfilUsuario == 21 || perfilUsuario == 1 || perfilUsuario == 37 || perfilUsuario == 18)
                             {
                                 valorMetaAsesorMes = Convert.ToInt32(filaHoy["PresupuestoMes"]);
                                 valorMetaAsesorHoy = Convert.ToInt32(filaHoy["MetaSedeDia"]);
@@ -309,6 +349,21 @@ namespace fpWebApp.controles
 
                 if (dt.Rows.Count > 0)
                 {
+                    // Cargos
+                    // 3  Asesor Comercial Elite
+                    //49  Asesor Comercial Junior
+                    //48  Asesor Comercial Senior
+                    //56  Asesor Corporativo Elite
+                    //55  Asesor Corporativo Junior
+                    //37  Asesor Corporativo Senior
+                    //58  Asesor Online Elite
+                    //57  Asesor Online Junior
+                    // 4  Asesor Online Senior
+
+                    //Perfiles
+                    //2  Administrador sede
+                    //4  Asesor comercial / Asesor online
+                    //10  Asesor corporativo
 
                     var datosPorDia = dt.AsEnumerable()
                         .GroupBy(r => Convert.ToDateTime(r["Fecha"]).Day)
@@ -323,16 +378,54 @@ namespace fpWebApp.controles
                                 {
                                     int valorMetaHoy = 0;
 
-                                    if (perfilUsuario == 4 && cargoUsuario == 48)
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorSeniorDia"]);
-                                    else if (perfilUsuario == 4 && cargoUsuario == 49)
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorJuniorDia"]);
-                                    else if (perfilUsuario == 4 && cargoUsuario == 3)
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaAsesorEliteDia"]);
-                                    else if (perfilUsuario == 2)
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);                                    
+                                    //if (perfilUsuario == 4 && cargoUsuario == 48)
+                                    //    valorMetaHoy = Convert.ToInt32(fila["MetaAsesorSeniorDia"]);
+                                    //else if (perfilUsuario == 4 && cargoUsuario == 49)
+                                    //    valorMetaHoy = Convert.ToInt32(fila["MetaAsesorJuniorDia"]);
+                                    //else if (perfilUsuario == 4 && cargoUsuario == 3)
+                                    //    valorMetaHoy = Convert.ToInt32(fila["MetaAsesorEliteDia"]);
+                                    //else if (perfilUsuario == 2)
+                                    //    valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);                                    
+                                    //else
+                                    //    valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); 
+
+                                    // 1️⃣ Administrador de sede (perfil manda)
+                                    if (perfilUsuario == 2)
+                                    {
+                                        valorMetaHoy = Convert.ToInt32(fila["MetaDirectorSedeDia"]);
+                                    }
                                     else
-                                        valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]); //
+                                    {
+                                        // 2️⃣ Asesores: manda el cargo, no el perfil
+                                        switch (cargoUsuario)
+                                        {
+                                            // 🔝 ELITE
+                                            case 3:   // Comercial Elite
+                                            case 56:  // Corporativo Elite
+                                            case 58:  // Online Elite
+                                                valorMetaHoy = Convert.ToInt32(fila["MetaAsesorEliteDia"]);
+                                                break;
+
+                                            // 🧑‍💼 SENIOR
+                                            case 48:  // Comercial Senior
+                                            case 37:  // Corporativo Senior
+                                            case 4:   // Online Senior
+                                                valorMetaHoy = Convert.ToInt32(fila["MetaAsesorSeniorDia"]);
+                                                break;
+
+                                            // 🧑‍🎓 JUNIOR
+                                            case 49:  // Comercial Junior
+                                            case 55:  // Corporativo Junior
+                                            case 57:  // Online Junior
+                                                valorMetaHoy = Convert.ToInt32(fila["MetaAsesorJuniorDia"]);
+                                                break;
+
+                                            // 🏢 Otro
+                                            default:
+                                                valorMetaHoy = Convert.ToInt32(fila["MetaSedeDia"]);
+                                                break;
+                                        }
+                                    }
 
                                     metaAcumulada += valorMetaHoy;
                                     ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
@@ -416,7 +509,10 @@ namespace fpWebApp.controles
                 var metas = new List<decimal>();
                 var ventas = new List<decimal>();
                 int _valorMetaHoy = 0;
-
+                decimal ventasAcumuladasMes = dt.AsEnumerable()
+                        .Sum(r => r.Field<decimal>("VentaDia"));
+                ltVendidoMes.Text = ventasAcumuladasMes.ToString("C0", new CultureInfo("es-CO"));
+                
                 if (dt.Rows.Count > 0)
                 {
 
@@ -443,7 +539,6 @@ namespace fpWebApp.controles
                                     ventasAcumuladas += Convert.ToDecimal(fila["VentaDia"]);
 
                                 }
-                                ltVendidoMes.Text = ventasAcumuladas.ToString("C0", new CultureInfo("es-CO"));
 
                                 ltValorMetaAsesorMes.Text = valorMetaSede.ToString("C0", new CultureInfo("es-CO"));
                                 ltValorMetaAsesorHoy.Text = _valorMetaHoy.ToString("C0", new CultureInfo("es-CO"));
@@ -463,7 +558,7 @@ namespace fpWebApp.controles
                                     Ventas = ventasAcumuladas
                                 };
                             }
-                        );
+                        );                   
 
                     int diasDelMes = DateTime.DaysInMonth(_anio, _mes);
 

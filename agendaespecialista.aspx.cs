@@ -115,7 +115,7 @@ namespace fpWebApp
                         _strEventos += "{\r\n";
                         _strEventos += "id: '" + dt.Rows[i]["idDisponibilidad"].ToString() + "',\r\n";
                         //_strEventos += "title: `👨‍⚕️" + dt.Rows[i]["NombreEmpleado"].ToString() + "\r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
-                        _strEventos += "title: `👨‍⚕ Disponible \r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + "`,\r\n";
+                        _strEventos += "title: `👨‍⚕ Disponible \r\nSede: " + dt.Rows[i]["NombreSede"].ToString() + " - " + dt.Rows[i]["NombreConsultorio"].ToString() + "`,\r\n";
                         _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
                         _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
                         _strEventos += "color: '#1ab394',\r\n";
