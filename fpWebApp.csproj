@@ -1524,6 +1524,7 @@
     </Compile>
     <Compile Include="controles\indicadoresLidCorp.ascx.cs">
       <DependentUpon>indicadoresLidCorp.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controles\indicadoresLidCorp.ascx.designer.cs">
       <DependentUpon>indicadoresLidCorp.ascx</DependentUpon>
