@@ -425,9 +425,9 @@ namespace fpWebApp
         public string ventasJson { get; set; }
         private void ObtenerGraficaEstrategiasPorMes()
         {
+            clasesglobales cg = new clasesglobales();
             try
-            {
-                clasesglobales cg = new clasesglobales();
+            {               
                 DataTable dt = cg.ConsultarEstrategiasMarketingValorMes();
 
                 if (dt.Rows.Count > 0)
@@ -525,11 +525,29 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                string mensaje = ex.Message.ToString();
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
         }
 
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            clasesglobales cg = new clasesglobales();
 
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+        }
         private void listaEstrategiasMarketingEncabezado()
         {
             clasesglobales cg = new clasesglobales();
