@@ -99,7 +99,6 @@ namespace fpWebApp
                                         txbPlanManejo.Text = dtHistorias.Rows[0]["PlanManejo"].ToString();
                                         txbRecomendaciones.Text = dtHistorias.Rows[0]["Recomendaciones"].ToString();
                                         txbObservaciones.Text = dtHistorias.Rows[0]["Observaciones"].ToString();
-
                                     }
                                 }
                             }

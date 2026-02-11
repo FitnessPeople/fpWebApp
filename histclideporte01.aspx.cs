@@ -32,6 +32,23 @@ namespace fpWebApp
 
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+
+                                //Consulta si tiene datos de deportologo asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaDeportiva"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el deportologo.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        ddlClasificacionRiesgo.SelectedIndex = Convert.ToInt32(ddlClasificacionRiesgo.Items.IndexOf(ddlClasificacionRiesgo.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["Gastritis"]).ToString())));
+                                        txbFCReposo.Text = dtHistorias.Rows[0]["Cafeina"].ToString();
+                                        txbTAReposo.Text = dtHistorias.Rows[0]["AlimNoTolerados"].ToString();
+                                        txbFCMax.Text = dtHistorias.Rows[0]["Complementos"].ToString();
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;
@@ -143,13 +160,33 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.InsertarHistoriaDeportologo1(
-                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
-                    ddlClasificacionRiesgo.SelectedItem.Value.ToString(),
-                    txbFCReposo.Text.ToString(),
-                    txbTAReposo.Text.ToString(),
-                    txbFCMax.Text.ToString()
-                    );
+                string mensaje = string.Empty;
+
+                if (btnAgregar.Text == "Guardar y continuar")
+                {
+                    // Insertar
+                    mensaje = cg.InsertarHistoriaDeportologoParteUno(
+                        Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                        ddlClasificacionRiesgo.SelectedItem.Value.ToString(),
+                        txbFCReposo.Text.ToString(),
+                        txbTAReposo.Text.ToString(),
+                        txbFCMax.Text.ToString()
+                        );
+                }
+                else
+                {
+                    if (btnAgregar.Text == "Actualizar y continuar")
+                    {
+                        //Actualizar
+                        mensaje = cg.ActualizarHistoriaDeportologoParteUno(
+                            Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                            ddlClasificacionRiesgo.SelectedItem.Value.ToString(),
+                            txbFCReposo.Text.ToString(),
+                            txbTAReposo.Text.ToString(),
+                            txbFCMax.Text.ToString()
+                            );
+                    }
+                }
 
                 if (mensaje == "OK")
                 {

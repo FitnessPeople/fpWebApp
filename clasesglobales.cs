@@ -880,7 +880,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultaCargarAgendaPorSedePorEspecialidad(int idSede, int idEspecialidad)
+        public DataTable ConsultaCargarAgendaPorSedePorEspecialidad(int idConsultorio, int idEspecialidad)
         {
             DataTable dt = new DataTable();
             try
@@ -891,7 +891,7 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_AGENDA_POR_SEDE_POR_ESPECIALIDAD", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_id_consultorio", idConsultorio);
                         cmd.Parameters.AddWithValue("@p_id_especialidad", idEspecialidad);
 
                         using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
@@ -9907,7 +9907,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string InsertarHistoriaDeportologo1(int idHistoria, string AHA, string FCReposo,
+        public string InsertarHistoriaDeportologoParteUno(int idHistoria, string AHA, string FCReposo,
             string TAReposo, string FCMax)
         {
             string respuesta = string.Empty;
@@ -9927,6 +9927,39 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_TAReposo", TAReposo);
                         cmd.Parameters.AddWithValue("@p_FCMax", FCMax);
                         
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                respuesta = $"OK";
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarHistoriaDeportologoParteUno(int idHistoria, string AHA, string FCReposo,
+            string TAReposo, string FCMax)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_HISTORIA_DEPORTOLOGO_1", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_historia", idHistoria);
+                        cmd.Parameters.AddWithValue("@p_aha", AHA);
+                        cmd.Parameters.AddWithValue("@p_FCReposo", FCReposo);
+                        cmd.Parameters.AddWithValue("@p_TAReposo", TAReposo);
+                        cmd.Parameters.AddWithValue("@p_FCMax", FCMax);
+
                         cmd.ExecuteNonQuery();
                     }
                 }

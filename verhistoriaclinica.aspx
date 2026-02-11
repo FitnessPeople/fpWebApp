@@ -85,6 +85,49 @@
             </div>
         </div>
     </div>
+    <div class="modal inmodal" id="ModalHistory" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content animated bounceInRight">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                    <i class="fa fa-person-chalkboard modal-icon"></i>
+                    <h4 class="modal-title">Histórico Clez</h4>
+                    <small class="font-bold">.</small>
+                </div>
+                <div class="modal-body">
+                    
+                        <table class="footable table table-striped" data-paging-size="10" 
+                            data-filter-min="3" data-filter-placeholder="Buscar" 
+                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}" 
+                            data-paging-limit="10" data-filtering="true" 
+                            data-filter-container="#filter-form-container" data-filter-delay="300" 
+                            data-filter-dropdown-title="Buscar en:" data-filter-position="left" 
+                            data-empty="Sin resultados">
+                            <thead>
+                                <tr>
+                                    <th data-breakpoints="xs">Identificador</th>
+                                    <th data-breakpoints="xs sm md" data-type="number">Ante Familiar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <asp:Repeater ID="rpHistorico" runat="server">
+                                    <ItemTemplate>
+                                        <tr>
+                                            <td><%# Eval("numero_documento") %></td>
+                                            <td><%# Eval("ant_familiares") %></td>
+                                        </tr>
+                                    </ItemTemplate>
+                                </asp:Repeater>
+                            </tbody>
+                        </table>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="wrapper">
         <uc1:navbar runat="server" ID="navbar1" />
 
@@ -140,7 +183,10 @@
                                             <asp:Literal ID="ltEmail" runat="server"></asp:Literal></h4>
                                         <small>
                                             <asp:Literal ID="ltDireccion" runat="server"></asp:Literal>,
-                                            <asp:Literal ID="ltCiudad" runat="server"></asp:Literal></small>
+                                            <asp:Literal ID="ltCiudad" runat="server"></asp:Literal><br />
+                                            <a class="dropdown-toggle count-info" data-toggle="modal" 
+                                                href="#" data-target="#ModalHistory">Ver historico CLEZ</a>
+                                        </small>
                                     </div>
                                 </div>
                             </div>

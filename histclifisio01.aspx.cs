@@ -159,7 +159,6 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-
                 string mensaje = string.Empty;
 
                 if (btnAgregar.Text == "Guardar y continuar")
