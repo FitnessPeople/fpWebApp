@@ -164,11 +164,11 @@
                                                     href="nuevoempleado" title="Agregar empleado"
                                                     runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus m-r-xs"></i>NUEVO
                                                 </a>
-                                                <%--<asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
+                                                <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel m-r-xs"></i>EXCEL
-                                                </asp:LinkButton>--%>
+                                                </asp:LinkButton>
                                             </div>
                                         </div>
                                     </form>
