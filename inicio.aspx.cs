@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using System;
 using System.Web.UI;
 
 namespace fpWebApp
@@ -27,6 +28,7 @@ namespace fpWebApp
                     ltIdSede.Text = Session["idSede"].ToString();
                     ltIdCanalVenta.Text = Session["idCanalVenta"].ToString();
                     ltIdEmpleado.Text = Session["idEmpleado"].ToString();
+                    string Perfil = Session["Perfil"].ToString();
 
                     //Session["idUsuario"] = 147;
                     //Session["NombreUsuario"] = "Christian Morales";
@@ -66,7 +68,7 @@ namespace fpWebApp
                     Control ctrIndicadores;
                     Control ctrGraficos;
 
-                    switch (Session["Perfil"].ToString())
+                    switch (Perfil)
                     {
                         case "CEO":
                             ctrIndicadores = LoadControl("controles/indicadoresCEO.ascx");
@@ -108,11 +110,21 @@ namespace fpWebApp
                             ctrIndicadores = LoadControl("controles/indicadoresDirFin.ascx");
                             ctrGraficos = LoadControl("controles/graficosDirFin.ascx");
                             break;
+                        case "Director marketing":
+                            ctrIndicadores = LoadControl("controles/indicadoresDirMark.ascx");
+                            ctrGraficos = LoadControl("controles/graficosCEO.ascx");
+                            break;
+                        case "Director gestión humana":
+                            ctrIndicadores = LoadControl("controles/indicadoresDirRRHH.ascx");
+                            ctrGraficos = LoadControl("controles/graficosCEO.ascx");
+                            break;
+
                         default:
                             ctrIndicadores = LoadControl("controles/indicadores02.ascx");
                             ctrGraficos = LoadControl("controles/graficosCEO.ascx");
                             break;
                     }
+                     
 
                     phIndicadores.Controls.Add(ctrIndicadores);
                     phGraficos.Controls.Add(ctrGraficos);

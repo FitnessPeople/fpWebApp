@@ -78,16 +78,28 @@ namespace fpWebApp
         {
             try
             {
-                string strQuery = @"
-                    SELECT ap.idAfiliadoPlan, a.DocumentoAfiliado, CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
-                    COUNT(a.idAfiliado) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, p.PrecioBase, 
-                    a.CelularAfiliado AS Celular, a.EmailAfiliado AS Email 
-                    FROM HistorialCobrosRechazados AS hcr 
-                    INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
-                    INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
-                    INNER JOIN Planes AS p ON p.idPlan = ap.idPlan 
-                    GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado 
-                    ORDER BY Intentos ASC;";
+                string strQuery = @"SELECT 
+	                                    a.documentoAfiliado, CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
+	                                    hcr.idAfiliadoPlan, COUNT(hcr.idCobro) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, 
+	                                    p.idPlan, 
+	                                    ap.valor, ap.fechaProximoCobro, ap.meses 
+                                    FROM HistorialCobrosRechazados AS hcr 
+                                    INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
+                                    INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
+                                    INNER JOIN Planes AS p ON p.idPlan = ap.idPlan 
+                                    INNER JOIN (
+	                                    SELECT idAfiliadoPlan, IFNULL(SUM(mesesPagados), 0) AS totalMesesPagados 
+	                                    FROM PagosPlanAfiliado 
+	                                    GROUP BY idAfiliadoPlan 
+                                    ) pagos ON pagos.idAfiliadoPlan = ap.idAfiliadoPlan 
+                                    WHERE p.debitoAutomatico = 1 
+                                    AND ap.fechaProximoCobro <= CURDATE() 
+                                    AND ap.fechaProximoCobro <= ap.fechaFinalPlan 
+                                    AND pagos.totalMesesPagados < ap.meses
+                                    AND ap.EstadoPlan IN ('Activo', 'Pendiente') 
+                                    GROUP BY hcr.idAfiliadoPlan 
+                                    ORDER BY Intentos ASC;";
+
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(strQuery);
@@ -95,7 +107,7 @@ namespace fpWebApp
 
                 if (dt.Rows.Count > 0)
                 {
-                    cg.ExportarExcel(dt, nombreArchivo);
+                    cg.ExportarExcelOk(dt, nombreArchivo);
                 }
                 else
                 {
@@ -111,33 +123,79 @@ namespace fpWebApp
         private void HistorialCobrosRechazados()
         {
             clasesglobales cg = new clasesglobales();
-
-            string strQuery = @"
-                SELECT ap.idAfiliadoPlan, a.DocumentoAfiliado, CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
-                COUNT(a.idAfiliado) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, p.PrecioBase 
-                FROM HistorialCobrosRechazados AS hcr 
-                INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
-                INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
-                INNER JOIN Planes AS p ON p.idPlan = ap.idPlan 
-                GROUP BY ap.idAfiliadoPlan, a.DocumentoAfiliado, NombreCompletoAfiliado 
-                ORDER BY Intentos ASC;";
+            string strQuery = @"SELECT 
+	                                a.documentoAfiliado, CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
+	                                hcr.idAfiliadoPlan, COUNT(hcr.idCobro) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, 
+	                                p.idPlan, 
+	                                ap.valor, ap.fechaProximoCobro, ap.meses 
+                                FROM HistorialCobrosRechazados AS hcr 
+                                INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
+                                INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
+                                INNER JOIN Planes AS p ON p.idPlan = ap.idPlan 
+                                INNER JOIN (
+	                                SELECT idAfiliadoPlan, IFNULL(SUM(mesesPagados), 0) AS totalMesesPagados 
+	                                FROM PagosPlanAfiliado 
+	                                GROUP BY idAfiliadoPlan 
+                                ) pagos ON pagos.idAfiliadoPlan = ap.idAfiliadoPlan 
+                                WHERE p.debitoAutomatico = 1 
+                                AND ap.fechaProximoCobro <= CURDATE() 
+                                AND ap.fechaProximoCobro <= ap.fechaFinalPlan 
+                                AND pagos.totalMesesPagados < ap.meses
+                                AND ap.EstadoPlan IN ('Activo', 'Pendiente') 
+                                GROUP BY hcr.idAfiliadoPlan 
+                                ORDER BY Intentos ASC;";
 
 
             DataTable dt = cg.TraerDatos(strQuery);
 
-            decimal sumatoriaValor = 0;
+            if (!dt.Columns.Contains("DeudaActual")) dt.Columns.Add("DeudaActual", typeof(int));
 
-            if (dt.Rows.Count > 0)
+            int deudaTotalGeneral = 0;
+
+            foreach (DataRow row in dt.Rows)
             {
-                object suma = dt.Compute("SUM(PrecioBase)", "");
-                sumatoriaValor = suma != DBNull.Value ? Convert.ToDecimal(suma) : 0;
+                int idPlan = Convert.ToInt32(row["idPlan"]);
+                int idAfiliadoPlan = Convert.ToInt32(row["idAfiliadoPlan"]);
+                int valorBase = Convert.ToInt32(row["valor"]);
+                int mesesPlan = Convert.ToInt32(row["meses"]);
+                DateTime fechaProximoCobro = Convert.ToDateTime(row["fechaProximoCobro"]);
+                DateTime fechaActual = DateTime.Now;
+
+                int mesesAtraso = ((fechaActual.Year - fechaProximoCobro.Year) * 12) + fechaActual.Month - fechaProximoCobro.Month;
+
+                if (fechaActual.Day >= fechaProximoCobro.Day) mesesAtraso++;
+
+                int mesesPagados = cg.ConsultarCantidadMesesPagadosPorIdAfiliadoPlan(idAfiliadoPlan);
+
+                int mesesRestantesPlan = Math.Max(0, mesesPlan - mesesPagados);
+
+                int mesesACobrar = mesesAtraso > 0 ? mesesAtraso : 1;
+
+                mesesACobrar = Math.Min(mesesACobrar, mesesRestantesPlan);
+
+                // Monto Acumulado
+                int montoTotal = 0;
+
+                for (int i = 0; i < mesesACobrar; i++)
+                {
+                    int mesSimulado = mesesPagados + i;
+
+                    int valorMes = cg.ObtenerValorMesPlanSimulado(idPlan, mesSimulado, valorBase);
+
+                    montoTotal += valorMes;
+                }
+
+                row["DeudaActual"] = montoTotal;
+
+                deudaTotalGeneral += montoTotal;
             }
 
             ltCuantos.Text = dt.Rows.Count.ToString();
-            ltTotalPorRecuadar.Text = String.Format("{0:C0}", sumatoriaValor);
+            ltTotalPorRecuadar.Text = String.Format("{0:C0}", deudaTotalGeneral);
 
             rpHistorialCobrosRechazados.DataSource = dt;
             rpHistorialCobrosRechazados.DataBind();
+            dt.Dispose();
         }
     }
 }

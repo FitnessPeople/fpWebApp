@@ -198,13 +198,13 @@
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left" data-empty="Sin resultados">
                                             <thead>
                                                 <tr>
-                                                    <th data-sortable="false" data-breakpoints="xs" style="width: 80px;">ID</th>
+                                                    <%--<th data-sortable="false" data-breakpoints="xs" style="width: 80px;">ID</th>--%>
                                                     <th>Documento</th>
                                                     <th>Afiliado</th>
-                                                    <th class="text-right">Valor</th>
-                                                    <th data-type="number" data-breakpoints="xs sm md" class="text-center">Intentos</th>
-                                                    <th data-breakpoints="xs sm md">Último intento</th>
-                                                    <th data-breakpoints="xs sm md">Mensaje</th>
+                                                    <th class="text-center">Deuda Actual</th>
+                                                    <th class="text-center">Intentos de Cobro</th>
+                                                    <th>Último intento</th>
+                                                    <th>Mensaje de Wompi</th>
                                                     <%--<th data-breakpoints="xs sm md">Detalle</th>--%>
                                                 </tr>
                                             </thead>
@@ -212,10 +212,10 @@
                                                 <asp:Repeater ID="rpHistorialCobrosRechazados" runat="server">
                                                     <ItemTemplate>
                                                         <tr class="feed-element">
-                                                            <td><%# Eval("idAfiliadoPlan") %></td>
+                                                            <%--<td><%# Eval("idAfiliadoPlan") %></td>--%>
                                                             <td><%# Eval("DocumentoAfiliado") %></td>
                                                             <td><%# Eval("NombreCompletoAfiliado") %></td>
-                                                            <td class="text-right"><%# Eval("PrecioBase", "{0:C0}") %></td>
+                                                            <td class="text-center"><%# Eval("DeudaActual", "{0:C0}") %></td>
                                                             <td class="text-center"><%# Eval("Intentos") %></td>
                                                             <td><%# Eval("UltimoIntento") %></td>
                                                             <td><%# Eval("Mensaje") %></td>

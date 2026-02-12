@@ -1,9 +1,10 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="indicadoresAdmSede.ascx.cs" Inherits="fpWebApp.controles.indicadoresAdmSede" %>
+
 <!-- Sweet Alert -->
 <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-
 <!-- Sweet alert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <div class="row">
     <!-- CARD 1: Cumplimiento -->
     <div class="col-lg-3">
