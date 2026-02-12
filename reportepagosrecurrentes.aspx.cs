@@ -243,17 +243,22 @@ namespace fpWebApp
             {
                 int idPlan = Convert.ToInt32(row["idPlan"]);
                 int idAfiliadoPlan = Convert.ToInt32(row["idAfiliadoPlan"]);
-                int valorBase = Convert.ToInt32(row["Valor"]);
-                DateTime fechaProximoCobro = Convert.ToDateTime(row["FechaProximoCobro"]);
+                int valorBase = Convert.ToInt32(row["valor"]);
+                int mesesPlan = Convert.ToInt32(row["meses"]);
+                DateTime fechaProximoCobro = Convert.ToDateTime(row["fechaProximoCobro"]);
+                DateTime fechaActual = DateTime.Now;
 
-                int mesesAtraso = ((DateTime.Now.Year - fechaProximoCobro.Year) * 12) + DateTime.Now.Month - fechaProximoCobro.Month;
+                int mesesAtraso = ((fechaActual.Year - fechaProximoCobro.Year) * 12) + fechaActual.Month - fechaProximoCobro.Month;
 
-                if (mesesAtraso < 0) mesesAtraso = 0;
-
-                // Si está al día, al menos mostrar el valor del mes actual
-                int mesesACobrar = mesesAtraso > 0 ? mesesAtraso : 1;
+                if (fechaActual.Day >= fechaProximoCobro.Day) mesesAtraso++;
 
                 int mesesPagados = cg.ConsultarCantidadMesesPagadosPorIdAfiliadoPlan(idAfiliadoPlan);
+
+                int mesesRestantesPlan = Math.Max(0, mesesPlan - mesesPagados);
+
+                int mesesACobrar = mesesAtraso > 0 ? mesesAtraso : 1;
+
+                mesesACobrar = Math.Min(mesesACobrar, mesesRestantesPlan);
 
                 row["ProximoValorCobrar"] = cg.ObtenerValorMesPlanSimulado(idPlan, mesesPagados, valorBase);
 
@@ -305,7 +310,7 @@ namespace fpWebApp
 
                 if (dt.Rows.Count > 0)
                 {
-                    cg.ExportarExcelEPPlus(dt, nombreArchivo);
+                    cg.ExportarExcelOk(dt, nombreArchivo);
                 }
                 else
                 {
