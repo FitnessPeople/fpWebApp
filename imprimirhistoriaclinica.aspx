@@ -39,14 +39,14 @@
                             <td><%# Eval("Edad") %> años</td>
                         </tr>
                     </table>
-                    <h3 class="text-info"><i class="fa fa-clock-rotate-left"></i> Antecedentes</h3>
+                    <h4 class="text-info"><i class="fa fa-clock-rotate-left m-r-xs"></i>Antecedentes</h4>
                     <table class="table table-bordered table-striped">
                         <tr>
-                            <th width="20%"><i class="fa fa-people-roof m-r-sm"></i>Familiares</th>
-                            <th width="20%"><i class="fa fa-virus m-r-sm"></i>Patológicos</th>
-                            <th width="20%"><i class="fa fa-syringe m-r-sm"></i>Quirúrgicos</th>
-                            <th width="20%"><i class="fa fa-biohazard m-r-sm"></i>Toxicológico</th>
-                            <th width="20%"><i class="fa fa-hospital m-r-sm"></i>Hospitalario</th>
+                            <th width="20%"><i class="fa fa-people-roof m-r-xs"></i>Familiares</th>
+                            <th width="20%"><i class="fa fa-virus m-r-xs"></i>Patológicos</th>
+                            <th width="20%"><i class="fa fa-syringe m-r-xs"></i>Quirúrgicos</th>
+                            <th width="20%"><i class="fa fa-biohazard m-r-xs"></i>Toxicológico</th>
+                            <th width="20%"><i class="fa fa-hospital m-r-xs"></i>Hospitalario</th>
                         </tr>
                         <tr>
                             <td><%# Eval("AnteFamiliar") %></td>
@@ -56,11 +56,11 @@
                             <td><%# Eval("AnteHospitalario") %></td>
                         </tr>
                         <tr>
-                            <th width="20%"><i class="fa fa-crutch m-r-sm"></i>Traumatológico</th>
-                            <th width="20%"><i class="fa fa-capsules m-r-sm"></i>Farmacológico</th>
-                            <th width="20%"><i class="fa fa-person-running m-r-sm"></i>Actividad Física</th>
-                            <th width="20%"><i class="fa fa-person-pregnant m-r-sm"></i>Gineco-Obstetricia</th>
-                            <th width="20%"><i class="fa fa-droplet m-r-sm"></i>F.U.M.</th>
+                            <th width="20%"><i class="fa fa-crutch m-r-xs"></i>Traumatológico</th>
+                            <th width="20%"><i class="fa fa-capsules m-r-xs"></i>Farmacológico</th>
+                            <th width="20%"><i class="fa fa-person-running m-r-xs"></i>Actividad Física</th>
+                            <th width="20%"><i class="fa fa-person-pregnant m-r-xs"></i>Gineco-Obstetricia</th>
+                            <th width="20%"><i class="fa fa-droplet m-r-xs"></i>F.U.M.</th>
                         </tr>
                         <tr>
                             <td><%# Eval("AnteTraumatologico") %></td>
@@ -70,13 +70,13 @@
                             <td><%# Eval("AnteFUM", "{0:dd MMM yyyy}") %></td>
                         </tr>
                     </table>
-                    <h3 class="text-info"><i class="fa fa-heart-circle-exclamation"></i> Factores de Riesgo Cardiovascular</h3>
+                    <h4 class="text-info"><i class="fa fa-heart-circle-exclamation m-r-xs"></i>Factores de Riesgo Cardiovascular</h4>
                     <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
                         <tr>
-                            <th width="25%"><i class="fa fa-smoking m-r-sm"></i>Tabaco</th>
-                            <th width="25%"><i class="fa fa-smoking m-r-sm"></i>Cigarrillos/día</th>
-                            <th width="25%"><i class="fa fa-wine-bottle m-r-sm"></i>Alcohol</th>
-                            <th width="25%"><i class="fa fa-wine-bottle m-r-sm"></i>Bebidas/mes</th>
+                            <th width="25%"><i class="fa fa-smoking m-r-xs"></i>Tabaco</th>
+                            <th width="25%"><i class="fa fa-smoking m-r-xs"></i>Cigarrillos/día</th>
+                            <th width="25%"><i class="fa fa-wine-bottle m-r-xs"></i>Alcohol</th>
+                            <th width="25%"><i class="fa fa-wine-bottle m-r-xs"></i>Bebidas/mes</th>
                         </tr>
                         <tr>
                             <td> <%# Eval("Tabaquismo").ToString() == "1"
@@ -91,11 +91,11 @@
                     </table>
                     <table class="table table-bordered table-striped">
                         <tr>
-                            <th width="20%"><i class="fa fa-chair m-r-sm"></i>Sedentarismo</th>
-                            <th width="20%"><i class="fa fa-vial m-r-sm"></i>Diabetes</th>
-                            <th width="20%"><i class="fa fa-heart-pulse m-r-sm"></i>Colesterol</th>
-                            <th width="20%"><i class="fa fa-heart-circle-bolt m-r-sm"></i>Triglicéridos</th>
-                            <th width="20%"><i class="fa fa-stethoscope m-r-sm"></i>H.T.A.</th>
+                            <th width="20%"><i class="fa fa-chair m-r-xs"></i>Sedentarismo</th>
+                            <th width="20%"><i class="fa fa-vial m-r-xs"></i>Diabetes</th>
+                            <th width="20%"><i class="fa fa-heart-pulse m-r-xs"></i>Colesterol</th>
+                            <th width="20%"><i class="fa fa-heart-circle-bolt m-r-xs"></i>Triglicéridos</th>
+                            <th width="20%"><i class="fa fa-stethoscope m-r-xs"></i>H.T.A.</th>
                         </tr>
                         <tr>
                             <td><%# Eval("Sedentarismo").ToString() == "1"
@@ -123,6 +123,7 @@
                                     : "<i class='fa fa-square text-navy'></i> No" %></td>
                         </tr>
                     </table>
+                    <br /><br />
                     <h3 class="text-info"><i class="fa fa-utensils"></i> Historia alimentaria (Nutricionista)</h3>
                     <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
                         <tr>
@@ -184,7 +185,7 @@
                             <td><%# Eval("AlimPreferidos") %></td>
                         </tr>
                     </table>
-                    <h3 class="text-info"><i class="fa fa-carrot"></i> Anamnesis alimentaria</h3>
+                    <h4 class="text-info"><i class="fa fa-carrot"></i> Anamnesis alimentaria</h4>
                     <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
                         <tr>
                             <th width="50%">Desayuno</th>
@@ -247,7 +248,7 @@
                             <td><%# Eval("HoraAcuesta") %></td>
                         </tr>
                     </table>
-                    <h3 class="text-info"><i class="fa fa-burger"></i> Frecuencia de consumo</h3>
+                    <h4 class="text-info"><i class="fa fa-burger"></i> Frecuencia de consumo</h4>
                     <table class="table table-bordered table-striped">
                         <tr>
                             <th width="33%">Lacteos</th>
@@ -320,7 +321,7 @@
                             <td><%# Eval("BebidaHidratante") %></td>
                         </tr>
                     </table>
-                    <h3 class="text-info"><i class="fa fa-person-arrow-up-from-line"></i> Antropometría</h3>
+                    <h4 class="text-info"><i class="fa fa-person-arrow-up-from-line"></i> Antropometría</h4>
                     <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
                         <tr>
                             <th width="33%">Peso</th>
@@ -394,9 +395,9 @@
                             <th width="34%">Peso magro</th>
                         </tr>
                         <tr>
-                            <td><%# Eval("PorcGrasa") %> Kg</td>
-                            <td><%# Eval("PorcMuscular") %> Kg</td>
-                            <td><%# Eval("FCETanaka") %> Kg</td>
+                            <td><%# Eval("PesoEsperado") %> Kg</td>
+                            <td><%# Eval("PesoGraso") %> Kg</td>
+                            <td><%# Eval("PesoMagro") %> Kg</td>
                         </tr>
                         <tr>
                             <th width="33%">Gasto calórico</th>
@@ -431,21 +432,235 @@
                     <hr />
 
                     <h3 class="text-info"><i class="fa fa-person-arrow-up-from-line"></i> Historia Fisioterapéutica</h3>
-                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                    <h4 class="text-info"><i class="fa fa-wave-square"></i> Signos vitales</h4>
+                    <table class="table table-bordered table-striped">
                         <tr>
-                            <th width="33%">FC Reposo</th>
-                            <th width="33%">TA Reposo</th>
-                            <th width="34%">FC Max</th>
+                            <th width="33%">FC Reposo (PPM)</th>
+                            <th width="33%">TA Reposo (MMHG)</th>
+                            <th width="34%">FC Max (PPM)</th>
                         </tr>
                         <tr>
                             <td><%# Eval("FCReposo") %></td>
                             <td><%# Eval("TAReposo") %></td>
                             <td><%# Eval("FCMax") %></td>
                         </tr>
+                    </table>
+                    <h4 class="text-info"><i class="fa fa-person-arrow-up-from-line"></i> Antropometría</h4>
+                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                        <tr>
+                            <th width="33%">Peso en Kg</th>
+                            <th width="33%">Talla en cms</th>
+                            <th width="34%">Indice de Masa Corporal IMC</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("Peso") %> Kg</td>
+                            <td><%# Eval("Talla") %> cms</td>
+                            <td><%# Eval("IMC") %></td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                        <tr>
+                            <th width="25%">Perímetro de Cintura (cms)</th>
+                            <th width="25%">Perímetro de Cadera (cms)</th>
+                            <th width="25%">Perímetro de Abdomen (cms)</th>
+                            <th width="25%">Perímetro de Pecho (cms)</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PerimCintura") %> cms</td>
+                            <td><%# Eval("PerimCadera") %> cms</td>
+                            <td><%# Eval("PerimAbdomen") %> cms</td>
+                            <td><%# Eval("PerimPecho") %> cms</td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th width="33%">Perímetro de Muslo (cms)</th>
+                            <th width="33%">Perímetro de Pantorrilla (cms)</th>
+                            <th width="34%">Perímetro de Brazo (cms)</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PerimMuslo") %></td>
+                            <td><%# Eval("PerimPantorrilla") %></td>
+                            <td><%# Eval("PerimBrazo") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Pliegue Tricipital</th>
+                            <th width="33%">Pliegue IlioCrestal</th>
+                            <th width="34%">Pliegue Abdominal</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PliegueTricipital") %></td>
+                            <td><%# Eval("PliegueIliocrestal") %></td>
+                            <td><%# Eval("PliegueAbdominal") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Pliegue Subescapular</th>
+                            <th width="33%">Pliegue Muslo</th>
+                            <th width="34%">Pliegue Pantorrilla</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PliegueSubescapular") %></td>
+                            <td><%# Eval("PliegueMuslo") %></td>
+                            <td><%# Eval("PlieguePantorrilla") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Porcentaje Graso</th>
+                            <th width="33%">Porcentaje Muscular</th>
+                            <th width="34%">FCE (Tanaka)</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PorcGrasa") %> %</td>
+                            <td><%# Eval("PorcMuscular") %> %</td>
+                            <td><%# Eval("FCETanaka") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Peso esperado</th>
+                            <th width="33%">Peso graso</th>
+                            <th width="34%">Peso magro</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PesoEsperado") %> Kg</td>
+                            <td><%# Eval("PesoGraso") %> Kg</td>
+                            <td><%# Eval("PesoMagro") %> Kg</td>
+                        </tr>
+                    </table>
+                    <h4 class="text-info"><i class="fa fa-person-running"></i> Flexibilidad, Pruebas de Fuerza y de Resistencia Cardiovascular</h4>
+                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                        <tr>
+                            <th>Test de Wells</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("Wells") %> cms</td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th width="50%">Test_Pushup</th>
+                            <th width="50%">Test_Sentadillas</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("TestPushup") %></td>
+                            <td><%# Eval("TestSentadillas") %></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Nivel</th>
+                            <th width="50%">Test Core</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("Nivel") %></td>
+                            <td><%# Eval("TestCore") %></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">FC Reposo</th>
+                            <th width="50%">FC al terminar prueba</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("FCReposoPRC") %></td>
+                            <td><%# Eval("FCTerminaPrueba") %></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">FC al minuto</th>
+                            <th width="50%">Indice de Rendimiento</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("FCMinuto") %> %</td>
+                            <td><%# Eval("IndiceRend") %> %</td>
+                        </tr>
+                    </table>
+                    <h4 class="text-info"><i class="fa fa-person-arrow-up-from-line"></i> Postura y Nivel de aptitud</h4>
+                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                        <tr>
+                            <th width="33%">Cabeza Adelantada</th>
+                            <th width="33%">Hombros Desalineados</th>
+                            <th width="34%">Hipercifosis Dorsal</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("CabezaAdelantada") %></td>
+                            <td><%# Eval("HombrosDesalineados") %></td>
+                            <td><%# Eval("HipercifosisDorsal") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Escoliosis</th>
+                            <th width="33%">Dismetrias (MMII)</th>
+                            <th width="34%">Genu Valgus</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("Escoliosis") %></td>
+                            <td><%# Eval("Dismetrias") %></td>
+                            <td><%# Eval("GenuValgus") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Genu Varus</th>
+                            <th width="33%">Genu Recurbatum</th>
+                            <th width="34%">Genu Antecurbatum</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("GenuVarus") %></td>
+                            <td><%# Eval("GenuRecurbatum") %></td>
+                            <td><%# Eval("GenuAntecurbatum") %></td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                        <tr>
+                            <th width="50%">Pie Plano</th>
+                            <th width="50%">Pie Cavus</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("PiePlano") %></td>
+                            <td><%# Eval("PieCavus") %></td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th width="33%">Apto</th>
+                            <th width="33%">Restricciones</th>
+                            <th width="34%">Diagnostico</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("Apto") %></td>
+                            <td><%# Eval("Restricciones") %></td>
+                            <td><%# Eval("Diagnostico") %></td>
+                        </tr>
+                        <tr>
+                            <th width="33%">Recomendaciones</th>
+                            <th width="33%">Observaciones</th>
+                            <th width="34%">CIE10</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("Observaciones") %></td>
+                            <td><%# Eval("Recomendaciones") %></td>
+                            <td><%# Eval("idCie10") %></td>
+                        </tr>
+                    </table>
+
+                    <hr />
+
+                    <h3 class="text-info"><i class="fa fa-person-arrow-up-from-line"></i> Historia Médico Deportólogo</h3>
+                    <h4 class="text-info"><i class="fa fa-heart-pulse"></i> Riesgo cardiovascular y signos vitales</h4>
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th width="50%">Clasificación de riesgo cardiovascular (AHA)</th>
+                            <th width="50%">FC Reposo (PPM)</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("AHA") %></td>
+                            <td><%# Eval("FCReposo") %></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">TA Reposo (MMHG)</th>
+                            <th width="50%">FC Max (PPM)</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("TAReposo") %></td>
+                            <td><%# Eval("FCMax") %></td>
+                        </tr>
+                    </table>
+                    <h4 class="text-info"><i class="fa fa-person-arrow-up-from-line"></i> Antropometría</h4>
+                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
                         <tr>
                             <th width="33%">Peso</th>
                             <th width="33%">Talla</th>
-                            <th width="34%">IMC</th>
+                            <th width="34%">Indice de Masa Corporal IMC</th>
                         </tr>
                         <tr>
                             <td><%# Eval("Peso") %> Kg</td>
@@ -467,7 +682,7 @@
                             <td><%# Eval("PerimPecho") %> cms</td>
                         </tr>
                     </table>
-                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                    <table class="table table-bordered table-striped">
                         <tr>
                             <th width="33%">Perímetro de Muslo</th>
                             <th width="33%">Perímetro de Pantorrilla</th>
@@ -514,19 +729,49 @@
                             <th width="34%">Peso magro</th>
                         </tr>
                         <tr>
-                            <td><%# Eval("PorcGrasa") %> Kg</td>
-                            <td><%# Eval("PorcMuscular") %> Kg</td>
-                            <td><%# Eval("FCETanaka") %> Kg</td>
+                            <td><%# Eval("PesoEsperado") %> Kg</td>
+                            <td><%# Eval("PesoGraso") %> Kg</td>
+                            <td><%# Eval("PesoMagro") %> Kg</td>
+                        </tr>
+                    </table>
+                    <h4 class="text-info"><i class="fa fa-person-running"></i> Flexibilidad</h4>
+                    <table class="table table-bordered table-striped">
+                        <tr>
+                            <th width="50%">Test de Wells</th>
+                            <th width="50%">Osteomuscular</th>
                         </tr>
                         <tr>
-                            <th width="33%">Gasto calórico</th>
-                            <th width="33%">Actividad física</th>
-                            <th width="34%">Gasto total</th>
+                            <td><%# Eval("Wells") %></td>
+                            <td><%# Eval("Osteomuscular") %></td>
                         </tr>
                         <tr>
-                            <td><%# Eval("GastoCalorico") %></td>
-                            <td><%# Eval("ActividadFisica") %></td>
-                            <td><%# Eval("GastoTotal") %></td>
+                            <th width="50%">Cardiovascular</th>
+                            <th width="50%">Otros</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("Cardiovascular") %></td>
+                            <td><%# Eval("Otros") %></td>
+                        </tr>
+                        <tr>
+                            <th width="50%">Diagnóstico</th>
+                            <th width="50%">Nivel</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("Diagnostico") %></td>
+                            <td><%# Eval("Nivel") %></td>
+                        </tr>
+                    </table>
+                    <h4 class="text-info"><i class="fa fa-head-side-virus"></i> Origen de la enfermedad</h4>
+                    <table class="table table-bordered table-striped" style="margin-bottom: 0px;">
+                        <tr>
+                            <th width="33%">Origen de la Enfermedad</th>
+                            <th width="33%">Tratamiento</th>
+                            <th width="34%">Observaciones</th>
+                        </tr>
+                        <tr>
+                            <td><%# Eval("OrigenEnfermedad") %></td>
+                            <td><%# Eval("Tratamiento") %></td>
+                            <td><%# Eval("Observaciones") %></td>
                         </tr>
                     </table>
                 </ItemTemplate>

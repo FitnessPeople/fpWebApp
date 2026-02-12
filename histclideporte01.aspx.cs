@@ -43,10 +43,15 @@ namespace fpWebApp
                                     {
                                         //Llena la historia clinica con los datos tomados por el deportologo.
                                         btnAgregar.Text = "Actualizar y continuar";
-                                        ddlClasificacionRiesgo.SelectedIndex = Convert.ToInt32(ddlClasificacionRiesgo.Items.IndexOf(ddlClasificacionRiesgo.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["Gastritis"]).ToString())));
-                                        txbFCReposo.Text = dtHistorias.Rows[0]["Cafeina"].ToString();
-                                        txbTAReposo.Text = dtHistorias.Rows[0]["AlimNoTolerados"].ToString();
-                                        txbFCMax.Text = dtHistorias.Rows[0]["Complementos"].ToString();
+                                        object aha = dtHistorias.Rows[0]["AHA"];
+                                        if (aha != DBNull.Value)
+                                        {
+                                            string valor = aha.ToString();
+                                            ddlClasificacionRiesgo.SelectedValue = valor;
+                                        }
+                                        txbFCReposo.Text = dtHistorias.Rows[0]["FCReposo"].ToString();
+                                        txbTAReposo.Text = dtHistorias.Rows[0]["TAReposo"].ToString();
+                                        txbFCMax.Text = dtHistorias.Rows[0]["FCMax"].ToString();
                                     }
                                 }
                             }

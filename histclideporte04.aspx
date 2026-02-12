@@ -447,7 +447,7 @@
                                                                 <asp:ListItem Text="Accidente laboral" Value="Accidente laboral"></asp:ListItem>
                                                                 <asp:ListItem Text="Enfermedad común" Value="Enfermedad común"></asp:ListItem>
                                                                 <asp:ListItem Text="Enfermedad profesional" Value="Enfermedad profesional"></asp:ListItem>
-                                                                <asp:ListItem Text="No aplica" Value="No aplica"></asp:ListItem>
+                                                                <asp:ListItem Text="No Aplica" Value="No Aplica"></asp:ListItem>
                                                                 <asp:ListItem Text="SOAT" Value="SOAT"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>

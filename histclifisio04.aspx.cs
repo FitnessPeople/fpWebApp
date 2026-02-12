@@ -51,12 +51,22 @@ namespace fpWebApp
                                         txbGenuAntecurbatum.Text = dtHistorias.Rows[0]["GenuAntecurbatum"].ToString();
                                         txbPiePlano.Text = dtHistorias.Rows[0]["PiePlano"].ToString();
                                         txbPieCavus.Text = dtHistorias.Rows[0]["PieCavus"].ToString();
-                                        ddlApto.SelectedIndex = Convert.ToInt32(ddlApto.Items.IndexOf(ddlApto.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["Apto"]).ToString())));
+                                        object apto = dtHistorias.Rows[0]["Apto"];
+                                        if (apto != DBNull.Value)
+                                        {
+                                            string valor = apto.ToString();
+                                            ddlApto.SelectedValue = valor;
+                                        }
                                         txbRestricciones.Text = dtHistorias.Rows[0]["Restricciones"].ToString();
                                         txbDiagnostico.Text = dtHistorias.Rows[0]["Diagnostico"].ToString();
                                         txbRecomendaciones.Text = dtHistorias.Rows[0]["Observaciones"].ToString();
                                         txbObservaciones.Text = dtHistorias.Rows[0]["Recomendaciones"].ToString();
-                                        ddlCie10.SelectedIndex = Convert.ToInt32(ddlCie10.Items.IndexOf(ddlCie10.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["idCie10"]).ToString())));
+                                        object cie10 = dtHistorias.Rows[0]["idCie10"];
+                                        if (cie10 != DBNull.Value)
+                                        {
+                                            string valor = cie10.ToString();
+                                            ddlCie10.SelectedValue = valor;
+                                        }
                                     }
                                 }
                             }

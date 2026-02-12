@@ -68,28 +68,28 @@ namespace fpWebApp
                                     {
                                         //Llena la historia clinica con los datos tomados por el deportologo.
                                         btnAgregar.Text = "Actualizar y continuar";
-                                        txbPeso.Text = dtHistorias.Rows[0]["Cafeina"].ToString();
-                                        txbTalla.Text = dtHistorias.Rows[0]["AlimNoTolerados"].ToString();
-                                        txbIMC.Text = dtHistorias.Rows[0]["Complementos"].ToString();
-                                        txbPerimCintura.Text = dtHistorias.Rows[0]["PerimCintura"].ToString();
-                                        txbPerimCadera.Text = dtHistorias.Rows[0]["PerimCadera"].ToString();
-                                        txbPerimAbdomen.Text = dtHistorias.Rows[0]["PerimAbdomen"].ToString();
-                                        txbPerimPecho.Text = dtHistorias.Rows[0]["PerimPecho"].ToString();
-                                        txbPerimMuslo.Text = dtHistorias.Rows[0]["PerimMuslo"].ToString();
-                                        txbPerimPantorrilla.Text = dtHistorias.Rows[0]["PerimPantorrilla"].ToString();
-                                        txbPerimBrazo.Text = dtHistorias.Rows[0]["PerimBrazo"].ToString();
-                                        txbPliegueTricipital.Text = dtHistorias.Rows[0]["PliegueTricipital"].ToString();
-                                        txbPliegueIliocrestal.Text = dtHistorias.Rows[0]["PliegueIliocrestal"].ToString();
-                                        txbPliegueAbdominal.Text = dtHistorias.Rows[0]["PliegueAbdominal"].ToString();
-                                        txbPliegueSubescapular.Text = dtHistorias.Rows[0]["PliegueSubescapular"].ToString();
-                                        txbPliegueMuslo.Text = dtHistorias.Rows[0]["PliegueMuslo"].ToString();
-                                        txbPlieguePantorrilla.Text = dtHistorias.Rows[0]["PlieguePantorrilla"].ToString();
-                                        txbPorcGrasa.Text = dtHistorias.Rows[0]["PorcGrasa"].ToString();
-                                        txbPorcMuscular.Text = dtHistorias.Rows[0]["PorcMuscular"].ToString();
-                                        txbFCETanaka.Text = dtHistorias.Rows[0]["FCETanaka"].ToString();
-                                        txbPesoEsperado.Text = dtHistorias.Rows[0]["PesoEsperado"].ToString();
-                                        txbPesoGraso.Text = dtHistorias.Rows[0]["PesoGraso"].ToString();
-                                        txbPesoMagro.Text = dtHistorias.Rows[0]["PesoMagro"].ToString();
+                                        txbPeso.Text = dtHistorias.Rows[0]["Peso1"].ToString();
+                                        txbTalla.Text = dtHistorias.Rows[0]["Talla1"].ToString();
+                                        txbIMC.Text = dtHistorias.Rows[0]["IMC1"].ToString();
+                                        txbPerimCintura.Text = dtHistorias.Rows[0]["PerimCintura1"].ToString();
+                                        txbPerimCadera.Text = dtHistorias.Rows[0]["PerimCadera1"].ToString();
+                                        txbPerimAbdomen.Text = dtHistorias.Rows[0]["PerimAbdomen1"].ToString();
+                                        txbPerimPecho.Text = dtHistorias.Rows[0]["PerimPecho1"].ToString();
+                                        txbPerimMuslo.Text = dtHistorias.Rows[0]["PerimMuslo1"].ToString();
+                                        txbPerimPantorrilla.Text = dtHistorias.Rows[0]["PerimPantorrilla1"].ToString();
+                                        txbPerimBrazo.Text = dtHistorias.Rows[0]["PerimBrazo1"].ToString();
+                                        txbPliegueTricipital.Text = dtHistorias.Rows[0]["PliegueTricipital1"].ToString();
+                                        txbPliegueIliocrestal.Text = dtHistorias.Rows[0]["PliegueIliocrestal1"].ToString();
+                                        txbPliegueAbdominal.Text = dtHistorias.Rows[0]["PliegueAbdominal1"].ToString();
+                                        txbPliegueSubescapular.Text = dtHistorias.Rows[0]["PliegueSubescapular1"].ToString();
+                                        txbPliegueMuslo.Text = dtHistorias.Rows[0]["PliegueMuslo1"].ToString();
+                                        txbPlieguePantorrilla.Text = dtHistorias.Rows[0]["PlieguePantorrilla1"].ToString();
+                                        txbPorcGrasa.Text = dtHistorias.Rows[0]["PorcGrasa1"].ToString();
+                                        txbPorcMuscular.Text = dtHistorias.Rows[0]["PorcMuscular1"].ToString();
+                                        txbFCETanaka.Text = dtHistorias.Rows[0]["FCETanaka1"].ToString();
+                                        txbPesoEsperado.Text = dtHistorias.Rows[0]["PesoEsperado1"].ToString();
+                                        txbPesoGraso.Text = dtHistorias.Rows[0]["PesoGraso1"].ToString();
+                                        txbPesoMagro.Text = dtHistorias.Rows[0]["PesoMagro1"].ToString();
                                     }
                                 }
                             }

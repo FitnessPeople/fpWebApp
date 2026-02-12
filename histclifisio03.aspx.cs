@@ -52,7 +52,7 @@ namespace fpWebApp
                                         txbWells.Text = dtHistorias.Rows[0]["Wells"].ToString();
                                         txbTestPushup.Text = dtHistorias.Rows[0]["TestPushup"].ToString();
                                         txbTestSentadillas.Text = dtHistorias.Rows[0]["TestSentadillas"].ToString();
-                                        txbNivel.Text = dtHistorias.Rows[0]["Nivel"].ToString();
+                                        txbNivel.Text = dtHistorias.Rows[0]["Nivel1"].ToString();
                                         txbTestCore.Text = dtHistorias.Rows[0]["TestCore"].ToString();
                                         txbFCReposo.Text = dtHistorias.Rows[0]["FCReposoPRC"].ToString();
                                         txbFCTerminaPrueba.Text = dtHistorias.Rows[0]["FCTerminaPrueba"].ToString();

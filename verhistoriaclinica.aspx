@@ -248,38 +248,38 @@
 
                                                                 <ul class="sortable-list connectList agile-list">
 
-                                                                    <li class="warning-element"><b>Medicina prepagada</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="warning-element" style="padding: 3px;"><b>Medicina prepagada</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("MedicinaPrepagada") %>
                                                                         </div>
                                                                     </li>
 
-                                                                    <li class="warning-element"><b>Objetivo del ingreso</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="warning-element" style="padding: 3px;"><b>Objetivo del ingreso</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("Objetivo") %>
                                                                         </div>
                                                                     </li>
 
-                                                                    <li class="warning-element"><b>Detalle objetivo del ingreso</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="warning-element" style="padding: 3px;"><b>Detalle objetivo del ingreso</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("DescripcionObjetivoIngreso") %>
                                                                         </div>
                                                                     </li>
 
-                                                                    <li class="warning-element"><b>Remisión</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="warning-element" style="padding: 3px;"><b>Remisión</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("Remision") %>
                                                                         </div>
                                                                     </li>
 
-                                                                    <li class="warning-element"><b>Tipo de consulta</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="warning-element" style="padding: 3px;"><b>Tipo de consulta</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("TipoConsulta") %>
                                                                         </div>
                                                                     </li>
 
-                                                                    <li class="warning-element"><b>Motivo de consulta</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="warning-element" style="padding: 3px;"><b>Motivo de consulta</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("MotivoConsulta") %>
                                                                         </div>
                                                                     </li>
@@ -287,53 +287,53 @@
                                                                     <br />
                                                                     <h4><i class="fa fa-clock-rotate-left text-success m-r-xs"></i>ANTECEDENTES</h4>
 
-                                                                    <li class="info-element"><b>Familiares</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="info-element" style="padding: 3px;"><b>Familiares</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("AnteFamiliar") %>
                                                                         </div>
                                                                     </li>
-                                                                    <li class="info-element"><b>Patológicos</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="info-element" style="padding: 3px;"><b>Patológicos</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("AntePatologico") %>
                                                                         </div>
                                                                     </li>
-                                                                    <li class="info-element"><b>Quirúrgicos</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="info-element" style="padding: 3px;"><b>Quirúrgicos</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("AnteQuirurgico") %>
                                                                         </div>
                                                                     </li>
-                                                                    <li class="info-element"><b>Traumatológicos</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="info-element" style="padding: 3px;"><b>Traumatológicos</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("AnteTraumatologico") %>
                                                                         </div>
                                                                     </li>
-                                                                    <li class="info-element"><b>Farmacológico</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="info-element" style="padding: 3px;"><b>Farmacológico</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("AnteFarmacologico") %>
                                                                         </div>
                                                                     </li>
-                                                                    <li class="info-element"><b>Actividad física</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="info-element" style="padding: 3px;"><b>Actividad física</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("AnteActividadFisica") %>
                                                                         </div>
                                                                     </li>
-                                                                    <li class="info-element"><b>Toxicológicos alérgicos</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="info-element" style="padding: 3px;"><b>Toxicológicos alérgicos</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("AnteFamiliar") %>
                                                                         </div>
                                                                     </li>
-                                                                    <li class="info-element"><b>Hospitalarios</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="info-element" style="padding: 3px;"><b>Hospitalarios</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("AnteHospitalario") %>
                                                                         </div>
                                                                     </li>
-                                                                    <li class="info-element"><b>Gineco-obstétricos</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="info-element" style="padding: 3px;"><b>Gineco-obstétricos</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("AnteGineco") %>
                                                                         </div>
                                                                     </li>
-                                                                    <li class="info-element"><b>F.U.M.</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="info-element" style="padding: 3px;"><b>F.U.M.</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("AnteFUM") %>
                                                                         </div>
                                                                     </li>
@@ -343,8 +343,8 @@
 
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <li class="success-element"><b>Fuma?</b>
-                                                                                <div class="agile-detail">
+                                                                            <li class="success-element" style="padding: 3px;"><b>Fuma?</b>
+                                                                                <div class="agile-detail" style="margin-top: 0px;">
                                                                                     <%# Eval("Tabaquismo").ToString() == "1"
                                                                                         ? "<i class='fa fa-square-check text-danger'></i> Si"
                                                                                         : "<i class='fa fa-square text-navy'></i> No" %>
@@ -352,8 +352,8 @@
                                                                             </li>
                                                                         </div>
                                                                         <div class="col-lg-6">
-                                                                            <li class="success-element"><b>Cigarrillos x día</b>
-                                                                                <div class="agile-detail">
+                                                                            <li class="success-element" style="padding: 3px;"><b>Cigarrillos x día</b>
+                                                                                <div class="agile-detail" style="margin-top: 0px;">
                                                                                     <%# Eval("Cigarrillos") %>
                                                                                 </div>
                                                                             </li>
@@ -362,8 +362,8 @@
 
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <li class="success-element"><b>Toma?</b>
-                                                                                <div class="agile-detail">
+                                                                            <li class="success-element" style="padding: 3px;"><b>Toma?</b>
+                                                                                <div class="agile-detail" style="margin-top: 0px;">
                                                                                     <%# Eval("Alcoholismo").ToString() == "1"
                                                                                         ? "<i class='fa fa-square-check text-danger'></i> Si"
                                                                                         : "<i class='fa fa-square text-navy'></i> No" %>
@@ -371,8 +371,8 @@
                                                                             </li>
                                                                         </div>
                                                                         <div class="col-lg-6">
-                                                                            <li class="success-element"><b>Frecuencia de bebida</b>
-                                                                                <div class="agile-detail">
+                                                                            <li class="success-element" style="padding: 3px;"><b>Frecuencia de bebida</b>
+                                                                                <div class="agile-detail" style="margin-top: 0px;">
                                                                                     <%# Eval("Bebidas") %>
                                                                                 </div>
                                                                             </li>
@@ -381,8 +381,8 @@
 
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <li class="success-element"><b>Sedentarismo</b>
-                                                                                <div class="agile-detail">
+                                                                            <li class="success-element" style="padding: 3px;"><b>Sedentarismo</b>
+                                                                                <div class="agile-detail" style="margin-top: 0px;">
                                                                                     <%# Eval("Sedentarismo").ToString() == "1"
                                                                                         ? "<i class='fa fa-square-check text-danger'></i> Si"
                                                                                         : "<i class='fa fa-square text-navy'></i> No" %>
@@ -390,8 +390,8 @@
                                                                             </li>
                                                                         </div>
                                                                         <div class="col-lg-6">
-                                                                            <li class="success-element"><b>Diabetes</b>
-                                                                                <div class="agile-detail">
+                                                                            <li class="success-element" style="padding: 3px;"><b>Diabetes</b>
+                                                                                <div class="agile-detail" style="margin-top: 0px;">
                                                                                     <%# Eval("Diabetes").ToString() == "1"
                                                                                         ? "<i class='fa fa-square-check text-danger'></i> Si"
                                                                                         : Eval("Diabetes").ToString() == "2"
@@ -404,8 +404,8 @@
 
                                                                     <div class="row">
                                                                         <div class="col-lg-6">
-                                                                            <li class="success-element"><b>Colesterol</b>
-                                                                                <div class="agile-detail">
+                                                                            <li class="success-element" style="padding: 3px;"><b>Colesterol</b>
+                                                                                <div class="agile-detail" style="margin-top: 0px;">
                                                                                     <%# Eval("Colesterol").ToString() == "1"
                                                                                         ? "<i class='fa fa-square-check text-danger'></i> Si"
                                                                                         : Eval("Colesterol").ToString() == "2"
@@ -415,8 +415,8 @@
                                                                             </li>
                                                                         </div>
                                                                         <div class="col-lg-6">
-                                                                            <li class="success-element"><b>Triglicéridos</b>
-                                                                                <div class="agile-detail">
+                                                                            <li class="success-element" style="padding: 3px;"><b>Triglicéridos</b>
+                                                                                <div class="agile-detail" style="margin-top: 0px;">
                                                                                     <%# Eval("Trigliceridos").ToString() == "1"
                                                                                         ? "<i class='fa fa-square-check text-danger'></i> Si"
                                                                                         : Eval("Trigliceridos").ToString() == "2"
@@ -427,8 +427,8 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <li class="success-element"><b>H.T.A.</b>
-                                                                        <div class="agile-detail">
+                                                                    <li class="success-element" style="padding: 3px;"><b>H.T.A.</b>
+                                                                        <div class="agile-detail" style="margin-top: 0px;">
                                                                             <%# Eval("HTA").ToString() == "1"
                                                                                 ? "<i class='fa fa-square-check text-danger'></i> Si"
                                                                                 : Eval("HTA").ToString() == "2"

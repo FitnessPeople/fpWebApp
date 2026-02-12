@@ -40,6 +40,7 @@ namespace fpWebApp
                             btnAgregar.Visible = true;
                         }
                     }
+                    btnAgregar.Visible = false;
                     ListaHistorias();
                     
                 }

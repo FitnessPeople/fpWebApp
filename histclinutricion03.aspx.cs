@@ -48,7 +48,7 @@ namespace fpWebApp
                                         txbFrutas.Text = dtHistorias.Rows[0]["Frutas"].ToString();
                                         txbCarnes.Text = dtHistorias.Rows[0]["Carnes"].ToString();
                                         txbComidasRapidas.Text = dtHistorias.Rows[0]["ComidasRapidas"].ToString();
-                                        txbCigarrillos.Text = dtHistorias.Rows[0]["Cigarrillos"].ToString();
+                                        txbCigarrillos.Text = dtHistorias.Rows[0]["Cigarrillos1"].ToString();
                                         txbPsicoactivos.Text = dtHistorias.Rows[0]["Psicoactivos"].ToString();
                                         txbHuevos.Text = dtHistorias.Rows[0]["Huevos"].ToString();
                                         txbVisceras.Text = dtHistorias.Rows[0]["Visceras"].ToString();

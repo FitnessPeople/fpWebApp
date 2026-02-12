@@ -43,9 +43,9 @@ namespace fpWebApp
                                     {
                                         //Llena la historia clinica con los datos tomados por el fisioterapeuta.
                                         btnAgregar.Text = "Actualizar y continuar";
-                                        txbFCReposo.Text = dtHistorias.Rows[0]["Cafeina"].ToString();
-                                        txbTAReposo.Text = dtHistorias.Rows[0]["AlimNoTolerados"].ToString();
-                                        txbFCMax.Text = dtHistorias.Rows[0]["Complementos"].ToString();
+                                        txbFCReposo.Text = dtHistorias.Rows[0]["FCReposo"].ToString();
+                                        txbTAReposo.Text = dtHistorias.Rows[0]["TAReposo"].ToString();
+                                        txbFCMax.Text = dtHistorias.Rows[0]["FCMax"].ToString();
                                     }
                                 }
                             }

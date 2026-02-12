@@ -93,7 +93,12 @@ namespace fpWebApp
                                         txbPesoGraso.Text = dtHistorias.Rows[0]["PesoGraso"].ToString();
                                         txbPesoMagro.Text = dtHistorias.Rows[0]["PesoMagro"].ToString();
                                         txbGastoCalorico.Text = dtHistorias.Rows[0]["GastoCalorico"].ToString();
-                                        ddlActividadFisica.SelectedIndex = Convert.ToInt32(ddlActividadFisica.Items.IndexOf(ddlActividadFisica.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["ActividadFisica"]).ToString())));
+                                        object actividad = dtHistorias.Rows[0]["ActividadFisica"];
+                                        if (actividad != DBNull.Value)
+                                        {
+                                            string valor = actividad.ToString();
+                                            ddlActividadFisica.SelectedValue = valor;
+                                        }
                                         txbGastoTotal.Text = dtHistorias.Rows[0]["GastoTotal"].ToString();
                                         txbDiagnostico.Text = dtHistorias.Rows[0]["Diagnostico"].ToString();
                                         txbPlanManejo.Text = dtHistorias.Rows[0]["PlanManejo"].ToString();
