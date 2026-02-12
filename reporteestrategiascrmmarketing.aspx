@@ -24,6 +24,14 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
+        <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <%--<link href="css/plugins/footable/footable.bootstrap.css" rel="stylesheet" />--%>
     <!-- FooTable -->
