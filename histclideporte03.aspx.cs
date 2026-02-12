@@ -30,6 +30,25 @@ namespace fpWebApp
 
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+
+                                //Consulta si tiene datos de deportologo asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaDeportiva"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el deportologo.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        txbWells.Text = dtHistorias.Rows[0]["Wells"].ToString();
+                                        txbOsteomuscular.Text = dtHistorias.Rows[0]["Osteomuscular"].ToString();
+                                        txbCardiovascular.Text = dtHistorias.Rows[0]["Cardiovascular"].ToString();
+                                        txbOtros.Text = dtHistorias.Rows[0]["Otros"].ToString();
+                                        txbDiagnostico.Text = dtHistorias.Rows[0]["Diagnostico"].ToString();
+                                        txbNivel.Text = dtHistorias.Rows[0]["Nivel"].ToString();
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;

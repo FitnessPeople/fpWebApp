@@ -175,10 +175,9 @@
                                                     <div class="col-xs-6">
                                                         <div class="form-group">
                                                             <label>Sede:</label>
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
-                                                                OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged"
-                                                                DataValueField="idSede" DataTextField="NombreSede"
-                                                                AutoPostBack="true" AppendDataBoundItems="true">
+                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlConsultorios" runat="server"
+                                                                DataValueField="idConsultorio" DataTextField="ConsultorioSede" AppendDataBoundItems="true">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>

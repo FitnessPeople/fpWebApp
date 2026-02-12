@@ -307,9 +307,12 @@
     <Content Include="controles\indicadoresconcursogympass.ascx" />
     <Content Include="controles\indicadoresDirCom.ascx" />
     <Content Include="controles\indicadoresDirFin.ascx" />
+    <Content Include="controles\indicadoresDirMark.ascx" />
     <Content Include="controles\indicadoresDirOpe.ascx" />
+    <Content Include="controles\indicadoresDirRRHH.ascx" />
     <Content Include="controles\indicadoresgympass.ascx" />
     <Content Include="controles\indicadoresLidAsis.ascx" />
+    <Content Include="controles\indicadoresLidCorp.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
     <Content Include="controles\indicadoressoporte.ascx" />
     <Content Include="controles\indicadoresusucrm.ascx" />
@@ -1484,12 +1487,26 @@
     <Compile Include="controles\indicadoresDirFin.ascx.designer.cs">
       <DependentUpon>indicadoresDirFin.ascx</DependentUpon>
     </Compile>
+    <Compile Include="controles\indicadoresDirMark.ascx.cs">
+      <DependentUpon>indicadoresDirMark.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresDirMark.ascx.designer.cs">
+      <DependentUpon>indicadoresDirMark.ascx</DependentUpon>
+    </Compile>
     <Compile Include="controles\indicadoresDirOpe.ascx.cs">
       <DependentUpon>indicadoresDirOpe.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="controles\indicadoresDirOpe.ascx.designer.cs">
       <DependentUpon>indicadoresDirOpe.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoresDirRRHH.ascx.cs">
+      <DependentUpon>indicadoresDirRRHH.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresDirRRHH.ascx.designer.cs">
+      <DependentUpon>indicadoresDirRRHH.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresgympass.ascx.cs">
       <DependentUpon>indicadoresgympass.ascx</DependentUpon>
@@ -1504,6 +1521,13 @@
     </Compile>
     <Compile Include="controles\indicadoresLidAsis.ascx.designer.cs">
       <DependentUpon>indicadoresLidAsis.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoresLidCorp.ascx.cs">
+      <DependentUpon>indicadoresLidCorp.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresLidCorp.ascx.designer.cs">
+      <DependentUpon>indicadoresLidCorp.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresmedico.ascx.cs">
       <DependentUpon>indicadoresmedico.ascx</DependentUpon>

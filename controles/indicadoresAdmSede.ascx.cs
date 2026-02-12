@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace fpWebApp.controles
         protected void Page_Load(object sender, EventArgs e)
         {
             CargarIndicadoresAdminSede();
+            CargarKPIAsesores(Convert.ToInt32(Session["idCanalVenta"]));
         }
 
         protected void CargarIndicadoresAdminSede()
@@ -34,8 +36,45 @@ namespace fpWebApp.controles
 
                 lblTicketPromedio.Text = Convert.ToDecimal(row["TicketPromedio"]).ToString("N2");
             }
-
-
         }
+
+        protected void CargarKPIAsesores(int idCanalVenta)
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarIndicadoresKPIAsesoresenCanalVentaMesActual(idCanalVenta);
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    rptKPIAsesores.DataSource = dt;
+                    rptKPIAsesores.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+        }
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+        }
+
     }
 }

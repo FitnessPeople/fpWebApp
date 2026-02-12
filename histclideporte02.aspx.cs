@@ -57,6 +57,41 @@ namespace fpWebApp
 
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+
+                                //Consulta si tiene datos de deportologo asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaDeportiva"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el deportologo.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        txbPeso.Text = dtHistorias.Rows[0]["Peso1"].ToString();
+                                        txbTalla.Text = dtHistorias.Rows[0]["Talla1"].ToString();
+                                        txbIMC.Text = dtHistorias.Rows[0]["IMC1"].ToString();
+                                        txbPerimCintura.Text = dtHistorias.Rows[0]["PerimCintura1"].ToString();
+                                        txbPerimCadera.Text = dtHistorias.Rows[0]["PerimCadera1"].ToString();
+                                        txbPerimAbdomen.Text = dtHistorias.Rows[0]["PerimAbdomen1"].ToString();
+                                        txbPerimPecho.Text = dtHistorias.Rows[0]["PerimPecho1"].ToString();
+                                        txbPerimMuslo.Text = dtHistorias.Rows[0]["PerimMuslo1"].ToString();
+                                        txbPerimPantorrilla.Text = dtHistorias.Rows[0]["PerimPantorrilla1"].ToString();
+                                        txbPerimBrazo.Text = dtHistorias.Rows[0]["PerimBrazo1"].ToString();
+                                        txbPliegueTricipital.Text = dtHistorias.Rows[0]["PliegueTricipital1"].ToString();
+                                        txbPliegueIliocrestal.Text = dtHistorias.Rows[0]["PliegueIliocrestal1"].ToString();
+                                        txbPliegueAbdominal.Text = dtHistorias.Rows[0]["PliegueAbdominal1"].ToString();
+                                        txbPliegueSubescapular.Text = dtHistorias.Rows[0]["PliegueSubescapular1"].ToString();
+                                        txbPliegueMuslo.Text = dtHistorias.Rows[0]["PliegueMuslo1"].ToString();
+                                        txbPlieguePantorrilla.Text = dtHistorias.Rows[0]["PlieguePantorrilla1"].ToString();
+                                        txbPorcGrasa.Text = dtHistorias.Rows[0]["PorcGrasa1"].ToString();
+                                        txbPorcMuscular.Text = dtHistorias.Rows[0]["PorcMuscular1"].ToString();
+                                        txbFCETanaka.Text = dtHistorias.Rows[0]["FCETanaka1"].ToString();
+                                        txbPesoEsperado.Text = dtHistorias.Rows[0]["PesoEsperado1"].ToString();
+                                        txbPesoGraso.Text = dtHistorias.Rows[0]["PesoGraso1"].ToString();
+                                        txbPesoMagro.Text = dtHistorias.Rows[0]["PesoMagro1"].ToString();
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;

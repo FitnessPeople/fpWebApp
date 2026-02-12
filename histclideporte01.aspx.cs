@@ -32,6 +32,28 @@ namespace fpWebApp
 
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+
+                                //Consulta si tiene datos de deportologo asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaDeportiva"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el deportologo.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        object aha = dtHistorias.Rows[0]["AHA"];
+                                        if (aha != DBNull.Value)
+                                        {
+                                            string valor = aha.ToString();
+                                            ddlClasificacionRiesgo.SelectedValue = valor;
+                                        }
+                                        txbFCReposo.Text = dtHistorias.Rows[0]["FCReposo"].ToString();
+                                        txbTAReposo.Text = dtHistorias.Rows[0]["TAReposo"].ToString();
+                                        txbFCMax.Text = dtHistorias.Rows[0]["FCMax"].ToString();
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;
@@ -143,13 +165,33 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.InsertarHistoriaDeportologo1(
-                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
-                    ddlClasificacionRiesgo.SelectedItem.Value.ToString(),
-                    txbFCReposo.Text.ToString(),
-                    txbTAReposo.Text.ToString(),
-                    txbFCMax.Text.ToString()
-                    );
+                string mensaje = string.Empty;
+
+                if (btnAgregar.Text == "Guardar y continuar")
+                {
+                    // Insertar
+                    mensaje = cg.InsertarHistoriaDeportologoParteUno(
+                        Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                        ddlClasificacionRiesgo.SelectedItem.Value.ToString(),
+                        txbFCReposo.Text.ToString(),
+                        txbTAReposo.Text.ToString(),
+                        txbFCMax.Text.ToString()
+                        );
+                }
+                else
+                {
+                    if (btnAgregar.Text == "Actualizar y continuar")
+                    {
+                        //Actualizar
+                        mensaje = cg.ActualizarHistoriaDeportologoParteUno(
+                            Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                            ddlClasificacionRiesgo.SelectedItem.Value.ToString(),
+                            txbFCReposo.Text.ToString(),
+                            txbTAReposo.Text.ToString(),
+                            txbFCMax.Text.ToString()
+                            );
+                    }
+                }
 
                 if (mensaje == "OK")
                 {

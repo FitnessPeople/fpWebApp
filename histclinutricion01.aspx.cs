@@ -40,9 +40,24 @@ namespace fpWebApp
                                     {
                                         //Llena la historia clinica con los datos tomados por el nutricionista.
                                         btnAgregar.Text = "Actualizar y continuar";
-                                        rblGastritis.SelectedIndex = Convert.ToInt32(rblGastritis.Items.IndexOf(rblGastritis.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["Gastritis"]).ToString())));
-                                        rblColon.SelectedIndex = Convert.ToInt32(rblColon.Items.IndexOf(rblColon.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["Colon"]).ToString())));
-                                        rblEstrenimiento.SelectedIndex = Convert.ToInt32(rblEstrenimiento.Items.IndexOf(rblEstrenimiento.Items.FindByValue(Convert.ToInt16(dtHistorias.Rows[0]["Estrenimiento"]).ToString())));
+                                        object gastritis = dtHistorias.Rows[0]["Gastritis"];
+                                        if (gastritis != DBNull.Value)
+                                        {
+                                            string valor = gastritis.ToString();
+                                            rblGastritis.SelectedValue = valor;
+                                        }
+                                        object colon = dtHistorias.Rows[0]["Colon"];
+                                        if (colon != DBNull.Value)
+                                        {
+                                            string valor = colon.ToString();
+                                            rblColon.SelectedValue = valor;
+                                        }
+                                        object estrenimiento = dtHistorias.Rows[0]["Estrenimiento"];
+                                        if (estrenimiento != DBNull.Value)
+                                        {
+                                            string valor = estrenimiento.ToString();
+                                            rblEstrenimiento.SelectedValue = valor;
+                                        }
                                         txbCafeina.Text = dtHistorias.Rows[0]["Cafeina"].ToString();
                                         txbAlimNoTolerados.Text = dtHistorias.Rows[0]["AlimNoTolerados"].ToString();
                                         txbComplementos.Text = dtHistorias.Rows[0]["Complementos"].ToString();

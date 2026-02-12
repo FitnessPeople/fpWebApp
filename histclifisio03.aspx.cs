@@ -38,6 +38,28 @@ namespace fpWebApp
 
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+
+                                //Consulta si tiene datos de fisioterapia asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaFisio"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el fisioterapeuta.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        txbWells.Text = dtHistorias.Rows[0]["Wells"].ToString();
+                                        txbTestPushup.Text = dtHistorias.Rows[0]["TestPushup"].ToString();
+                                        txbTestSentadillas.Text = dtHistorias.Rows[0]["TestSentadillas"].ToString();
+                                        txbNivel.Text = dtHistorias.Rows[0]["Nivel1"].ToString();
+                                        txbTestCore.Text = dtHistorias.Rows[0]["TestCore"].ToString();
+                                        txbFCReposo.Text = dtHistorias.Rows[0]["FCReposoPRC"].ToString();
+                                        txbFCTerminaPrueba.Text = dtHistorias.Rows[0]["FCTerminaPrueba"].ToString();
+                                        txbFCMinuto.Text = dtHistorias.Rows[0]["FCMinuto"].ToString();
+                                        txbIndiceRend.Text = dtHistorias.Rows[0]["IndiceRend"].ToString();
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;
@@ -150,19 +172,7 @@ namespace fpWebApp
             //Actualiza datos en la tabla HistoriaFisioterapeuta
             try
             {
-                //string strQuery = "UPDATE HistoriaFisioterapeuta SET " +
-                //    "Wells = " + txbWells.Text.ToString() + ", " +
-                //    "TestPushup = " + txbTestPushup.Text.ToString() + ", " +
-                //    "TestSentadillas = " + txbTestSentadillas.Text.ToString() + ", " +
-                //    "Nivel = " + txbNivel.Text.ToString() + ", " +
-                //    "TestCore = " + txbTestCore.Text.ToString() + ", " +
-                //    "FCReposoPRC = " + txbFCReposo.Text.ToString() + ", " +
-                //    "FCTerminaPrueba = " + txbFCTerminaPrueba.Text.ToString() + ", " +
-                //    "FCMinuto = " + txbFCMinuto.Text.ToString() + ", " +
-                //    "IndiceRend = " + txbIndiceRend.Text.ToString() + " " +
-                //    "WHERE idHistoria = " + Request.QueryString["idHistoria"].ToString();
                 clasesglobales cg = new clasesglobales();
-                //string mensaje = cg.TraerDatosStr(strQuery);
                 string mensaje = cg.ActualizarHistoriaFisioterapeuta3(
                     Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
                     Convert.ToDouble(txbWells.Text.ToString()),

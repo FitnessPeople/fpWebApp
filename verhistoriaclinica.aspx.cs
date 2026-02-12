@@ -126,6 +126,10 @@ namespace fpWebApp
                     ltFoto.Text = "<img src=\"img/afiliados/avatar_female.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
                 }
             }
+
+            DataTable dtHistorico = cg.TraerDatos(@"SELECT * FROM HistoriasClinicasClez WHERE numero_documento = " + dt.Rows[0]["DocumentoAfiliado"].ToString());
+            rpHistorico.DataSource = dtHistorico;
+            rpHistorico.DataBind();
         }
 
         private void CargarHistoriasClinicas(string idAfiliado)

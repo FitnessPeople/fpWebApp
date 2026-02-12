@@ -28,6 +28,34 @@ namespace fpWebApp
                             {
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+
+                                //Consulta si tiene datos de nutrición asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaAlimentaria"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el nutricionista.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        txbDesayuno.Text = dtHistorias.Rows[0]["Desayuno"].ToString();
+                                        txbNueves.Text = dtHistorias.Rows[0]["Nueves"].ToString();
+                                        txbAlmuerzo.Text = dtHistorias.Rows[0]["Almuerzo"].ToString();
+                                        txbOnces.Text = dtHistorias.Rows[0]["Onces"].ToString();
+                                        txbCena.Text = dtHistorias.Rows[0]["Cena"].ToString();
+                                        txbMerienda.Text = dtHistorias.Rows[0]["Merienda"].ToString();
+                                        txbDatosBioquimicos.Text = dtHistorias.Rows[0]["DatosBioquimicos"].ToString();
+                                        txbMedicamentos.Text = dtHistorias.Rows[0]["Medicamentos"].ToString();
+                                        txbAlergias.Text = dtHistorias.Rows[0]["Alergias"].ToString();
+                                        txbProteinas.Text = dtHistorias.Rows[0]["Proteinas"].ToString();
+                                        txbCarbohidratos.Text = dtHistorias.Rows[0]["Carbohidratos"].ToString();
+                                        txbSomatotipo.Text = dtHistorias.Rows[0]["Somatotipo"].ToString();
+                                        txbHoraLevanta.Text = dtHistorias.Rows[0]["HoraLevanta"].ToString();
+                                        txbHoraDesayuno.Text = dtHistorias.Rows[0]["HoraDesayuno"].ToString();
+                                        txbHoraAcuesta.Text = dtHistorias.Rows[0]["HoraAcuesta"].ToString();
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;

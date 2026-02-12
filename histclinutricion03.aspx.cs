@@ -28,6 +28,40 @@ namespace fpWebApp
                             {
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+
+                                //Consulta si tiene datos de nutrición asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaAlimentaria"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el nutricionista.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        txbLacteos.Text = dtHistorias.Rows[0]["Lacteos"].ToString();
+                                        txbAzucares.Text = dtHistorias.Rows[0]["Azucares"].ToString();
+                                        txbGaseosa.Text = dtHistorias.Rows[0]["Gaseosa"].ToString();
+                                        txbVerduras.Text = dtHistorias.Rows[0]["Verduras"].ToString();
+                                        txbSalsamentaria.Text = dtHistorias.Rows[0]["Salsamentaria"].ToString();
+                                        txbAgua.Text = dtHistorias.Rows[0]["Agua"].ToString();
+                                        txbFrutas.Text = dtHistorias.Rows[0]["Frutas"].ToString();
+                                        txbCarnes.Text = dtHistorias.Rows[0]["Carnes"].ToString();
+                                        txbComidasRapidas.Text = dtHistorias.Rows[0]["ComidasRapidas"].ToString();
+                                        txbCigarrillos.Text = dtHistorias.Rows[0]["Cigarrillos1"].ToString();
+                                        txbPsicoactivos.Text = dtHistorias.Rows[0]["Psicoactivos"].ToString();
+                                        txbHuevos.Text = dtHistorias.Rows[0]["Huevos"].ToString();
+                                        txbVisceras.Text = dtHistorias.Rows[0]["Visceras"].ToString();
+                                        txbSopas.Text = dtHistorias.Rows[0]["Sopas"].ToString();
+                                        txbPaquetes.Text = dtHistorias.Rows[0]["Paquetes"].ToString();
+                                        txbCereales.Text = dtHistorias.Rows[0]["Cereales"].ToString();
+                                        txbRaices.Text = dtHistorias.Rows[0]["Raices"].ToString();
+                                        txbPan.Text = dtHistorias.Rows[0]["Pan"].ToString();
+                                        txbGrasas.Text = dtHistorias.Rows[0]["Grasas"].ToString();
+                                        txbAlcohol.Text = dtHistorias.Rows[0]["Alcohol"].ToString();
+                                        txbBebidaHidratante.Text = dtHistorias.Rows[0]["BebidaHidratante"].ToString();
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;

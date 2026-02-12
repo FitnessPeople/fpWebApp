@@ -25,7 +25,7 @@ namespace fpWebApp
                 ObtenerReporteSeleccionado();
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Mis ventas");
+                    ValidarPermisos("Reportes operativos");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         //No tiene acceso a esta página

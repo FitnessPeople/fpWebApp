@@ -29,6 +29,46 @@ namespace fpWebApp
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
                                 CargarCie10();
+
+                                //Consulta si tiene datos de fisioterapia asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaFisio"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el fisioterapeuta.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        txbCabezaAdelantada.Text = dtHistorias.Rows[0]["CabezaAdelantada"].ToString();
+                                        txbHombrosDesalineados.Text = dtHistorias.Rows[0]["HombrosDesalineados"].ToString();
+                                        txbHipercifosisDorsal.Text = dtHistorias.Rows[0]["HipercifosisDorsal"].ToString();
+                                        txbEscoliosis.Text = dtHistorias.Rows[0]["Escoliosis"].ToString();
+                                        txbDismetrias.Text = dtHistorias.Rows[0]["Dismetrias"].ToString();
+                                        txbGenuValgus.Text = dtHistorias.Rows[0]["GenuValgus"].ToString();
+                                        txbGenuVarus.Text = dtHistorias.Rows[0]["GenuVarus"].ToString();
+                                        txbGenuRecurbatum.Text = dtHistorias.Rows[0]["GenuRecurbatum"].ToString();
+                                        txbGenuAntecurbatum.Text = dtHistorias.Rows[0]["GenuAntecurbatum"].ToString();
+                                        txbPiePlano.Text = dtHistorias.Rows[0]["PiePlano"].ToString();
+                                        txbPieCavus.Text = dtHistorias.Rows[0]["PieCavus"].ToString();
+                                        object apto = dtHistorias.Rows[0]["Apto"];
+                                        if (apto != DBNull.Value)
+                                        {
+                                            string valor = apto.ToString();
+                                            ddlApto.SelectedValue = valor;
+                                        }
+                                        txbRestricciones.Text = dtHistorias.Rows[0]["Restricciones"].ToString();
+                                        txbDiagnostico.Text = dtHistorias.Rows[0]["Diagnostico"].ToString();
+                                        txbRecomendaciones.Text = dtHistorias.Rows[0]["Observaciones"].ToString();
+                                        txbObservaciones.Text = dtHistorias.Rows[0]["Recomendaciones"].ToString();
+                                        object cie10 = dtHistorias.Rows[0]["idCie10"];
+                                        if (cie10 != DBNull.Value)
+                                        {
+                                            string valor = cie10.ToString();
+                                            ddlCie10.SelectedValue = valor;
+                                        }
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;

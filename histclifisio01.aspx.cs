@@ -32,6 +32,22 @@ namespace fpWebApp
 
                                 MostrarDatosAfiliado(Request.QueryString["idAfiliado"].ToString());
                                 CargarHistoriasClinicas(Request.QueryString["idAfiliado"].ToString());
+
+                                //Consulta si tiene datos de fisioterapia asociado a la historia del afiliado
+                                clasesglobales cg = new clasesglobales();
+                                DataTable dtHistorias = cg.ConsultarHistoriaClinicaPorId(Convert.ToInt32(Request.QueryString["idHistoria"].ToString()));
+
+                                if (dtHistorias.Rows.Count > 0)
+                                {
+                                    if (dtHistorias.Rows[0]["idHistoriaFisio"].ToString() != "")
+                                    {
+                                        //Llena la historia clinica con los datos tomados por el fisioterapeuta.
+                                        btnAgregar.Text = "Actualizar y continuar";
+                                        txbFCReposo.Text = dtHistorias.Rows[0]["FCReposo"].ToString();
+                                        txbTAReposo.Text = dtHistorias.Rows[0]["TAReposo"].ToString();
+                                        txbFCMax.Text = dtHistorias.Rows[0]["FCMax"].ToString();
+                                    }
+                                }
                             }
 
                             btnAgregar.Visible = true;
@@ -142,20 +158,32 @@ namespace fpWebApp
             //Inserta datos en la tabla HistoriaFisioterapeuta
             try
             {
-                //string strQuery = "INSERT INTO HistoriaFisioterapeuta " +
-                //"(idHistoria, FCReposo, TAReposo, FCMax) " +
-                //"VALUES (" + Request.QueryString["idHistoria"].ToString() + ", " +
-                //"'" + txbFCReposo.Text.ToString() + "', " +
-                //"'" + txbTAReposo.Text.ToString() + "', " +
-                //"'" + txbFCMax.Text.ToString() + "') ";
                 clasesglobales cg = new clasesglobales();
-                //string mensaje = cg.TraerDatosStr(strQuery);
-                string mensaje = cg.InsertarHistoriaFisioterapeuta1(
-                    Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
-                    txbFCReposo.Text.ToString(),
-                    txbTAReposo.Text.ToString(),
-                    txbFCMax.Text.ToString()
-                    );
+                string mensaje = string.Empty;
+
+                if (btnAgregar.Text == "Guardar y continuar")
+                {
+                    // Insertar
+                    mensaje = cg.InsertarHistoriaFisioterapeutaParteUno(
+                        Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                        txbFCReposo.Text.ToString(),
+                        txbTAReposo.Text.ToString(),
+                        txbFCMax.Text.ToString()
+                        );
+                }
+                else
+                {
+                    if (btnAgregar.Text == "Actualizar y continuar")
+                    {
+                        //Actualizar
+                        mensaje = cg.ActualizarHistoriaFisioterapeutaParteUno(
+                            Convert.ToInt32(Request.QueryString["idHistoria"].ToString()),
+                            txbFCReposo.Text.ToString(),
+                            txbTAReposo.Text.ToString(),
+                            txbFCMax.Text.ToString()
+                            );
+                    }
+                }
 
                 if (mensaje == "OK")
                 {

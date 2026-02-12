@@ -445,12 +445,12 @@
                                                             <label>Clasificación de riesgo cardiovascular (AHA)</label>
                                                             <asp:DropDownList ID="ddlClasificacionRiesgo" runat="server" CssClass="form-control input-sm">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                                <asp:ListItem Text="A1" Value="66"></asp:ListItem>
-                                                                <asp:ListItem Text="A2" Value="67"></asp:ListItem>
-                                                                <asp:ListItem Text="A3" Value="68"></asp:ListItem>
-                                                                <asp:ListItem Text="B" Value="69"></asp:ListItem>
-                                                                <asp:ListItem Text="C" Value="70"></asp:ListItem>
-                                                                <asp:ListItem Text="D" Value="71"></asp:ListItem>
+                                                                <asp:ListItem Text="A1" Value="A1"></asp:ListItem>
+                                                                <asp:ListItem Text="A2" Value="A2"></asp:ListItem>
+                                                                <asp:ListItem Text="A3" Value="A3"></asp:ListItem>
+                                                                <asp:ListItem Text="B" Value="B"></asp:ListItem>
+                                                                <asp:ListItem Text="C" Value="C"></asp:ListItem>
+                                                                <asp:ListItem Text="D" Value="D"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>

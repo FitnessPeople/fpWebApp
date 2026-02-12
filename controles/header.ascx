@@ -197,6 +197,12 @@
             </a>
         </li>
 
+        <li class="dropdown">
+            <a class="count-info" href="soporte">
+                <i class="fa fa-screwdriver-wrench text-success"></i>
+            </a>
+        </li>
+
         <li class="pull-right m-r-md">
             <a class="right-sidebar-toggle">
                 <i class="fa fa-tasks"></i>

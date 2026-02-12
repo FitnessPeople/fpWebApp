@@ -23,11 +23,11 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        CargarSedes();
+                        CargarConsultorios();
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
-                        CargarSedes();
+                        CargarConsultorios();
                         btnAsignar.Visible = true;
                         divAfil.Visible = true;
                     }
@@ -66,27 +66,19 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarSedes()
+        private void CargarConsultorios()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarSedes("Gimnasio");
+            DataTable dt = cg.ConsultaConsultorios();
 
-            ddlSedes.Items.Clear();
-            ddlSedes.DataSource = dt;
-            ddlSedes.DataBind();
+            ddlConsultorios.Items.Clear();
+            ddlConsultorios.DataSource = dt;
+            ddlConsultorios.DataBind();
 
             dt.Dispose();
 
-            string idSede = Session["idSede"].ToString(); // ejemplo
-
-            // Marca como seleccionado el ítem correspondiente
-            if (ddlSedes.Items.FindByValue(idSede) != null)
-            {
-                ddlSedes.SelectedValue = idSede;
-            }
-
-            ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
-
+            //ltConsultorio.Text = ddlConsultoriosAgenda.SelectedItem.Text.ToString();
+            //CargarAgenda(ddlConsultoriosAgenda.SelectedItem.Value.ToString());
             CargarAgenda();
         }
 
@@ -106,19 +98,10 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ddlSedes.SelectedItem.Value.ToString() != "")
-            {
-                ltSede.Text = ddlSedes.SelectedItem.Text.ToString();
-                CargarAgenda();
-            }
-        }
-
         private void CargarAgenda()
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarAgendaPorSedePorEspecialidad(int.Parse(ddlSedes.SelectedItem.Value.ToString()), int.Parse(ddlEspecialidad.SelectedItem.Value.ToString()));
+            DataTable dt = cg.ConsultaCargarAgendaPorSedePorEspecialidad(int.Parse(ddlConsultorios.SelectedItem.Value.ToString()), int.Parse(ddlEspecialidad.SelectedItem.Value.ToString()));
 
             _strEventos = "events: [\r\n";
 
