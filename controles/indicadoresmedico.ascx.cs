@@ -15,7 +15,7 @@ namespace fpWebApp.controles
 
         private void CuantosEspecialistasActivos()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM Especialistas WHERE EstadoEspecialista = 'Activo'";
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM Empleados WHERE idCargo in (18, 29, 30)";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
@@ -26,7 +26,7 @@ namespace fpWebApp.controles
 
         private void CuantosEspecialistasInactivos()
         {
-            string strQuery = "SELECT COUNT(*) AS cuantos FROM Especialistas WHERE EstadoEspecialista = 'Inactivo'";
+            string strQuery = "SELECT COUNT(*) AS cuantos FROM Empleados WHERE idCargo in (18, 29, 30)";
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
