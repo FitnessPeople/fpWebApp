@@ -48,23 +48,23 @@
                     <p>
                         <b>Paso 1: Prepara la información</b><br />
                         Asegúrate de tener estos datos del usuario a mano:<br />
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre(s) y Apellido(s).</b><br />
-                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Email.</b><br />
-                        <i class="fa-solid fa-user-tie" style="color: #0D6EFD;"></i> <b>Cargo, Pefil y Empleado.</b><br />
-                        <i class="fa-solid fa-lock" style="color: #0D6EFD;"></i> <b>Contraseña.</b>
-                    <br />
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i><b>Nombre(s) y Apellido(s).</b><br />
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i><b>Email.</b><br />
+                        <i class="fa-solid fa-user-tie" style="color: #0D6EFD;"></i><b>Cargo, Pefil y Empleado.</b><br />
+                        <i class="fa-solid fa-lock" style="color: #0D6EFD;"></i><b>Contraseña.</b>
+                        <br />
                         <br />
                         <b>Paso 2: Completa el formulario</b><br />
-                        <i class="fa-solid fa-pencil"></i> Llena todos los campos obligatorios (generalmente marcados con *).<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Verifica que los datos estén correctos y actualizados.
+                        <i class="fa-solid fa-pencil"></i>Llena todos los campos obligatorios (generalmente marcados con *).<br />
+                        <i class="fa-solid fa-magnifying-glass"></i>Verifica que los datos estén correctos y actualizados.
                     <br />
                         <br />
                         <b>Paso 3: Confirma o cancela</b><br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Agregar:</b> Guarda la información y finaliza el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
                     <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -174,9 +174,35 @@
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Empleado</label>
-                                                    <asp:DropDownList ID="ddlEmpleados" runat="server" AppendDataBoundItems="true" DataTextField="NombreEmpleado" DataValueField="DocumentoEmpleado" CssClass="form-control input-sm m-b">
+                                                    <asp:DropDownList
+                                                        ID="ddlEmpleados"
+                                                        runat="server"
+                                                        AppendDataBoundItems="true"
+                                                        DataTextField="NombreEmpleado"
+                                                        DataValueField="DocumentoEmpleado"
+                                                        CssClass="form-control input-sm m-b"
+                                                        AutoPostBack="true"
+                                                        OnSelectedIndexChanged="ddlEmpleados_SelectedIndexChanged">
+
                                                         <asp:ListItem Text="Ninguno" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Canal de ventas</label>
+                                                    <asp:DropDownList
+                                                        ID="ddlCanalVenta"
+                                                        runat="server"
+                                                        AppendDataBoundItems="true"
+                                                        DataTextField="NombreCanalVenta"
+                                                        DataValueField="idCanalVenta"
+                                                        CssClass="form-control input-sm m-b">
+                                                    </asp:DropDownList>
+
                                                 </div>
                                             </div>
                                         </div>

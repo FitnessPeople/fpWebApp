@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -29,6 +30,8 @@ namespace fpWebApp
                         CargarCargos();
                         CargarPerfiles();
                         CargarEmpleados();
+                        CargarCanalesVenta();
+                       
                     }
                     else
                     {
@@ -73,6 +76,25 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarCargos();
             ddlCargo.DataSource = dt;
             ddlCargo.DataBind();
+            dt.Dispose();
+        }
+        private void CargarCanalesVenta()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCanalesVenta();
+
+            ddlCanalVenta.DataSource = dt;
+            ddlCanalVenta.DataTextField = "NombreCanalVenta";      
+            ddlCanalVenta.DataValueField = "idCanalVenta";   
+            ddlCanalVenta.DataBind();
+
+            // 👇 Ahora sí puedes eliminar el 15
+            ListItem item = ddlCanalVenta.Items.FindByValue("15");
+            if (item != null)
+            {
+                ddlCanalVenta.Items.Remove(item);
+            }
+
             dt.Dispose();
         }
 
@@ -196,5 +218,47 @@ namespace fpWebApp
                 }
             }
         }
+
+        protected void ddlEmpleados_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string documento = ddlEmpleados.SelectedValue;
+
+            if (!string.IsNullOrEmpty(documento))
+            {
+                CargarEmpleado(documento);
+            }
+            else
+            {
+                LimpiarCampos();
+            }
+        }
+
+        private void CargarEmpleado(string documento)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEmpleado(documento);
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+
+                //txtNombre.Text = row["NombreEmpleado"].ToString();
+                //txtTelefono.Text = row["Telefono"].ToString();
+                //txtCorreo.Text = row["Correo"].ToString();
+                //txtDireccion.Text = row["Direccion"].ToString();
+                // agrega los demás campos aquí
+            }
+        }
+
+        private void LimpiarCampos()
+        {
+        //    txtNombre.Text = "";
+        //    txtTelefono.Text = "";
+        //    txtCorreo.Text = "";
+        //    txtDireccion.Text = "";
+        }
+
+
+
     }
 }

@@ -294,6 +294,7 @@
     <Content Include="controles\graficosDirCom.ascx" />
     <Content Include="controles\graficosDirFin.ascx" />
     <Content Include="controles\graficosDirOpe.ascx" />
+    <Content Include="controles\graficosDirRRHH.ascx" />
     <Content Include="controles\graficosLidAsis.ascx" />
     <Content Include="controles\header.ascx" />
     <Content Include="controles\indicadoresAdmSede.ascx" />
@@ -1397,6 +1398,13 @@
     </Compile>
     <Compile Include="controles\graficosDirOpe.ascx.designer.cs">
       <DependentUpon>graficosDirOpe.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\graficosDirRRHH.ascx.cs">
+      <DependentUpon>graficosDirRRHH.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\graficosDirRRHH.ascx.designer.cs">
+      <DependentUpon>graficosDirRRHH.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\graficosLidAsis.ascx.cs">
       <DependentUpon>graficosLidAsis.ascx</DependentUpon>
