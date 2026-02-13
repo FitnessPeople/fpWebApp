@@ -116,7 +116,7 @@ namespace fpWebApp
                             break;
                         case "Director gestión humana":
                             ctrIndicadores = LoadControl("controles/indicadoresDirRRHH.ascx");
-                            ctrGraficos = LoadControl("controles/graficosCEO.ascx");
+                            ctrGraficos = LoadControl("controles/graficosDirRRHH.ascx");
                             break;
 
                         default:

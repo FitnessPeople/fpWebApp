@@ -24,6 +24,14 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#nuevousuario");
@@ -32,6 +40,7 @@
             element2.classList.remove("collapse");
         }
     </script>
+
 </head>
 
 <body onload="changeClass()">
@@ -48,23 +57,23 @@
                     <p>
                         <b>Paso 1: Prepara la información</b><br />
                         Asegúrate de tener estos datos del usuario a mano:<br />
-                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i> <b>Nombre(s) y Apellido(s).</b><br />
-                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i> <b>Email.</b><br />
-                        <i class="fa-solid fa-user-tie" style="color: #0D6EFD;"></i> <b>Cargo, Pefil y Empleado.</b><br />
-                        <i class="fa-solid fa-lock" style="color: #0D6EFD;"></i> <b>Contraseña.</b>
-                    <br />
+                        <i class="fa-solid fa-user" style="color: #0D6EFD;"></i><b>Nombre(s) y Apellido(s).</b><br />
+                        <i class="fa-solid fa-phone" style="color: #0D6EFD;"></i><b>Email.</b><br />
+                        <i class="fa-solid fa-user-tie" style="color: #0D6EFD;"></i><b>Cargo, Pefil y Empleado.</b><br />
+                        <i class="fa-solid fa-lock" style="color: #0D6EFD;"></i><b>Contraseña.</b>
+                        <br />
                         <br />
                         <b>Paso 2: Completa el formulario</b><br />
-                        <i class="fa-solid fa-pencil"></i> Llena todos los campos obligatorios (generalmente marcados con *).<br />
-                        <i class="fa-solid fa-magnifying-glass"></i> Verifica que los datos estén correctos y actualizados.
+                        <i class="fa-solid fa-pencil"></i>Llena todos los campos obligatorios (generalmente marcados con *).<br />
+                        <i class="fa-solid fa-magnifying-glass"></i>Verifica que los datos estén correctos y actualizados.
                     <br />
                         <br />
                         <b>Paso 3: Confirma o cancela</b><br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Agregar:</b> Guarda la información y finaliza el registro.<br />
-                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i><b>Agregar:</b> Guarda la información y finaliza el registro.<br />
+                        <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i><b>Cancelar:</b> Si necesitas volver atrás sin guardar cambios.
                     <br />
                         <br />
-                        <i class="fa fa-exclamation-circle mr-2"></i> Si tienes dudas, no dudes en consultar con el administrador del sistema.
+                        <i class="fa fa-exclamation-circle mr-2"></i>Si tienes dudas, no dudes en consultar con el administrador del sistema.
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -111,7 +120,6 @@
                     </div>
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
-
                     <div class="ibox float-e-margins" runat="server" id="divContenido">
                         <div class="ibox-title">
                             <h5>Formulario para la creación de un nuevo usuario</h5>
@@ -127,117 +135,156 @@
 
                             <div class="row">
                                 <form role="form" id="form" runat="server">
-                                    <div class="col-sm-6 b-r">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Nombre Completo</label>
-                                                    <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server" placeholder="Nombre(s)"></asp:TextBox>
+                                    <asp:ScriptManager ID="ScriptManager1" runat="server" />
+                                    <asp:UpdatePanel ID="upEmpleado" runat="server">
+                                        <ContentTemplate>
+                                            <div class="col-sm-6 b-r">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Nombre Completo</label>
+                                                            <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server" placeholder="Nombre(s)"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Cargo</label>
+                                                            <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                            <asp:RequiredFieldValidator ID="rfvddlCargo" runat="server" ControlToValidate="ddlCargo"
+                                                                ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
+                                                            </asp:RequiredFieldValidator>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Cargo</label>
-                                                    <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
-                                                        DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Email</label>
-                                                    <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" placeholder="Email" required></asp:TextBox>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Email corporativo</label>
+                                                            <asp:TextBox ID="txbEmail" CssClass="form-control input-sm" runat="server" placeholder="Email"
+                                                                Style="text-transform: lowercase;" SpellCheck="false" autocomplete="off"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Clave</label>
+                                                            <asp:TextBox ID="txbClave" CssClass="form-control input-sm" runat="server" placeholder="Clave" TextMode="Password"
+                                                                autocomplete="off"></asp:TextBox>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Clave</label>
-                                                    <asp:TextBox ID="txbClave" CssClass="form-control input-sm" runat="server" placeholder="Clave" TextMode="Password"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Perfil</label>
-                                                    <asp:DropDownList ID="ddlPerfiles" runat="server" AppendDataBoundItems="true" DataTextField="Perfil" DataValueField="idPerfil" CssClass="form-control input-sm m-b">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Empleado</label>
-                                                    <asp:DropDownList ID="ddlEmpleados" runat="server" AppendDataBoundItems="true" DataTextField="NombreEmpleado" DataValueField="DocumentoEmpleado" CssClass="form-control input-sm m-b">
-                                                        <asp:ListItem Text="Ninguno" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Perfil</label>
+                                                            <asp:DropDownList ID="ddlPerfiles" runat="server" AppendDataBoundItems="true" DataTextField="Perfil" DataValueField="idPerfil" CssClass="form-control input-sm m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Empleado</label>
+                                                            <asp:DropDownList
+                                                                ID="ddlEmpleados"
+                                                                runat="server"
+                                                                AppendDataBoundItems="true"
+                                                                DataTextField="NombreEmpleado"
+                                                                DataValueField="DocumentoEmpleado"
+                                                                CssClass="form-control input-sm m-b"
+                                                                AutoPostBack="true"
+                                                                OnSelectedIndexChanged="ddlEmpleados_SelectedIndexChanged">
 
-                                        <div>
-                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='usuarios'"><strong>Cancelar</strong></button>
-                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
-                                        </div>
-                                    </div>
+                                                                <asp:ListItem Text="Ninguno" Value="0"></asp:ListItem>
+                                                            </asp:DropDownList>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Canal de ventas</label>
+                                                            <asp:DropDownList
+                                                                ID="ddlCanalVenta"
+                                                                runat="server"
+                                                                AppendDataBoundItems="true"
+                                                                DataTextField="NombreCanalVenta"
+                                                                DataValueField="idCanalVenta"
+                                                                CssClass="form-control input-sm m-b">
+                                                            </asp:DropDownList>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='usuarios'"><strong>Cancelar</strong></button>
+                                                    <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
+                                                </div>
+                                            </div>
+
+                                            </div>
+
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
                                 </form>
+
+                                <%--Fin Contenido!!!!--%>
                             </div>
 
-                            <%--Fin Contenido!!!!--%>
+
                         </div>
                     </div>
                 </div>
+
+                <uc1:footer runat="server" ID="footer" />
             </div>
-
-            <uc1:footer runat="server" ID="footer" />
+            <uc1:rightsidebar runat="server" ID="rightsidebar" />
         </div>
-        <uc1:rightsidebar runat="server" ID="rightsidebar" />
-    </div>
 
-    <!-- Mainly scripts -->
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <!-- Mainly scripts -->
+        <script src="js/jquery-3.1.1.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <!-- Custom and plugin javascript -->
-    <script src="js/inspinia.js"></script>
-    <script src="js/plugins/pace/pace.min.js"></script>
+        <!-- Custom and plugin javascript -->
+        <script src="js/inspinia.js"></script>
+        <script src="js/plugins/pace/pace.min.js"></script>
 
-    <!-- Jquery Validate -->
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+        <!-- Jquery Validate -->
+        <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
-    <!-- Jasny -->
-    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
+        <!-- Jasny -->
+        <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
-    <script>
-        $("#form").validate({
-            rules: {
-                txbNombre: {
-                    required: true,
-                    minlength: 3
-                },
-                txbCargo: {
-                    required: true,
-                    minlength: 5
-                },
-                ddlPerfiles: {
-                    required: true
-                },
-                txbClave: {
-                    required: true,
-                    minlength: 8
-                },
-            }
-        });
-    </script>
-
+        <script>
+            $("#form").validate({
+                rules: {
+                    txbNombre: {
+                        required: true,
+                        minlength: 3
+                    },
+                    txbCargo: {
+                        required: true,
+                        minlength: 5
+                    },
+                    ddlPerfiles: {
+                        required: true
+                    },
+                    txbClave: {
+                        required: true,
+                        minlength: 8
+                    },
+                }
+            });
+        </script>
 </body>
 
 </html>

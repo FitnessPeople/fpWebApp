@@ -2,6 +2,8 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -29,6 +31,8 @@ namespace fpWebApp
                         CargarCargos();
                         CargarPerfiles();
                         CargarEmpleados();
+                        CargarCanalesVenta();
+                       
                     }
                     else
                     {
@@ -73,6 +77,25 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarCargos();
             ddlCargo.DataSource = dt;
             ddlCargo.DataBind();
+            dt.Dispose();
+        }
+        private void CargarCanalesVenta()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarCanalesVenta();
+
+            ddlCanalVenta.DataSource = dt;
+            ddlCanalVenta.DataTextField = "NombreCanalVenta";      
+            ddlCanalVenta.DataValueField = "idCanalVenta";   
+            ddlCanalVenta.DataBind();
+
+            // 👇 Ahora sí puedes eliminar el 15
+            ListItem item = ddlCanalVenta.Items.FindByValue("15");
+            if (item != null)
+            {
+                ddlCanalVenta.Items.Remove(item);
+            }
+
             dt.Dispose();
         }
 
@@ -150,51 +173,169 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            // Validar si existe por Email o por Empleado
-            if (ExisteEmail(txbEmail.Text.ToString().Trim()))
+            if (ExisteEmail(txbEmail.Text.Trim()))
             {
-                ltMensaje.Text = "<div class=\"ibox-content\">" +
-                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Un usuario con este correo ya existe!" +
-                    "</div></div>";
+                string script = @"
+                Swal.fire({
+                    title: 'Correo ya registrado',
+                    text: 'Un usuario con este correo ya existe.',
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+            ";
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "EmailExiste", script, true);
+                return;
             }
-            else
+
+            if (ExisteEmpleado(ddlEmpleados.SelectedValue))
             {
-                if (ExisteEmpleado(ddlEmpleados.SelectedItem.Value.ToString()))
+                string script = @"
+                Swal.fire({
+                    title: 'Empleado ya asignado',
+                    text: 'Este empleado ya tiene un usuario asociado.',
+                    icon: 'warning',
+                    confirmButtonText: 'Entendido'
+                });
+            ";
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "EmpleadoExiste", script, true);
+                return;
+            }
+
+            clasesglobales cg = new clasesglobales();
+
+
+
+
+            try
+            {
+                
+                string strHashClave = cg.ComputeSha256Hash(txbClave.Text.Trim());
+                int idUsuario;
+                string rta;
+
+                idUsuario = cg.InsertarUsuario(txbEmail.Text.Trim(), strHashClave,  txbNombre.Text.Trim(), Convert.ToInt32(ddlCargo.SelectedValue), Convert.ToInt32(ddlPerfiles.SelectedValue), Convert.ToInt32(ddlEmpleados.SelectedValue),
+                                1, "Activo", Convert.ToInt32(ddlCanalVenta.SelectedValue), out rta);
+
+                if (rta == "OK")
                 {
-                    ltMensaje.Text = "<div class=\"ibox-content\">" +
-                    "<div class=\"alert alert-danger alert-dismissable\">" +
-                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
-                    "Un usuario ya está asignado a este empleado." +
-                    "</div></div>";
+                    cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Agrega", "El usuario agregó información del correo: " + txbEmail.Text + ".", "", "");
+
+                    string script = @"
+                    Swal.fire({
+                        title: 'Usuario creado correctamente',
+                        icon: 'success',
+                        timer: 2500,
+                        showConfirmButton: false,
+                        timerProgressBar: true
+                    }).then(() => {
+                        window.location.href = 'usuarios.aspx';
+                    });
+                ";
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "SuccessUsuario", script, true);
                 }
                 else
                 {
-                    try
+                    string script = @"
+                    Swal.fire({
+                        title: 'Error',
+                        text: '" + rta.Replace("'", "\\'") + @"',
+                        icon: 'error'
+                    });
+                ";
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorUsuario", script, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                string script = @"
+                Swal.fire({
+                    title: 'Error inesperado',
+                    text: '" + ex.Message.Replace("'", "\\'") + @"',
+                    icon: 'error'
+                });
+            ";
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+            }
+        }
+
+        protected void ddlEmpleados_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string documento = ddlEmpleados.SelectedValue;          
+
+            if (!string.IsNullOrEmpty(documento))
+            {
+                CargarEmpleado(documento);
+            }
+            else
+            {
+                LimpiarCampos();
+            }
+        }
+
+        private void CargarEmpleado(string documento)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarEmpleado(documento);
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+
+                txbNombre.Text = row["NombreEmpleado"] != DBNull.Value
+                                 ? row["NombreEmpleado"].ToString()
+                                 : "";
+
+                txbEmail.Text = row["EmailCorporativo"] != DBNull.Value
+                                ? row["EmailCorporativo"].ToString()
+                                : "";
+
+                txbClave.Attributes["value"] = "Fitness2025";
+
+
+                if (row["idCargo"] != DBNull.Value)
+                {
+                    string idCargo = row["idCargo"].ToString();
+                    ListItem itemCargo = ddlCargo.Items.FindByValue(idCargo);
+
+                    if (itemCargo != null)
                     {
-                        clasesglobales cg = new clasesglobales();
-                        string strHashClave = cg.ComputeSha256Hash(txbClave.Text.ToString());
-
-                        string strQuery = "INSERT INTO usuarios " +
-                        "(EmailUsuario, ClaveUsuario, NombreUsuario, idCargoUsuario, idPerfil, idEmpleado, idEmpresa, EstadoUsuario) " +
-                        "VALUES ('" + txbEmail.Text.ToString() + "', '" + strHashClave + "', " +
-                        "'" + txbNombre.Text.ToString() + "', " + ddlCargo.SelectedItem.Value.ToString() + ", " +
-                        "'" + ddlPerfiles.SelectedItem.Value.ToString() + "', '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
-                        "1, 'Activo') ";
-
-                        cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Agrega", "El usuario agregó información del correo: " + txbEmail.Text.ToString() + ".", "", "");
-
-                        string mensaje = cg.TraerDatosStr(strQuery);
+                        ddlCargo.ClearSelection();
+                        itemCargo.Selected = true;
                     }
-                    catch (SqlException ex)
+                }
+
+
+                if (row["idCanalVenta"] != DBNull.Value)
+                {
+                    string idCanal = row["idCanalVenta"].ToString();
+                    ListItem itemCanal = ddlCanalVenta.Items.FindByValue(idCanal);
+
+                    if (itemCanal != null)
                     {
-                        string mensaje = ex.Message;
+                        ddlCanalVenta.ClearSelection();
+                        itemCanal.Selected = true;
                     }
-
-                    Response.Redirect("usuarios");
                 }
             }
         }
+
+
+        private void LimpiarCampos()
+        {
+            txbNombre.Text = "";
+            txbEmail.Text = "";
+            txbEmail.Text = "";
+            txbClave.Text = "";
+            ddlCanalVenta.SelectedIndex = 0;
+            ddlCargo.SelectedIndex = 0;
+        }
+
+
+
     }
 }

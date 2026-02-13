@@ -15435,6 +15435,55 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public int InsertarUsuario(string email, string claveHash, string nombre, int idCargo, int idPerfil, int idEmpleado, int idEmpresa, string estado, int idCanalVenta, out string respuesta)
+        {
+            respuesta = string.Empty;
+            int idGenerado = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_USUARIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("p_EmailUsuario", email);
+                        cmd.Parameters.AddWithValue("p_ClaveUsuario", claveHash);
+                        cmd.Parameters.AddWithValue("p_NombreUsuario", nombre);
+                        cmd.Parameters.AddWithValue("p_idCargoUsuario", idCargo);
+                        cmd.Parameters.AddWithValue("p_idPerfil", idPerfil);
+                        cmd.Parameters.AddWithValue("p_idEmpleado", idEmpleado);
+                        cmd.Parameters.AddWithValue("p_idEmpresa", idEmpresa);
+                        cmd.Parameters.AddWithValue("p_EstadoUsuario", estado);
+                        cmd.Parameters.AddWithValue("p_idCanalVenta", idCanalVenta);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                idGenerado = Convert.ToInt32(reader["idUsuario"]);
+                                respuesta = "OK";
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = ex.Message;
+            }
+
+            return idGenerado;
+        }
+
+
+
+
         #endregion
 
         #region Web

@@ -78,6 +78,24 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form;
 
         /// <summary>
+        /// Control ScriptManager1.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
+
+        /// <summary>
+        /// Control upEmpleado.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upEmpleado;
+
+        /// <summary>
         /// Control txbNombre.
         /// </summary>
         /// <remarks>
@@ -94,6 +112,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCargo;
+
+        /// <summary>
+        /// Control rfvddlCargo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvddlCargo;
 
         /// <summary>
         /// Control txbEmail.
@@ -130,6 +157,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlEmpleados;
+
+        /// <summary>
+        /// Control ddlCanalVenta.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCanalVenta;
 
         /// <summary>
         /// Control btnAgregar.
