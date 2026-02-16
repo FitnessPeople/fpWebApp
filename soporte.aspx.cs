@@ -95,14 +95,28 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
+            string strFilename = "";
+            HttpPostedFile postedFile = Request.Files["fileFoto"];
+
+            if (postedFile != null && postedFile.ContentLength > 0)
+            {
+                //Save the File.
+                string nuevoNombre = "pantalla_" + cg.CreatePassword(5) + ".jpg";
+                string rutaServidor = Server.MapPath("~/img/soporte/" + nuevoNombre);
+
+                string filePath = rutaServidor;
+                postedFile.SaveAs(filePath);
+                strFilename = nuevoNombre;
+            }
+
             string descripcion = txtDescripcion.Text;
             int idPagina = int.Parse(Request.Form["ddlPaginas"]);
             string idUsuario = Session["idUsuario"].ToString(); // Aquí se usa el ID del usuario logueado
             string strQuery = "INSERT INTO SoporteFPmas " +
-                "(idPagina, idReportadoPor, FechaCreacionTicket, DescripcionTicket, EstadoTicket) " +
-                "VALUES (" + idPagina + ", " + idUsuario + ", NOW(), '" + descripcion + "', 'Pendiente')";
+                "(idPagina, idReportadoPor, FechaCreacionTicket, DescripcionTicket, CapturaPantalla, EstadoTicket) " +
+                "VALUES (" + idPagina + ", " + idUsuario + ", NOW(), '" + descripcion + "', '" + strFilename + "', 'Pendiente')";
 
-            clasesglobales cg = new clasesglobales();
             cg.TraerDatosStr(strQuery);
             cg.InsertarLog(Session["idusuario"].ToString(), "ticket soporte fp+", "Agrega", "El usuario agregó un nuevo ticket de soporte fp+: " + descripcion + ".", "", "");
 

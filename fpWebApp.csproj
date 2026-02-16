@@ -2434,6 +2434,7 @@
     <Folder Include="img\contratos\" />
     <Folder Include="img\correo\docs\" />
     <Folder Include="img\correo\images\" />
+    <Folder Include="img\soporte\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="css\bootstrap.css.map" />

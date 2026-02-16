@@ -123,7 +123,7 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
-                    <form role="form" id="form" runat="server">
+                    <form role="form" id="form" runat="server" enctype="multipart/form-data">
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-4">
                                 <div class="ibox float-e-margins">
@@ -152,6 +152,22 @@
                                                     <p class="text-info">Indique claramente, paso a paso, como se llega al error.</p>
                                                     <asp:TextBox ID="txtDescripcion" runat="server" CssClass="form-control input-sm" 
                                                         TextMode="MultiLine" Rows="4" />
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Captura de pantalla:</label>
+                                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                        <div class="form-control input-sm" data-trigger="fileinput">
+                                                            <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                            <span class="fileinput-filename"></span>
+                                                        </div>
+                                                        <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                            <span class="fileinput-new input-sm">Seleccionar imagen</span>
+                                                            <span class="fileinput-exists input-sm">Cambiar</span>
+                                                            <input type="file" name="fileFoto" id="fileFoto" accept="image/*">
+                                                        </span>
+                                                        <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
+                                                            data-dismiss="fileinput">Quitar</a>
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <a href="soporte" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
@@ -211,6 +227,7 @@
                                                     <th data-breakpoints="xs sm md">Estado</th>
                                                     <th class="text-nowrap" data-breakpoints="xs" width="150px">Fecha</th>
                                                     <th class="text-nowrap" data-breakpoints="xs" width="150px">Hace cuánto?</th>
+                                                    <th data-breakpoints="all" data-title="Info"></th>
                                                     <th data-sortable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -225,6 +242,18 @@
                                                                 <%# Eval("FechaCreacionTicket", "{0:hh:mm:ss}") %>
                                                             </td>
                                                             <td><asp:Literal ID="ltTiempoTranscurrido" runat="server"></asp:Literal></td>
+                                                            <td>
+                                                                <table class="table table-bordered table-striped">
+                                                                    <tr>
+                                                                        <th><i class="fa fa-image m-r-xs"></i>Captura de pantalla</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <img src='img/soporte/<%# Eval("CapturaPantalla") %>' />
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </td>
                                                             <td>
                                                                 <!-- Botón asignar -->
                                                                 <button type="button" runat="server" id="btnAsignar"
