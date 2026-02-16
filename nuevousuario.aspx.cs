@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
+using System.Net.Http;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -32,7 +34,7 @@ namespace fpWebApp
                         CargarPerfiles();
                         CargarEmpleados();
                         CargarCanalesVenta();
-                       
+
                     }
                     else
                     {
@@ -85,8 +87,8 @@ namespace fpWebApp
             DataTable dt = cg.ConsultarCanalesVenta();
 
             ddlCanalVenta.DataSource = dt;
-            ddlCanalVenta.DataTextField = "NombreCanalVenta";      
-            ddlCanalVenta.DataValueField = "idCanalVenta";   
+            ddlCanalVenta.DataTextField = "NombreCanalVenta";
+            ddlCanalVenta.DataValueField = "idCanalVenta";
             ddlCanalVenta.DataBind();
 
             // 👇 Ahora sí puedes eliminar el 15
@@ -106,7 +108,7 @@ namespace fpWebApp
             int idPerfil = Convert.ToInt32(Session["idPerfil"]);
 
             DataTable dt = cg1.ConsultarPerfiles();
-       
+
             int[] perfilesRestringidos = { 2, 4, 6, 10, 11, 24, 25, 36 };
 
             if (idPerfil == 2 || idPerfil == 11 || idPerfil == 36)
@@ -117,7 +119,7 @@ namespace fpWebApp
                 if (perfilesPermitidos.Any())
                     dt = perfilesPermitidos.CopyToDataTable();
                 else
-                    dt = dt.Clone(); 
+                    dt = dt.Clone();
             }
 
             ddlPerfiles.DataSource = dt;
@@ -173,49 +175,45 @@ namespace fpWebApp
 
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
-            if (ExisteEmail(txbEmail.Text.Trim()))
-            {
-                string script = @"
-                Swal.fire({
-                    title: 'Correo ya registrado',
-                    text: 'Un usuario con este correo ya existe.',
-                    icon: 'warning',
-                    confirmButtonText: 'Entendido'
-                });
-            ";
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "EmailExiste", script, true);
-                return;
-            }
-
-            if (ExisteEmpleado(ddlEmpleados.SelectedValue))
-            {
-                string script = @"
-                Swal.fire({
-                    title: 'Empleado ya asignado',
-                    text: 'Este empleado ya tiene un usuario asociado.',
-                    icon: 'warning',
-                    confirmButtonText: 'Entendido'
-                });
-            ";
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "EmpleadoExiste", script, true);
-                return;
-            }
-
             clasesglobales cg = new clasesglobales();
-
-
-
+            string strHashClave = cg.ComputeSha256Hash(txbClave.Text.Trim());
+            int idUsuario;
+            string rta;
 
             try
             {
-                
-                string strHashClave = cg.ComputeSha256Hash(txbClave.Text.Trim());
-                int idUsuario;
-                string rta;
 
-                idUsuario = cg.InsertarUsuario(txbEmail.Text.Trim(), strHashClave,  txbNombre.Text.Trim(), Convert.ToInt32(ddlCargo.SelectedValue), Convert.ToInt32(ddlPerfiles.SelectedValue), Convert.ToInt32(ddlEmpleados.SelectedValue),
+                if (ExisteEmail(txbEmail.Text.Trim()))
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Correo ya registrado',
+                            text: 'Un usuario con este correo ya existe.',
+                            icon: 'warning',
+                            confirmButtonText: 'Entendido'
+                        });
+                    ";
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "EmailExiste", script, true);
+                    return;
+                }
+
+                if (ExisteEmpleado(ddlEmpleados.SelectedValue))
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Empleado ya asignado',
+                            text: 'Este empleado ya tiene un usuario asociado.',
+                            icon: 'warning',
+                            confirmButtonText: 'Entendido'
+                        });
+                    ";
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "EmpleadoExiste", script, true);
+                    return;
+                }
+                //Insertar usuario
+                idUsuario = cg.InsertarUsuario(txbEmail.Text.Trim(), strHashClave, txbNombre.Text.Trim(), Convert.ToInt32(ddlCargo.SelectedValue), Convert.ToInt32(ddlPerfiles.SelectedValue), Convert.ToInt32(ddlEmpleados.SelectedValue),
                                 1, "Activo", Convert.ToInt32(ddlCanalVenta.SelectedValue), out rta);
 
                 if (rta == "OK")
@@ -265,7 +263,7 @@ namespace fpWebApp
 
         protected void ddlEmpleados_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string documento = ddlEmpleados.SelectedValue;          
+            string documento = ddlEmpleados.SelectedValue;
 
             if (!string.IsNullOrEmpty(documento))
             {
@@ -282,13 +280,31 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarEmpleado(documento);
 
+            string nombres;
+            string apellidos;
+            string genero;
+            DateTime? fechaNacimiento;
+            int? edad;
+
+
+            ConsultarApiAdres(documento, out nombres, out apellidos, out genero, out fechaNacimiento, out edad);
+
+
             if (dt != null && dt.Rows.Count > 0)
             {
                 DataRow row = dt.Rows[0];
 
-                txbNombre.Text = row["NombreEmpleado"] != DBNull.Value
-                                 ? row["NombreEmpleado"].ToString()
-                                 : "";
+                if (!string.IsNullOrWhiteSpace(nombres) && !string.IsNullOrWhiteSpace(apellidos))
+                {
+                    string primerNombre = nombres.Split(' ')[0];
+                    string primerApellido = apellidos.Split(' ')[0];
+
+                    string texto = (primerNombre + " " + primerApellido).Trim();
+
+                    TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+                    txbNombre.Text = textInfo.ToTitleCase(texto.ToLower());
+                }
+
 
                 txbEmail.Text = row["EmailCorporativo"] != DBNull.Value
                                 ? row["EmailCorporativo"].ToString()
@@ -334,6 +350,57 @@ namespace fpWebApp
             ddlCanalVenta.SelectedIndex = 0;
             ddlCargo.SelectedIndex = 0;
         }
+
+        private void ConsultarApiAdres(string documento, out string nombres, out string apellidos, out string genero, out DateTime? fechaNacimiento, out int? edad)
+        {
+            nombres = null;
+            apellidos = null;
+            genero = null;
+            fechaNacimiento = null;
+            edad = null;
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.Timeout = TimeSpan.FromSeconds(10);
+
+                    var response = client.GetAsync(
+                        $"https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/{documento}"
+                    ).Result;
+
+                    if (!response.IsSuccessStatusCode)
+                        return;
+
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
+
+                    string primerNombre = data.nombre != null ? data.nombre.ToString().Trim() : "";
+                    string segundoNombre = data.s_nombre != null ? data.s_nombre.ToString().Trim() : "";
+
+                    nombres = (primerNombre + " " + segundoNombre).Trim();
+
+                    string primerApellido = data.apellido != null ? data.apellido.ToString().Trim() : "";
+                    string segundoApellido = data.s_apellido != null ? data.s_apellido.ToString().Trim() : "";
+
+                    apellidos = (primerApellido + " " + segundoApellido).Trim();
+
+                    if (data.sexo != null)
+                        genero = data.sexo.ToString();
+
+                    if (data.fecha_nacimiento != null)
+                        fechaNacimiento = Convert.ToDateTime(data.fecha_nacimiento.ToString());
+
+                    if (data.edad != null)
+                        edad = Convert.ToInt32(data.edad);
+                }
+            }
+            catch
+            {
+                // Manejo opcional de error
+            }
+        }
+
 
 
 

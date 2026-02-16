@@ -2,6 +2,8 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace fpWebApp
 {
@@ -23,10 +25,16 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         txbEmail.Attributes.Add("type", "email");
+                        ddlEmpleados.Enabled = false;
+                        txbClave.Enabled = false;
+                        txbClave.Attributes.Add("autocomplete", "off");
+                        txbEmail.Attributes.Add("autocomplete", "off");
                         CargarCargos();
                         CargarPerfiles();
                         CargarEmpleados();
+                        CargarCanalesVenta();
                         CargarDatosUsuario();
+
                     }
                     else
                     {
@@ -74,31 +82,67 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        private void CargarCanalesVenta()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarCanalesVenta();
+
+                ddlCanalVenta.DataSource = dt;
+                ddlCanalVenta.DataTextField = "NombreCanalVenta";
+                ddlCanalVenta.DataValueField = "idCanalVenta";
+                ddlCanalVenta.DataBind();
+
+                ListItem item = ddlCanalVenta.Items.FindByValue("15");
+                if (item != null)
+                {
+                    ddlCanalVenta.Items.Remove(item);
+                }
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+        }
+
         private void CargarPerfiles()
         {
-            clasesglobales cg1 = new clasesglobales();
-
-            int idPerfil = Convert.ToInt32(Session["idPerfil"]);
-
-            DataTable dt = cg1.ConsultarPerfiles();
-
-            int[] perfilesRestringidos = { 2, 4, 6, 10, 11, 24, 25, 36 };
-
-            if (idPerfil == 2 || idPerfil == 11 || idPerfil == 36)
+            clasesglobales cg = new clasesglobales();
+            try
             {
-                var perfilesPermitidos = dt.AsEnumerable()
-                                           .Where(r => perfilesRestringidos.Contains(Convert.ToInt32(r["IdPerfil"])));
 
-                if (perfilesPermitidos.Any())
-                    dt = perfilesPermitidos.CopyToDataTable();
-                else
-                    dt = dt.Clone();
+                int idPerfil = Convert.ToInt32(Session["idPerfil"]);
+
+                DataTable dt = cg.ConsultarPerfiles();
+
+                int[] perfilesRestringidos = { 2, 4, 6, 10, 11, 24, 25, 36 };
+
+                if (idPerfil == 2 || idPerfil == 11 || idPerfil == 36)
+                {
+                    var perfilesPermitidos = dt.AsEnumerable()
+                                               .Where(r => perfilesRestringidos.Contains(Convert.ToInt32(r["IdPerfil"])));
+
+                    if (perfilesPermitidos.Any())
+                        dt = perfilesPermitidos.CopyToDataTable();
+                    else
+                        dt = dt.Clone();
+                }
+
+                ddlPerfiles.DataSource = dt;
+                ddlPerfiles.DataBind();
+
+                dt.Dispose();
+
             }
-
-            ddlPerfiles.DataSource = dt;
-            ddlPerfiles.DataBind();
-
-            dt.Dispose();
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
 
         private void CargarEmpleados()
@@ -113,61 +157,137 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+
         private void CargarDatosUsuario()
         {
-            string strQuery = "SELECT * FROM Usuarios WHERE idUsuario = " + Request.QueryString["editid"].ToString();
-            clasesglobales cg1 = new clasesglobales();
-            DataTable dt = cg1.TraerDatos(strQuery);
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                //string strQuery = "SELECT * FROM Usuarios WHERE idUsuario = " + Request.QueryString["editid"].ToString();               
+                DataTable dt = cg.ConsultarUsuarioEmpleadoPorId(Convert.ToInt32(Request.QueryString["editid"].ToString()));
 
-            txbNombre.Text = dt.Rows[0]["NombreUsuario"].ToString();
-            if (dt.Rows[0]["idCargoUsuario"].ToString() != "")
-            {
-                ddlCargo.SelectedIndex = Convert.ToInt32(ddlCargo.Items.IndexOf(ddlCargo.Items.FindByValue(dt.Rows[0]["idCargoUsuario"].ToString())));
-            }
-            txbEmail.Text = dt.Rows[0]["EmailUsuario"].ToString();
-            //txbClave.Text = dt.Rows[0]["ClaveUsuario"].ToString();
-            if (dt.Rows[0]["idPerfil"].ToString() != "")
-            {
-                ddlPerfiles.SelectedIndex = Convert.ToInt32(ddlPerfiles.Items.IndexOf(ddlPerfiles.Items.FindByValue(dt.Rows[0]["idPerfil"].ToString())));
-            }
-            //ddlPerfiles.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idPerfil"].ToString());
-            if (dt.Rows[0]["idEmpleado"].ToString() != "")
-            {
-                ddlEmpleados.SelectedIndex = Convert.ToInt32(ddlEmpleados.Items.IndexOf(ddlEmpleados.Items.FindByValue(dt.Rows[0]["idEmpleado"].ToString())));
-            }
-            rblEstado.Items.FindByValue(dt.Rows[0]["EstadoUsuario"].ToString()).Selected = true;
+                txbNombre.Text = dt.Rows[0]["NombreUsuario"].ToString();
+                if (dt.Rows[0]["idCargoUsuario"].ToString() != "")
+                {
+                    ddlCargo.SelectedIndex = Convert.ToInt32(ddlCargo.Items.IndexOf(ddlCargo.Items.FindByValue(dt.Rows[0]["idCargoUsuario"].ToString())));
+                }
+                txbEmail.Text = dt.Rows[0]["EmailUsuario"].ToString();
+                //txbClave.Text = dt.Rows[0]["ClaveUsuario"].ToString();
+                if (dt.Rows[0]["idPerfil"].ToString() != "")
+                {
+                    ddlPerfiles.SelectedIndex = Convert.ToInt32(ddlPerfiles.Items.IndexOf(ddlPerfiles.Items.FindByValue(dt.Rows[0]["idPerfil"].ToString())));
+                }
+                if (dt.Rows[0]["idEmpleado"].ToString() != "")
+                {
+                    ddlEmpleados.SelectedIndex = Convert.ToInt32(ddlEmpleados.Items.IndexOf(ddlEmpleados.Items.FindByValue(dt.Rows[0]["idEmpleado"].ToString())));
+                }
+                if (dt.Rows[0]["idCanalVenta"].ToString() != "")
+                {
+                    ddlCanalVenta.SelectedIndex = Convert.ToInt32(ddlCanalVenta.Items.IndexOf(ddlCanalVenta.Items.FindByValue(dt.Rows[0]["idCanalVenta"].ToString())));
+                }
 
-            dt.Dispose();
+                rblEstado.Items.FindByValue(dt.Rows[0]["EstadoUsuario"].ToString()).Selected = true;
+
+                dt.Dispose();
+            }
+
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
         }
+
 
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
             string strInitData = TraerData();
 
             try
             {
-                clasesglobales cg = new clasesglobales();
-                string strHashClave = cg.ComputeSha256Hash(txbClave.Text.ToString());
+                string strHashClave = cg.ComputeSha256Hash(txbClave.Text.Trim());
 
-                string strQuery = "UPDATE usuarios SET " +
-                "EmailUsuario = '" + txbEmail.Text.ToString() + "', ClaveUsuario = '" + strHashClave + "', " +
-                "NombreUsuario = '" + txbNombre.Text.ToString() + "', idCargoUsuario = " + ddlCargo.SelectedItem.Value.ToString() + ", " +
-                "idPerfil = " + ddlPerfiles.SelectedItem.Value.ToString() + ", idEmpleado = '" + ddlEmpleados.SelectedItem.Value.ToString() + "', " +
-                "EstadoUsuario = '" + rblEstado.SelectedItem.Value.ToString() + "' " +
-                "WHERE idUsuario = " + Request.QueryString["editid"].ToString();
-                
-                string mensaje = cg.TraerDatosStr(strQuery);
 
-                string strNewData = TraerData();
+                int idUsuario = 0;
+                int.TryParse(Request.QueryString["editid"], out idUsuario);
 
-                cg.InsertarLog(Session["idusuario"].ToString(), "usuarios", "Modifica", "El usuario modificó información del correo: " + txbEmail.Text.ToString() + ".", strInitData, strNewData);
+                string email = txbEmail?.Text?.Trim() ?? "";
+
+                string nombre = txbNombre?.Text?.Trim() ?? "";
+
+                //string clave = null;
+                //if (!string.IsNullOrWhiteSpace(txbClave?.Text))
+                //{
+                //    clave = cg.ComputeSha256Hash(txbClave.Text.Trim());
+                //}
+
+                string clavePlano = "Fitness2025";
+                string clave = cg.ComputeSha256Hash(clavePlano);
+
+                txbClave.Attributes["value"] = clavePlano;
+
+                int idCargo = 0;
+                int.TryParse(ddlCargo?.SelectedValue, out idCargo);
+
+                int idPerfil = 0;
+                int.TryParse(ddlPerfiles?.SelectedValue, out idPerfil);
+
+                int idCanalVenta = 0;
+                int.TryParse(ddlCanalVenta?.SelectedValue, out idCanalVenta);
+
+                string idEmpleado = ddlEmpleados?.SelectedValue ?? "";
+
+                string estado = rblEstado?.SelectedValue ?? "";
+
+                string rta = cg.ActualizarUsuario(idUsuario, email, clave, nombre, idCargo, idPerfil, idEmpleado, estado, idCanalVenta);
+
+                if (rta == "OK")
+                {
+                    string strNewData = TraerData();
+
+                    cg.InsertarLog(
+                        Session["idusuario"].ToString(),
+                        "usuarios",
+                        "Modifica",
+                        "El usuario modificó información del correo: " + email + ".",
+                        strInitData,
+                        strNewData
+                    );
+
+                    string script = @"
+                        Swal.fire({
+                            title: 'Usuario actualizado correctamente',
+                            html: 'La clave del usuario ha sido cambiada por defecto.<br><br><b>Recuerde informar al usuario.</b>',
+                            icon: 'success',
+                            timer: 3000,
+                            showConfirmButton: false,
+                            timerProgressBar: true
+                        }).then(() => {
+                            window.location.href = 'usuarios.aspx';
+                        });
+                    ";
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "SuccessUsuario", script, true);
+                }
+                else
+                {
+                    string script = @"
+                        Swal.fire({
+                            title: 'Error',
+                            text: '" + rta.Replace("'", "\\'") + @"',
+                            icon: 'error'
+                        });
+                    ";
+
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorUsuario", script, true);
+                }
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                string mensaje = ex.Message;
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
-
-            Response.Redirect("usuarios");
         }
 
         private string TraerData()
@@ -184,6 +304,25 @@ namespace fpWebApp
             dt.Dispose();
 
             return strData;
+        }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
     }
 }

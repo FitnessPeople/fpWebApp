@@ -15481,6 +15481,44 @@ namespace fpWebApp
             return idGenerado;
         }
 
+        public string ActualizarUsuario( int idUsuario, string email,  string clave,  string nombre, int idCargo, int idPerfil, string idEmpleado,  string estado, int idCanalVenta)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_USUARIO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_idUsuario", idUsuario);
+                        cmd.Parameters.AddWithValue("@p_email", email);
+                        cmd.Parameters.AddWithValue("@p_clave", clave);
+                        cmd.Parameters.AddWithValue("@p_nombre", nombre);
+                        cmd.Parameters.AddWithValue("@p_idCargo", idCargo);
+                        cmd.Parameters.AddWithValue("@p_idPerfil", idPerfil);
+                        cmd.Parameters.AddWithValue("@p_idEmpleado", idEmpleado);
+                        cmd.Parameters.AddWithValue("@p_estado", estado);
+                        cmd.Parameters.AddWithValue("@p_idCanalVenta", idCanalVenta);
+
+                        cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
 
 
 
