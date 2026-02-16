@@ -90,8 +90,7 @@ namespace fpWebApp
             ddlCanalVenta.DataTextField = "NombreCanalVenta";
             ddlCanalVenta.DataValueField = "idCanalVenta";
             ddlCanalVenta.DataBind();
-
-            // 👇 Ahora sí puedes eliminar el 15
+                        
             ListItem item = ddlCanalVenta.Items.FindByValue("15");
             if (item != null)
             {
@@ -278,66 +277,77 @@ namespace fpWebApp
         private void CargarEmpleado(string documento)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultarEmpleado(documento);
 
-            string nombres;
-            string apellidos;
-            string genero;
-            DateTime? fechaNacimiento;
-            int? edad;
-
-
-            ConsultarApiAdres(documento, out nombres, out apellidos, out genero, out fechaNacimiento, out edad);
-
-
-            if (dt != null && dt.Rows.Count > 0)
+            try
             {
-                DataRow row = dt.Rows[0];
+                DataTable dt = cg.ConsultarEmpleado(documento);
 
-                if (!string.IsNullOrWhiteSpace(nombres) && !string.IsNullOrWhiteSpace(apellidos))
+                string nombres;
+                string apellidos;
+                string genero;
+                DateTime? fechaNacimiento;
+                int? edad;
+
+
+                ConsultarApiAdres(documento, out nombres, out apellidos, out genero, out fechaNacimiento, out edad);
+
+
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    string primerNombre = nombres.Split(' ')[0];
-                    string primerApellido = apellidos.Split(' ')[0];
+                    DataRow row = dt.Rows[0];
 
-                    string texto = (primerNombre + " " + primerApellido).Trim();
-
-                    TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
-                    txbNombre.Text = textInfo.ToTitleCase(texto.ToLower());
-                }
-
-
-                txbEmail.Text = row["EmailCorporativo"] != DBNull.Value
-                                ? row["EmailCorporativo"].ToString()
-                                : "";
-
-                txbClave.Attributes["value"] = "Fitness2025";
-
-
-                if (row["idCargo"] != DBNull.Value)
-                {
-                    string idCargo = row["idCargo"].ToString();
-                    ListItem itemCargo = ddlCargo.Items.FindByValue(idCargo);
-
-                    if (itemCargo != null)
+                    if (!string.IsNullOrWhiteSpace(nombres) && !string.IsNullOrWhiteSpace(apellidos))
                     {
-                        ddlCargo.ClearSelection();
-                        itemCargo.Selected = true;
+                        string primerNombre = nombres.Split(' ')[0];
+                        string primerApellido = apellidos.Split(' ')[0];
+
+                        string texto = (primerNombre + " " + primerApellido).Trim();
+
+                        TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+                        txbNombre.Text = textInfo.ToTitleCase(texto.ToLower());
+                    }
+
+
+                    txbEmail.Text = row["EmailCorporativo"] != DBNull.Value
+                                    ? row["EmailCorporativo"].ToString()
+                                    : "";
+
+                    txbClave.Attributes["value"] = "Fitness2025";
+
+
+                    if (row["idCargo"] != DBNull.Value)
+                    {
+                        string idCargo = row["idCargo"].ToString();
+                        ListItem itemCargo = ddlCargo.Items.FindByValue(idCargo);
+
+                        if (itemCargo != null)
+                        {
+                            ddlCargo.ClearSelection();
+                            itemCargo.Selected = true;
+                        }
+                    }
+
+
+                    if (row["idCanalVenta"] != DBNull.Value)
+                    {
+                        string idCanal = row["idCanalVenta"].ToString();
+                        ListItem itemCanal = ddlCanalVenta.Items.FindByValue(idCanal);
+
+                        if (itemCanal != null)
+                        {
+                            ddlCanalVenta.ClearSelection();
+                            itemCanal.Selected = true;
+                        }
                     }
                 }
 
-
-                if (row["idCanalVenta"] != DBNull.Value)
-                {
-                    string idCanal = row["idCanalVenta"].ToString();
-                    ListItem itemCanal = ddlCanalVenta.Items.FindByValue(idCanal);
-
-                    if (itemCanal != null)
-                    {
-                        ddlCanalVenta.ClearSelection();
-                        itemCanal.Selected = true;
-                    }
-                }
             }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+
         }
 
 
@@ -401,7 +411,24 @@ namespace fpWebApp
             }
         }
 
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            clasesglobales cg = new clasesglobales();
 
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+        }
 
 
     }
