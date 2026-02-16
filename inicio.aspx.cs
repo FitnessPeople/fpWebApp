@@ -102,7 +102,7 @@ namespace fpWebApp
                             ctrIndicadores = LoadControl("controles/indicadoresAseCom.ascx");
                             ctrGraficos = LoadControl("controles/graficosAseCom.ascx");
                             break;
-                        case "Líder asistencial":
+                        case "Coordinador deportivo y asistencial":
                             ctrIndicadores = LoadControl("controles/indicadoresLidAsis.ascx");
                             ctrGraficos = LoadControl("controles/graficosLidAsis.ascx");
                             break;

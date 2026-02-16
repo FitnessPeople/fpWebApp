@@ -30,6 +30,7 @@ namespace fpWebApp
                         clasesglobales cg1 = new clasesglobales();
                         //txbClave.Text = cg1.CreatePassword(8);
                         txbClave.Text = "Fitness2025";
+                        txbClave.Enabled = false;
                         CargarCargos();
                         CargarPerfiles();
                         CargarEmpleados();
