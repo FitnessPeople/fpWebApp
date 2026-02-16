@@ -25,6 +25,14 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#usuarios");
@@ -179,17 +187,29 @@
                                                 <div class="form-group">
                                                     <label>Empleado:</label>
                                                     <asp:DropDownList ID="ddlEmpleados" runat="server" AppendDataBoundItems="true" DataTextField="NombreEmpleado" DataValueField="DocumentoEmpleado" CssClass="form-control m-b">
-                                                        <asp:ListItem Text="Ninguno" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Ninguno" Value="" Enabled="false"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>Estado:</label>
-                                            <asp:RadioButtonList ID="rblEstado" runat="server" RepeatDirection="Horizontal" CssClass="form-control">
-                                                <asp:ListItem Text="&nbsp;Activo&nbsp;&nbsp;&nbsp;&nbsp;" Value="Activo"></asp:ListItem>
-                                                <asp:ListItem Text="&nbsp;Inactivo" Value="Inactivo"></asp:ListItem>
-                                            </asp:RadioButtonList>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Canal de ventas</label>
+                                                <asp:DropDownList ID="ddlCanalVenta" runat="server" AppendDataBoundItems="true" DataTextField="NombreCanalVenta"
+                                                    DataValueField="idCanalVenta" CssClass="form-control input-sm m-b">
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Estado:</label>
+                                                <asp:RadioButtonList ID="rblEstado" runat="server" RepeatDirection="Horizontal" CssClass="form-control">
+                                                    <asp:ListItem Text="&nbsp;Activo&nbsp;&nbsp;&nbsp;&nbsp;" Value="Activo"></asp:ListItem>
+                                                    <asp:ListItem Text="&nbsp;Inactivo" Value="Inactivo"></asp:ListItem>
+                                                </asp:RadioButtonList>
+                                            </div>
                                         </div>
                                         <div>
                                             <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='usuarios'"><strong>Cancelar</strong></button>

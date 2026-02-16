@@ -142,7 +142,7 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Nombre Completo</label>
+                                                            <label>Nombre de usuario</label>
                                                             <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server" placeholder="Nombre(s)"></asp:TextBox>
                                                         </div>
                                                     </div>
@@ -151,7 +151,7 @@
                                                             <label>Cargo</label>
                                                             <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
                                                                 DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Seleccione" Value="0"></asp:ListItem>
                                                             </asp:DropDownList>
                                                             <asp:RequiredFieldValidator ID="rfvddlCargo" runat="server" ControlToValidate="ddlCargo"
                                                                 ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
