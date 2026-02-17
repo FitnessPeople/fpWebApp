@@ -315,6 +315,7 @@
     <Content Include="controles\indicadoresLidAsis.ascx" />
     <Content Include="controles\indicadoresLidCorp.ascx" />
     <Content Include="controles\indicadoresmedico.ascx" />
+    <Content Include="controles\indicadoresPsicologoRH.ascx" />
     <Content Include="controles\indicadoressoporte.ascx" />
     <Content Include="controles\indicadoresusucrm.ascx" />
     <Content Include="controles\indicadoresusucrm2.ascx" />
@@ -1543,6 +1544,13 @@
     </Compile>
     <Compile Include="controles\indicadoresmedico.ascx.designer.cs">
       <DependentUpon>indicadoresmedico.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoresPsicologoRH.ascx.cs">
+      <DependentUpon>indicadoresPsicologoRH.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresPsicologoRH.ascx.designer.cs">
+      <DependentUpon>indicadoresPsicologoRH.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoressoporte.ascx.cs">
       <DependentUpon>indicadoressoporte.ascx</DependentUpon>
