@@ -14,7 +14,8 @@ namespace fpWebApp.controles
             DataTable dt = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"]));
             if (dt.Rows.Count > 0)
             {
-                lblNombrePerfil.Text = dt.Rows[0]["Perfil"].ToString();
+                //lblNombrePerfil.Text = dt.Rows[0]["Perfil"].ToString(); // Perfil del usuario 
+                lblNombrePerfil.Text = dt.Rows[0]["NombreCargo"].ToString(); // Cargo del usuario
                 if (dt.Rows[0]["idCanalVenta"].ToString() == "1")
                 {
                     lblNombreSede.Text = dt.Rows[0]["NombreSede"].ToString();

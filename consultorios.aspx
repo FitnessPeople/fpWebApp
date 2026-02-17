@@ -207,8 +207,8 @@
                                             <thead>
                                                 <tr>
                                                     <th width="5%" data-type="number">ID</th>
-                                                    <th width="80%">Sede</th>
-                                                    <th width="80%">Nombre</th>
+                                                    <th width="30%">Sede</th>
+                                                    <th width="30%">Nombre</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>

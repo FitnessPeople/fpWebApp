@@ -11256,7 +11256,7 @@ namespace fpWebApp
 
         public string CreatePassword(int length)
         {
-            const string valid = "abcdefghkmnpqrstuvwxyzABCDEFGHKMNPQRSTUVWXYZ123456789*%$_-@#&?";
+            const string valid = "abcdefghkmnpqrstuvwxyzABCDEFGHKMNPQRSTUVWXYZ123456789*$-@#&~";
             StringBuilder res = new StringBuilder();
             Random rnd = new Random();
             while (0 < length--)

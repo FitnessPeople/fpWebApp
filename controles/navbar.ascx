@@ -17,8 +17,8 @@
                             <b class="caret"></b></span></span></a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a href="micuenta?token=qu3rty">Mi cuenta</a></li>
-                        <li><a href="contactos">Contactos</a></li>
-                        <li><a href="mensajes">Mensajes</a></li>
+                        <%--<li><a href="contactos">Contactos</a></li>--%>
+                        <li><a href="correointerno">Mensajes</a></li>
                         <li class="divider"></li>
                         <li><a href="logout">Salir</a></li>
                     </ul>
