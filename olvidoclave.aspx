@@ -49,7 +49,7 @@
                 </div>
                 
                 <asp:Button ID="btnRecuperar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="RECUPERAR CLAVE" OnClick="btnRecuperar_Click" />
-                <p><a href="default"><small>Regresar</small></a></p>
+                <p><a href="default" style="color: #fff; text-decoration: underline;">Regresar</a></p>
                 <div class="alert alert-danger alert-dismissable" runat="server" id="divMensaje" visible="false">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                     <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>

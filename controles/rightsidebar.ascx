@@ -9,9 +9,9 @@
             <li>
                 <a data-toggle="tab" href="#tab-1">Notas</a>
             </li>
-            <li>
+            <%--<li>
                 <a data-toggle="tab" href="#tab-3"><i class="fa fa-gear"></i></a>
-            </li>
+            </li>--%>
         </ul>
 
         <div class="tab-content">

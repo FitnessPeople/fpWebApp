@@ -32,7 +32,8 @@ namespace fpWebApp.controles
                 }
             }
 
-            string urlCorta = cg.AcortarURL("https://fitnesspeoplecolombia.com/cambioMetodoPago");
+            //string urlCorta = cg.AcortarURL("https://fitnesspeoplecolombia.com/cambioMetodoPago");
+            string urlCorta = "https://fitnesspeoplecolombia.com/cambioMetodoPago";
             ltEnlaceCambio.Text = $"<span class='d-none enlace'>{urlCorta}</span>";
 
             DataTable dtTokens = cg.ConsultarTokensPorIdVendedor(Convert.ToInt32(Session["idUsuario"].ToString()));
@@ -90,10 +91,9 @@ namespace fpWebApp.controles
                 DataRowView row = (DataRowView)e.Item.DataItem;
                 string token = row["token"].ToString();
 
-                clasesglobales cg = new clasesglobales();
-                string urlCorta = cg.AcortarURL(
-                    "https://fitnesspeoplecolombia.com/register?token=" + token
-                );
+                //clasesglobales cg = new clasesglobales();
+                //string urlCorta = cg.AcortarURL("https://fitnesspeoplecolombia.com/register?token=" + token);
+                string urlCorta = "https://fitnesspeoplecolombia.com/register?token=" + token;
 
                 Literal lt = (Literal)e.Item.FindControl("ltEnlacePago");
 

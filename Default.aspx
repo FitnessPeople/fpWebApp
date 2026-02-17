@@ -69,9 +69,8 @@
                 </div>
                 <asp:Button ID="btnIngresar" runat="server" CssClass="btn btn-warning1 block full-width m-b font-bold" Text="INGRESAR" OnClick="btnIngresar_Click" />
 
-            <p><a href="olvidoclave"><small style="color: #fff; text-decoration: underline;">Olvidaste la contraseña?</small></a></p>
-            <%--<p class="text-muted text-center text-white"><small>No tienes una cuenta?</small></p>--%>
-            <a class="btn btn-warning1 block full-width m-b font-bold" href="soporte">No tengo cuenta</a>
+            <p><a href="olvidoclave" style="color: #fff; text-decoration: underline;">Olvidaste la contraseña?</a></p>
+            <%--<a class="btn btn-warning1 block full-width m-b font-bold" href="soporte">No tengo cuenta</a>--%>
 
             </form>
             <p class="m-t text-white"><small>Fitness People &copy;
