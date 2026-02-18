@@ -79,10 +79,9 @@ namespace fpWebApp
             try
             {
                 string strQuery = @"SELECT 
-	                                    a.documentoAfiliado, CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado) AS NombreCompletoAfiliado, 
-	                                    hcr.idAfiliadoPlan, COUNT(hcr.idCobro) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje, 
-	                                    p.idPlan, 
-	                                    ap.valor, ap.fechaProximoCobro, ap.meses 
+	                                    a.documentoAfiliado, CONCAT(a.NombreAfiliado, ' ', a.ApellidoAfiliado) AS NombreCompletoAfiliado, a.CelularAfiliado, 
+	                                    ap.valor, ap.fechaProximoCobro, 
+	                                    COUNT(hcr.idCobro) AS Intentos, MAX(hcr.FechaIntento) AS UltimoIntento, MAX(hcr.MensajeEstado) AS Mensaje
                                     FROM HistorialCobrosRechazados AS hcr 
                                     INNER JOIN AfiliadosPlanes AS ap ON ap.idAfiliadoPlan = hcr.idAfiliadoPlan 
                                     INNER JOIN Afiliados AS a ON a.idAfiliado = ap.idAfiliado 
