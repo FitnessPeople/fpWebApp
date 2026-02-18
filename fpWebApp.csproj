@@ -1005,6 +1005,7 @@
     <Content Include="procesarfestivos.aspx" />
     <Content Include="productostienda.aspx" />
     <Content Include="profesiones.aspx" />
+    <Content Include="programarsesion.aspx" />
     <Content Include="prospectocorporativo.aspx" />
     <Content Include="prospectoscrm.aspx" />
     <Content Include="pruebaapiempresa.aspx" />
@@ -2247,6 +2248,13 @@
     </Compile>
     <Compile Include="profesiones.aspx.designer.cs">
       <DependentUpon>profesiones.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="programarsesion.aspx.cs">
+      <DependentUpon>programarsesion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="programarsesion.aspx.designer.cs">
+      <DependentUpon>programarsesion.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="prospectocorporativo.aspx.cs">

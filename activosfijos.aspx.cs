@@ -128,22 +128,26 @@ namespace fpWebApp
 
         private void CargarSedes()
         {
+            int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
+
             clasesglobales cg = new clasesglobales();
-            string strQuery = "SELECT s.idSede, CONCAT(s.NombreSede, ' - ', cs.NombreCiudadSede) AS NombreSedeCiudad " +
-                "FROM Sedes s, CiudadesSedes cs " +
-                "WHERE s.idCiudadSede = cs.idCiudadSede ";
 
-            DataTable dt = cg.TraerDatos(strQuery);
+            int? idSede = (idSedeUsuario == 11) ? (int?)null : idSedeUsuario;
 
-            ddlSedes.DataSource = dt;
-            ddlSedes.DataValueField = "idSede";
-            ddlSedes.DataTextField = "NombreSedeCiudad";
-            ddlSedes.DataBind();
+            DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
 
-            ddlSede.DataSource = dt;
-            ddlSede.DataValueField = "idSede";
-            ddlSede.DataTextField = "NombreSedeCiudad";
-            ddlSede.DataBind();
+            ddlSedes.Items.Clear();
+            ddlSedes.Items.Add(new ListItem("Todas", "0"));
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                ddlSedes.DataSource = dt;
+                ddlSedes.DataValueField = "idSede";
+                ddlSedes.DataTextField = "NombreSede";
+                ddlSedes.DataBind();
+            }
+
+            dt.Dispose();
         }
 
         private void CargarCategorias()
