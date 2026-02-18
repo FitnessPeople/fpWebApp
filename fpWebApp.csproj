@@ -310,6 +310,7 @@
     <Content Include="controles\indicadoresDirFin.ascx" />
     <Content Include="controles\indicadoresDirMark.ascx" />
     <Content Include="controles\indicadoresDirOpe.ascx" />
+    <Content Include="controles\indicadoresDirOpe2.ascx" />
     <Content Include="controles\indicadoresDirRRHH.ascx" />
     <Content Include="controles\indicadoresgympass.ascx" />
     <Content Include="controles\indicadoresLidAsis.ascx" />
@@ -1510,6 +1511,13 @@
     </Compile>
     <Compile Include="controles\indicadoresDirOpe.ascx.designer.cs">
       <DependentUpon>indicadoresDirOpe.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\indicadoresDirOpe2.ascx.cs">
+      <DependentUpon>indicadoresDirOpe2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\indicadoresDirOpe2.ascx.designer.cs">
+      <DependentUpon>indicadoresDirOpe2.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\indicadoresDirRRHH.ascx.cs">
       <DependentUpon>indicadoresDirRRHH.ascx</DependentUpon>

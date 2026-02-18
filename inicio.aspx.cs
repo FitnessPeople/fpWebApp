@@ -75,7 +75,7 @@ namespace fpWebApp
                             ctrGraficos = LoadControl("controles/graficosCEO.ascx");
                             break;
                         case "Director operativo":
-                            ctrIndicadores = LoadControl("controles/indicadoresDirOpe.ascx");
+                            ctrIndicadores = LoadControl("controles/indicadoresDirOpe2.ascx");
                             ctrGraficos = LoadControl("controles/graficosDirOpe.ascx");
                             break;
                         case "Director comercial":
