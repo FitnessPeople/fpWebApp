@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -25,7 +26,7 @@ namespace fpWebApp
                     }
                     if (ViewState["Consulta"].ToString() == "1")
                     {
-                        CargarSedes();
+                        CargarSedesCalendario();
                     }
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
@@ -35,7 +36,8 @@ namespace fpWebApp
                         txbFechaIni.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         txbFechaFin.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         divCrear.Visible = true;
-                        CargarSedes();
+                        CargarSedesSesion();
+                        CargarSedesCalendario();
                         CargarEntrenadores();
                         CargarClasesGrupales();
                     }
@@ -49,8 +51,8 @@ namespace fpWebApp
                         {
                             try
                             {
-                                string strQuery = "DELETE FROM DisponibilidadEspecialistas " +
-                                    " WHERE idDisponibilidad = " + Request.QueryString["deleteid"].ToString();
+                                string strQuery = "DELETE FROM ProgramacionClasesGrupales " +
+                                    "WHERE idProgramacion = " + Request.QueryString["deleteid"].ToString();
                                 clasesglobales cg = new clasesglobales();
                                 string mensaje = cg.TraerDatosStr(strQuery);
 
@@ -97,7 +99,7 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarSedes()
+        private void CargarSedesCalendario()
         {
             int idSedeUsuario = Convert.ToInt32(Session["idSede"]);
 
@@ -108,8 +110,7 @@ namespace fpWebApp
             DataTable dt = cg.ConsultaCargarSedesPorId(idSede, "Gimnasio");
 
             ddlSedes.Items.Clear();
-            ddlSedesSesion.Items.Clear();
-            ddlSedes.Items.Add(new ListItem("Todas", "0"));
+            ddlSedes.Items.Add(new ListItem("Seleccione", ""));
 
             if (dt != null && dt.Rows.Count > 0)
             {
@@ -117,7 +118,18 @@ namespace fpWebApp
                 ddlSedes.DataValueField = "idSede";
                 ddlSedes.DataTextField = "NombreSede";
                 ddlSedes.DataBind();
+            }
 
+            dt.Dispose();
+        }
+
+        private void CargarSedesSesion()
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultaCargarSedesPorId(null, "Gimnasio");
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
                 ddlSedesSesion.DataSource = dt;
                 ddlSedesSesion.DataBind();
             }
@@ -203,12 +215,12 @@ namespace fpWebApp
 
                                 if (dt1.Rows.Count == 0)
                                 {
-                                    if (dtFechaIniCita.Hour < 6 || dtFechaIniCita.Hour >= 21)
+                                    if (dtFechaIniCita.Hour < 5 || dtFechaIniCita.Hour >= 21)
                                     {
                                         script = @"
                                             Swal.fire({
                                                 title: 'Advertencia',
-                                                text: 'Horario fuera del intervalo de la sesión.',
+                                                text: 'Horario fuera del intervalo permitido para la sesión.',
                                                 icon: 'error'
                                             }).then(() => {
                                             });
@@ -227,14 +239,14 @@ namespace fpWebApp
                                                     if (Convert.ToInt16(dtFechaIniCita.DayOfWeek) == Convert.ToInt16(item.Value.ToString()))
                                                     {
                                                         strQuery = "INSERT INTO ProgramacionClasesGrupales " +
-                                                            "(idClaseGrupal, idEntrenador, idSede, FechaInicio, FechaFinal, " +
+                                                            "(idClaseGrupal, idEntrenador, idSede, FechaInicio, FechaFin, " +
                                                             "CupoMaximo, Estado) " +
                                                             "VALUES (" + ddlClasesGrupales.SelectedItem.Value.ToString() + ", " +
                                                             "" + ddlEntrenadores.SelectedItem.Value.ToString() + ", " +
                                                             "" + ddlSedesSesion.SelectedItem.Value.ToString() + ", " +
                                                             "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                             "'" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                                            "" + txbCupo.Value.ToString() + " " +
+                                                            "" + txbCupo.Value.ToString() + ", " +
                                                             "'Programado') ";
 
                                                         string mensaje = cg.TraerDatosStr(strQuery);
@@ -245,14 +257,14 @@ namespace fpWebApp
                                         else
                                         {
                                             strQuery = "INSERT INTO ProgramacionClasesGrupales " +
-                                                "(idClaseGrupal, idEntrenador, idSede, FechaInicio, FechaFinal, " +
+                                                "(idClaseGrupal, idEntrenador, idSede, FechaInicio, FechaFin, " +
                                                 "CupoMaximo, Estado) " +
                                                 "VALUES (" + ddlClasesGrupales.SelectedItem.Value.ToString() + ", " +
                                                 "" + ddlEntrenadores.SelectedItem.Value.ToString() + ", " +
                                                 "" + ddlSedesSesion.SelectedItem.Value.ToString() + ", " +
                                                 "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
                                                 "'" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                                "" + txbCupo.Value.ToString() + " " +
+                                                "" + txbCupo.Value.ToString() + ", " +
                                                 "'Programado') ";
 
                                             string mensaje = cg.TraerDatosStr(strQuery);
@@ -268,7 +280,7 @@ namespace fpWebApp
                                                 showConfirmButton: false,
                                                 timerProgressBar: true
                                             }).then(() => {
-                                                window.location.href = 'agenda';
+                                                window.location.href = 'programarsesion';
                                             });
                                             ";
                                         ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
@@ -335,7 +347,106 @@ namespace fpWebApp
 
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         {
+            CargarSesiones(ddlSedes.SelectedItem.Value.ToString());
+        }
 
+        private void CargarSesiones(string idSede)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultaCargarSesiones(int.Parse(idSede));
+
+            _strEventos = "events: [\r\n";
+
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    IFormatProvider provider = new CultureInfo("en-US");
+                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHoraIni"].ToString(), provider);
+                    DateTime dtFin = Convert.ToDateTime(dt.Rows[i]["FechaHoraFin"].ToString(), provider);
+
+                    string strFechaHoraIni = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtIni);
+                    string strFechaHoraFin = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtFin);
+
+                    _strEventos += "{\r\n";
+                    _strEventos += "id: '" + dt.Rows[i]["idProgramacion"].ToString() + "',\r\n";
+                    //_strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
+                    //_strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
+                    _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
+                    //_strEventos += "end: '" + dt.Rows[i]["FechaHoraFin"].ToString() + "',\r\n";
+                    _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
+                    //_strEventos += "className: 'bg-primary',\r\n";
+
+                    //if (dt.Rows[i]["idAfiliado"].ToString() != "")
+                    //{
+                    //    if (dt.Rows[i]["Cancelada"].ToString() != "0")
+                    //    {
+                    //        _strEventos += "color: '#ed5565',\r\n"; //danger
+                    //        _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                    //        _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                    //        _strEventos += "icon: 'id-card',\r\n";
+                    //        _strEventos += "btnEliminar: 'none',\r\n";
+                    //    }
+                    //    else
+                    //    {
+                    //        _strEventos += "color: '#F8AC59',\r\n"; //warning
+                    //        _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                    //        _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                    //        _strEventos += "icon: 'id-card',\r\n";
+                    //        _strEventos += "btnEliminar: 'none',\r\n";
+                    //    }
+                    //}
+                    //else
+                    //{
+                        _strEventos += "title: '" + dt.Rows[i]["Modalidad"].ToString() + " - " + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
+                        _strEventos += "color: '#1ab394',\r\n";
+                        _strEventos += "description: 'Cupo total: " + dt.Rows[i]["CupoMaximo"].ToString() + "',\r\n";
+                        _strEventos += "icon: 'user-doctor',\r\n";
+                        _strEventos += "btnEliminar: 'inline',\r\n";
+                    //}
+
+                    //_strEventos += "color: '#DBADFF',\r\n";
+                    //_strEventos += "todoeldia: 0,\r\n";
+                    _strEventos += "allDay: false,\r\n";
+                    _strEventos += "},\r\n";
+                }
+            }
+
+            dt.Dispose();
+
+            AgregarFestivos(_strEventos, "2026");
+
+            _strEventos += "],\r\n";
+
+        }
+
+        /// <summary>
+        /// Agrega los festivos del año al calendario
+        /// </summary>
+        /// <param name="eventos"></param>
+        /// <param name="anho"></param>
+        /// <returns></returns>
+        private string AgregarFestivos(string eventos, string anho)
+        {
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.ConsultarDiasFestivosPorAnnio(Convert.ToInt16(anho));
+
+            _strEventos = eventos;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                _strEventos += "{\r\n";
+                _strEventos += "start: '" + Convert.ToDateTime(row["Fecha"]).ToString("yyyy-MM-ddTHH:mm:ss") + "',\r\n";
+                _strEventos += "end: '" + Convert.ToDateTime(row["Fecha"]).ToString("yyyy-MM-ddTHH:mm:ss") + "',\r\n";
+                _strEventos += "title: '" + row["Titulo"].ToString() + "',\r\n";
+                _strEventos += "rendering: 'background',\r\n";
+                _strEventos += "color: '#ff9f89',\r\n";
+                _strEventos += "allDay: true,\r\n";
+                _strEventos += "display: 'background',\r\n";
+                _strEventos += "},\r\n";
+            }
+
+            return eventos;
         }
     }
 }

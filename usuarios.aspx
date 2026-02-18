@@ -178,7 +178,7 @@
                                         <thead>
                                             <tr>
                                                 <th data-sortable="false" data-breakpoints="xs">ID</th>
-                                                <th data-sortable="false" data-breakpoints="xs">Nombre</th>
+                                                <th data-sortable="false">Nombre</th>
                                                 <th data-sortable="false" data-breakpoints="xs">Documento</th>
                                                 <th data-sortable="true" data-breakpoints="xs">Cargo</th>
                                                 <th></th>

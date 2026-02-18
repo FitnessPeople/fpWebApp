@@ -170,9 +170,9 @@
                                             <div class="col-sm-3">
                                                 <label>Entrenador:</label>
                                                 <div class="form-group">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlEntrenadores" runat="server"
-                                                        DataValueField="idUsuario" DataTextField="NombreCompleto"
-                                                        AppendDataBoundItems="true">
+                                                    <asp:DropDownList CssClass="form-control input-sm required" 
+                                                        ID="ddlEntrenadores" runat="server" AppendDataBoundItems="true" 
+                                                        DataValueField="idUsuario" DataTextField="NombreCompleto">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -224,7 +224,7 @@
                                             <div class="col-sm-3 m-b-md">
                                                 <label>Hora inicio:</label>
                                                 <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="08:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
+                                                    <input type="text" class="form-control input-sm" value="05:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
                                                     <span class="input-group-addon">
                                                         <span class="fa fa-clock"></span>
                                                     </span>
@@ -233,7 +233,7 @@
                                             <div class="col-sm-3">
                                                 <label>Hora final:</label>
                                                 <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="12:00" id="txbHoraFin" name="txbHoraFin" runat="server" />
+                                                    <input type="text" class="form-control input-sm" value="06:00" id="txbHoraFin" name="txbHoraFin" runat="server" />
                                                     <span class="input-group-addon">
                                                         <span class="fa fa-clock"></span>
                                                     </span>
@@ -249,9 +249,9 @@
                                                         <div class="col-sm-8">
                                                             <asp:DropDownList CssClass="form-control input-sm required" ID="ddlDuracion" runat="server"
                                                                 AppendDataBoundItems="true">
-                                                                <asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>
+                                                                <%--<asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>--%>
                                                                 <asp:ListItem Text="60 minutos" Value="60"></asp:ListItem>
-                                                                <asp:ListItem Text="90 minutos" Value="90"></asp:ListItem>
+                                                                <%--<asp:ListItem Text="90 minutos" Value="90"></asp:ListItem>--%>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -314,7 +314,7 @@
                                             <div class="form-group m-b-n-sm">
                                                 <label class="col-sm-2 col-sm-2 control-label">Sede</label>
                                                 <div class="col-sm-10">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" ID="ddlSedes" runat="server"
+                                                    <asp:DropDownList CssClass="form-control input-sm" ID="ddlSedes" runat="server"
                                                         OnSelectedIndexChanged="ddlSedes_SelectedIndexChanged" 
                                                         AutoPostBack="true" AppendDataBoundItems="true">
                                                     </asp:DropDownList>
@@ -380,10 +380,13 @@
 
         $("#form").validate({
             rules: {
-                ddlEspecialistas: {
+                ddlEntrenadores: {
                     required: true,
                 },
-                ddlSedesCita: {
+                ddlSedesSesion: {
+                    required: true,
+                },
+                ddlClasesGrupales: {
                     required: true,
                 },
                 txbCupo: {
@@ -496,7 +499,7 @@
                 moreLinkContent: function (args) {
                     return '+' + args.num + ' eventos más';
                 },
-                slotMinTime: '06:00',
+                slotMinTime: '05:00',
                 slotMaxTime: '22:00',
                 //weekends: false,
                 //hiddenDays: [0],
@@ -509,7 +512,7 @@
                     meridiem: 'short'
                 },
                 locale: 'es',
-                noEventsContent: 'No hay eventos agendados.',
+                noEventsContent: 'No hay sesiones agendadas.',
                 buttonText: {
                     prev: '',
                     next: '',
@@ -527,13 +530,13 @@
                 businessHours: [ // specify an array instead
                     {
                         daysOfWeek: [1, 2, 3, 4, 5], // Lunes, martes, miercoles, jueves y viernes
-                        startTime: '06:00',
+                        startTime: '05:00',
                         endTime: '21:00'
                     },
                     {
                         daysOfWeek: [6], // Sabado
-                        startTime: '7:00',
-                        endTime: '18:00'
+                        startTime: '5:00',
+                        endTime: '21:00'
                     }
                 ],
                 dayMaxEventRows: true, // for all non-TimeGrid views

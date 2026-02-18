@@ -183,7 +183,7 @@
                                         <thead>
                                             <tr>
                                                 <th data-breakpoints="xs"></th>
-                                                <th data-breakpoints="xs" data-sortable="true" data-type="text">Nombre</th>
+                                                <th data-sortable="true" data-type="text">Nombre</th>
                                                 <th data-sortable="false">Documento</th>
                                                 <th data-breakpoints="xs">Teléfono corporativo</th>
                                                 <%--<th data-breakpoints="xs sm">Teléfono personal</th>--%>

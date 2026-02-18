@@ -41,7 +41,7 @@ namespace fpWebApp.controles
             if (dtTokens.Rows.Count > 0)
             {
                 DataView dv = dtTokens.DefaultView;
-                dv.RowFilter = "VisibleWeb = 1";
+                dv.RowFilter = "VisibleWeb = 1 AND Permanente = 0";
 
                 ltEtiqueta1.Text = "<a data-toggle=\"tab\" href=\"#tab-2\">Enlaces</a>";
                 rpEnlaces.Visible = true;
