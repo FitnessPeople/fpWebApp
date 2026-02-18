@@ -20,7 +20,7 @@ namespace fpWebApp.controles
                 string nombreMes = new DateTime(anioActual, mesActual, 1)
                 .ToString("MMMM", new System.Globalization.CultureInfo("es-ES"));
 
-                lblTituloMesAc.Text = "KPIs de " +
+                lblTituloMesAc.Text = "KPIs Dirección de operaciones de " +
                                        char.ToUpper(nombreMes[0]) +
                                        nombreMes.Substring(1) +
                                        " " + anioActual;
