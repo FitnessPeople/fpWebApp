@@ -47,7 +47,7 @@ namespace fpWebApp
                     }
                     if (Request.QueryString.Count > 0)
                     {
-                        if (Request.QueryString["deleteid"] != null)
+                         if (Request.QueryString["deleteid"] != null)
                         {
                             try
                             {
@@ -58,14 +58,14 @@ namespace fpWebApp
 
                                 if (mensaje == "OK")
                                 {
-                                    cg.InsertarLog(Session["idusuario"].ToString(), "DisponibilidadEspecialistas", "Elimina", "El usuario eliminó un nuevo espacio del especialista.", "", "");
+                                    cg.InsertarLog(Session["idusuario"].ToString(), "ProgramacionClasesGrupales", "Elimina", "El usuario eliminó un nueva sesión de clase grupal.", "", "");
                                 }
                             }
                             catch (SqlException ex)
                             {
                                 string mensaje = ex.Message;
                             }
-                            Response.Redirect("agenda");
+                            Response.Redirect("programarsesion");
                         }
                     }
                 }

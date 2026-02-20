@@ -367,12 +367,16 @@ namespace fpWebApp
 
         protected void btnAutorizarCongelacion_Click(object sender, EventArgs e)
         {
-
+            btnAutorizarCongelacion.CssClass += " active";
+            btnNoAutorizarCongelacion.CssClass = btnNoAutorizarCongelacion.CssClass.Replace("active", "");
+            ViewState["EstadoCongelacion"] = "Autorizada";
         }
 
         protected void btnNoAutorizarCongelacion_Click(object sender, EventArgs e)
         {
-
+            btnNoAutorizarCongelacion.CssClass += " active";
+            btnAutorizarCongelacion.CssClass = btnAutorizarCongelacion.CssClass.Replace("active", "");
+            ViewState["EstadoCongelacion"] = "Rechazado";
         }
 
         protected void btnResponderCongelacion_Click(object sender, EventArgs e)
@@ -382,12 +386,16 @@ namespace fpWebApp
 
         protected void btnAutorizarIncapacidad_Click(object sender, EventArgs e)
         {
-
+            btnAutorizarIncapacidad.CssClass += " active";
+            btnNoAutorizarIncapacidad.CssClass = btnNoAutorizarIncapacidad.CssClass.Replace("active", "");
+            ViewState["EstadoIncapacidad"] = "Autorizada";
         }
 
         protected void btnNoAutorizarIncapacidad_Click(object sender, EventArgs e)
         {
-
+            btnNoAutorizarIncapacidad.CssClass += " active";
+            btnAutorizarIncapacidad.CssClass = btnAutorizarIncapacidad.CssClass.Replace("active", "");
+            ViewState["EstadoIncapacidad"] = "Rechazado";
         }
 
         protected void btnResponderIncapacidad_Click(object sender, EventArgs e)

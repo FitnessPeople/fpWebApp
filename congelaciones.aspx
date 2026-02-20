@@ -283,9 +283,6 @@
                                                     </div>
                                                 </div>
                                             </ContentTemplate>
-                                            <Triggers>
-                                                <%--<asp:AsyncPostBackTrigger ControlID="check15" EventName="CheckedChanged" />--%>
-                                            </Triggers>
                                         </asp:UpdatePanel>
 
                                         <div>

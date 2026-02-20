@@ -57,8 +57,8 @@
             <div class="modal-content animated bounceInRight">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-head-side-mask modal-icon" style="color: #1C84C6;"></i>
-                    <h4 class="modal-title">Guía para registrar incapacidades médicas</h4>
+                    <i class="fa fa-snowflake modal-icon" style="color: #1C84C6;"></i>
+                    <h4 class="modal-title">Guía para registrar incapacidades</h4>
                     <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar una incapacidad para un afiliado de manera clara y eficiente.</small>
                 </div>
                 <div class="modal-body">
@@ -76,23 +76,21 @@
                         <b>Paso 2: Completa los datos de incapacidad</b><br />
                         <i class="fa-solid fa-calendar-day" style="color: #0D6EFD;"></i> <b>Arrastra la barra horizontal</b> para seleccionar el número de días de incapacidad que deseas registrar.<br />
                         <i class="fa-solid fa-check"></i> Ten en cuenta que este número <b>depende del plan que tengas</b>.<br />
-                        <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i> <b>Selecciona</b> la razón que defina el <b>tipo de incapacidad</b> (ej: "Enfermedad general", "Accidente laboral").<br />
-                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> Elige el día en que <b>inicia</b> la incapacidad.<br />
-                        <i class="fa-solid fa-folder-open" style="color: #0D6EFD;"></i> <b>Sube</b> el archivo (PDF/imagen) del <b>certificado médico</b>.<br />
-                        <i class="fa-solid fa-check"></i> Asegúrate de que esté <b>legible</b> y sea <b>válido</b>.<br />
-                        Motivo:<br />
-                        <i class="fa-solid fa-pencil" style="color: #0D6EFD;"></i> <b>Describe</b> brevemente la causa (ej: "Fractura de brazo", "Cirugía programada").
+                        <i class="fa-solid fa-tag" style="color: #0D6EFD;"></i> <b>Selecciona</b> la razón que defina el <b>tipo de incapacidad</b> (ej: "Viaje", "Lesión temporal", "Razones personales").<br />
+                        <i class="fa-solid fa-calendar-days" style="color: #0D6EFD;"></i> <b>Indica</b> cuándo comienza la pausa.<br />
+                        <i class="fa-solid fa-folder-open" style="color: #0D6EFD;"></i> <b>Adjunta</b> un comprobante si aplica (ej: certificado médico, reserva de vuelo).<br />
+                        <i class="fa-solid fa-pencil" style="color: #0D6EFD;"></i> <b>Describe</b> brevemente la <b>razón</b> (ej: "Recuperación de cirugía", "Vacaciones prolongadas").
                     <br />
                         <br />
                         <i class="fa-solid fa-triangle-exclamation" style="color: #FFC107;"></i> <b>Importante:</b><br />
                         Antes de finalizar, verifica en la <b>sección inferior</b> que:<br />
                         <i class="fa-solid fa-check"></i> Los datos del afiliado sean <b>correctos</b>.<br />
-                        <i class="fa-solid fa-check"></i> La fecha y días <b>coincidan</b> con el certificado médico.<br />
-                        <i class="fa-solid fa-check"></i> El documento esté <b>cargado</b> correctamente.
+                        <i class="fa-solid fa-check"></i> La fecha y días de incapacidad sean <b>válidos</b>.<br />
+                        <i class="fa-solid fa-check"></i> El documento esté <b>cargado</b> correctamente (si aplica).
                     <br />
                         <br />
                         <b>Paso 3: Confirma o cancela</b><br />
-                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Solicitar Incapacidad:</b> Envía la solicitud al sistema.<br />
+                        <i class="fa-solid fa-square-check fa-lg" style="color: #18A689;"></i> <b>Solicitar incapacidad:</b> Activa la pausa temporal.<br />
                         <i class="fa-solid fa-square-minus fa-lg" style="color: #EC4758;"></i> <b>Cancelar:</b> Si necesitas volver atrás sin guardar modificaciones.
                    <br />
                         <br />
@@ -117,7 +115,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-head-side-mask text-success m-r-sm"></i>Incapacidades</h2>
+                    <h2><i class="fa fa-snowflake text-success m-r-sm"></i>Incapacidades</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Afiliados</li>
@@ -131,7 +129,7 @@
             <div class="wrapper wrapper-content animated fadeInRight">
                 <div class="row animated fadeInDown">
                     <%--Inicio Contenido!!!!--%>
-
+                    
                     <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
                         <div class="p-xs">
                             <div class="pull-left m-r-md">
@@ -285,9 +283,6 @@
                                                     </div>
                                                 </div>
                                             </ContentTemplate>
-                                            <Triggers>
-                                                <%--<asp:AsyncPostBackTrigger ControlID="check15" EventName="CheckedChanged" />--%>
-                                            </Triggers>
                                         </asp:UpdatePanel>
 
                                         <div>
@@ -337,16 +332,13 @@
     <script>
 
         var hfieldDias = document.getElementById("hfDias");
-        var hfieldDiasAfiliado = document.getElementById("hfDiasAfiliado");
-
-        console.log(hfieldDiasAfiliado.value);
 
         $("#ionrange_2").ionRangeSlider({
             min: 1,
-            max: hfieldDiasAfiliado.value,
+            max: 10,
             type: 'single',
             step: 1,
-            postfix: " días",
+            postfix: " día(s)",
             prettify: false,
             hasGrid: true,
             onChange: function (data) {
@@ -358,29 +350,12 @@
     </script>
 
     <script>
-
         $("#form").validate({
             rules: {
                 txbAfiliado: {
                     required: true,
                     minlength: 3
-                },
-                ddlTipoIncapacidad: {
-                    required: true,
-                },
-                txbFechaInicial: {
-                    required: true,
-                },
-                documento: {
-                    required: true,
-                },
-                txbObservaciones: {
-                    required: true,
-                    minlength: 20
                 }
-            },
-            messages: {
-                documento: "*",
             }
         });
     </script>
