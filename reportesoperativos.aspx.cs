@@ -22,7 +22,7 @@ namespace fpWebApp
 
             if (!IsPostBack)
             {
-                ObtenerReporteSeleccionado();
+                //ObtenerReporteSeleccionado();
                 if (Session["idUsuario"] != null)
                 {
                     ValidarPermisos("Reportes operativos");
@@ -99,7 +99,9 @@ namespace fpWebApp
 
             if (dt == null || dt.Rows.Count == 0)
             {
-                MostrarAlerta("Info", "No hay datos para mostrar", "info");
+                MostrarAlerta("Sin resultados",
+              "No se encontraron registros para los filtros seleccionados. Puedes ajustar el rango de fechas e intentar nuevamente.",
+              "info");
                 return;
             }
 
@@ -124,7 +126,12 @@ namespace fpWebApp
                 return null;
             }
 
-            int tipoReporte = Convert.ToInt32(ddlTipoReporte.SelectedValue);
+            int tipoReporte;
+
+            if (!int.TryParse(ddlTipoReporte.SelectedValue, out tipoReporte))
+            {
+                tipoReporte = 0; // Si viene vacío o inválido
+            }
             DataTable dt = null;
 
             switch (tipoReporte)
@@ -155,7 +162,9 @@ namespace fpWebApp
                 case 18:
                     dt = cg.ConsultarEmpleadosActivosInactivos();
                     break;
-
+                default:
+                   
+                    break;
 
             }
 

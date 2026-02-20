@@ -15,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Mis ventas</title>
+    <title>Fitness People | Reportes operativos</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -25,6 +25,14 @@
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
+
+        <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style type="text/css" media="print">
         body {
@@ -171,7 +179,6 @@
                             <div class="col-lg-12">
 
                                 <div class="row">
-
                                 </div>
 
                                 <!-- INDICADORES FINAL -->
@@ -201,7 +208,8 @@
                                                 <div class="form-group">
                                                     <asp:DropDownList ID="ddlTipoReporte" runat="server" AppendDataBoundItems="true"
                                                         DataTextField="TipoDocumento" DataValueField="idTipoRep" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Ventas por Asesor" Value="1" Selected="True"></asp:ListItem>
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Ventas por Asesor" Value="1"></asp:ListItem>
                                                         <asp:ListItem Text="Ventas por Sede" Value="2"></asp:ListItem>
                                                         <asp:ListItem Text="Ventas totales" Value="3"></asp:ListItem>
                                                         <asp:ListItem Text="Ventas por Planes" Value="4"></asp:ListItem>
@@ -224,6 +232,9 @@
                                                         <asp:ListItem Text="Roles y permisos" Value="20"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
+                                                <asp:RequiredFieldValidator ID="rfvTipoRep" runat="server" ControlToValidate="ddlTipoReporte"
+                                                    ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic">
+                                                </asp:RequiredFieldValidator>
                                             </div>
                                             <div class="col-lg-2">
                                                 <div class="form-group">
