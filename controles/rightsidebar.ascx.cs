@@ -14,6 +14,9 @@ namespace fpWebApp.controles
 
             clasesglobales cg = new clasesglobales();
             DataTable dtPlanes = cg.ConsultarPlanesVigentes();
+            int mesActual = DateTime.Now.Month;
+            int anioActual = DateTime.Now.Year;
+            CargarCumpleanosMes(mesActual, anioActual);
 
             foreach (DataRow dr in dtPlanes.Rows)
             {
@@ -100,6 +103,36 @@ namespace fpWebApp.controles
                 // Inyectamos HTML puro
                 lt.Text = $"<span class='d-none enlace'>{urlCorta}</span>";
             }
+        }
+
+        protected void CargarCumpleanosMes(int mes, int annio)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                DataTable dt = cg.consultarCumpleanosEmpleadosMes(mes, annio);
+
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    rptCumpleSidebar.DataSource = dt;
+                    rptCumpleSidebar.DataBind();
+
+                    lblCantidadCumpleSidebar.Text = dt.Rows.Count + " cumpleaños este mes";
+                }
+                else
+                {
+                    rptCumpleSidebar.DataSource = null;
+                    rptCumpleSidebar.DataBind();
+
+                    lblCantidadCumpleSidebar.Text = "No hay cumpleaños este mes";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejo simple para UserControl
+            }
+
         }
     }
 }
