@@ -286,6 +286,7 @@
     <Content Include="congelacionesAfil.aspx" />
     <Content Include="consultorios.aspx" />
     <Content Include="contratoafiliado.aspx" />
+    <Content Include="controles\agendaespecialista.ascx" />
     <Content Include="controles\footer.ascx" />
     <Content Include="controles\grafico01.ascx" />
     <Content Include="controles\graficosAdmSede.ascx" />
@@ -1349,6 +1350,13 @@
     </Compile>
     <Compile Include="contratoafiliado.aspx.designer.cs">
       <DependentUpon>contratoafiliado.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\agendaespecialista.ascx.cs">
+      <DependentUpon>agendaespecialista.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="controles\agendaespecialista.ascx.designer.cs">
+      <DependentUpon>agendaespecialista.ascx</DependentUpon>
     </Compile>
     <Compile Include="controles\footer.ascx.cs">
       <DependentUpon>footer.ascx</DependentUpon>

@@ -4542,7 +4542,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable consultarCumpleanosEmpleadosMes(int mes, int annio)
+        public DataTable ConsultarCumpleanosEmpleadosMes(int mes, int annio)
         {
             DataTable dt = new DataTable();
 

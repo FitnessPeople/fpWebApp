@@ -406,6 +406,9 @@
     <script src="js/inspinia.js"></script>
     <script src="js/plugins/pace/pace.min.js"></script>
 
+    <!-- Full Calendar -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js"></script>
+
     <!-- EayPIE -->
     <script src="js/plugins/easypiechart/jquery.easypiechart.js"></script>
 

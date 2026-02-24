@@ -2,7 +2,7 @@
 <div id="right-sidebar">
     <div class="sidebar-container">
 
-        <ul class="nav nav-tabs navs-3">
+        <ul class="nav nav-tabs navs-2">
             <li class="active">
                 <asp:Literal ID="ltEtiqueta1" runat="server"></asp:Literal>
             </li>
@@ -100,14 +100,14 @@
                                         <img alt="image"
                                             class="img-circle message-avatar"
                                             src='img/empleados/<%# Eval("FotoEmpleado") %>'
-                                            onerror="this.src='img/user-default.png';" />
+                                            onerror="this.src='img/empleados/nofoto.png';" />
                                     </div>
 
                                     <!-- CONTENIDO -->
                                     <div class="media-body">
                                         <strong><%# Eval("Nombre") %></strong>
                                         <br />
-                                        <small>🎂 <%# Eval("Fecha", "{0:dd MMM}") %>
+                                        <small><i class="fa fa-cake text-warning"></i> <%# Eval("Fecha", "{0:dd MMM}") %>
                                             <br />
                                             <%# Eval("Cargo") %> - <%# Eval("Sede") %>
                                         </small>

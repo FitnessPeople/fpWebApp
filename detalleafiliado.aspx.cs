@@ -223,8 +223,8 @@ namespace fpWebApp
             {
                 for (int i = 0; i < dt2.Rows.Count; i++)
                 {
-                    //strFila = listarDetalle(int.Parse(dt2.Rows[i]["idAfiliadoPlan"].ToString()));
-                    strFila = "";
+                    strFila = listarDetalle(int.Parse(dt2.Rows[i]["idAfiliadoPlan"].ToString()));
+                    //strFila = "";
                     ltDetalle.Text += strFila;
                 }
             }
@@ -392,11 +392,12 @@ namespace fpWebApp
         {
             string parametro = string.Empty;
             string mensaje = string.Empty;
-            int idempresa = 1;
+            //int idIntegracion = 1; // Wompi Pruebas (Sandbox)
+            int idIntegracion = 4; // Wompi Produccion
 
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.ConsultarPagosPorId(id);
-            DataTable dti = cg.ConsultarUrl(idempresa);
+            DataTable dti = cg.ConsultarUrl(idIntegracion);
 
             if (dt.Rows.Count > 0)
             {
@@ -404,7 +405,7 @@ namespace fpWebApp
             }
 
             string url = dti.Rows[0]["url"].ToString() + parametro;
-            string[] rta = cg.EnviarPeticionGet(url, idempresa.ToString(), out mensaje);
+            string[] rta = cg.EnviarPeticionGet(url, idIntegracion.ToString(), out mensaje);
             JToken token = JToken.Parse(rta[0]);
             string prettyJson = token.ToString(Formatting.Indented);
 

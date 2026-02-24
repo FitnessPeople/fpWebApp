@@ -472,8 +472,8 @@
                                                     <li><a href="#" runat="server" id="lnkVerFactura"><i class="fa fa-file m-r-xs"></i><%# Eval("idSiigoFactura") %></a></li>
                                                 </ItemTemplate>
                                             </asp:Repeater>
-                                            <li><a href="#"><i class="fa fa-file m-r-xs"></i>
-                                                <asp:Literal ID="ltPublicUrl" runat="server"></asp:Literal></a></li>
+                                            <%--<li><a href="#"><i class="fa fa-file m-r-xs"></i>
+                                                <asp:Literal ID="ltPublicUrl" runat="server"></asp:Literal></a></li>--%>
                                             <%--<li><a href=""><i class="fa fa-file m-r-xs"></i>Project_document.docx</a></li>
                                             <li><a href=""><i class="fa fa-file-image m-r-xs"></i>Logo_zender_company.jpg</a></li>
                                             <li><a href=""><i class="fab fa-stack-exchange m-r-xs"></i>Email_from_Alex.mln</a></li>

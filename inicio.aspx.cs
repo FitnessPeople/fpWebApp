@@ -126,6 +126,18 @@ namespace fpWebApp
                             ctrIndicadores = LoadControl("controles/indicadoresPsicologoRH.ascx");
                             ctrGraficos = LoadControl("controles/graficosDirRRHH.ascx");
                             break;
+                        case "Fisioterapeuta":
+                            ctrIndicadores = LoadControl("controles/indicadoresmedico.ascx");
+                            ctrGraficos = LoadControl("controles/agendaespecialista.ascx");
+                            break;
+                        case "Nutricionista":
+                            ctrIndicadores = LoadControl("controles/indicadoresmedico.ascx");
+                            ctrGraficos = LoadControl("controles/agendaespecialista.ascx");
+                            break;
+                        case "Médico deportólogo":
+                            ctrIndicadores = LoadControl("controles/indicadoresmedico.ascx");
+                            ctrGraficos = LoadControl("controles/agendaespecialista.ascx");
+                            break;
                         default:
                             ctrIndicadores = LoadControl("controles/indicadores02.ascx");
                             ctrGraficos = LoadControl("controles/graficosCEO.ascx");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Web;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -50,21 +51,6 @@ namespace fpWebApp
 
         private void listaEspecialistas(string strParam)
         {
-            //string strQuery = "SELECT *, " +
-            //    "IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()),' Años)'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
-            //    "IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) < 18,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacEspecialista, CURDATE()) < 60,'info','warning'))) badge, " +
-            //    "IF(EstadoEspecialista='Activo','success','danger') badge2 " +
-            //    "FROM Especialistas e " +
-            //    "LEFT JOIN generos g ON g.idGenero = e.idGenero " +
-            //    "LEFT JOIN sedes s ON s.idSede = e.idSede " +
-            //    "LEFT JOIN estadocivil ec ON ec.idEstadoCivil = e.idEstadoCivilEspecialista " +
-            //    "LEFT JOIN profesiones p ON p.idProfesion = e.idProfesion " +
-            //    "LEFT JOIN eps ON eps.idEps = e.idEps " +
-            //    "LEFT JOIN ciudades ON ciudades.idCiudad = e.idCiudadEspecialista " +
-            //    "WHERE DocumentoEspecialista like '%" + strParam + "%' " +
-            //    "OR NombreEspecialista like '%" + strParam + "%' " +
-            //    "OR EmailEspecialista like '%" + strParam + "%' " +
-            //    "LIMIT 100";
             string strQuery = "SELECT *, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) IS NOT NULL, CONCAT('(',TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()),' Años)'),'<i class=\"fa fa-circle-question m-r-lg m-l-lg\"></i>') AS edad, " +
                 "IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) < 14,'danger',IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) < 18,'success',IF(TIMESTAMPDIFF(YEAR, FechaNacEmpleado, CURDATE()) < 60,'info','warning'))) badge, " +
@@ -113,12 +99,16 @@ namespace fpWebApp
 
         protected void rpEspecialistas_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            clasesglobales cg = new clasesglobales();
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
+                    string valor = ((DataRowView)e.Item.DataItem).Row[0].ToString();
+                    string cifrado = HttpUtility.UrlEncode(cg.Encrypt(valor).Replace("+", "-").Replace("/", "_").Replace("=", ""));
+
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "editarempleado?editid=" + cifrado);
                     btnEditar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")

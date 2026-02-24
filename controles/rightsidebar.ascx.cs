@@ -37,7 +37,7 @@ namespace fpWebApp.controles
 
             //string urlCorta = cg.AcortarURL("https://fitnesspeoplecolombia.com/cambioMetodoPago");
             string urlCorta = "https://fitnesspeoplecolombia.com/cambioMetodoPago";
-            ltEnlaceCambio.Text = $"<span class='d-none enlace'>{urlCorta}</span>";
+            ltEnlaceCambio.Text = $"<span class='enlace m-r-lg'>{urlCorta}</span>";
 
             DataTable dtTokens = cg.ConsultarTokensPorIdVendedor(Convert.ToInt32(Session["idUsuario"].ToString()));
 
@@ -101,7 +101,7 @@ namespace fpWebApp.controles
                 Literal lt = (Literal)e.Item.FindControl("ltEnlacePago");
 
                 // Inyectamos HTML puro
-                lt.Text = $"<span class='d-none enlace'>{urlCorta}</span>";
+                lt.Text = $"<span class='d-none enlace m-r-lg'>{urlCorta}</span>";
             }
         }
 
@@ -111,7 +111,7 @@ namespace fpWebApp.controles
 
             try
             {
-                DataTable dt = cg.consultarCumpleanosEmpleadosMes(mes, annio);
+                DataTable dt = cg.ConsultarCumpleanosEmpleadosMes(mes, annio);
 
                 if (dt != null && dt.Rows.Count > 0)
                 {

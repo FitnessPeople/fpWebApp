@@ -61,7 +61,7 @@ namespace fpWebApp.controles
 
             try
             {
-                DataTable dt = cg.consultarCumpleanosEmpleadosMes(mes, annio);
+                DataTable dt = cg.ConsultarCumpleanosEmpleadosMes(mes, annio);
 
                 if (dt != null && dt.Rows.Count > 0)
                 {
