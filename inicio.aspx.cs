@@ -122,6 +122,10 @@ namespace fpWebApp
                             ctrIndicadores = LoadControl("controles/indicadoresPsicologoRH.ascx");
                             ctrGraficos = LoadControl("controles/graficosDirRRHH.ascx");
                             break;
+                        case "Auxiliar administrativo y logística":
+                            ctrIndicadores = LoadControl("controles/indicadoresPsicologoRH.ascx");
+                            ctrGraficos = LoadControl("controles/graficosDirRRHH.ascx");
+                            break;
                         default:
                             ctrIndicadores = LoadControl("controles/indicadores02.ascx");
                             ctrGraficos = LoadControl("controles/graficosCEO.ascx");
