@@ -71,6 +71,7 @@ namespace fpWebApp
                             txbFechaFin.Value.ToString());
                         VentasWeb();
                         VentasCounter();
+                        TotalDebitosAutomaticos();
                     }
                 }
                 else
@@ -666,6 +667,57 @@ namespace fpWebApp
 
             ltCuantos3.Text = "$ " + String.Format("{0:N0}", sumatoriaValor);
             ltRegistros3.Text = dt.Rows.Count.ToString();
+
+            dt.Dispose();
+        }
+
+        private void TotalDebitosAutomaticos()
+        {
+            string strQuery = @"SELECT 
+                    SUM(CASE WHEN icono = 'rotate' THEN 1 ELSE 0 END) AS CantidadRotate,
+                    SUM(CASE WHEN icono = 'rotate' THEN valor ELSE 0 END) AS TotalRotate,
+    
+                    SUM(CASE WHEN icono = 'star' THEN 1 ELSE 0 END) AS CantidadStar,
+                    SUM(CASE WHEN icono = 'star' THEN valor ELSE 0 END) AS TotalStar
+
+                FROM (
+                    SELECT  
+                        ppa.valor,
+                        IF(
+                            MONTH(ap.FechaInicioPlan)=MONTH(ppa.fechaHoraPago) 
+                            OR (
+                                MONTH(ap.FechaInicioPlan) = MONTH(DATE_ADD(ppa.fechaHoraPago, INTERVAL 1 MONTH))
+                                AND YEAR(ap.FechaInicioPlan) = YEAR(DATE_ADD(ppa.fechaHoraPago, INTERVAL 1 MONTH))
+                                AND DAY(ap.FechaInicioPlan) BETWEEN 1 AND 3
+                            ),
+                            'star',
+                            'rotate'
+                        ) AS icono
+
+                    FROM pagosplanafiliado ppa
+                        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
+                        INNER JOIN planes p ON p.idPlan = ap.idPlan 
+
+                    WHERE p.debitoAutomatico = 1 
+                        AND (4 IS NULL OR ppa.idMedioPago = 4)
+                        AND DATE(ppa.FechaHoraPago) BETWEEN '" + txbFechaIni.Value.ToString() + @"' AND '" + txbFechaFin.Value.ToString() + @"'  
+                        AND (0 = 0 OR ap.idPlan = 0)
+                ) AS t;";
+            
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                ltCuantos4.Text = "$ " + String.Format("{0:N0}", dt.Rows[0]["TotalRotate"]);
+                ltRegistros4.Text = dt.Rows[0]["CantidadRotate"].ToString();
+
+                ltCuantos5.Text = "$ " + String.Format("{0:N0}", dt.Rows[0]["TotalStar"]);
+                ltRegistros5.Text = dt.Rows[0]["CantidadStar"].ToString();
+            }
+
+            ltCuantos6.Text = "$ 0";
+            ltRegistros6.Text = "0";
 
             dt.Dispose();
         }

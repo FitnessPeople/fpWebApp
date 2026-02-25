@@ -177,7 +177,7 @@
                                     ****************
                                 --%>
                                 <div class="row">
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-2">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-success pull-right">Mes actual</span>--%>
@@ -194,7 +194,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-2">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-info pull-right">Mes actual</span>--%>
@@ -211,7 +211,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-2">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-primary pull-right">Mes actual</span>--%>
@@ -228,23 +228,58 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <%--<div class="col-lg-3">
+                                    <div class="col-lg-2">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
-                                                <span class="label label-danger pull-right">Mes actual</span>
-                                                <h5>Ventas </h5>
+                                                <%--<span class="label label-primary pull-right">Mes actual</span>--%>
+                                                <h5>Recurrencias</h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
                                                     <asp:Literal ID="ltCuantos4" runat="server"></asp:Literal></h1>
                                                 <div class="stat-percent font-bold text-success">
                                                     <asp:Literal ID="ltRegistros4" runat="server"></asp:Literal>
-                                                    registros <i class="fa fa-bolt"></i>
+                                                    registros <%--<i class="fa fa-bolt"></i>--%>
                                                 </div>
                                                 <small>&nbsp;</small>
                                             </div>
                                         </div>
-                                    </div>--%>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <%--<span class="label label-primary pull-right">Mes actual</span>--%>
+                                                <h5>Nuevos débitos automáticos</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="ltCuantos5" runat="server"></asp:Literal></h1>
+                                                <div class="stat-percent font-bold text-success">
+                                                    <asp:Literal ID="ltRegistros5" runat="server"></asp:Literal>
+                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                </div>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <%--<span class="label label-primary pull-right">Mes actual</span>--%>
+                                                <h5>Otro</h5>
+                                            </div>
+                                            <div class="ibox-content">
+                                                <h1 class="no-margins">
+                                                    <asp:Literal ID="ltCuantos6" runat="server"></asp:Literal></h1>
+                                                <div class="stat-percent font-bold text-success">
+                                                    <asp:Literal ID="ltRegistros6" runat="server"></asp:Literal>
+                                                    registros <%--<i class="fa fa-bolt"></i>--%>
+                                                </div>
+                                                <small>&nbsp;</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 <!-- INDICADORES FINAL -->
