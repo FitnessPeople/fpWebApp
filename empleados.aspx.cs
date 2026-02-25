@@ -1,9 +1,12 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Script.Serialization;
+using System.Web.Services;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -942,6 +945,41 @@ namespace fpWebApp
         protected void lkbCambiarEstado_Click(object sender, EventArgs e)
         {
 
+        }
+
+        [WebMethod]
+        public static object ObtenerDatosEmpleado(string documento)
+        {
+            string strConexion = WebConfigurationManager
+                .ConnectionStrings["ConnectionFP"].ConnectionString;
+
+            using (MySqlConnection conn = new MySqlConnection(strConexion))
+            {
+                conn.Open();
+
+                string query = @"SELECT idCargo, Cargo, Sueldo
+                         FROM empleados
+                         WHERE DocumentoEmpleado = @doc";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@doc", documento);
+
+                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            return new
+                            {
+                                Cargo = dr["Cargo"].ToString(),
+                                Sueldo = Convert.ToDecimal(dr["Sueldo"])
+                            };
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

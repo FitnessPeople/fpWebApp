@@ -7993,7 +7993,7 @@ namespace fpWebApp
             int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero,
             int idEstadoCivil, int idCanalVenta, int idCargo, int idProfesion, string nivelEstudio,
             int estratoSocial, string tipoVivienda, int nroPersonas, string actividadExtra,
-            string consumeLicor, string medioTransporte, string tipoSangre)
+            string consumeLicor, string medioTransporte, string tipoSangre, int idUsuario)
         {
             string respuesta = string.Empty;
             try
@@ -8043,8 +8043,46 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
                         cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
                         cmd.Parameters.AddWithValue("@p_tipo_sangre", tipoSangre);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
                         cmd.ExecuteNonQuery();
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string InsertarIngresoHistoricoNuevoUsuario( string documentoEmpleado, int idCargoNuevo, int idSedeNueva, decimal sueldoNuevo, string tipoContratoNuevo, int idUsuario)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_INGRESO_HISTORICO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_DocumentoEmpleado", documentoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_idCargoNuevo", idCargoNuevo);
+                        cmd.Parameters.AddWithValue("@p_idSedeNueva", idSedeNueva);
+                        cmd.Parameters.AddWithValue("@p_SueldoNuevo", sueldoNuevo);
+                        cmd.Parameters.AddWithValue("@p_TipoContratoNuevo", tipoContratoNuevo);
+                        cmd.Parameters.AddWithValue("@p_idusuario", idUsuario);
+
+                        cmd.ExecuteNonQuery();
+
                         respuesta = "OK";
                     }
                 }

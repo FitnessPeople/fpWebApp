@@ -306,8 +306,13 @@ namespace fpWebApp
                         ddlActividadExtra.SelectedItem.Value.ToString(),
                         ddlConsumoLicor.SelectedItem.Value.ToString(),
                         ddlMedioTransporte.SelectedItem.Value.ToString(),
-                        ddlTipoSangre.SelectedItem.Value.ToString()
+                        ddlTipoSangre.SelectedItem.Value.ToString(),
+                        Convert.ToInt32(Session["idUsuario"])
                         );
+
+                    //var respHist= cg.InsertarIngresoHistoricoNuevoUsuario(txbDocumento.Text.ToString().Trim(), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()),
+                    //    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlTipoContrato.SelectedItem.Value.ToString(),
+                    //    Convert.ToInt32(Session["idUsuario"].ToString()));
 
                     if (mensaje == "OK")
                     {

@@ -84,7 +84,7 @@
                         En la columna "Acciones" encontrarás estas opciones:<br />
                         <i class="fa fa-edit m-r-xs" style="color: #1AB394;"></i><b>Editar:</b> Modifica los datos del empleado.<br />
                         <i class="fa fa-trash m-r-xs" style="color: #DC3545;"></i><s><b>Eliminar:</b> Da de baja al empleado.</s>
-                    <br />
+                        <br />
                         <br />
                         <b>Paso 3: Acciones adicionales</b><br />
                         Al lado opuesto del buscador encontrarás dos botones útiles:<br />
@@ -144,12 +144,17 @@
 
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
+
+
+
+
                     <div class="row">
                         <div class="col-sm-8">
                             <div class="ibox float-e-margins" runat="server" id="divContenido">
                                 <div class="ibox-title">
                                     <h5>Lista de empleados</h5>
                                 </div>
+                                
                                 <div class="ibox-content">
                                     <form runat="server" id="form1">
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
@@ -171,59 +176,108 @@
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
-                                    </form>
 
-                                    <table id="tabla" class="footable table table-striped list-group-item-text" data-paging-size="15"
-                                        data-filter-min="3" data-filter-placeholder="Buscar"
-                                        data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                        data-paging-limit="10" data-filtering="true"
-                                        data-filter-container="#filter-form-container" data-filter-delay="300"
-                                        data-filter-dropdown-title="Buscar en:" data-filter-position="left"
-                                        data-empty="Sin resultados">
-                                        <thead>
-                                            <tr>
-                                                <th data-breakpoints="xs"></th>
-                                                <th data-sortable="true" data-type="text">Nombre</th>
-                                                <th data-sortable="false">Documento</th>
-                                                <th data-breakpoints="xs">Teléfono corporativo</th>
-                                                <%--<th data-breakpoints="xs sm">Teléfono personal</th>--%>
-                                                <%--<th data-breakpoints="xs sm md">Correo</th>--%>
-                                                <%--<th data-breakpoints="xs sm">Cargo</th>--%>
-                                                <th data-breakpoints="xs sm">Sede</th>
-                                                <%--<th data-hide="phone,tablet">Cargo</th>--%>
-                                                <th data-type="date" data-breakpoints="xs sm">Cumpleaños</th>
-                                                <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
-                                                <%--<th data-breakpoints="all" data-title="Info"></th>--%>
-                                                <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <asp:Repeater ID="rpEmpleados" runat="server" OnItemDataBound="rpEmpleados_ItemDataBound">
-                                                <ItemTemplate>
-                                                    <tr>
-                                                        <td class="client-avatar">
-                                                            <img alt="image" src="img/empleados/<%# Eval("FotoEmpleado") %>"></td>
-                                                        <td><a data-toggle="tab" href='#contact-<%# Eval("NombreEmpleado").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpleado") %>' class="client-link"><%# Eval("NombreEmpleado") %></a></td>
-                                                        <td><%# Eval("DocumentoEmpleado") %></td>
-                                                        <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></td>
-                                                        <%--<td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>--%>
-                                                        <%--<td><i class="fa fa-envelope m-r-xs font-bold"></i><a href="mailto:<%# Eval("EmailCorporativo") %>" title="Enviar correo"><%# Eval("EmailCorporativo") %></a></td>--%>
-                                                        <%--<td><a href="cargos" title="Ir a Cargos"><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></a></td>--%>
-                                                        <td><%# Eval("NombreSede") %></td>
-                                                        <%--<td><i class="fa fa-user-tie m-r-xs font-bold"></i><%# Eval("CargoEmpleado") %></td>--%>
-                                                        <td><%# Eval("icono") %><%# Eval("FechaNacEmpleado", "{0:dd MMM}") %></td>
-                                                        <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("Estado") %></span></td>
-                                                        <td>
-                                                            <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Eliminar"><i class="fa fa-trash"></i></a>
-                                                            <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Editar"><i class="fa fa-edit"></i></a>
-                                                        </td>
-                                                    </tr>
-                                                </ItemTemplate>
-                                            </asp:Repeater>
-                                        </tbody>
-                                    </table>
+
+
+                                        <div class="modal fade" id="modalAscenso" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+
+                                                    <div class="modal-header bg-warning">
+                                                        <h4 class="modal-title">Ascenso de empleado</h4>
+                                                    </div>
+
+                                                    <div class="modal-body">
+
+                                                        <input type="hidden" id="txtDocumentoAscenso" />
+
+                                                        <div class="form-group">
+                                                            <label>Cargo actual</label>
+                                                            <input type="text" id="txtCargoActual" class="form-control" disabled />
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Salario actual</label>
+                                                            <input type="text" id="txtSalarioActual" class="form-control" disabled />
+                                                        </div>
+
+                                                        <hr />
+
+                                                        <div class="form-group">
+                                                            <label>Nuevo cargo</label>
+                                                            <asp:DropDownList ID="ddlNuevoCargo" runat="server"
+                                                                CssClass="form-control">
+                                                            </asp:DropDownList>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Nuevo salario</label>
+                                                            <input type="number" id="txtNuevoSalario" class="form-control" />
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                        <button type="button" class="btn btn-warning" onclick="guardarAscenso()">Guardar</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <table id="tabla" class="footable table table-striped list-group-item-text" data-paging-size="15"
+                                            data-filter-min="3" data-filter-placeholder="Buscar"
+                                            data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
+                                            data-paging-limit="10" data-filtering="true"
+                                            data-filter-container="#filter-form-container" data-filter-delay="300"
+                                            data-filter-dropdown-title="Buscar en:" data-filter-position="left"
+                                            data-empty="Sin resultados">
+                                            <thead>
+                                                <tr>
+                                                    <th data-breakpoints="xs"></th>
+                                                    <th data-sortable="true" data-type="text">Nombre</th>
+                                                    <th data-sortable="false">Documento</th>
+                                                    <th data-breakpoints="xs">Teléfono corporativo</th>
+                                                    <%--<th data-breakpoints="xs sm">Teléfono personal</th>--%>
+                                                    <%--<th data-breakpoints="xs sm md">Correo</th>--%>
+                                                    <%--<th data-breakpoints="xs sm">Cargo</th>--%>
+                                                    <th data-breakpoints="xs sm">Sede</th>
+                                                    <%--<th data-hide="phone,tablet">Cargo</th>--%>
+                                                    <th data-type="date" data-breakpoints="xs sm">Cumpleaños</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
+                                                    <%--<th data-breakpoints="all" data-title="Info"></th>--%>
+                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <asp:Repeater ID="rpEmpleados" runat="server" OnItemDataBound="rpEmpleados_ItemDataBound">
+                                                    <ItemTemplate>
+                                                        <tr>
+                                                            <td class="client-avatar">
+                                                                <img alt="image" src="img/empleados/<%# Eval("FotoEmpleado") %>"></td>
+                                                            <td><a data-toggle="tab" href='#contact-<%# Eval("NombreEmpleado").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpleado") %>' class="client-link"><%# Eval("NombreEmpleado") %></a></td>
+                                                            <td><%# Eval("DocumentoEmpleado") %></td>
+                                                            <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></td>
+                                                            <%--<td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>--%>
+                                                            <%--<td><i class="fa fa-envelope m-r-xs font-bold"></i><a href="mailto:<%# Eval("EmailCorporativo") %>" title="Enviar correo"><%# Eval("EmailCorporativo") %></a></td>--%>
+                                                            <%--<td><a href="cargos" title="Ir a Cargos"><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></a></td>--%>
+                                                            <td><%# Eval("NombreSede") %></td>
+                                                            <%--<td><i class="fa fa-user-tie m-r-xs font-bold"></i><%# Eval("CargoEmpleado") %></td>--%>
+                                                            <td><%# Eval("icono") %><%# Eval("FechaNacEmpleado", "{0:dd MMM}") %></td>
+                                                            <td><span class="badge badge-<%# Eval("label") %>"><%# Eval("Estado") %></span></td>
+                                                            <td>
+                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Eliminar"><i class="fa fa-trash"></i></a>
+                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
+                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Editar"><i class="fa fa-edit"></i></a>
+                                                            </td>
+                                                        </tr>
+                                                    </ItemTemplate>
+                                                </asp:Repeater>
+                                            </tbody>
+                                        </table>
                                 </div>
                             </div>
                         </div>
@@ -239,21 +293,29 @@
                                                         <div class="ibox-content text-center">
                                                             <h2><%# Eval("NombreEmpleado") %></h2>
                                                             <div class="m-b-sm">
-                                                                <img alt="image" 
-                                                                 class='img-circle <%# Eval("Estado").ToString() == "Inactivo" ? "img-inactivo" : "img-activo" %>' 
-                                                                 src='img/empleados/<%# Eval("FotoEmpleado") %>' 
-                                                                 width="120">
+                                                                <img alt="image"
+                                                                    class='img-circle <%# Eval("Estado").ToString() == "Inactivo" ? "img-inactivo" : "img-activo" %>'
+                                                                    src='img/empleados/<%# Eval("FotoEmpleado") %>'
+                                                                    width="120">
                                                                 <span class="label label-danger">Rh: <%# Eval("TipoSangre") %></span>
                                                             </div>
                                                             <p class="font-bold"><%# Eval("Cargo") %></p>
 
                                                             <div class="text-center">
+
+                                                                <a href="javascript:void(0);" class="btn btn-xs btn-warning btnAscenso" data-doc='<%# Eval("DocumentoEmpleado") %>'>
+                                                                    <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
+                                                                </a><a runat="server" id="btnTraslado" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Traslados</a>
+                                                                <a runat="server" id="btnCambioSalarial" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio salarial</a>
+                                                                <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio de contrato</a>
+                                                                <a runat="server" id="btnRetiro" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Retiro</a>
+
                                                                 <a runat="server" id="btnEditarTab" href="#" class="btn btn-xs btn-primary"><i class="fa fa-edit m-r-xs" visible="false"></i>Editar</a>
                                                                 <%--<asp:LinkButton ID="lkbCambiarEstado" runat="server" 
                                                                     CssClass="btn btn-xs btn-warning" OnClick="lkbCambiarEstado_Click">
                                                                     <i class="fa fa-rotate m-r-xs"></i>Cambiar estado
                                                                 </asp:LinkButton>--%>
-                                                                <a runat="server" id="btnCambiarEstado" href="#" visible="false" 
+                                                                <a runat="server" id="btnCambiarEstado" href="#" visible="false"
                                                                     class='btn btn-xs btn-danger'><i class="fa fa-rotate m-r-xs"></i><%# Eval("Estado") %> (cambiar)
                                                                 </a>
                                                             </div>
@@ -365,7 +427,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>--%>
-
                                                             </div>
 
                                                             <hr />
@@ -840,7 +901,7 @@
                 return `hsla(${hue}, 70%, 55%, 0.7)`;
 
             });
-            
+
             var barData = {
                 labels: nombres6,
                 datasets: [
@@ -899,7 +960,7 @@
                 return `hsla(${hue}, 70%, 55%, 0.7)`;
 
             });
-            
+
             var barData = {
                 labels: nombres7,
                 datasets: [
@@ -958,7 +1019,7 @@
                 return `hsla(${hue}, 70%, 55%, 0.7)`;
 
             });
-            
+
             var barData = {
                 labels: nombres8,
                 datasets: [
@@ -1188,7 +1249,33 @@
         });
 
     </script>
+    <script>
+        $(document).on("click", ".btnAscenso", function () {
 
+            var documento = $(this).data("doc");
+
+            $("#txtDocumentoAscenso").val(documento);
+
+            // Llamar método para traer info actual
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/ObtenerDatosEmpleado",
+                data: JSON.stringify({ documento: documento }),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+
+                    var data = response.d;
+
+                    $("#txtCargoActual").val(data.Cargo);
+                    $("#txtSalarioActual").val(data.Sueldo);
+                    $("#txtNuevoSalario").val(data.Sueldo);
+
+                    $("#modalAscenso").modal("show");
+                }
+            });
+
+        });
+    </script>
 </body>
 
 </html>
