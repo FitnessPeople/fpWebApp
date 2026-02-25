@@ -966,13 +966,14 @@ namespace fpWebApp
         {
             //if (rblValor.SelectedItem != null)
             //{
-                listaTransaccionesPorFecha(
-                    Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
-                    Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),
-                    txbFechaIni.Value.ToString(),
-                    txbFechaFin.Value.ToString());
-                VentasCounter();
-                VentasWeb();
+            listaTransaccionesPorFecha(
+                Convert.ToInt32(ddlTipoPago.SelectedValue.ToString()),
+                Convert.ToInt32(ddlPlanes.SelectedValue.ToString()),
+                txbFechaIni.Value.ToString(),
+                txbFechaFin.Value.ToString());
+            VentasCounter();
+            VentasWeb();
+            TotalDebitosAutomaticos();
             //}
             //else
             //{
