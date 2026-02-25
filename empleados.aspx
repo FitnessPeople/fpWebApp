@@ -56,107 +56,111 @@
 </head>
 
 <body onload="changeClass()">
-    <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content animated bounceInRight">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                    <i class="fa fa-user-tie modal-icon" style="color: #1C84C6;"></i>
-                    <h4 class="modal-title">Ayuda para la administración de Empleados</h4>
-                    <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar el listado de forma rápida y sencilla.</small>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        <b>Paso 1: Busca y filtra empleados</b><br />
-                        Usa el buscador para encontrar empleados específicos.<br />
-                        <i class="fa-solid fa-magnifying-glass m-r-xs"></i>Filtra por: 
+
+    <form id="form1" runat="server">
+
+        <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content animated bounceInRight">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <i class="fa fa-user-tie modal-icon" style="color: #1C84C6;"></i>
+                        <h4 class="modal-title">Ayuda para la administración de Empleados</h4>
+                        <small class="font-bold">¡Bienvenido! Te explicamos cómo gestionar el listado de forma rápida y sencilla.</small>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            <b>Paso 1: Busca y filtra empleados</b><br />
+                            Usa el buscador para encontrar empleados específicos.<br />
+                            <i class="fa-solid fa-magnifying-glass m-r-xs"></i>Filtra por: 
                         <i class="fa-solid fa-user m-r-xs" style="color: #0D6EFD;"></i><b>Nombre</b>, 
                         <i class="fa-solid fa-address-card m-r-xs" style="color: #0D6EFD;"></i><b>Cédula</b>, 
                         <i class="fa-solid fa-envelope m-r-xs" style="color: #0D6EFD;"></i><b>Correo</b>, 
                         <i class="fa-solid fa-mobile m-r-xs" style="color: #0D6EFD;"></i><b>Celular</b>,
                         <i class="fa-solid fa-user-tie m-r-xs" style="color: #0D6EFD;"></i><b>Cargo</b> o 
                         <i class="fa-solid fa-circle m-r-xs" style="color: #0D6EFD;"></i><b>Estado</b><br />
-                        <i class="fa-solid fa-star m-r-xs" style="color: #FECE32;"></i>Tip: ¡Combina filtros para resultados más precisos!
+                            <i class="fa-solid fa-star m-r-xs" style="color: #FECE32;"></i>Tip: ¡Combina filtros para resultados más precisos!
                     <br />
-                        <br />
-                        <b>Paso 2: Revisa la tabla de resultados</b><br />
-                        La tabla muestra toda la información clave de cada empleado.<br />
-                        En la columna "Acciones" encontrarás estas opciones:<br />
-                        <i class="fa fa-edit m-r-xs" style="color: #1AB394;"></i><b>Editar:</b> Modifica los datos del empleado.<br />
-                        <i class="fa fa-trash m-r-xs" style="color: #DC3545;"></i><s><b>Eliminar:</b> Da de baja al empleado.</s>
-                        <br />
-                        <br />
-                        <b>Paso 3: Acciones adicionales</b><br />
-                        Al lado opuesto del buscador encontrarás dos botones útiles:<br />
-                        <i class="fa-solid fa-file-export m-r-xs" style="color: #212529;"></i><b>Exportar a Excel:</b>
-                        Genera un archivo Excel con los datos visibles en la tabla.<br />
-                        <i class="fa-solid fa-square-check fa-lg m-r-xs" style="color: #18A689;"></i><b>Crear Nuevo Empleado:</b>
-                        Te lleva a un formulario para registrar un nuevo empleado.
+                            <br />
+                            <b>Paso 2: Revisa la tabla de resultados</b><br />
+                            La tabla muestra toda la información clave de cada empleado.<br />
+                            En la columna "Acciones" encontrarás estas opciones:<br />
+                            <i class="fa fa-edit m-r-xs" style="color: #1AB394;"></i><b>Editar:</b> Modifica los datos del empleado.<br />
+                            <i class="fa fa-trash m-r-xs" style="color: #DC3545;"></i><s><b>Eliminar:</b> Da de baja al empleado.</s>
+                            <br />
+                            <br />
+                            <b>Paso 3: Acciones adicionales</b><br />
+                            Al lado opuesto del buscador encontrarás dos botones útiles:<br />
+                            <i class="fa-solid fa-file-export m-r-xs" style="color: #212529;"></i><b>Exportar a Excel:</b>
+                            Genera un archivo Excel con los datos visibles en la tabla.<br />
+                            <i class="fa-solid fa-square-check fa-lg m-r-xs" style="color: #18A689;"></i><b>Crear Nuevo Empleado:</b>
+                            Te lleva a un formulario para registrar un nuevo empleado.
                    <br />
-                        <br />
-                        <i class="fa fa-exclamation-circle mr-2 m-r-xs"></i>Si tienes dudas, consulta con el administrador del sistema.
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                            <br />
+                            <i class="fa fa-exclamation-circle mr-2 m-r-xs"></i>Si tienes dudas, consulta con el administrador del sistema.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="wrapper">
+        <div id="wrapper">
 
-        <uc1:navbar runat="server" ID="navbar1" />
+            <uc1:navbar runat="server" ID="navbar1" />
 
-        <div id="page-wrapper" class="gray-bg">
-            <div class="row border-bottom">
-                <uc1:header runat="server" ID="header1" />
-            </div>
-            <div class="row wrapper border-bottom white-bg page-heading">
-
-                <%--Inicio Breadcrumb!!!--%>
-                <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Empleados</h2>
-                    <ol class="breadcrumb">
-                        <li><a href="inicio">Inicio</a></li>
-                        <li>Sistema</li>
-                        <li class="active"><strong>Empleados</strong></li>
-                    </ol>
+            <div id="page-wrapper" class="gray-bg">
+                <div class="row border-bottom">
+                    <uc1:header runat="server" ID="header1" />
                 </div>
-                <div class="col-sm-2">
-                </div>
-                <%--Fin Breadcrumb!!!--%>
-            </div>
-            <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="row animated fadeInDown">
-                    <%--Inicio Contenido!!!!--%>
+                <div class="row wrapper border-bottom white-bg page-heading">
 
-                    <uc1:indicadores01 runat="server" ID="indicadores01" />
-
-                    <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
-                        <div class="p-xs">
-                            <div class="pull-left m-r-md">
-                                <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
-                            </div>
-                            <h2>Acceso Denegado</h2>
-                            <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
-                        </div>
+                    <%--Inicio Breadcrumb!!!--%>
+                    <div class="col-sm-10">
+                        <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Empleados</h2>
+                        <ol class="breadcrumb">
+                            <li><a href="inicio">Inicio</a></li>
+                            <li>Sistema</li>
+                            <li class="active"><strong>Empleados</strong></li>
+                        </ol>
                     </div>
+                    <div class="col-sm-2">
+                    </div>
+                    <%--Fin Breadcrumb!!!--%>
+                </div>
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="row animated fadeInDown">
+                        <%--Inicio Contenido!!!!--%>
 
-                    <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+                        <uc1:indicadores01 runat="server" ID="indicadores01" />
 
-
-
-
-
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <div class="ibox float-e-margins" runat="server" id="divContenido">
-                                <div class="ibox-title">
-                                    <h5>Lista de empleados</h5>
+                        <div class="ibox-content m-b-sm border-bottom" runat="server" id="divMensaje" visible="false">
+                            <div class="p-xs">
+                                <div class="pull-left m-r-md">
+                                    <i class="fa fa-triangle-exclamation text-danger mid-icon"></i>
                                 </div>
-                                
-                                <div class="ibox-content">
-                                    <form runat="server" id="form1">
+                                <h2>Acceso Denegado</h2>
+                                <span>Lamentablemente, no tienes permiso para acceder a esta página. Por favor, verifica que estás usando una cuenta con los permisos adecuados o contacta a nuestro soporte técnico para más información. Si crees que esto es un error, no dudes en ponerte en contacto con nosotros para resolver cualquier problema. Gracias por tu comprensión.</span>
+                            </div>
+                        </div>
+
+                        <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
+
+
+
+
+
+                        <div class="row">
+
+                            <div class="col-sm-8">
+                                <div class="ibox float-e-margins" runat="server" id="divContenido">
+                                    <div class="ibox-title">
+                                        <h5>Lista de empleados</h5>
+                                    </div>
+
+                                    <div class="ibox-content">
+
                                         <div class="row" style="font-size: 12px;" runat="server" id="divBotonesLista">
                                             <div class="col-lg-6 form-horizontal">
                                                 <div class="form-group">
@@ -176,7 +180,6 @@
                                                 </asp:LinkButton>
                                             </div>
                                         </div>
-
 
 
                                         <div class="modal fade" id="modalAscenso" tabindex="-1">
@@ -278,144 +281,144 @@
                                                 </asp:Repeater>
                                             </tbody>
                                         </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="ibox ">
+                            <div class="col-sm-4">
+                                <div class="ibox ">
 
-                                <div class="ibox-content">
-                                    <div class="tab-content">
-                                        <asp:Repeater ID="rpTabEmpleados" runat="server" OnItemDataBound="rpTabEmpleados_ItemDataBound">
-                                            <ItemTemplate>
-                                                <div id='contact-<%# Eval("NombreEmpleado").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpleado") %>' class='tab-pane <%# Eval("DocumentoEmpleado").ToString() == ViewState["EmployeeDoc"]?.ToString() ? "active" : "" %>'>
-                                                    <div class="row m-b-lg">
-                                                        <div class="ibox-content text-center">
-                                                            <h2><%# Eval("NombreEmpleado") %></h2>
-                                                            <div class="m-b-sm">
-                                                                <img alt="image"
-                                                                    class='img-circle <%# Eval("Estado").ToString() == "Inactivo" ? "img-inactivo" : "img-activo" %>'
-                                                                    src='img/empleados/<%# Eval("FotoEmpleado") %>'
-                                                                    width="120">
-                                                                <span class="label label-danger">Rh: <%# Eval("TipoSangre") %></span>
-                                                            </div>
-                                                            <p class="font-bold"><%# Eval("Cargo") %></p>
+                                    <div class="ibox-content">
+                                        <div class="tab-content">
+                                            <asp:Repeater ID="rpTabEmpleados" runat="server" OnItemDataBound="rpTabEmpleados_ItemDataBound">
+                                                <ItemTemplate>
+                                                    <div id='contact-<%# Eval("NombreEmpleado").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpleado") %>' class='tab-pane <%# Eval("DocumentoEmpleado").ToString() == ViewState["EmployeeDoc"]?.ToString() ? "active" : "" %>'>
+                                                        <div class="row m-b-lg">
+                                                            <div class="ibox-content text-center">
+                                                                <h2><%# Eval("NombreEmpleado") %></h2>
+                                                                <div class="m-b-sm">
+                                                                    <img alt="image"
+                                                                        class='img-circle <%# Eval("Estado").ToString() == "Inactivo" ? "img-inactivo" : "img-activo" %>'
+                                                                        src='img/empleados/<%# Eval("FotoEmpleado") %>'
+                                                                        width="120">
+                                                                    <span class="label label-danger">Rh: <%# Eval("TipoSangre") %></span>
+                                                                </div>
+                                                                <p class="font-bold"><%# Eval("Cargo") %></p>
 
-                                                            <div class="text-center">
+                                                                <div class="text-center">
 
-                                                                <a href="javascript:void(0);" class="btn btn-xs btn-warning btnAscenso" data-doc='<%# Eval("DocumentoEmpleado") %>'>
-                                                                    <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
-                                                                </a><a runat="server" id="btnTraslado" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Traslados</a>
-                                                                <a runat="server" id="btnCambioSalarial" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio salarial</a>
-                                                                <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio de contrato</a>
-                                                                <a runat="server" id="btnRetiro" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Retiro</a>
+                                                                    <a href="javascript:void(0);" class="btn btn-xs btn-warning btnAscenso" data-doc='<%# Eval("DocumentoEmpleado") %>'>
+                                                                        <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
+                                                                    </a><a runat="server" id="btnTraslado" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Traslados</a>
+                                                                    <a runat="server" id="btnCambioSalarial" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio salarial</a>
+                                                                    <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio de contrato</a>
+                                                                    <a runat="server" id="btnRetiro" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Retiro</a>
 
-                                                                <a runat="server" id="btnEditarTab" href="#" class="btn btn-xs btn-primary"><i class="fa fa-edit m-r-xs" visible="false"></i>Editar</a>
-                                                                <%--<asp:LinkButton ID="lkbCambiarEstado" runat="server" 
+                                                                    <a runat="server" id="btnEditarTab" href="#" class="btn btn-xs btn-primary"><i class="fa fa-edit m-r-xs" visible="false"></i>Editar</a>
+                                                                    <%--<asp:LinkButton ID="lkbCambiarEstado" runat="server" 
                                                                     CssClass="btn btn-xs btn-warning" OnClick="lkbCambiarEstado_Click">
                                                                     <i class="fa fa-rotate m-r-xs"></i>Cambiar estado
                                                                 </asp:LinkButton>--%>
-                                                                <a runat="server" id="btnCambiarEstado" href="#" visible="false"
-                                                                    class='btn btn-xs btn-danger'><i class="fa fa-rotate m-r-xs"></i><%# Eval("Estado") %> (cambiar)
-                                                                </a>
+                                                                    <a runat="server" id="btnCambiarEstado" href="#" visible="false"
+                                                                        class='btn btn-xs btn-danger'><i class="fa fa-rotate m-r-xs"></i><%# Eval("Estado") %> (cambiar)
+                                                                    </a>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="client-detail">
-                                                        <div class="full-height-scroll">
+                                                        <div class="client-detail">
+                                                            <div class="full-height-scroll">
 
-                                                            <div class="feed-activity-list">
+                                                                <div class="feed-activity-list">
 
-                                                                <div class="feed-element">
-                                                                    <div>
-                                                                        <strong><i class="fa fa-map-marker m-r-xs"></i>Dirección</strong>
-                                                                        <div class="text-info"><%# Eval("DireccionEmpleado") %></div>
-                                                                        <small class="text-muted"><i class="fa fa-city m-r-xs"></i><%# Eval("NombreCiudad") %></small>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <strong><i class="fa fa-map-marker m-r-xs"></i>Dirección</strong>
+                                                                            <div class="text-info"><%# Eval("DireccionEmpleado") %></div>
+                                                                            <small class="text-muted"><i class="fa fa-city m-r-xs"></i><%# Eval("NombreCiudad") %></small>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <div class="feed-element">
-                                                                    <div>
-                                                                        <strong><i class="fab fa-whatsapp m-r-xs"></i>Teléfono corporativo</strong>
-                                                                        <div><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></div>
-                                                                        <small class="text-muted"><i class="fa fa-envelope m-r-xs"></i>Email corporativo: <%# Eval("EmailCorporativo") %></small>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <strong><i class="fab fa-whatsapp m-r-xs"></i>Teléfono corporativo</strong>
+                                                                            <div><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></div>
+                                                                            <small class="text-muted"><i class="fa fa-envelope m-r-xs"></i>Email corporativo: <%# Eval("EmailCorporativo") %></small>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <%--<div class="feed-element">
+                                                                    <%--<div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-envelope m-r-xs"></i>Email corporativo</strong>
                                                                         <div><%# Eval("EmailCorporativo") %></div>
                                                                     </div>
                                                                 </div>--%>
 
-                                                                <div class="feed-element">
-                                                                    <div>
-                                                                        <strong><i class="fab fa-whatsapp m-r-xs"></i>Teléfono personal</strong>
-                                                                        <div><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></div>
-                                                                        <small class="text-muted"><i class="fa fa-envelope m-r-xs"></i>Email personal: <%# Eval("EmailEmpleado") %></small>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <strong><i class="fab fa-whatsapp m-r-xs"></i>Teléfono personal</strong>
+                                                                            <div><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></div>
+                                                                            <small class="text-muted"><i class="fa fa-envelope m-r-xs"></i>Email personal: <%# Eval("EmailEmpleado") %></small>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <%--<div class="feed-element">
+                                                                    <%--<div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-envelope m-r-xs"></i>Email personal</strong>
                                                                         <div><%# Eval("EmailEmpleado") %></div>
                                                                     </div>
                                                                 </div>--%>
 
-                                                                <div class="feed-element">
-                                                                    <div>
-                                                                        <strong><i class="fa fa-ring m-r-xs"></i>Estado civil</strong>
-                                                                        <div class="text-info"><%# Eval("EstadoCivil") %></div>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <strong><i class="fa fa-ring m-r-xs"></i>Estado civil</strong>
+                                                                            <div class="text-info"><%# Eval("EstadoCivil") %></div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <div class="feed-element">
-                                                                    <div>
-                                                                        <strong><i class="fa fa-file-lines m-r-xs"></i>Tipo de contrato</strong>
-                                                                        <div class="text-info"><%# Eval("TipoContrato") %></div>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <strong><i class="fa fa-file-lines m-r-xs"></i>Tipo de contrato</strong>
+                                                                            <div class="text-info"><%# Eval("TipoContrato") %></div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <div class="feed-element">
-                                                                    <div>
-                                                                        <strong><i class="fa fa-graduation-cap m-r-xs"></i>Nivel estudio</strong>
-                                                                        <div class="text-info"><%# Eval("NivelEstudio") %></div>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <strong><i class="fa fa-graduation-cap m-r-xs"></i>Nivel estudio</strong>
+                                                                            <div class="text-info"><%# Eval("NivelEstudio") %></div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <div class="feed-element">
-                                                                    <div>
-                                                                        <small class="pull-right text-navy">Estrato: <%# Eval("EstratoSocioeconomico") %></small>
-                                                                        <strong><i class="fa fa-house m-r-xs"></i>Tipo de vivienda</strong>
-                                                                        <div class="text-info"><%# Eval("TipoVivienda") %></div>
-                                                                        <small class="text-muted">Personas nucleo familiar: <%# Eval("PersonasNucleoFamiliar") %></small>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <small class="pull-right text-navy">Estrato: <%# Eval("EstratoSocioeconomico") %></small>
+                                                                            <strong><i class="fa fa-house m-r-xs"></i>Tipo de vivienda</strong>
+                                                                            <div class="text-info"><%# Eval("TipoVivienda") %></div>
+                                                                            <small class="text-muted">Personas nucleo familiar: <%# Eval("PersonasNucleoFamiliar") %></small>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <div class="feed-element">
-                                                                    <div>
-                                                                        <strong><i class="fa fa-person-rays m-r-xs"></i>Actividad extra</strong>
-                                                                        <div class="text-info"><%# Eval("ActividadExtra") %></div>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <strong><i class="fa fa-person-rays m-r-xs"></i>Actividad extra</strong>
+                                                                            <div class="text-info"><%# Eval("ActividadExtra") %></div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <div class="feed-element">
-                                                                    <div>
-                                                                        <strong><i class="fa fa-martini-glass m-r-xs"></i>Consume licor</strong>
-                                                                        <div class="text-info"><%# Eval("ConsumeLicor") %></div>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <strong><i class="fa fa-martini-glass m-r-xs"></i>Consume licor</strong>
+                                                                            <div class="text-info"><%# Eval("ConsumeLicor") %></div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <div class="feed-element">
-                                                                    <div>
-                                                                        <strong><i class="fa fa-car m-r-xs"></i>Medio de transporte</strong>
-                                                                        <div class="text-info"><%# Eval("MedioTransporte") %></div>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <strong><i class="fa fa-car m-r-xs"></i>Medio de transporte</strong>
+                                                                            <div class="text-info"><%# Eval("MedioTransporte") %></div>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                                <%--<div class="feed-element">
+                                                                    <%--<div class="feed-element">
                                                                     <div>
                                                                         <strong><i class="fa fa-car m-r-xs"></i>Notas</strong>
                                                                         <div>
@@ -427,143 +430,147 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>--%>
-                                                            </div>
+                                                                </div>
 
-                                                            <hr />
-                                                            <strong>Última actividad</strong>
-                                                            <div id="vertical-timeline" class="vertical-container dark-timeline">
+                                                                <hr />
+                                                                <strong>Última actividad</strong>
+                                                                <div id="vertical-timeline" class="vertical-container dark-timeline">
 
-                                                                <asp:Repeater ID="rpActividades" runat="server">
-                                                                    <ItemTemplate>
-                                                                        <div class="vertical-timeline-block">
-                                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                                <i class="fa fa-<%# Eval("Label") %>"></i>
+                                                                    <asp:Repeater ID="rpActividades" runat="server">
+                                                                        <ItemTemplate>
+                                                                            <div class="vertical-timeline-block">
+                                                                                <div class="vertical-timeline-icon gray-bg">
+                                                                                    <i class="fa fa-<%# Eval("Label") %>"></i>
+                                                                                </div>
+                                                                                <div class="vertical-timeline-content">
+                                                                                    <p><%# Eval("Accion") %></p>
+                                                                                    <p class="text-info"><%# Eval("DescripcionLog") %></p>
+                                                                                    <span class="vertical-date small text-muted"><%# Eval("FechaHora") %></span>
+                                                                                </div>
                                                                             </div>
-                                                                            <div class="vertical-timeline-content">
-                                                                                <p><%# Eval("Accion") %></p>
-                                                                                <p class="text-info"><%# Eval("DescripcionLog") %></p>
-                                                                                <span class="vertical-date small text-muted"><%# Eval("FechaHora") %></span>
-                                                                            </div>
-                                                                        </div>
-                                                                    </ItemTemplate>
-                                                                </asp:Repeater>
+                                                                        </ItemTemplate>
+                                                                    </asp:Repeater>
 
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </ItemTemplate>
+                                            </asp:Repeater>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px 10px 0px;">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>Estadísticas</h5>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <div class="row text-center">
+                                                <div class="col-lg-3">
+                                                    <canvas id="barChart1" height="150"></canvas>
+                                                    <h5><i class="fa fa-venus-mars fa-2x text-navy m-r-xs"></i>Géneros</h5>
                                                 </div>
-                                            </ItemTemplate>
-                                        </asp:Repeater>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px 10px 0px;">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>Estadísticas</h5>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div class="row text-center">
-                                            <div class="col-lg-3">
-                                                <canvas id="barChart1" height="150"></canvas>
-                                                <h5><i class="fa fa-venus-mars fa-2x text-navy m-r-xs"></i>Géneros</h5>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <canvas id="barChart2" height="150"></canvas>
-                                                <h5><i class="fa fa-city text-navy fa-2x m-r-xs"></i>Ciudades</h5>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <canvas id="barChart3" height="150"></canvas>
-                                                <h5><i class="fa fa-ring text-navy fa-2x m-r-xs"></i>Estado civil</h5>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <canvas id="barChart4" height="150"></canvas>
-                                                <h5><i class="fa fa-file-lines fa-2x text-navy m-r-xs"></i>Tipo de contrato</h5>
+                                                <div class="col-lg-3">
+                                                    <canvas id="barChart2" height="150"></canvas>
+                                                    <h5><i class="fa fa-city text-navy fa-2x m-r-xs"></i>Ciudades</h5>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <canvas id="barChart3" height="150"></canvas>
+                                                    <h5><i class="fa fa-ring text-navy fa-2x m-r-xs"></i>Estado civil</h5>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <canvas id="barChart4" height="150"></canvas>
+                                                    <h5><i class="fa fa-file-lines fa-2x text-navy m-r-xs"></i>Tipo de contrato</h5>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px 10px 0px;">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>Estadísticas</h5>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div class="row text-center">
-                                            <div class="col-lg-3">
-                                                <canvas id="barChart" height="150"></canvas>
-                                                <h5><i class="fa fa-graduation-cap fa-2x text-navy m-r-xs"></i>Nivel de estudio</h5>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <canvas id="doughnutChart6" height="150"></canvas>
-                                                <h5><i class="fa fa-house fa-2x text-navy m-r-xs"></i>Tipo de vivienda</h5>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <canvas id="doughnutChart7" height="150"></canvas>
-                                                <h5><i class="fa fa-person-rays fa-2x text-navy m-r-xs"></i>Actividad extra</h5>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <canvas id="doughnutChart8" height="150"></canvas>
-                                                <h5><i class="fa fa-martini-glass fa-2x text-navy m-r-xs"></i>Consumo de licor</h5>
+                        <div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px 10px 0px;">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>Estadísticas</h5>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <div class="row text-center">
+                                                <div class="col-lg-3">
+                                                    <canvas id="barChart" height="150"></canvas>
+                                                    <h5><i class="fa fa-graduation-cap fa-2x text-navy m-r-xs"></i>Nivel de estudio</h5>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <canvas id="doughnutChart6" height="150"></canvas>
+                                                    <h5><i class="fa fa-house fa-2x text-navy m-r-xs"></i>Tipo de vivienda</h5>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <canvas id="doughnutChart7" height="150"></canvas>
+                                                    <h5><i class="fa fa-person-rays fa-2x text-navy m-r-xs"></i>Actividad extra</h5>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <canvas id="doughnutChart8" height="150"></canvas>
+                                                    <h5><i class="fa fa-martini-glass fa-2x text-navy m-r-xs"></i>Consumo de licor</h5>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px 10px 0px;">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <h5>Estadísticas</h5>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div class="row text-center">
-                                            <div class="col-lg-3">
-                                                <canvas id="barChart9" height="150"></canvas>
-                                                <h5><i class="fa fa-person-cane fa-2x text-navy m-r-xs"></i>Edades</h5>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <canvas id="barChart10" height="150"></canvas>
-                                                <h5><i class="fa fa-car fa-2x text-navy m-r-xs"></i>Medio de transporte</h5>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <canvas id="barChart11" height="150"></canvas>
-                                                <h5><i class="fa fa-droplet fa-2x text-navy m-r-xs"></i>Tipo de sangre</h5>
-                                            </div>
-                                            <%--<div class="col-lg-3">
+                        <div class="wrapper wrapper-content animated fadeInRight" style="padding: 20px 10px 0px;">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>Estadísticas</h5>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <div class="row text-center">
+                                                <div class="col-lg-3">
+                                                    <canvas id="barChart9" height="150"></canvas>
+                                                    <h5><i class="fa fa-person-cane fa-2x text-navy m-r-xs"></i>Edades</h5>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <canvas id="barChart10" height="150"></canvas>
+                                                    <h5><i class="fa fa-car fa-2x text-navy m-r-xs"></i>Medio de transporte</h5>
+                                                </div>
+                                                <div class="col-lg-3">
+                                                    <canvas id="barChart11" height="150"></canvas>
+                                                    <h5><i class="fa fa-droplet fa-2x text-navy m-r-xs"></i>Tipo de sangre</h5>
+                                                </div>
+                                                <%--<div class="col-lg-3">
                                                 <canvas id="doughnutChart8" height="150"></canvas>
                                                 <h5>Consumo licor</h5>
                                             </div>--%>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <%--Fin Contenido!!!!--%>
                     </div>
-                    <%--Fin Contenido!!!!--%>
                 </div>
+
+                <uc1:footer runat="server" ID="footer1" />
+
             </div>
-
-            <uc1:footer runat="server" ID="footer1" />
-
+            <uc1:rightsidebar runat="server" ID="rightsidebar1" />
         </div>
-        <uc1:rightsidebar runat="server" ID="rightsidebar1" />
-    </div>
+
+    </form>
 
     <!-- Mainly scripts -->
     <script src="js/jquery-3.1.1.min.js"></script>
@@ -1276,6 +1283,7 @@
 
         });
     </script>
+
 </body>
 
 </html>
