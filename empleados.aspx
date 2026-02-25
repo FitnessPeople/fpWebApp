@@ -148,9 +148,6 @@
                         <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
 
-
-
-
                         <div class="row">
 
                             <div class="col-sm-8">

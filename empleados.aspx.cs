@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Script.Serialization;
 using System.Web.Services;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -62,7 +63,9 @@ namespace fpWebApp
                     CantidadEdades();
                     CantidadMedioTransporte();
                     CantidadTipoSangre();
-                    
+                    CargarCargos();
+
+
 
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
@@ -950,36 +953,84 @@ namespace fpWebApp
         [WebMethod]
         public static object ObtenerDatosEmpleado(string documento)
         {
-            string strConexion = WebConfigurationManager
-                .ConnectionStrings["ConnectionFP"].ConnectionString;
+            clasesglobales cg = new clasesglobales();
 
-            using (MySqlConnection conn = new MySqlConnection(strConexion))
+            try
             {
-                conn.Open();
+               
+                DataTable dt = cg.ConsultarEmpleado(documento);
 
-                string query = @"SELECT idCargo, Cargo, Sueldo
-                         FROM empleados
-                         WHERE DocumentoEmpleado = @doc";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    cmd.Parameters.AddWithValue("@doc", documento);
+                    DataRow row = dt.Rows[0];
 
-                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    return new
                     {
-                        if (dr.Read())
-                        {
-                            return new
-                            {
-                                Cargo = dr["Cargo"].ToString(),
-                                Sueldo = Convert.ToDecimal(dr["Sueldo"])
-                            };
-                        }
-                    }
+                        Cargo = row["Cargo"].ToString(),
+                        Sueldo = row["Sueldo"] != DBNull.Value
+                                    ? Convert.ToDecimal(row["Sueldo"])
+                                    : 0,
+                        idCargo = row["idCargo"] != DBNull.Value
+                                    ? Convert.ToInt32(row["idCargo"])
+                                    : 0
+                    };
                 }
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    error = true,
+                    mensaje = ex.Message
+                };
             }
 
             return null;
+        }
+
+        private void CargarCargos()
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                DataTable dt = cg.ConsultarCargos();
+
+                ddlNuevoCargo.DataSource = dt;
+                ddlNuevoCargo.DataTextField = "NombreCargo";   // texto visible
+                ddlNuevoCargo.DataValueField = "idCargo";     // valor
+                ddlNuevoCargo.DataBind();
+
+                ddlNuevoCargo.Items.Insert(0, new ListItem("Seleccione cargo", ""));
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso",
+                    "Ocurrió un inconveniente. Código: " + idLog,
+                    "error");
+            }
+        }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
         }
     }
 }
