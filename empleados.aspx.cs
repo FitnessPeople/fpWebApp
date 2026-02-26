@@ -1014,6 +1014,110 @@ namespace fpWebApp
             }
         }
 
+        [WebMethod(EnableSession = true)]
+        [System.Web.Script.Services.ScriptMethod(ResponseFormat = System.Web.Script.Services.ResponseFormat.Json)]
+        public static object InsertarAscensoEmpleado(string documento, int idNuevoCargo, decimal nuevoSueldo)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+
+                DataTable dt = cg.ConsultarEmpleado(documento);
+
+                if (dt == null || dt.Rows.Count == 0)
+                    return new { success = false, mensaje = "Empleado no encontrado." };
+
+                DataRow row = dt.Rows[0];
+
+                int idCargoActual = Convert.ToInt32(row["idCargo"]);
+                string cargoActualNombre = row["Cargo"].ToString();
+                decimal sueldoActual = Convert.ToDecimal(row["Sueldo"]);
+
+                if (idCargoActual == idNuevoCargo)
+                    return new { success = false, mensaje = "El nuevo cargo no puede ser igual al actual." };
+
+                string strConexion = WebConfigurationManager
+                                     .ConnectionStrings["ConnectionFP"]
+                                     .ConnectionString;
+
+                using (MySqlConnection conn = new MySqlConnection(strConexion))
+                {
+                    conn.Open();
+                    MySqlTransaction trans = conn.BeginTransaction();
+
+                    try
+                    {
+                        // Obtener nombre del nuevo cargo
+                        string nombreNuevoCargo = "";
+                        using (MySqlCommand cmdCargo = new MySqlCommand(
+                            "SELECT NombreCargo FROM cargos WHERE idCargo = @idCargo",
+                            conn, trans))
+                        {
+                            cmdCargo.Parameters.AddWithValue("@idCargo", idNuevoCargo);
+                            object result = cmdCargo.ExecuteScalar();
+                            nombreNuevoCargo = result != null ? result.ToString() : "";
+                        }
+
+                        // 1️⃣ Actualizar empleados
+                        using (MySqlCommand cmdUpdate = new MySqlCommand(@"
+                    UPDATE empleados
+                    SET idCargo = @idCargo,
+                        Cargo = @Cargo,
+                        Sueldo = @Sueldo
+                    WHERE DocumentoEmpleado = @doc",
+                            conn, trans))
+                        {
+                            cmdUpdate.Parameters.AddWithValue("@idCargo", idNuevoCargo);
+                            cmdUpdate.Parameters.AddWithValue("@Cargo", nombreNuevoCargo);
+                            cmdUpdate.Parameters.AddWithValue("@Sueldo", nuevoSueldo);
+                            cmdUpdate.Parameters.AddWithValue("@doc", documento);
+
+                            cmdUpdate.ExecuteNonQuery();
+                        }
+
+                        // 2️⃣ Insertar histórico
+                        using (MySqlCommand cmdInsert = new MySqlCommand(@"
+                    INSERT INTO empleados_historico
+                    (DocumentoEmpleado, TipoMovimiento, FechaMovimiento,
+                     idCargoAnterior, idCargoNuevo,
+                     SueldoAnterior, SueldoNuevo,
+                     Observacion, idusuario)
+                    VALUES
+                    (@doc, 'Ascenso', NOW(),
+                     @cargoAnterior, @cargoNuevo,
+                     @sueldoAnterior, @sueldoNuevo,
+                     @obs, @idusuario)",
+                            conn, trans))
+                        {
+                            cmdInsert.Parameters.AddWithValue("@doc", documento);
+                            cmdInsert.Parameters.AddWithValue("@cargoAnterior", idCargoActual);
+                            cmdInsert.Parameters.AddWithValue("@cargoNuevo", idNuevoCargo);
+                            cmdInsert.Parameters.AddWithValue("@sueldoAnterior", sueldoActual);
+                            cmdInsert.Parameters.AddWithValue("@sueldoNuevo", nuevoSueldo);
+                            cmdInsert.Parameters.AddWithValue("@obs", "Ascenso de empleado");
+                            cmdInsert.Parameters.AddWithValue("@idusuario",
+                                HttpContext.Current.Session["idUsuario"]);
+
+                            cmdInsert.ExecuteNonQuery();
+                        }
+
+                        trans.Commit();
+
+                        return new { success = true, mensaje = "Ascenso guardado correctamente." };
+                    }
+                    catch (Exception exTrans)
+                    {
+                        trans.Rollback();
+                        return new { success = false, mensaje = exTrans.Message };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, mensaje = ex.Message };
+            }
+        }
+
         private void MostrarAlerta(string titulo, string mensaje, string tipo)
         {
             clasesglobales cg = new clasesglobales();
