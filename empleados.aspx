@@ -106,6 +106,8 @@
                 </div>
             </div>
         </div>
+
+        <asp:HiddenField ID="hdDocumentoAscenso" runat="server" />
         <div id="wrapper">
 
             <uc1:navbar runat="server" ID="navbar1" />
@@ -189,7 +191,7 @@
 
                                                     <div class="modal-body">
 
-                                                        <input type="hidden" id="txtDocumentoAscenso" />
+
 
                                                         <div class="form-group">
                                                             <label>Cargo actual</label>
@@ -302,9 +304,12 @@
                                                                 <p class="font-bold"><%# Eval("Cargo") %></p>
 
                                                                 <div class="text-center">
-
-                                                                    <a href="javascript:void(0);" class="btn btn-xs btn-warning btnAscenso" data-doc='<%# Eval("DocumentoEmpleado") %>'>
-                                                                        <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
+                                                                    <a href="javascript:void(0);" 
+                                                                       class="btn btn-xs btn-warning btnAscenso"
+                                                                       data-doc='<%# Eval("DocumentoEmpleado") %>'>
+                                                                       <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
+                                                                    </a>
+                                                                  
                                                                     </a><a runat="server" id="btnTraslado" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Traslados</a>
                                                                     <a runat="server" id="btnCambioSalarial" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio salarial</a>
                                                                     <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio de contrato</a>
@@ -566,6 +571,22 @@
             </div>
             <uc1:rightsidebar runat="server" ID="rightsidebar1" />
         </div>
+      
+
+<%--        <script>
+
+        var documentoSeleccionado = "";
+
+        function abrirAscenso(doc) {
+
+            documentoSeleccionado = doc;
+
+            console.log("Documento recibido:", documentoSeleccionado);
+
+            $("#modalAscenso").modal("show");
+        }
+
+        </script>--%>
 
     </form>
 
@@ -1280,6 +1301,82 @@
 
         });
     </script>
+
+
+    <script>
+        $(document).on("click", ".btnAscenso", function () {
+
+            var documento = $(this).data("doc");
+
+            console.log("Documento detectado:", documento);
+
+            $("#hdDocumentoAscenso").val(documento);
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/ObtenerDatosEmpleado",
+                data: JSON.stringify({ documento: documento }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    var data = response.d;
+
+                    $("#txtCargoActual").val(data.Cargo);
+                    $("#txtSalarioActual").val(data.Sueldo);
+                    $("#txtNuevoSalario").val(data.Sueldo);
+
+                    $("#modalAscenso").modal("show");
+                }
+            });
+        });
+    </script>
+
+    <script>
+    function guardarAscenso() {
+
+    var documento = $("#hdDocumentoAscenso").val();
+
+    var idNuevoCargo = parseInt($("#ddlNuevoCargo").val());
+    var sueldoTexto = $("#txtNuevoSalario").val() || "";
+
+    sueldoTexto = sueldoTexto.replace(/\./g, "").replace(",", ".");
+    var nuevoSueldo = parseFloat(sueldoTexto);
+
+    console.log("Documento al guardar:", documento);
+
+    if (!documento || isNaN(idNuevoCargo) || isNaN(nuevoSueldo)) {
+        alert("Complete la información.");
+        return;
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "Empleados.aspx/InsertarAscensoEmpleado",
+        data: JSON.stringify({
+            documento: documento,
+            idNuevoCargo: idNuevoCargo,
+            nuevoSueldo: nuevoSueldo
+        }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+
+            if (response.d.success) {
+                alert(response.d.mensaje);
+                $("#modalAscenso").modal("hide");
+                location.reload();
+            } else {
+                alert(response.d.mensaje);
+            }
+        }
+    });
+}
+    </script>
+
+
+
+
 
 </body>
 
