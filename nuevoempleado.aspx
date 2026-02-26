@@ -625,6 +625,9 @@
                 ddlGenero: {
                     required: true
                 },
+                ddlTipoSangre: {
+                    required: true
+                },
                 txbEstratoSocioeconomico: {
                     required: true,
                     minlength: 1
@@ -659,6 +662,9 @@
                     required: true
                 },
                 txbFechaFinal: {
+                    required: true
+                },
+                ddlempresasFP: {
                     required: true
                 },
                 txbSueldo: {
