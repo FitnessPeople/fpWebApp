@@ -185,13 +185,17 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
 
-                                                    <div class="modal-header bg-warning">
-                                                        <h4 class="modal-title">Ascenso de empleado</h4>
+                                                    <div class="modal-header bg-warning text-white">
+                                                        <h4 class="modal-title mb-0">Ascenso de empleado
+                                                             <br />
+                                                            <div id="lblNombreEmpleado" class="h5 font-weight-bold mt-1"></div>
+                                                        </h4>
+
+                                                        <button type="button" class="close text-white" data-dismiss="modal">
+                                                        </button>
                                                     </div>
 
                                                     <div class="modal-body">
-
-
 
                                                         <div class="form-group">
                                                             <label>Cargo actual</label>
@@ -214,7 +218,8 @@
 
                                                         <div class="form-group">
                                                             <label>Nuevo salario</label>
-                                                            <input type="number" id="txtNuevoSalario" class="form-control" />
+                                                            <input type="text" id="txtNuevoSalario" class="form-control" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"
+                                                                autocomplete="off" />
                                                         </div>
 
                                                     </div>
@@ -241,12 +246,13 @@
                                                     <th data-breakpoints="xs"></th>
                                                     <th data-sortable="true" data-type="text">Nombre</th>
                                                     <th data-sortable="false">Documento</th>
-                                                    <th data-breakpoints="xs">Teléfono corporativo</th>
+                                                    <th data-sortable="true">Cargo</th>
+                                                    <%-- <th data-breakpoints="xs">Teléfono corporativo</th>--%>
                                                     <%--<th data-breakpoints="xs sm">Teléfono personal</th>--%>
                                                     <%--<th data-breakpoints="xs sm md">Correo</th>--%>
                                                     <%--<th data-breakpoints="xs sm">Cargo</th>--%>
                                                     <th data-breakpoints="xs sm">Sede</th>
-                                                    <%--<th data-hide="phone,tablet">Cargo</th>--%>
+
                                                     <th data-type="date" data-breakpoints="xs sm">Cumpleaños</th>
                                                     <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
                                                     <%--<th data-breakpoints="all" data-title="Info"></th>--%>
@@ -261,7 +267,8 @@
                                                                 <img alt="image" src="img/empleados/<%# Eval("FotoEmpleado") %>"></td>
                                                             <td><a data-toggle="tab" href='#contact-<%# Eval("NombreEmpleado").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpleado") %>' class="client-link"><%# Eval("NombreEmpleado") %></a></td>
                                                             <td><%# Eval("DocumentoEmpleado") %></td>
-                                                            <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></td>
+                                                            <td><%# Eval("Cargo") %></td>
+                                                            <%-- <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></td>--%>
                                                             <%--<td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>--%>
                                                             <%--<td><i class="fa fa-envelope m-r-xs font-bold"></i><a href="mailto:<%# Eval("EmailCorporativo") %>" title="Enviar correo"><%# Eval("EmailCorporativo") %></a></td>--%>
                                                             <%--<td><a href="cargos" title="Ir a Cargos"><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></a></td>--%>
@@ -304,12 +311,13 @@
                                                                 <p class="font-bold"><%# Eval("Cargo") %></p>
 
                                                                 <div class="text-center">
-                                                                    <a href="javascript:void(0);" 
-                                                                       class="btn btn-xs btn-warning btnAscenso"
-                                                                       data-doc='<%# Eval("DocumentoEmpleado") %>'>
-                                                                       <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-xs btn-warning btnAscenso"
+                                                                        data-doc='<%# Eval("DocumentoEmpleado") %>'
+                                                                        data-nombre='<%# Eval("NombreEmpleado") %>'>
+                                                                        <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
                                                                     </a>
-                                                                  
+
                                                                     </a><a runat="server" id="btnTraslado" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Traslados</a>
                                                                     <a runat="server" id="btnCambioSalarial" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio salarial</a>
                                                                     <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio de contrato</a>
@@ -571,9 +579,9 @@
             </div>
             <uc1:rightsidebar runat="server" ID="rightsidebar1" />
         </div>
-      
 
-<%--        <script>
+
+        <%--        <script>
 
         var documentoSeleccionado = "";
 
@@ -587,7 +595,6 @@
         }
 
         </script>--%>
-
     </form>
 
     <!-- Mainly scripts -->
@@ -1278,6 +1285,8 @@
         $(document).on("click", ".btnAscenso", function () {
 
             var documento = $(this).data("doc");
+            var nombreEmpleado = $(this).data("nombre");
+            $("#lblNombreEmpleado").text(nombreEmpleado);
 
             $("#txtDocumentoAscenso").val(documento);
 
@@ -1300,6 +1309,7 @@
             });
 
         });
+
     </script>
 
 
@@ -1323,8 +1333,12 @@
                     var data = response.d;
 
                     $("#txtCargoActual").val(data.Cargo);
-                    $("#txtSalarioActual").val(data.Sueldo);
-                    $("#txtNuevoSalario").val(data.Sueldo);
+                    var sueldoActual = parseFloat(data.Sueldo);
+
+                    $("#txtSalarioActual").val(
+                        "$ " + sueldoActual.toLocaleString("es-CO")
+                    );
+                    $("#txtNuevoSalario").val("$ 0");
 
                     $("#modalAscenso").modal("show");
                 }
@@ -1333,47 +1347,79 @@
     </script>
 
     <script>
-    function guardarAscenso() {
+        function guardarAscenso() {
 
-    var documento = $("#hdDocumentoAscenso").val();
+            var documento = $("#hdDocumentoAscenso").val();
 
-    var idNuevoCargo = parseInt($("#ddlNuevoCargo").val());
-    var sueldoTexto = $("#txtNuevoSalario").val() || "";
+            var idNuevoCargo = parseInt($("#ddlNuevoCargo").val());
+            var sueldoTexto = $("#txtNuevoSalario").val() || "";
 
-    sueldoTexto = sueldoTexto.replace(/\./g, "").replace(",", ".");
-    var nuevoSueldo = parseFloat(sueldoTexto);
+            var sueldoTexto = $("#txtNuevoSalario").val() || "";
 
-    console.log("Documento al guardar:", documento);
+            sueldoTexto = sueldoTexto.replace(/\$/g, "").replace(/\./g, "").trim();
+            var nuevoSueldo = parseFloat(sueldoTexto);
 
-    if (!documento || isNaN(idNuevoCargo) || isNaN(nuevoSueldo)) {
-        alert("Complete la información.");
-        return;
-    }
-
-    $.ajax({
-        type: "POST",
-        url: "Empleados.aspx/InsertarAscensoEmpleado",
-        data: JSON.stringify({
-            documento: documento,
-            idNuevoCargo: idNuevoCargo,
-            nuevoSueldo: nuevoSueldo
-        }),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (response) {
-
-            if (response.d.success) {
-                alert(response.d.mensaje);
-                $("#modalAscenso").modal("hide");
-                location.reload();
-            } else {
-                alert(response.d.mensaje);
+            if (isNaN(nuevoSueldo)) {
+                alert("Ingrese un salario válido");
+                return;
             }
+
+            console.log("Documento al guardar:", documento);
+
+            if (!documento || isNaN(idNuevoCargo) || isNaN(nuevoSueldo)) {
+                alert("Complete la información.");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/InsertarAscensoEmpleado",
+                data: JSON.stringify({
+                    documento: documento,
+                    idNuevoCargo: idNuevoCargo,
+                    nuevoSueldo: nuevoSueldo
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d.success) {
+                        alert(response.d.mensaje);
+                        $("#modalAscenso").modal("hide");
+                        location.reload();
+                    } else {
+                        alert(response.d.mensaje);
+                    }
+                }
+            });
         }
-    });
-}
     </script>
 
+    <script>
+        function formatCurrency(input) {
+
+            let value = input.value.replace(/\D/g, "");
+
+            if (value === "") {
+                input.value = "";
+                return;
+            }
+
+            let number = parseInt(value, 10);
+
+            input.value = "$ " + number.toLocaleString("es-CO");
+        }
+
+        function keepFormatted(input) {
+
+            if (input.value === "") return;
+
+            let value = input.value.replace(/\D/g, "");
+            let number = parseInt(value, 10);
+
+            input.value = "$ " + number.toLocaleString("es-CO");
+        }
+    </script>
 
 
 

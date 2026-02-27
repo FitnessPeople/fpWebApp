@@ -8095,6 +8095,42 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public string ActualizarAscensoEmpleado(string documentoEmpleado, int idCargoNuevo, decimal nuevoSueldo, int idUsuario)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ASCENSO_EMPLEADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_doc_empleado", documentoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_id_cargo_nuevo", idCargoNuevo);                                          
+                        cmd.Parameters.AddWithValue("@p_sueldo_nuevo", nuevoSueldo);                                          
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);                
+
+                        cmd.ExecuteNonQuery();
+
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+
         public DataTable ConsultarEmpresasFP()
         {
             DataTable dt = new DataTable();

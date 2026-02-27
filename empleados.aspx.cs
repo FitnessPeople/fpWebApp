@@ -1,8 +1,10 @@
 ﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO.Packaging;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Script.Serialization;
@@ -1027,90 +1029,34 @@ namespace fpWebApp
                 if (dt == null || dt.Rows.Count == 0)
                     return new { success = false, mensaje = "Empleado no encontrado." };
 
+                if (HttpContext.Current.Session["idUsuario"] == null)
+                    return new { success = false, mensaje = "La sesión ha expirado. Inicie sesión nuevamente." };
+
                 DataRow row = dt.Rows[0];
 
+                int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
                 int idCargoActual = Convert.ToInt32(row["idCargo"]);
-                string cargoActualNombre = row["Cargo"].ToString();
                 decimal sueldoActual = Convert.ToDecimal(row["Sueldo"]);
+
+                decimal salarioMinimo = 1750000m;
+                decimal medioSalarioMinimo = salarioMinimo / 2;
+
 
                 if (idCargoActual == idNuevoCargo)
                     return new { success = false, mensaje = "El nuevo cargo no puede ser igual al actual." };
 
-                string strConexion = WebConfigurationManager
-                                     .ConnectionStrings["ConnectionFP"]
-                                     .ConnectionString;
+                if(nuevoSueldo <= 0)    return new { success = false, mensaje = "El salario no puede ser cero o negativo." };
 
-                using (MySqlConnection conn = new MySqlConnection(strConexion))
-                {
-                    conn.Open();
-                    MySqlTransaction trans = conn.BeginTransaction();
+                if (nuevoSueldo < medioSalarioMinimo)
+                    return new { success = false, mensaje = "El salario no puede ser menor a medio salario mínimo legal vigente." };
 
-                    try
-                    {
-                        // Obtener nombre del nuevo cargo
-                        string nombreNuevoCargo = "";
-                        using (MySqlCommand cmdCargo = new MySqlCommand(
-                            "SELECT NombreCargo FROM cargos WHERE idCargo = @idCargo",
-                            conn, trans))
-                        {
-                            cmdCargo.Parameters.AddWithValue("@idCargo", idNuevoCargo);
-                            object result = cmdCargo.ExecuteScalar();
-                            nombreNuevoCargo = result != null ? result.ToString() : "";
-                        }
 
-                        // 1️⃣ Actualizar empleados
-                        using (MySqlCommand cmdUpdate = new MySqlCommand(@"
-                    UPDATE empleados
-                    SET idCargo = @idCargo,
-                        Cargo = @Cargo,
-                        Sueldo = @Sueldo
-                    WHERE DocumentoEmpleado = @doc",
-                            conn, trans))
-                        {
-                            cmdUpdate.Parameters.AddWithValue("@idCargo", idNuevoCargo);
-                            cmdUpdate.Parameters.AddWithValue("@Cargo", nombreNuevoCargo);
-                            cmdUpdate.Parameters.AddWithValue("@Sueldo", nuevoSueldo);
-                            cmdUpdate.Parameters.AddWithValue("@doc", documento);
+                string respuesta = cg.ActualizarAscensoEmpleado(documento, idNuevoCargo,nuevoSueldo, idUsuario);
 
-                            cmdUpdate.ExecuteNonQuery();
-                        }
+                if (respuesta != "OK")
+                    return new { success = false, mensaje = respuesta };    
 
-                        // 2️⃣ Insertar histórico
-                        using (MySqlCommand cmdInsert = new MySqlCommand(@"
-                    INSERT INTO empleados_historico
-                    (DocumentoEmpleado, TipoMovimiento, FechaMovimiento,
-                     idCargoAnterior, idCargoNuevo,
-                     SueldoAnterior, SueldoNuevo,
-                     Observacion, idusuario)
-                    VALUES
-                    (@doc, 'Ascenso', NOW(),
-                     @cargoAnterior, @cargoNuevo,
-                     @sueldoAnterior, @sueldoNuevo,
-                     @obs, @idusuario)",
-                            conn, trans))
-                        {
-                            cmdInsert.Parameters.AddWithValue("@doc", documento);
-                            cmdInsert.Parameters.AddWithValue("@cargoAnterior", idCargoActual);
-                            cmdInsert.Parameters.AddWithValue("@cargoNuevo", idNuevoCargo);
-                            cmdInsert.Parameters.AddWithValue("@sueldoAnterior", sueldoActual);
-                            cmdInsert.Parameters.AddWithValue("@sueldoNuevo", nuevoSueldo);
-                            cmdInsert.Parameters.AddWithValue("@obs", "Ascenso de empleado");
-                            cmdInsert.Parameters.AddWithValue("@idusuario",
-                                HttpContext.Current.Session["idUsuario"]);
-
-                            cmdInsert.ExecuteNonQuery();
-                        }
-
-                        trans.Commit();
-
-                        return new { success = true, mensaje = "Ascenso guardado correctamente." };
-                    }
-                    catch (Exception exTrans)
-                    {
-                        trans.Rollback();
-                        return new { success = false, mensaje = exTrans.Message };
-                    }
-                }
+                return new { success = true, mensaje = "Ascenso registrado correctamente." };
             }
             catch (Exception ex)
             {
