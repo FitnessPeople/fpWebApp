@@ -66,6 +66,7 @@ namespace fpWebApp
                     CantidadMedioTransporte();
                     CantidadTipoSangre();
                     CargarCargos();
+                    CargarSedes();
 
 
 
@@ -974,7 +975,10 @@ namespace fpWebApp
                                     : 0,
                         idCargo = row["idCargo"] != DBNull.Value
                                     ? Convert.ToInt32(row["idCargo"])
-                                    : 0
+                                    : 0,
+                        Sede = row["NombreSede"].ToString(),
+                        idSede = Convert.ToInt32(row["idSede"])
+
                     };
                 }
             }
@@ -990,6 +994,32 @@ namespace fpWebApp
             return null;
         }
 
+        private void CargarSedes()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultaCargarSedes("Todos");
+                ddlNuevaSede.DataSource = dt;
+
+                ddlNuevaSede.DataSource = dt;
+                ddlNuevaSede.DataTextField = "NombreSede";
+                ddlNuevaSede.DataValueField = "idSede";
+                ddlNuevaSede.DataBind();
+
+                ddlNuevaSede.Items.Insert(0, new ListItem("Seleccione sede", ""));
+
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Código: " + idLog,"error");
+            }
+
+
+        }
         private void CargarCargos()
         {
             clasesglobales cg = new clasesglobales();

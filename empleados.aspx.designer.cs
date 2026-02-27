@@ -24,13 +24,22 @@ namespace fpWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// Control hdDocumentoAscenso.
+        /// Control hdDocumentoMovimiento.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hdDocumentoAscenso;
+        protected global::System.Web.UI.WebControls.HiddenField hdDocumentoMovimiento;
+
+        /// <summary>
+        /// Control hdTipoMovimiento.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdTipoMovimiento;
 
         /// <summary>
         /// Control navbar1.
@@ -121,6 +130,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlNuevoCargo;
+
+        /// <summary>
+        /// Control ddlNuevaSede.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlNuevaSede;
 
         /// <summary>
         /// Control rpEmpleados.

@@ -26,6 +26,11 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style type="text/css" media="print">
         body {
             visibility: hidden;
@@ -107,7 +112,9 @@
             </div>
         </div>
 
-        <asp:HiddenField ID="hdDocumentoAscenso" runat="server" />
+        <%--        <asp:HiddenField ID="hdDocumentoAscenso" runat="server" />--%>
+        <asp:HiddenField ID="hdDocumentoMovimiento" runat="server" />
+        <asp:HiddenField ID="hdTipoMovimiento" runat="server" />
         <div id="wrapper">
 
             <uc1:navbar runat="server" ID="navbar1" />
@@ -181,7 +188,7 @@
                                         </div>
 
 
-                                        <div class="modal fade" id="modalAscenso" tabindex="-1">
+                                        <%--                                        <div class="modal fade" id="modalAscenso" tabindex="-1">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
 
@@ -227,6 +234,92 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                                         <button type="button" class="btn btn-warning" onclick="guardarAscenso()">Guardar</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>--%>
+
+                                        <div class="modal fade" id="modalMovimientoEmpleado" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+
+                                                    <div class="modal-header text-white bg-primary">
+                                                        <h4 class="modal-title mb-0">
+                                                            <span id="tituloModal"></span>
+                                                            <br />
+                                                            <div id="lblNombreEmpleado" class="h5 font-weight-bold mt-1"></div>
+                                                        </h4>
+                                                        <button type="button" class="close text-white" data-dismiss="modal"></button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+
+                                                        <div class="form-group">
+                                                            <label>Cargo actual</label>
+                                                            <input type="text" id="txtCargoActual" class="form-control" disabled />
+                                                        </div>
+                                                        <!-- SECCION SALARIO ACTUAL -->
+                                                        <div id="seccionSalarioActual" class="seccionMovimiento">
+                                                            <div class="form-group">
+                                                                <label>Salario actual</label>
+                                                                <input type="text" id="txtSalarioActual" class="form-control" disabled />
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- SECCION SEDE ACTUAL -->
+                                                        <div id="seccionSedeActual" class="seccionMovimiento" style="display: none;">
+                                                            <div class="form-group">
+                                                                <label>Sede actual</label>
+                                                                <input type="text" id="txtSedeActual" class="form-control" disabled />
+                                                            </div>
+                                                        </div>
+
+                                                        <hr />
+
+                                                        <!-- SECCION ASCENSO -->
+                                                        <div id="seccionCargo" class="seccionMovimiento">
+                                                            <div class="form-group">
+                                                                <label>Nuevo cargo</label>
+                                                                <asp:DropDownList ID="ddlNuevoCargo" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+                                                        </div>
+
+                                                        <div id="seccionSalario" class="seccionMovimiento">
+                                                            <div class="form-group">
+                                                                <label>Nuevo salario</label>
+                                                                <input type="text" id="txtNuevoSalario"
+                                                                    class="form-control"
+                                                                    onkeyup="formatCurrency(this)"
+                                                                    onblur="keepFormatted(this)"
+                                                                    autocomplete="off" />
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- SECCION TRASLADO -->
+                                                        <div id="seccionTraslado" class="seccionMovimiento" style="display: none;">
+                                                            <div class="form-group">
+                                                                <label>Nueva sede</label>
+                                                                <asp:DropDownList ID="ddlNuevaSede" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                            Cancelar
+                                                        </button>
+                                                        <button type="button"
+                                                            id="btnGuardarMovimiento"
+                                                            class="btn btn-primary"
+                                                            onclick="guardarMovimiento()">
+                                                            Guardar
+                                                        </button>
                                                     </div>
 
                                                 </div>
@@ -312,13 +405,28 @@
 
                                                                 <div class="text-center">
                                                                     <a href="javascript:void(0);"
+                                                                        class="btn btn-xs btn-warning btnMovimiento"
+                                                                        data-doc='<%# Eval("DocumentoEmpleado") %>'
+                                                                        data-nombre='<%# Eval("NombreEmpleado") %>'
+                                                                        data-tipo="ASCENSO">
+                                                                        <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
+                                                                    </a>
+
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-xs btn-info btnMovimiento"
+                                                                        data-doc='<%# Eval("DocumentoEmpleado") %>'
+                                                                        data-nombre='<%# Eval("NombreEmpleado") %>'
+                                                                        data-tipo="TRASLADO">
+                                                                        <i class="fa fa-exchange-alt m-r-xs"></i>Traslado
+                                                                    </a>
+                                                                    <%--                                                                    <a href="javascript:void(0);"
                                                                         class="btn btn-xs btn-warning btnAscenso"
                                                                         data-doc='<%# Eval("DocumentoEmpleado") %>'
                                                                         data-nombre='<%# Eval("NombreEmpleado") %>'>
                                                                         <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
                                                                     </a>
 
-                                                                    </a><a runat="server" id="btnTraslado" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Traslados</a>
+                                                                    </a><a runat="server" id="btnTraslado" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Traslados</a>--%>
                                                                     <a runat="server" id="btnCambioSalarial" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio salarial</a>
                                                                     <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio de contrato</a>
                                                                     <a runat="server" id="btnRetiro" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Retiro</a>
@@ -626,6 +734,8 @@
             $('#tabla').footable();
         });
     </script>
+
+    <!-- Gráficas -->
 
     <script>
         // Gráfico de Géneros
@@ -1281,6 +1391,7 @@
         });
 
     </script>
+
     <script>
         $(document).on("click", ".btnAscenso", function () {
 
@@ -1311,7 +1422,6 @@
         });
 
     </script>
-
 
     <script>
         $(document).on("click", ".btnAscenso", function () {
@@ -1346,7 +1456,7 @@
         });
     </script>
 
-    <script>
+    <%--    <script>
         function guardarAscenso() {
 
             var documento = $("#hdDocumentoAscenso").val();
@@ -1381,17 +1491,197 @@
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
+
                 success: function (response) {
 
                     if (response.d.success) {
-                        alert(response.d.mensaje);
                         $("#modalAscenso").modal("hide");
-                        location.reload();
+
+                        $("#modalAscenso").on("hidden.bs.modal", function () {
+
+                            Swal.fire({
+                                title: 'Ascenso registrado',
+                                text: response.d.mensaje,
+                                icon: 'success',
+                                timer: 2500,
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                location.reload();
+                            });
+
+                            $(this).off("hidden.bs.modal");
+                        });
+
                     } else {
-                        alert(response.d.mensaje);
+
+                        Swal.fire({
+                            title: 'Error',
+                            text: response.d.mensaje,
+                            icon: 'error',
+                            confirmButtonText: 'Aceptar'
+                        });
+
                     }
                 }
             });
+        }
+    </script>--%>
+
+    <script>
+        function guardarAscenso() {
+
+            var documento = $("#hdDocumentoMovimiento").val();
+            var idNuevoCargo = parseInt($("#ddlNuevoCargo").val());
+
+            var sueldoTexto = $("#txtNuevoSalario").val() || "";
+            sueldoTexto = sueldoTexto.replace(/\$/g, "").replace(/\./g, "").trim();
+
+            var nuevoSueldo = parseFloat(sueldoTexto);
+
+            if (isNaN(nuevoSueldo) || nuevoSueldo <= 0) {
+                Swal.fire("Error", "Ingrese un salario válido.", "error");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/InsertarAscensoEmpleado",
+                data: JSON.stringify({
+                    documento: documento,
+                    idNuevoCargo: idNuevoCargo,
+                    nuevoSueldo: nuevoSueldo
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalMovimientoEmpleado").modal("hide");
+
+                        Swal.fire({
+                            title: 'Ascenso registrado',
+                            text: response.d.mensaje,
+                            icon: 'success',
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+                        $(this).off("hidden.bs.modal");  
+                    } else {
+
+                        Swal.fire("Error", response.d.mensaje, "error");
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function guardarTraslado() {
+
+            Swal.fire("Info", "Módulo de traslado listo para implementar.", "info");
+        }
+    </script>
+
+
+
+    <script>
+        $(document).on("click", ".btnMovimiento", function () {
+
+            var documento = $(this).data("doc");
+            var nombreEmpleado = $(this).data("nombre");
+            var tipo = $(this).data("tipo");
+
+            $("#hdDocumentoMovimiento").val(documento);
+            $("#hdTipoMovimiento").val(tipo);
+            $("#lblNombreEmpleado").text(nombreEmpleado);
+
+            cargarDatosEmpleado(documento, tipo);
+        });
+    </script>
+
+    <script>
+        function cargarDatosEmpleado(documento, tipo) {
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/ObtenerDatosEmpleado",
+                data: JSON.stringify({ documento: documento }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    var data = response.d;
+
+                    $("#txtCargoActual").val(data.Cargo);
+
+                    var sueldoActual = parseFloat(data.Sueldo);
+                    $("#txtSalarioActual").val(
+                        "$ " + sueldoActual.toLocaleString("es-CO")
+                    );
+
+                    $("#txtSedeActual").val(data.Sede);
+
+                    configurarModalSegunTipo(tipo);
+
+                    $("#modalMovimientoEmpleado").modal("show");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function configurarModalSegunTipo(tipo) {
+
+            // Oculta todas las secciones dinámicas
+            $(".seccionMovimiento").hide();
+
+            if (tipo === "ASCENSO") {
+
+                $("#tituloModal").text("Ascenso de empleado");
+
+                $("#btnGuardarMovimiento")
+                    .removeClass()
+                    .addClass("btn btn-warning");
+
+                // Mostrar lo necesario
+                $("#seccionSalarioActual").show();
+                $("#seccionCargo").show();
+                $("#seccionSalario").show();
+
+                $("#txtNuevoSalario").val("$ 0");
+            }
+
+            if (tipo === "TRASLADO") {
+
+                $("#tituloModal").text("Traslado de empleado");
+
+                $("#btnGuardarMovimiento")
+                    .removeClass()
+                    .addClass("btn btn-info");
+
+                // Mostrar solo lo necesario
+                $("#seccionSedeActual").show();
+                $("#seccionTraslado").show();
+            }
+        }
+    </script>
+
+    <script>
+        function guardarMovimiento() {
+
+            var tipo = $("#hdTipoMovimiento").val();
+
+            if (tipo === "ASCENSO") {
+                guardarAscenso();
+            }
+
+            if (tipo === "TRASLADO") {
+                guardarTraslado(); // listo para implementar
+            }
         }
     </script>
 
