@@ -67,8 +67,7 @@ namespace fpWebApp
                     CantidadTipoSangre();
                     CargarCargos();
                     CargarSedes();
-
-
+                    CargarCanalesVenta();
 
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
@@ -977,7 +976,12 @@ namespace fpWebApp
                                     ? Convert.ToInt32(row["idCargo"])
                                     : 0,
                         Sede = row["NombreSede"].ToString(),
-                        idSede = Convert.ToInt32(row["idSede"])
+                        idSede = Convert.ToInt32(row["idSede"]),
+
+                        CanalVenta = row["NombreCanalVenta"].ToString(),
+                        idCanalVenta = row["idCanalVenta"] != DBNull.Value
+                                ? Convert.ToInt32(row["idCanalVenta"])
+                                : 0
 
                     };
                 }
@@ -1046,6 +1050,33 @@ namespace fpWebApp
             }
         }
 
+        private void CargarCanalesVenta()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarCanalesVenta();
+
+                ddlNuevoCanal.DataSource = dt;
+                ddlNuevoCanal.DataTextField = "NombreCanalVenta";
+                ddlNuevoCanal.DataValueField = "idCanalVenta";
+                ddlNuevoCanal.DataBind();
+
+                ListItem item = ddlNuevoCanal.Items.FindByValue("15");
+                if (item != null)
+                {
+                    ddlNuevoCanal.Items.Remove(item);
+                }
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+        }
+
         [WebMethod(EnableSession = true)]
         [System.Web.Script.Services.ScriptMethod(ResponseFormat = System.Web.Script.Services.ResponseFormat.Json)]
         public static object InsertarAscensoEmpleado(string documento, int idNuevoCargo, decimal nuevoSueldo)
@@ -1070,7 +1101,7 @@ namespace fpWebApp
 
                 decimal salarioMinimo = 1750000m;
                 decimal medioSalarioMinimo = salarioMinimo / 2;
-
+                 
 
                 if (idCargoActual == idNuevoCargo)
                     return new { success = false, mensaje = "El nuevo cargo no puede ser igual al actual." };
@@ -1086,7 +1117,52 @@ namespace fpWebApp
                 if (respuesta != "OK")
                     return new { success = false, mensaje = respuesta };    
 
-                return new { success = true, mensaje = "Ascenso registrado correctamente." };
+                return new { success = true, mensaje = "Gestión humana - Fitness People." };
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, mensaje = ex.Message };
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        [System.Web.Script.Services.ScriptMethod(ResponseFormat = System.Web.Script.Services.ResponseFormat.Json)]
+        public static object InsertarTrasladoEmpleado(string documento, int idNuevaSede, int idNuevoCanal)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                
+                DataTable dt = cg.ConsultarEmpleado(documento);
+
+                if (dt == null || dt.Rows.Count == 0)
+                    return new { success = false, mensaje = "Empleado no encontrado." };
+                
+                if (HttpContext.Current.Session["idUsuario"] == null)
+                    return new { success = false, mensaje = "La sesión ha expirado. Inicie sesión nuevamente." };
+
+                DataRow row = dt.Rows[0];
+
+                int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
+                int idSedeActual = Convert.ToInt32(row["idSede"]);
+                int idCanalActual = Convert.ToInt32(row["idCanalVenta"]);
+                               
+                if (idNuevaSede <= 0)
+                    return new { success = false, mensaje = "Seleccione una sede." };
+
+                if (idSedeActual == idNuevaSede)
+                    return new { success = false, mensaje = "El empleado ya pertenece a esa sede." };
+
+                if (idNuevoCanal <= 0)
+                    return new { success = false, mensaje = "Seleccione un canal válido." };
+
+
+                string respuesta = cg.ActualizarTrasladoEmpleado(documento, idNuevaSede, idNuevoCanal, idUsuario);
+
+                if (respuesta != "OK")
+                    return new { success = false, mensaje = respuesta };
+
+                return new { success = true, mensaje = "Gestión humana - Fitness People" };
             }
             catch (Exception ex)
             {

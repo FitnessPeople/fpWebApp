@@ -112,7 +112,7 @@
             </div>
         </div>
 
-        <%--        <asp:HiddenField ID="hdDocumentoAscenso" runat="server" />--%>
+
         <asp:HiddenField ID="hdDocumentoMovimiento" runat="server" />
         <asp:HiddenField ID="hdTipoMovimiento" runat="server" />
         <div id="wrapper">
@@ -273,9 +273,7 @@
                                                                 <label>Sede actual</label>
                                                                 <input type="text" id="txtSedeActual" class="form-control" disabled />
                                                             </div>
-                                                        </div>
-
-                                                        <hr />
+                                                        </div>                                                        
 
                                                         <!-- SECCION ASCENSO -->
                                                         <div id="seccionCargo" class="seccionMovimiento">
@@ -300,12 +298,30 @@
 
                                                         <!-- SECCION TRASLADO -->
                                                         <div id="seccionTraslado" class="seccionMovimiento" style="display: none;">
+
+
+                                                           
+                                                            <div class="form-group">
+                                                                <label>Canal de venta actual</label>
+                                                                <input type="text" id="txtCanalActual" class="form-control" disabled />
+                                                            </div>
+
+                                                            
                                                             <div class="form-group">
                                                                 <label>Nueva sede</label>
                                                                 <asp:DropDownList ID="ddlNuevaSede" runat="server"
                                                                     CssClass="form-control">
                                                                 </asp:DropDownList>
                                                             </div>
+
+                                                           
+                                                            <div class="form-group">
+                                                                <label>Nuevo canal de venta</label>
+                                                                <asp:DropDownList ID="ddlNuevoCanal" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
                                                         </div>
 
                                                     </div>
@@ -1456,83 +1472,16 @@
         });
     </script>
 
-    <%--    <script>
-        function guardarAscenso() {
-
-            var documento = $("#hdDocumentoAscenso").val();
-
-            var idNuevoCargo = parseInt($("#ddlNuevoCargo").val());
-            var sueldoTexto = $("#txtNuevoSalario").val() || "";
-
-            var sueldoTexto = $("#txtNuevoSalario").val() || "";
-
-            sueldoTexto = sueldoTexto.replace(/\$/g, "").replace(/\./g, "").trim();
-            var nuevoSueldo = parseFloat(sueldoTexto);
-
-            if (isNaN(nuevoSueldo)) {
-                alert("Ingrese un salario válido");
-                return;
-            }
-
-            console.log("Documento al guardar:", documento);
-
-            if (!documento || isNaN(idNuevoCargo) || isNaN(nuevoSueldo)) {
-                alert("Complete la información.");
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "Empleados.aspx/InsertarAscensoEmpleado",
-                data: JSON.stringify({
-                    documento: documento,
-                    idNuevoCargo: idNuevoCargo,
-                    nuevoSueldo: nuevoSueldo
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-
-                success: function (response) {
-
-                    if (response.d.success) {
-                        $("#modalAscenso").modal("hide");
-
-                        $("#modalAscenso").on("hidden.bs.modal", function () {
-
-                            Swal.fire({
-                                title: 'Ascenso registrado',
-                                text: response.d.mensaje,
-                                icon: 'success',
-                                timer: 2500,
-                                showConfirmButton: false,
-                                timerProgressBar: true
-                            }).then(() => {
-                                location.reload();
-                            });
-
-                            $(this).off("hidden.bs.modal");
-                        });
-
-                    } else {
-
-                        Swal.fire({
-                            title: 'Error',
-                            text: response.d.mensaje,
-                            icon: 'error',
-                            confirmButtonText: 'Aceptar'
-                        });
-
-                    }
-                }
-            });
-        }
-    </script>--%>
-
     <script>
         function guardarAscenso() {
 
             var documento = $("#hdDocumentoMovimiento").val();
             var idNuevoCargo = parseInt($("#ddlNuevoCargo").val());
+
+            if (!idNuevoCargo || isNaN(idNuevoCargo)) {
+                alert("Seleccione un nuevo cargo.");
+                return;
+            }
 
             var sueldoTexto = $("#txtNuevoSalario").val() || "";
             sueldoTexto = sueldoTexto.replace(/\$/g, "").replace(/\./g, "").trim();
@@ -1540,7 +1489,7 @@
             var nuevoSueldo = parseFloat(sueldoTexto);
 
             if (isNaN(nuevoSueldo) || nuevoSueldo <= 0) {
-                Swal.fire("Error", "Ingrese un salario válido.", "error");
+                alert("Ingrese un salario válido.");
                 return;
             }
 
@@ -1569,24 +1518,117 @@
                         }).then(() => {
                             location.reload();
                         });
-                        $(this).off("hidden.bs.modal");  
+                        $(this).off("hidden.bs.modal"); // importante
                     } else {
 
-                        Swal.fire("Error", response.d.mensaje, "error");
+                        alert(response.d.mensaje);
                     }
                 }
             });
         }
     </script>
 
+
+<%--    <script>
+        function guardarTraslado() {
+
+            var documento = $("#hdDocumentoMovimiento").val();
+            var idNuevaSede = parseInt($("#ddlNuevaSede").val());
+
+            if (!idNuevaSede || isNaN(idNuevaSede)) {
+                alert("Seleccione una sede válida.");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/InsertarTrasladoEmpleado",
+                data: JSON.stringify({
+                    documento: documento,
+                    idNuevaSede: idNuevaSede
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalMovimientoEmpleado").modal("hide");
+
+                        Swal.fire({
+                            title: 'Traslado registrado',
+                            text: response.d.mensaje,
+                            icon: 'success',
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                        $(this).off("hidden.bs.modal");
+
+                    } else {
+                        alert(response.d.mensaje);
+                    }
+                },
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    alert("Error interno del servidor.");
+                }
+            });
+        }
+    </script>--%>
+
     <script>
         function guardarTraslado() {
 
-            Swal.fire("Info", "Módulo de traslado listo para implementar.", "info");
+            var documento = $("#hdDocumentoMovimiento").val();
+            var idNuevaSede = parseInt($("#ddlNuevaSede").val());
+            var idNuevoCanal = parseInt($("#ddlNuevoCanal").val());
+
+            if (!idNuevaSede || isNaN(idNuevaSede)) {
+                alert("Seleccione una sede válida.");
+                return;
+            }
+
+            if (!idNuevoCanal || isNaN(idNuevoCanal)) {
+                alert("Seleccione un canal de venta.");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/InsertarTrasladoEmpleado",
+                data: JSON.stringify({
+                    documento: documento,
+                    idNuevaSede: idNuevaSede,
+                    idNuevoCanal: idNuevoCanal
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalMovimientoEmpleado").modal("hide");
+
+                        Swal.fire({
+                            title: 'Traslado registrado',
+                            text: response.d.mensaje,
+                            icon: 'success',
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    } else {
+                        alert(response.d.mensaje);
+                    }
+                }
+            });
         }
     </script>
-
-
 
     <script>
         $(document).on("click", ".btnMovimiento", function () {
@@ -1624,6 +1666,8 @@
                     );
 
                     $("#txtSedeActual").val(data.Sede);
+
+                    $("#txtCanalActual").val(data.CanalVenta);
 
                     configurarModalSegunTipo(tipo);
 

@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Configuration;
@@ -8127,6 +8128,40 @@ namespace fpWebApp
                 respuesta = "ERROR: " + ex.Message;
             }
 
+            return respuesta;
+        }
+
+        public string ActualizarTrasladoEmpleado(string documento, int idNuevaSede, int idNuevoCanal, int idUsuario)
+        {
+            string respuesta = string.Empty;
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_TRASLADO_EMPLEADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_doc_empleado", documento);
+                        cmd.Parameters.AddWithValue("@p_id_sede_nueva", idNuevaSede);
+                        cmd.Parameters.AddWithValue("@p_id_canal_nuevo", idNuevoCanal);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);                        
+
+                        cmd.ExecuteNonQuery();
+
+                        respuesta = "OK";
+                    }
+                   
+                }                
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
             return respuesta;
         }
 
