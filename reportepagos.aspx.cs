@@ -72,6 +72,7 @@ namespace fpWebApp
                         VentasWeb();
                         VentasCounter();
                         TotalDebitosAutomaticos();
+                        TotalPagosUnicos();
                     }
                 }
                 else
@@ -635,7 +636,7 @@ namespace fpWebApp
                 AND DATE(pa.FechaHoraPago) 
                 BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
                 AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
-                AND u.idUsuario = 152";
+                AND u.idUsuario <> 156";
             }
             else
             {
@@ -650,7 +651,7 @@ namespace fpWebApp
                 AND DATE(pa.FechaHoraPago) 
                 BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
                 AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
-                AND u.idUsuario = 152 
+                AND u.idUsuario <> 156 
                 AND ap.idPlan = " + ddlPlanes.SelectedValue.ToString();
             }
                 
@@ -716,8 +717,42 @@ namespace fpWebApp
                 ltRegistros5.Text = dt.Rows[0]["CantidadStar"].ToString();
             }
 
-            ltCuantos6.Text = "$ 0";
-            ltRegistros6.Text = "0";
+            dt.Dispose();
+        }
+
+        private void TotalPagosUnicos()
+        {
+            string fechaInicio = txbFechaIni.Value.ToString();
+            DateTime fechaFinal = DateTime.Parse(txbFechaFin.Value).AddDays(1);
+            string fechaFinalStr = fechaFinal.ToString("yyyy-MM-dd");
+
+            string strQuery = $@"SELECT 
+                                    COUNT(*) AS CantidadNuevosPagosUnicos,
+                                    SUM(ppa.valor) AS IngresosNuevosPagosUnicos
+                                FROM PagosPlanAfiliado ppa 
+                                INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan 
+                                INNER JOIN Planes p ON p.idPlan = ap.idPlan 
+                                WHERE ppa.fechaHoraPago >= '{fechaInicio}' 
+                                  AND ppa.fechaHoraPago < '{fechaFinalStr}' 
+                                  AND p.debitoAutomatico = 0
+                                  AND ppa.fechaHoraPago = (
+                                        SELECT MIN(ppa2.fechaHoraPago) 
+                                        FROM PagosPlanAfiliado ppa2 
+                                        WHERE ppa2.idAfiliadoPlan = ppa.idAfiliadoPlan
+                                  );";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                int ingresos = Convert.ToInt32(dt.Rows[0]["IngresosNuevosPagosUnicos"] == DBNull.Value
+                    ? 0
+                    : Convert.ToDecimal(dt.Rows[0]["IngresosNuevosPagosUnicos"]));
+
+                ltCuantos6.Text = "$ " + String.Format("{0:N0}", ingresos);
+                ltRegistros6.Text = dt.Rows[0]["CantidadNuevosPagosUnicos"].ToString();
+            }
 
             dt.Dispose();
         }
@@ -899,7 +934,7 @@ namespace fpWebApp
                 // TODO: Arreglar datos quemados
                 string consultaSQL = @"
                     SELECT a.DocumentoAfiliado AS 'Documento de Afiliado', CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS 'Nombre de Afiliado', 
-                    pa.Valor AS 'Valor', pa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
+                    p.nombrePlan AS 'Nombre de Plan', pa.Valor AS 'Valor', pa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
                     pa.Banco AS 'Entidad Bancaría', pa.FechaHoraPago AS 'Fecha de Pago', pa.estadoPago AS 'Estado', 
                     u.NombreUsuario AS 'Nombre de Usuario', cv.NombreCanalVenta AS 'Canal de Venta' 
                     FROM pagosplanafiliado pa
@@ -909,8 +944,9 @@ namespace fpWebApp
                     INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
                     INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
                     INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
+                    INNER JOIN planes p ON p.idPlan = ap.idPlan 
                     WHERE DATE(pa.FechaHoraPago) 
-                    BETWEEN '"  + txbFechaIni.Value.ToString() + @"' 
+                    BETWEEN '" + txbFechaIni.Value.ToString() + @"' 
                     AND '"  + txbFechaFin.Value.ToString() + @"'  
                     ORDER BY pa.FechaHoraPago DESC;";
 
@@ -974,6 +1010,7 @@ namespace fpWebApp
             VentasCounter();
             VentasWeb();
             TotalDebitosAutomaticos();
+            TotalPagosUnicos();
             //}
             //else
             //{

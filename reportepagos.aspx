@@ -181,7 +181,7 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-success pull-right">Mes actual</span>--%>
-                                                <h5>Ingresos totales</h5>
+                                                <h5>Ingresos Totales</h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -249,7 +249,7 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-primary pull-right">Mes actual</span>--%>
-                                                <h5>Nuevos débitos automáticos</h5>
+                                                <h5>Nuevos Débitos Automáticos</h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
@@ -266,7 +266,7 @@
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title">
                                                 <%--<span class="label label-primary pull-right">Mes actual</span>--%>
-                                                <h5>Otro</h5>
+                                                <h5>Nuevos Pagos Únicos</h5>
                                             </div>
                                             <div class="ibox-content">
                                                 <h1 class="no-margins">
