@@ -6733,6 +6733,41 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ConsultarMovimientosEmpleadosPorFecha(DateTime FechaIni, DateTime FechaFin)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_MOVIMIENTOS_EMPLEADO_POR_FECHA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        var pFechaIni = cmd.Parameters.Add("@p_fecha_ini", MySqlDbType.Date);
+                        pFechaIni.Value = FechaIni.Date;
+
+                        var pFechaFin = cmd.Parameters.Add("@p_fecha_fin", MySqlDbType.Date);
+                        pFechaFin.Value = FechaFin.Date;
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
         public DataTable ConsultarAfiliadosActivosInactivosPorFecha(DateTime FechaIni, DateTime FechaFin)
         {
             DataTable dt = new DataTable();
@@ -8096,7 +8131,42 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarAscensoEmpleado(string documentoEmpleado, int idCargoNuevo, decimal nuevoSueldo, int idUsuario)
+        //public string ActualizarAscensoEmpleado(string documentoEmpleado, int idCargoNuevo, decimal nuevoSueldo, int idUsuario)
+        //{
+        //    string respuesta = string.Empty;
+
+        //    try
+        //    {
+        //        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+        //        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+        //        {
+        //            mysqlConexion.Open();
+
+        //            using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ASCENSO_EMPLEADO", mysqlConexion))
+        //            {
+        //                cmd.CommandType = CommandType.StoredProcedure;
+
+        //                cmd.Parameters.AddWithValue("@p_doc_empleado", documentoEmpleado);
+        //                cmd.Parameters.AddWithValue("@p_id_cargo_nuevo", idCargoNuevo);                                          
+        //                cmd.Parameters.AddWithValue("@p_sueldo_nuevo", nuevoSueldo);                                          
+        //                cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);                
+
+        //                cmd.ExecuteNonQuery();
+
+        //                respuesta = "OK";
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        respuesta = "ERROR: " + ex.Message;
+        //    }
+
+        //    return respuesta;
+        //}
+
+        public string ActualizarCambioDeCargoEmpleado(string documentoEmpleado, int idCargoNuevo, int idUsuario)
         {
             string respuesta = string.Empty;
 
@@ -8108,14 +8178,47 @@ namespace fpWebApp
                 {
                     mysqlConexion.Open();
 
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ASCENSO_EMPLEADO", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_CAMBIO_CARGO_EMPLEADO", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("@p_doc_empleado", documentoEmpleado);
-                        cmd.Parameters.AddWithValue("@p_id_cargo_nuevo", idCargoNuevo);                                          
-                        cmd.Parameters.AddWithValue("@p_sueldo_nuevo", nuevoSueldo);                                          
-                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);                
+                        cmd.Parameters.AddWithValue("@p_id_cargo_nuevo", idCargoNuevo);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        cmd.ExecuteNonQuery();
+
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public string ActualizarCambioSalarialEmpleado(string documentoEmpleado,  decimal nuevoSueldo, int idUsuario)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_CAMBIO_SALARIAL_EMPLEADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_doc_empleado", documentoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_sueldo_nuevo", nuevoSueldo);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
                         cmd.ExecuteNonQuery();
 

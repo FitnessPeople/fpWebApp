@@ -969,19 +969,14 @@ namespace fpWebApp
                     return new
                     {
                         Cargo = row["Cargo"].ToString(),
-                        Sueldo = row["Sueldo"] != DBNull.Value
-                                    ? Convert.ToDecimal(row["Sueldo"])
-                                    : 0,
-                        idCargo = row["idCargo"] != DBNull.Value
-                                    ? Convert.ToInt32(row["idCargo"])
-                                    : 0,
+                        Sueldo = row["Sueldo"] != DBNull.Value ? Convert.ToDecimal(row["Sueldo"]): 0,
+                        idCargo = row["idCargo"] != DBNull.Value ? Convert.ToInt32(row["idCargo"]): 0,
+                        
                         Sede = row["NombreSede"].ToString(),
                         idSede = Convert.ToInt32(row["idSede"]),
 
                         CanalVenta = row["NombreCanalVenta"].ToString(),
-                        idCanalVenta = row["idCanalVenta"] != DBNull.Value
-                                ? Convert.ToInt32(row["idCanalVenta"])
-                                : 0
+                        idCanalVenta = row["idCanalVenta"] != DBNull.Value ? Convert.ToInt32(row["idCanalVenta"]): 0
 
                     };
                 }
@@ -1077,9 +1072,56 @@ namespace fpWebApp
             }
         }
 
+        //[WebMethod(EnableSession = true)]
+        //[System.Web.Script.Services.ScriptMethod(ResponseFormat = System.Web.Script.Services.ResponseFormat.Json)]
+        //public static object InsertarAscensoEmpleado(string documento, int idNuevoCargo, decimal nuevoSueldo)
+        //{
+        //    try
+        //    {
+        //        clasesglobales cg = new clasesglobales();
+
+        //        DataTable dt = cg.ConsultarEmpleado(documento);
+
+        //        if (dt == null || dt.Rows.Count == 0)
+        //            return new { success = false, mensaje = "Empleado no encontrado." };
+
+        //        if (HttpContext.Current.Session["idUsuario"] == null)
+        //            return new { success = false, mensaje = "La sesión ha expirado. Inicie sesión nuevamente." };
+
+        //        DataRow row = dt.Rows[0];
+
+        //        int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
+        //        int idCargoActual = Convert.ToInt32(row["idCargo"]);
+        //        decimal sueldoActual = Convert.ToDecimal(row["Sueldo"]);
+
+        //        decimal salarioMinimo = 1750000m;
+        //        decimal medioSalarioMinimo = salarioMinimo / 2;
+
+
+        //        if (idCargoActual == idNuevoCargo)
+        //            return new { success = false, mensaje = "El nuevo cargo no puede ser igual al actual." };
+
+        //        if(nuevoSueldo <= 0)    return new { success = false, mensaje = "El salario no puede ser cero o negativo." };
+
+        //        if (nuevoSueldo < medioSalarioMinimo)
+        //            return new { success = false, mensaje = "El salario no puede ser menor a medio salario mínimo legal vigente." };
+
+
+        //        string respuesta = cg.ActualizarAscensoEmpleado(documento, idNuevoCargo,nuevoSueldo, idUsuario);
+
+        //        if (respuesta != "OK")
+        //            return new { success = false, mensaje = respuesta };    
+
+        //        return new { success = true, mensaje = "Gestión Humana - Fitness People." };
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new { success = false, mensaje = ex.Message };
+        //    }
+        //}
+
         [WebMethod(EnableSession = true)]
-        [System.Web.Script.Services.ScriptMethod(ResponseFormat = System.Web.Script.Services.ResponseFormat.Json)]
-        public static object InsertarAscensoEmpleado(string documento, int idNuevoCargo, decimal nuevoSueldo)
+        public static object InsertarCambioCargoEmpleado(string documento, int idNuevoCargo)
         {
             try
             {
@@ -1091,33 +1133,67 @@ namespace fpWebApp
                     return new { success = false, mensaje = "Empleado no encontrado." };
 
                 if (HttpContext.Current.Session["idUsuario"] == null)
-                    return new { success = false, mensaje = "La sesión ha expirado. Inicie sesión nuevamente." };
+                    return new { success = false, mensaje = "La sesión ha expirado." };
 
                 DataRow row = dt.Rows[0];
 
                 int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
                 int idCargoActual = Convert.ToInt32(row["idCargo"]);
-                decimal sueldoActual = Convert.ToDecimal(row["Sueldo"]);
-
-                decimal salarioMinimo = 1750000m;
-                decimal medioSalarioMinimo = salarioMinimo / 2;
-                 
 
                 if (idCargoActual == idNuevoCargo)
                     return new { success = false, mensaje = "El nuevo cargo no puede ser igual al actual." };
 
-                if(nuevoSueldo <= 0)    return new { success = false, mensaje = "El salario no puede ser cero o negativo." };
-
-                if (nuevoSueldo < medioSalarioMinimo)
-                    return new { success = false, mensaje = "El salario no puede ser menor a medio salario mínimo legal vigente." };
-
-
-                string respuesta = cg.ActualizarAscensoEmpleado(documento, idNuevoCargo,nuevoSueldo, idUsuario);
+                string respuesta = cg.ActualizarCambioDeCargoEmpleado(documento, idNuevoCargo, idUsuario);
 
                 if (respuesta != "OK")
-                    return new { success = false, mensaje = respuesta };    
+                    return new { success = false, mensaje = respuesta };
 
-                return new { success = true, mensaje = "Gestión humana - Fitness People." };
+                return new { success = true, mensaje = "Gestión Humana - Fitness People." };
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, mensaje = ex.Message };
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        public static object InsertarCambioSalarialEmpleado(string documento, decimal nuevoSueldo)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+
+                DataTable dt = cg.ConsultarEmpleado(documento);
+
+                if (dt == null || dt.Rows.Count == 0)
+                    return new { success = false, mensaje = "Empleado no encontrado." };
+
+                if (HttpContext.Current.Session["idUsuario"] == null)
+                    return new { success = false, mensaje = "La sesión ha expirado." };
+
+                DataRow row = dt.Rows[0];
+
+                int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
+                decimal sueldoActual = Convert.ToDecimal(row["Sueldo"]);
+
+                decimal salarioMinimo = 1750000m;
+                decimal medioSalarioMinimo = salarioMinimo / 2;
+
+                if (nuevoSueldo <= 0)
+                    return new { success = false, mensaje = "El salario no puede ser cero o negativo." };
+
+                if (nuevoSueldo < medioSalarioMinimo)
+                    return new { success = false, mensaje = "El salario no puede ser menor a medio salario mínimo." };
+
+                if (nuevoSueldo == sueldoActual)
+                    return new { success = false, mensaje = "El nuevo salario no puede ser igual al actual." };
+
+                string respuesta = cg.ActualizarCambioSalarialEmpleado(documento, nuevoSueldo, idUsuario);
+
+                if (respuesta != "OK")
+                    return new { success = false, mensaje = respuesta };
+
+                return new { success = true, mensaje = "Gestión Humana - Fitness People." };
             }
             catch (Exception ex)
             {
@@ -1162,7 +1238,7 @@ namespace fpWebApp
                 if (respuesta != "OK")
                     return new { success = false, mensaje = respuesta };
 
-                return new { success = true, mensaje = "Gestión humana - Fitness People" };
+                return new { success = true, mensaje = "Gestión Humana - Fitness People" };
             }
             catch (Exception ex)
             {

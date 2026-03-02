@@ -188,58 +188,6 @@
                                         </div>
 
 
-                                        <%--                                        <div class="modal fade" id="modalAscenso" tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-
-                                                    <div class="modal-header bg-warning text-white">
-                                                        <h4 class="modal-title mb-0">Ascenso de empleado
-                                                             <br />
-                                                            <div id="lblNombreEmpleado" class="h5 font-weight-bold mt-1"></div>
-                                                        </h4>
-
-                                                        <button type="button" class="close text-white" data-dismiss="modal">
-                                                        </button>
-                                                    </div>
-
-                                                    <div class="modal-body">
-
-                                                        <div class="form-group">
-                                                            <label>Cargo actual</label>
-                                                            <input type="text" id="txtCargoActual" class="form-control" disabled />
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label>Salario actual</label>
-                                                            <input type="text" id="txtSalarioActual" class="form-control" disabled />
-                                                        </div>
-
-                                                        <hr />
-
-                                                        <div class="form-group">
-                                                            <label>Nuevo cargo</label>
-                                                            <asp:DropDownList ID="ddlNuevoCargo" runat="server"
-                                                                CssClass="form-control">
-                                                            </asp:DropDownList>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label>Nuevo salario</label>
-                                                            <input type="text" id="txtNuevoSalario" class="form-control" onkeyup="formatCurrency(this)" onblur="keepFormatted(this)"
-                                                                autocomplete="off" />
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                        <button type="button" class="btn btn-warning" onclick="guardarAscenso()">Guardar</button>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>--%>
-
                                         <div class="modal fade" id="modalMovimientoEmpleado" tabindex="-1">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
@@ -273,7 +221,7 @@
                                                                 <label>Sede actual</label>
                                                                 <input type="text" id="txtSedeActual" class="form-control" disabled />
                                                             </div>
-                                                        </div>                                                        
+                                                        </div>
 
                                                         <!-- SECCION ASCENSO -->
                                                         <div id="seccionCargo" class="seccionMovimiento">
@@ -300,13 +248,13 @@
                                                         <div id="seccionTraslado" class="seccionMovimiento" style="display: none;">
 
 
-                                                           
+
                                                             <div class="form-group">
                                                                 <label>Canal de venta actual</label>
                                                                 <input type="text" id="txtCanalActual" class="form-control" disabled />
                                                             </div>
 
-                                                            
+
                                                             <div class="form-group">
                                                                 <label>Nueva sede</label>
                                                                 <asp:DropDownList ID="ddlNuevaSede" runat="server"
@@ -314,7 +262,7 @@
                                                                 </asp:DropDownList>
                                                             </div>
 
-                                                           
+
                                                             <div class="form-group">
                                                                 <label>Nuevo canal de venta</label>
                                                                 <asp:DropDownList ID="ddlNuevoCanal" runat="server"
@@ -424,8 +372,16 @@
                                                                         class="btn btn-xs btn-warning btnMovimiento"
                                                                         data-doc='<%# Eval("DocumentoEmpleado") %>'
                                                                         data-nombre='<%# Eval("NombreEmpleado") %>'
-                                                                        data-tipo="ASCENSO">
-                                                                        <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
+                                                                        data-tipo="CAMBIO_CARGO">
+                                                                        <i class="fa fa-user-edit m-r-xs"></i>Cambio cargo
+                                                                    </a>
+
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-xs btn-success btnMovimiento"
+                                                                        data-doc='<%# Eval("DocumentoEmpleado") %>'
+                                                                        data-nombre='<%# Eval("NombreEmpleado") %>'
+                                                                        data-tipo="CAMBIO_SALARIAL">
+                                                                        <i class="fa fa-dollar-sign m-r-xs"></i>Cambio salarial
                                                                     </a>
 
                                                                     <a href="javascript:void(0);"
@@ -435,15 +391,9 @@
                                                                         data-tipo="TRASLADO">
                                                                         <i class="fa fa-exchange-alt m-r-xs"></i>Traslado
                                                                     </a>
-                                                                    <%--                                                                    <a href="javascript:void(0);"
-                                                                        class="btn btn-xs btn-warning btnAscenso"
-                                                                        data-doc='<%# Eval("DocumentoEmpleado") %>'
-                                                                        data-nombre='<%# Eval("NombreEmpleado") %>'>
-                                                                        <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
-                                                                    </a>
 
-                                                                    </a><a runat="server" id="btnTraslado" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Traslados</a>--%>
-                                                                    <a runat="server" id="btnCambioSalarial" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio salarial</a>
+                                                                  
+                                                                   
                                                                     <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio de contrato</a>
                                                                     <a runat="server" id="btnRetiro" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Retiro</a>
 
@@ -1472,7 +1422,7 @@
         });
     </script>
 
-    <script>
+<%--    <script>
         function guardarAscenso() {
 
             var documento = $("#hdDocumentoMovimiento").val();
@@ -1526,26 +1476,27 @@
                 }
             });
         }
-    </script>
+    </script>--%>
 
 
-<%--    <script>
-        function guardarTraslado() {
+
+    <script>
+        function guardarCambioCargo() {
 
             var documento = $("#hdDocumentoMovimiento").val();
-            var idNuevaSede = parseInt($("#ddlNuevaSede").val());
+            var idNuevoCargo = parseInt($("#ddlNuevoCargo").val());
 
-            if (!idNuevaSede || isNaN(idNuevaSede)) {
-                alert("Seleccione una sede válida.");
+            if (!idNuevoCargo || isNaN(idNuevoCargo)) {
+                alert("Seleccione un nuevo cargo.");
                 return;
             }
 
             $.ajax({
                 type: "POST",
-                url: "Empleados.aspx/InsertarTrasladoEmpleado",
+                url: "Empleados.aspx/InsertarCambioCargoEmpleado",
                 data: JSON.stringify({
                     documento: documento,
-                    idNuevaSede: idNuevaSede
+                    idNuevoCargo: idNuevoCargo
                 }),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -1556,7 +1507,7 @@
                         $("#modalMovimientoEmpleado").modal("hide");
 
                         Swal.fire({
-                            title: 'Traslado registrado',
+                            title: 'Cambio de cargo registrado',
                             text: response.d.mensaje,
                             icon: 'success',
                             timer: 2500,
@@ -1565,19 +1516,63 @@
                             location.reload();
                         });
 
-                        $(this).off("hidden.bs.modal");
+                    } else {
+                        alert(response.d.mensaje);
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function guardarCambioSalarial() {
+
+            var documento = $("#hdDocumentoMovimiento").val();
+
+            var sueldoTexto = $("#txtNuevoSalario").val() || "";
+            sueldoTexto = sueldoTexto.replace(/\$/g, "").replace(/\./g, "").trim();
+
+            var nuevoSueldo = parseFloat(sueldoTexto);
+
+            if (isNaN(nuevoSueldo) || nuevoSueldo <= 0) {
+                alert("Ingrese un salario válido.");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/InsertarCambioSalarialEmpleado",
+                data: JSON.stringify({
+                    documento: documento,
+                    nuevoSueldo: nuevoSueldo
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalMovimientoEmpleado").modal("hide");
+
+                        Swal.fire({
+                            title: 'Cambio salarial registrado',
+                            text: response.d.mensaje,
+                            icon: 'success',
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
 
                     } else {
                         alert(response.d.mensaje);
                     }
-                },
-                error: function (xhr) {
-                    console.log(xhr.responseText);
-                    alert("Error interno del servidor.");
                 }
             });
         }
-    </script>--%>
+    </script>
+
+
 
     <script>
         function guardarTraslado() {
@@ -1680,20 +1675,29 @@
     <script>
         function configurarModalSegunTipo(tipo) {
 
-            // Oculta todas las secciones dinámicas
             $(".seccionMovimiento").hide();
 
-            if (tipo === "ASCENSO") {
+            if (tipo === "CAMBIO_CARGO") {
 
-                $("#tituloModal").text("Ascenso de empleado");
+                $("#tituloModal").text("Cambio de cargo");
 
                 $("#btnGuardarMovimiento")
                     .removeClass()
                     .addClass("btn btn-warning");
 
-                // Mostrar lo necesario
+                $("#seccionCargo").show();          // nuevo cargo
+                $("#seccionSalarioActual").show();  // mostrar salario actual pero no editable
+            }
+
+            if (tipo === "CAMBIO_SALARIAL") {
+
+                $("#tituloModal").text("Cambio salarial");
+
+                $("#btnGuardarMovimiento")
+                    .removeClass()
+                    .addClass("btn btn-success");
+
                 $("#seccionSalarioActual").show();
-                $("#seccionCargo").show();
                 $("#seccionSalario").show();
 
                 $("#txtNuevoSalario").val("$ 0");
@@ -1707,7 +1711,6 @@
                     .removeClass()
                     .addClass("btn btn-info");
 
-                // Mostrar solo lo necesario
                 $("#seccionSedeActual").show();
                 $("#seccionTraslado").show();
             }
@@ -1719,12 +1722,16 @@
 
             var tipo = $("#hdTipoMovimiento").val();
 
-            if (tipo === "ASCENSO") {
-                guardarAscenso();
+            if (tipo === "CAMBIO_CARGO") {
+                guardarCambioCargo();
+            }
+
+            if (tipo === "CAMBIO_SALARIAL") {
+                guardarCambioSalarial();
             }
 
             if (tipo === "TRASLADO") {
-                guardarTraslado(); // listo para implementar
+                guardarTraslado();
             }
         }
     </script>
