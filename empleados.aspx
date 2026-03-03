@@ -365,7 +365,11 @@
                                                                         width="120">
                                                                     <span class="label label-danger">Rh: <%# Eval("TipoSangre") %></span>
                                                                 </div>
-                                                                <p class="font-bold"><%# Eval("Cargo") %></p>
+                                                                <p class="font-bold text-center"><%# Eval("Cargo") %> - <%# Eval("NombreSede") %></p>
+                                                        
+
+                                                                <hr class="my-2">
+                                                                 <p class="font-bold text-center">Acción del empleado</p>
 
                                                                 <div class="text-center">
                                                                     <a href="javascript:void(0);"
@@ -391,7 +395,6 @@
                                                                         data-tipo="TRASLADO">
                                                                         <i class="fa fa-exchange-alt m-r-xs"></i>Traslado
                                                                     </a>
-
                                                                   
                                                                    
                                                                     <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio de contrato</a>
@@ -406,6 +409,7 @@
                                                                         class='btn btn-xs btn-danger'><i class="fa fa-rotate m-r-xs"></i><%# Eval("Estado") %> (cambiar)
                                                                     </a>
                                                                 </div>
+                                                                 <hr class="m-0">
                                                             </div>
                                                         </div>
                                                         <div class="client-detail">
