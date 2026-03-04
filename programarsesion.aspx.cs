@@ -353,7 +353,7 @@ namespace fpWebApp
         private void CargarSesiones(string idSede)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarSesiones(int.Parse(idSede));
+            DataTable dt = cg.ConsultaCargarSesionesClasesGrupales(int.Parse(idSede));
 
             _strEventos = "events: [\r\n";
 

@@ -1066,7 +1066,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultaCargarSesiones(int idSede)
+        public DataTable ConsultaCargarSesionesClasesGrupales(int idSede)
         {
             DataTable dt = new DataTable();
             try
@@ -1074,7 +1074,38 @@ namespace fpWebApp
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_SESIONES", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_SESIONES_CLASES_GRUPALES", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultaCargarSesionesPersonalizadas(int idSede)
+        {
+            DataTable dt = new DataTable();
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CARGAR_SESIONES_PERSONALIZADAS", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Parameters.AddWithValue("@p_id_sede", idSede);

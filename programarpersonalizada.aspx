@@ -19,20 +19,22 @@
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
-
     <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
-
     <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
-
     <link href="css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet">
 
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
@@ -150,6 +152,7 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form runat="server" id="form">
+                        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                         <div class="row animated fadeInDown" id="divContenido" runat="server">
                             <%--<div class="col-xxl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">--%>
                             <div class="col-sm-12">
@@ -181,12 +184,10 @@
                                             <div class="col-sm-4">
                                                 <label>Afiliado:</label>
                                                 <div class="form-group">
-                                                    <asp:DropDownList ID="ddlAfiliado" name="ddlAfiliado" runat="server"
-                                                        DataTextField="DocNombreAfiliado" AppendDataBoundItems="true"
-                                                        DataValueField="idAfiliado" CssClass="chosen-select form-control input-sm" 
-                                                        AutoPostBack="true">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
+                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server" 
+                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
+                                                    <asp:Button ID="btnAfiliado" runat="server" Text="" 
+                                                        style="display:none;" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
@@ -211,7 +212,7 @@
                                             <div class="col-sm-3">
                                                 <label>Hora:</label>
                                                 <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="05:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
+                                                    <input type="text" class="form-control input-sm" value="07:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
                                                     <span class="input-group-addon">
                                                         <span class="fa fa-clock"></span>
                                                     </span>
@@ -281,10 +282,10 @@
 
     <!-- Mainly scripts -->
     <script src="js/plugins/fullcalendar/moment.min.js"></script>
-    <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
@@ -299,8 +300,8 @@
     <!-- Date range picker -->
     <script src="js/plugins/daterangepicker/daterangepicker.js"></script>
 
-    <!-- Chosen -->
-    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <!-- Input Mask-->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
@@ -318,7 +319,6 @@
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
-
         $("#form").validate({
             rules: {
                 ddlEntrenadores: {
@@ -392,6 +392,33 @@
 
         });
 
+    </script>
+
+    <script type="text/javascript">  
+        $(document).ready(function () {
+            $("#txbAfiliado").autocomplete({
+                source: function (request, response) {
+                    $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
+                                value: item.id + " - " + item.nombre + " " + item.apellido,
+                            };
+                        }));
+                    });
+                },
+                select: function (event, ui) {
+                    if (ui.item) {
+                        console.log(ui.item.value);
+                        document.getElementById("txbAfiliado").value = ui.item.value;
+                        var btn = document.getElementById("btnAfiliado");
+                        btn.click();
+                    }
+                },
+                minLength: 3,
+                delay: 100
+            });
+        });
     </script>
 
     <script>

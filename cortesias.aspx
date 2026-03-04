@@ -158,17 +158,17 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label>Afiliado</label>
-                                                    <%--<asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server" 
+                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server" 
                                                         placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
                                                      <asp:Button ID="btnAfiliado" runat="server" Text="" 
-                                                        style="display:none;" OnClick="btnAfiliado_Click" />--%>
-                                                    <asp:DropDownList ID="ddlAfiliado" name="ddlAfiliado" runat="server" 
+                                                        style="display:none;" OnClick="btnAfiliado_Click" />
+                                                    <%--<asp:DropDownList ID="ddlAfiliado" name="ddlAfiliado" runat="server" 
                                                         DataTextField="DocNombreAfiliado" AppendDataBoundItems="true" 
                                                         DataValueField="idAfiliado" CssClass="chosen-select form-control input-sm"  
                                                         OnSelectedIndexChanged="ddlAfiliado_SelectedIndexChanged" 
                                                         AutoPostBack="true" >
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
+                                                    </asp:DropDownList>--%>
                                                 </div>
                                             </div>
                                         </div>

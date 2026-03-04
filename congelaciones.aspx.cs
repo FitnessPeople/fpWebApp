@@ -165,7 +165,11 @@ namespace fpWebApp
             }
             else
             {
-                ltNoPlanes.Text = "Sin planes. No es posible agregar una incapacidad.";
+                ltNoPlanes.Text = "<div class=\"ibox-content\">" +
+                    "<div class=\"alert alert-danger alert-dismissable\">" +
+                    "<button aria-hidden=\"true\" data-dismiss=\"alert\" class=\"close\" type=\"button\">×</button>" +
+                    "Sin planes. No es posible agregar una congelación." +
+                    "</div></div>";
                 ddlTipoCongelacion.Enabled = false;
                 txbObservaciones.Enabled = false;
                 txbFechaInicio.Enabled = false;
