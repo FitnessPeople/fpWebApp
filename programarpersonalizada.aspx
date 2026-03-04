@@ -181,9 +181,10 @@
                                             <div class="col-sm-4">
                                                 <label>Afiliado:</label>
                                                 <div class="form-group">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" 
-                                                        ID="ddlAfiliados" runat="server" AppendDataBoundItems="true" 
-                                                        DataValueField="idAfiliado" DataTextField="Nombre">
+                                                    <asp:DropDownList ID="ddlAfiliado" name="ddlAfiliado" runat="server"
+                                                        DataTextField="DocNombreAfiliado" AppendDataBoundItems="true"
+                                                        DataValueField="idAfiliado" CssClass="chosen-select form-control input-sm" 
+                                                        AutoPostBack="true">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
@@ -218,8 +219,11 @@
                                             </div>
 
                                             <div class="col-sm-6">
-                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
+                                                <label>&nbsp;</label>
+                                                <div class="form-group">
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                    <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
+                                                </div>
                                             </div>
                                             
                                         </div>

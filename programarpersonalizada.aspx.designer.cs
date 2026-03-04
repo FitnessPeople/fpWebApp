@@ -96,13 +96,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlEntrenadores;
 
         /// <summary>
-        /// Control ddlAfiliados.
+        /// Control ddlAfiliado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAfiliados;
+        protected global::System.Web.UI.WebControls.DropDownList ddlAfiliado;
 
         /// <summary>
         /// Control ddlSedesSesion.

@@ -37,6 +37,7 @@ namespace fpWebApp
                         txbFechaIni.Attributes.Add("type", "date");
                         txbFechaIni.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         divCrear.Visible = true;
+                        CargarAfiliados();
                         CargarSedesSesion();
                         CargarSedesCalendario();
                         CargarEntrenadores();
@@ -95,6 +96,20 @@ namespace fpWebApp
                 ViewState["CrearModificar"] = dt.Rows[0]["CrearModificar"].ToString();
                 ViewState["Borrar"] = dt.Rows[0]["Borrar"].ToString();
             }
+
+            dt.Dispose();
+        }
+
+        private void CargarAfiliados()
+        {
+            string strQuery = @"SELECT idAfiliado, 
+                CONCAT(NombreAfiliado, ' ', ApellidoAfiliado, ' - ', DocumentoAfiliado) AS DocNombreAfiliado 
+                FROM afiliados 
+                WHERE EstadoAfiliado = 'Activo' ";
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+            ddlAfiliado.DataSource = dt;
+            ddlAfiliado.DataBind();
 
             dt.Dispose();
         }

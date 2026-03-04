@@ -4139,7 +4139,10 @@ table.table-mail tr td {
 .darkgray-bg {
   background-color: #1a1a1a;
   /*background: url('patterns/bg1836.jpg');*/
-  background: url('patterns/bg_login.jpg');
+  background: url('patterns/fondo01.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 .panel-primary {
   border-color: #1ab394;
