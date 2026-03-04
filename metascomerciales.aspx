@@ -136,7 +136,7 @@
                             <div class="col-lg-12">
                                 <div class="row">
 
-                                    <div class="col-lg-3">
+                                    <%--                                    <div class="col-lg-3">
                                         <div class="ibox float-e-margins">
                                             <div class="ibox-title text-warning">
                                                 <h5>Ritmo vs tiempo</h5>
@@ -197,8 +197,7 @@
                                                 </small>
                                             </div>
                                         </div>
-                                    </div>
-
+                                    </div>--%>
                                 </div>
                             </div>
 
@@ -298,14 +297,7 @@
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Asesor Online:</label>
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Director sede:</label>
@@ -313,9 +305,7 @@
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                    </div>
-                                                </div>
+  
                                                 <div class="form-group">
                                                     <a href="metascomerciales" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
@@ -360,10 +350,10 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="13"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                            data-paging-limit="10" data-filtering="true"
+                                            data-paging-limit="13" data-filtering="true"
                                             data-filter-container="#filter-form-container" data-filter-delay="300"
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left"
                                             data-empty="Sin resultados">
