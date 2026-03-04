@@ -201,7 +201,7 @@
                                                         <button type="button" class="close text-white" data-dismiss="modal"></button>
                                                     </div>
 
-                                                    <div class="modal-body">
+                                                    <div class="modal-body"> 
 
                                                         <div class="form-group">
                                                             <label>Cargo actual</label>
