@@ -54,7 +54,7 @@
         function changeClass() {
             var element1 = document.querySelector("#empleados");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#sistema");
+            var element2 = document.querySelector("#gestionhumana");
             element2.classList.remove("collapse");
         }
     </script>

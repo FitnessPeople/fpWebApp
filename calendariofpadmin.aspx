@@ -96,7 +96,7 @@
                     <form runat="server" id="form">
                         <div class="row animated fadeInDown" id="divContenido" runat="server">
                             <div class="col-xxl-2 col-lg-3 col-md-5 col-sm-6 col-xs-12">
-                            <%--<div class="col-sm-12">--%>
+                                <%--<div class="col-sm-12">--%>
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Agregar avance o reunión</h5>
@@ -115,13 +115,13 @@
                                             <div class="col-sm-12">
                                                 <label>Descripción:</label>
                                                 <div class="form-group">
-                                                    
+
                                                     <asp:TextBox ID="txbDescripcion" runat="server" CssClass="form-control input-sm" TextMode="MultiLine"
                                                         placeholder="Descripción"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="rfvDescripcion" runat="server" ErrorMessage="* Campo requerido"
                                                         ControlToValidate="txbDescripcion" ValidationGroup="agregar"
                                                         CssClass="font-bold text-danger"></asp:RequiredFieldValidator>
-                                                    
+
                                                     <%--<textarea class="form-control input-sm" id="txbDescripcion" name="txbDescripcion" runat="server" rows="5" />--%>
                                                 </div>
                                             </div>
@@ -174,15 +174,16 @@
                                             <i class="fa fa-calendar-day fa-5x"></i>
                                         </div>
                                         <div class="col-xs-8 text-right">
-                                            <span> Días hasta el Día Zero </span>
-                                            <h2 class="font-bold"><asp:Literal ID="ltDias" runat="server"></asp:Literal></h2>
+                                            <span>Días hasta el Día Zero </span>
+                                            <h2 class="font-bold">
+                                                <asp:Literal ID="ltDias" runat="server"></asp:Literal></h2>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
                             <div class="col-xxl-10 col-lg-9 col-md-7 col-sm-6 col-xs-12">
-                            <%--<div class="col-sm-12">--%>
+                                <%--<div class="col-sm-12">--%>
                                 <div class="ibox float-e-margins">
                                     <div class="ibox-title">
                                         <h5>Agenda
@@ -203,6 +204,7 @@
                                     <div class="ibox-content">
                                         <div id="calendar"></div>
                                     </div>
+                                    <iframe width="100%" height="600" src="https://miro.com/app/live-embed/uXjVG3p1qhE=/?moveToViewport=-1088,-595,1922,920&embedId=574880003747" frameborder="0" scrolling="no" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
                                 </div>
                             </div>
                         </div>

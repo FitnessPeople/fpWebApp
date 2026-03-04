@@ -15,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Agenda sesiones personalizadas</title>
+    <title>Fitness People | Programar sesión personalizada</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -39,7 +39,7 @@
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#programarsesion");
+            var element1 = document.querySelector("#programarpersonalizada");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#coordinaciondeportiva");
             element2.classList.remove("collapse");
@@ -122,7 +122,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-timeline text-success m-r-sm"></i>Programar sesión personalizada</h2>
+                    <h2><i class="fa fa-chalkboard-user text-success m-r-sm"></i>Programar sesión personalizada</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Coordinación deportiva</li>
@@ -168,7 +168,7 @@
                                     <div class="ibox-content" id="divCrear" runat="server" visible="false">
 
                                         <div class="row">
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-4">
                                                 <label>Entrenador:</label>
                                                 <div class="form-group">
                                                     <asp:DropDownList CssClass="form-control input-sm required" 
@@ -178,7 +178,17 @@
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-4">
+                                                <label>Afiliado:</label>
+                                                <div class="form-group">
+                                                    <asp:DropDownList CssClass="form-control input-sm required" 
+                                                        ID="ddlAfiliados" runat="server" AppendDataBoundItems="true" 
+                                                        DataValueField="idAfiliado" DataTextField="Nombre">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
                                                 <label>Sede:</label>
                                                 <div class="form-group">
                                                     <asp:DropDownList CssClass="form-control input-sm required" 
@@ -188,42 +198,17 @@
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <label>Clase grupal:</label>
-                                                <div class="form-group">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" 
-                                                        ID="ddlClasesGrupales" runat="server" AppendDataBoundItems="true" 
-                                                        DataValueField="idClaseGrupal" DataTextField="Modalidad">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label>Cupo:</label>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control input-sm" 
-                                                        id="txbCupo" name="txbCupo" runat="server" 
-                                                        placeholder="20" />                                                </div>
-                                            </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <label>Fecha Inicial:</label>
+                                                <label>Fecha:</label>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
-                                                <label>Fecha Final:</label>
-                                                <div class="form-group">
-                                                    <%--<span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>--%>
-                                                    <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-3 m-b-md">
-                                                <label>Hora inicio:</label>
+                                                <label>Hora:</label>
                                                 <div class="input-group clockpicker" data-autoclose="true">
                                                     <input type="text" class="form-control input-sm" value="05:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
                                                     <span class="input-group-addon">
@@ -231,62 +216,13 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <label>Hora final:</label>
-                                                <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="06:00" id="txbHoraFin" name="txbHoraFin" runat="server" />
-                                                    <span class="input-group-addon">
-                                                        <span class="fa fa-clock"></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
 
-                                        <div class="row">
                                             <div class="col-sm-6">
-                                                <div class="form-horizontal">
-                                                    <div class="form-group m-b-mb">
-                                                        <label class="col-sm-4">Duración de la sesión:</label>
-                                                        <div class="col-sm-8">
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlDuracion" runat="server"
-                                                                AppendDataBoundItems="true">
-                                                                <%--<asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>--%>
-                                                                <asp:ListItem Text="60 minutos" Value="60"></asp:ListItem>
-                                                                <%--<asp:ListItem Text="90 minutos" Value="90"></asp:ListItem>--%>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
                                             </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-horizontal">
-                                                    <div class="form-group m-b-mb">
-                                                        <label class="col-sm-2">Repetir:</label>
-                                                        <div class="col-sm-8">
-                                                            <asp:CheckBoxList ID="cbDiasRepite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="&nbsp;Lun" Value="1" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Mar" Value="2" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Mié" Value="3" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Jue" Value="4" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Vie" Value="5" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Sáb" Value="6" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                            </asp:CheckBoxList>
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
-
-                                        <%--<div class="form-horizontal">
-                                            <div class="form-group m-b-mb">
-                                                
-                                                
-                                            </div>
-                                        </div>--%>
 
                                     </div>
                                 </div>
