@@ -4238,7 +4238,40 @@ namespace fpWebApp
 
             return dt;
         }
+        
 
+        public DataTable ConsultarIndicadoresInicioLidCoporativo(int mes, int dia,decimal memtames)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INDICADORES_INICIO_LIDER_CORPORATIVO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("pMes", mes);
+                        cmd.Parameters.AddWithValue("pAnio", dia);
+                        cmd.Parameters.AddWithValue("pMetaMes", memtames);
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
         public DataTable ConsultarIndicadoresInicioDirComercial()
         {
             DataTable dt = new DataTable();
