@@ -136,68 +136,6 @@
                             <div class="col-lg-12">
                                 <div class="row">
 
-                                    <%--                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-warning">
-                                                <h5>Ritmo vs tiempo</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="lblRitmoReal" runat="server"></asp:Literal>%
-                                                </h1>
-                                                <small>Esperado:
-                                                    <asp:Literal ID="lblRitmoEsperado" runat="server"></asp:Literal>%
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-danger">
-                                                <h5>Proyección cierre mes</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="lblProyeccionCierre" runat="server"></asp:Literal>
-                                                </h1>
-                                                <small>Meta:
-                                                    <asp:Literal ID="lblMetaMes" runat="server"></asp:Literal>
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-info">
-                                                <h5>Días hábiles restantes</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="lblDiasHabiles" runat="server"></asp:Literal>
-                                                </h1>
-                                                <small>Necesario por día:
-                                                    <asp:Literal ID="lblVentaNecesariaDia" runat="server"></asp:Literal>
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-danger">
-                                                <h5>Presión comercial</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="lblPresion" runat="server"></asp:Literal>x
-                                                </h1>
-                                                <small>vs promedio diario actual
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>--%>
                                 </div>
                             </div>
 
@@ -305,7 +243,10 @@
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
-  
+                                                    <div class="col-md-6">
+                                                    </div>
+                                                </div>
+
                                                 <div class="form-group">
                                                     <a href="metascomerciales" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
