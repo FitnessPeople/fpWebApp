@@ -377,32 +377,11 @@ namespace fpWebApp
                     _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
                     //_strEventos += "className: 'bg-primary',\r\n";
 
-                    //if (dt.Rows[i]["idAfiliado"].ToString() != "")
-                    //{
-                    //    if (dt.Rows[i]["Cancelada"].ToString() != "0")
-                    //    {
-                    //        _strEventos += "color: '#ed5565',\r\n"; //danger
-                    //        _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "icon: 'id-card',\r\n";
-                    //        _strEventos += "btnEliminar: 'none',\r\n";
-                    //    }
-                    //    else
-                    //    {
-                    //        _strEventos += "color: '#F8AC59',\r\n"; //warning
-                    //        _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "icon: 'id-card',\r\n";
-                    //        _strEventos += "btnEliminar: 'none',\r\n";
-                    //    }
-                    //}
-                    //else
-                    //{
-                        _strEventos += "title: '" + dt.Rows[i]["Modalidad"].ToString() + " - " + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
-                        _strEventos += "color: '#1ab394',\r\n";
-                        _strEventos += "description: 'Cupo total: " + dt.Rows[i]["CupoMaximo"].ToString() + "',\r\n";
-                        _strEventos += "icon: 'user-doctor',\r\n";
-                        _strEventos += "btnEliminar: 'inline',\r\n";
+                    _strEventos += "title: '" + dt.Rows[i]["Modalidad"].ToString() + " - " + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
+                    _strEventos += "color: '#1ab394',\r\n";
+                    _strEventos += "description: 'Cupo total: " + dt.Rows[i]["CupoMaximo"].ToString() + "',\r\n";
+                    _strEventos += "icon: 'user-doctor',\r\n";
+                    _strEventos += "btnEliminar: 'inline',\r\n";
                     //}
 
                     //_strEventos += "color: '#DBADFF',\r\n";

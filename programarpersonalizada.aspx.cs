@@ -51,21 +51,21 @@ namespace fpWebApp
                         {
                             try
                             {
-                                string strQuery = "DELETE FROM ProgramacionClasesGrupales " +
-                                    "WHERE idProgramacion = " + Request.QueryString["deleteid"].ToString();
+                                string strQuery = "DELETE FROM ProgramacionSesionPersonalizada " +
+                                    "WHERE idProgramacionPer = " + Request.QueryString["deleteid"].ToString();
                                 clasesglobales cg = new clasesglobales();
                                 string mensaje = cg.TraerDatosStr(strQuery);
 
                                 if (mensaje == "OK")
                                 {
-                                    cg.InsertarLog(Session["idusuario"].ToString(), "DisponibilidadEspecialistas", "Elimina", "El usuario eliminó un nuevo espacio del especialista.", "", "");
+                                    cg.InsertarLog(Session["idusuario"].ToString(), "ProgramacionSesionPersonalizada", "Elimina", "El usuario eliminó una sesión personalizada.", "", "");
                                 }
                             }
                             catch (SqlException ex)
                             {
                                 string mensaje = ex.Message;
                             }
-                            Response.Redirect("agenda");
+                            Response.Redirect("programarpersonalizada");
                         }
                     }
                 }
@@ -297,30 +297,9 @@ namespace fpWebApp
                     _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
                     //_strEventos += "className: 'bg-primary',\r\n";
 
-                    //if (dt.Rows[i]["idAfiliado"].ToString() != "")
-                    //{
-                    //    if (dt.Rows[i]["Cancelada"].ToString() != "0")
-                    //    {
-                    //        _strEventos += "color: '#ed5565',\r\n"; //danger
-                    //        _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "icon: 'id-card',\r\n";
-                    //        _strEventos += "btnEliminar: 'none',\r\n";
-                    //    }
-                    //    else
-                    //    {
-                    //        _strEventos += "color: '#F8AC59',\r\n"; //warning
-                    //        _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "icon: 'id-card',\r\n";
-                    //        _strEventos += "btnEliminar: 'none',\r\n";
-                    //    }
-                    //}
-                    //else
-                    //{
                     _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
                     _strEventos += "color: '#1ab394',\r\n";
-                    _strEventos += "description: 'Entrenamiento personalizado.',\r\n";
+                    _strEventos += "description: 'Entrenamiento personalizado para: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
                     _strEventos += "icon: 'handshake-angle',\r\n";
                     _strEventos += "btnEliminar: 'inline',\r\n";
                     //}
