@@ -28,6 +28,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -8117,25 +8118,99 @@ namespace fpWebApp
 
 
 
-        public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
-            string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado,
-            string fechaNacEmpleado, string fotoEmpleado, string nroContrato, string tipoContrato, int idEmpresaFP,
-            int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
-            int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero,
-            int idEstadoCivil, int idCanalVenta, int idCargo, int idProfesion, string nivelEstudio,
-            int estratoSocial, string tipoVivienda, int nroPersonas, string actividadExtra,
-            string consumeLicor, string medioTransporte, string tipoSangre, int idUsuario)
+        //public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado,
+        //    string telEmpleadoCorp, string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado,
+        //    string fechaNacEmpleado, string fotoEmpleado, string nroContrato, string tipoContrato, int idEmpresaFP,
+        //    int idSede, string fechaIni, string fechaFin, int sueldo, string grupoNomina, int idEps,
+        //    int idFondo, int idArl, int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero,
+        //    int idEstadoCivil, int idCanalVenta, int idCargo, int idProfesion, string nivelEstudio,
+        //    int estratoSocial, string tipoVivienda, int nroPersonas, string actividadExtra,
+        //    string consumeLicor, string medioTransporte, string tipoSangre, int idUsuario)
+        //{
+        //    string respuesta = string.Empty;
+        //    try
+        //    {
+        //        string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+        //        using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+        //        {
+        //            mysqlConexion.Open();
+        //            using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_EMPLEADO", mysqlConexion))
+        //            {
+        //                cmd.CommandType = CommandType.StoredProcedure;
+        //                cmd.Parameters.AddWithValue("@p_documento_empleado", documentoEmpleado);
+        //                cmd.Parameters.AddWithValue("@p_tipo_doc_empleado", tipoDocumento);
+        //                cmd.Parameters.AddWithValue("@p_nombre_empleado", nombreEmpleado);
+        //                cmd.Parameters.AddWithValue("@p_tel_empleado", telEmpleado);
+        //                cmd.Parameters.AddWithValue("@p_tel_empleado_corp", telEmpleadoCorp);
+        //                cmd.Parameters.AddWithValue("@p_email_empleado", emailEmpleado);
+        //                cmd.Parameters.AddWithValue("@p_email_empleado_corp", emailEmpleadoCorp);
+        //                cmd.Parameters.AddWithValue("@p_dir_empleado", dirEmpleado);
+        //                cmd.Parameters.AddWithValue("@p_id_ciu_empleado", idCiudadEmpleado);
+        //                cmd.Parameters.AddWithValue("@p_fecha_nac_empleado", fechaNacEmpleado);
+        //                cmd.Parameters.AddWithValue("@p_foto_empleado", fotoEmpleado);
+        //                cmd.Parameters.AddWithValue("@p_nro_contrato", nroContrato);
+        //                cmd.Parameters.AddWithValue("@p_tipo_contrato", tipoContrato);
+        //                cmd.Parameters.AddWithValue("@p_id_empresa_fp", idEmpresaFP);
+        //                cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+        //                cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaIni);
+        //                cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
+        //                cmd.Parameters.AddWithValue("@p_sueldo", sueldo);
+        //                cmd.Parameters.AddWithValue("@p_grupo_nomina", grupoNomina);
+        //                cmd.Parameters.AddWithValue("@p_id_eps", idEps);
+        //                cmd.Parameters.AddWithValue("@p_id_fondo_pension", idFondo);
+        //                cmd.Parameters.AddWithValue("@p_id_arl", idArl);
+        //                cmd.Parameters.AddWithValue("@p_id_caja_comp", idCajaCompensa);
+        //                cmd.Parameters.AddWithValue("@p_cesantias", idCesantias);
+        //                cmd.Parameters.AddWithValue("@p_estado", estadoEmpleado);
+        //                cmd.Parameters.AddWithValue("@p_id_genero", idGenero);
+        //                cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
+        //                cmd.Parameters.AddWithValue("@p_canal_venta", idCanalVenta);
+        //                cmd.Parameters.AddWithValue("@p_id_cargo", idCargo);
+        //                cmd.Parameters.AddWithValue("@p_id_profesion", idProfesion);
+        //                cmd.Parameters.AddWithValue("@p_nivel_estudio", nivelEstudio);
+        //                cmd.Parameters.AddWithValue("@p_estrato_social", estratoSocial);
+        //                cmd.Parameters.AddWithValue("@p_tipo_vivienda", tipoVivienda);
+        //                cmd.Parameters.AddWithValue("@p_nro_personas", nroPersonas);
+        //                cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
+        //                cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
+        //                cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
+        //                cmd.Parameters.AddWithValue("@p_tipo_sangre", tipoSangre);
+        //                cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+        //                cmd.ExecuteNonQuery();
+        //                respuesta = "OK";
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        respuesta = "ERROR: " + ex.Message;
+        //    }
+
+        //    return respuesta;
+        //}
+
+        public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado, string telEmpleadoCorp,
+        string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado,string nroContrato,
+        string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, decimal sueldo, string grupoNomina, int idEps, int idFondo, int idArl,
+        int idCajaCompensa, int idCesantias, string estadoEmpleado,int idGenero,int idEstadoCivil,int idCanalVenta, int idCargo, int idProfesion, string profesion,
+        string nivelEstudio,int estrato, string tipoVivienda,int nroPersonas, string actividadExtra, string consumeLicor, string medioTransporte, string tipoSangre,
+        string placaVehiculo, string tipoRetiro,DateTime? fechaExpedicionCed, string nombreContacto,string telContacto,string parentescoContacto, int idUsuario)
         {
             string respuesta = string.Empty;
+
             try
             {
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
                     mysqlConexion.Open();
+
                     using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_EMPLEADO", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+
                         cmd.Parameters.AddWithValue("@p_documento_empleado", documentoEmpleado);
                         cmd.Parameters.AddWithValue("@p_tipo_doc_empleado", tipoDocumento);
                         cmd.Parameters.AddWithValue("@p_nombre_empleado", nombreEmpleado);
@@ -8146,37 +8221,51 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_dir_empleado", dirEmpleado);
                         cmd.Parameters.AddWithValue("@p_id_ciu_empleado", idCiudadEmpleado);
                         cmd.Parameters.AddWithValue("@p_fecha_nac_empleado", fechaNacEmpleado);
-                        cmd.Parameters.AddWithValue("@p_foto_empleado", fotoEmpleado);
-                        cmd.Parameters.AddWithValue("@p_nro_contrato", nroContrato);
+                        cmd.Parameters.AddWithValue("@p_id_genero", idGenero);
+                        cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
+
                         cmd.Parameters.AddWithValue("@p_tipo_contrato", tipoContrato);
-                        cmd.Parameters.AddWithValue("@p_id_empresa_fp", idEmpresaFP);
-                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
                         cmd.Parameters.AddWithValue("@p_fecha_inicio", fechaIni);
-                        cmd.Parameters.AddWithValue("@p_fecha_fin", fechaFin);
-                        cmd.Parameters.AddWithValue("@p_sueldo", sueldo);
-                        cmd.Parameters.AddWithValue("@p_grupo_nomina", grupoNomina);
+                        cmd.Parameters.AddWithValue("@p_fecha_fin", (object)fechaFin ?? DBNull.Value);
+
+                        cmd.Parameters.AddWithValue("@p_profesion", profesion);
+                        cmd.Parameters.AddWithValue("@p_nivel_estudio", nivelEstudio);
+                        cmd.Parameters.AddWithValue("@p_estrato", estrato);
+                        cmd.Parameters.AddWithValue("@p_tipo_vivienda", tipoVivienda);
+                        cmd.Parameters.AddWithValue("@p_personas_nucleo", nroPersonas);
+                        cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
+                        cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
+                        cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
+
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
                         cmd.Parameters.AddWithValue("@p_id_eps", idEps);
                         cmd.Parameters.AddWithValue("@p_id_fondo_pension", idFondo);
                         cmd.Parameters.AddWithValue("@p_id_arl", idArl);
                         cmd.Parameters.AddWithValue("@p_id_caja_comp", idCajaCompensa);
                         cmd.Parameters.AddWithValue("@p_cesantias", idCesantias);
+
+                        cmd.Parameters.AddWithValue("@p_foto_empleado", fotoEmpleado);
+                        cmd.Parameters.AddWithValue("@p_nro_contrato", nroContrato);
+                        cmd.Parameters.AddWithValue("@p_id_empresa_fp", idEmpresaFP);
+                        cmd.Parameters.AddWithValue("@p_sueldo", sueldo);
+                        cmd.Parameters.AddWithValue("@p_grupo_nomina", grupoNomina);
                         cmd.Parameters.AddWithValue("@p_estado", estadoEmpleado);
-                        cmd.Parameters.AddWithValue("@p_id_genero", idGenero);
-                        cmd.Parameters.AddWithValue("@p_estado_civil", idEstadoCivil);
                         cmd.Parameters.AddWithValue("@p_canal_venta", idCanalVenta);
                         cmd.Parameters.AddWithValue("@p_id_cargo", idCargo);
                         cmd.Parameters.AddWithValue("@p_id_profesion", idProfesion);
-                        cmd.Parameters.AddWithValue("@p_nivel_estudio", nivelEstudio);
-                        cmd.Parameters.AddWithValue("@p_estrato_social", estratoSocial);
-                        cmd.Parameters.AddWithValue("@p_tipo_vivienda", tipoVivienda);
-                        cmd.Parameters.AddWithValue("@p_nro_personas", nroPersonas);
-                        cmd.Parameters.AddWithValue("@p_actividad_extra", actividadExtra);
-                        cmd.Parameters.AddWithValue("@p_consume_licor", consumeLicor);
-                        cmd.Parameters.AddWithValue("@p_medio_transporte", medioTransporte);
                         cmd.Parameters.AddWithValue("@p_tipo_sangre", tipoSangre);
+                        cmd.Parameters.AddWithValue("@p_placa_vehiculo",(object)placaVehiculo ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@p_tipo_retiro", tipoRetiro);
+                        cmd.Parameters.AddWithValue("@p_fecha_expedicion_ced", (object)fechaExpedicionCed ?? DBNull.Value);
+
+                        cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("@p_tel_contacto", telContacto);
+                        cmd.Parameters.AddWithValue("@p_parentesco_contacto", parentescoContacto);
+
                         cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
                         cmd.ExecuteNonQuery();
+
                         respuesta = "OK";
                     }
                 }

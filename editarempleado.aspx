@@ -449,6 +449,7 @@
                                                             <asp:DropDownList ID="ddlTipoContrato" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                 <asp:ListItem Text="Fijo" Value="Fijo"></asp:ListItem>
+                                                                <asp:ListItem Text="Indefinido" Value="Indefinido"></asp:ListItem>
                                                                 <asp:ListItem Text="OPS" Value="OPS"></asp:ListItem>
                                                                 <asp:ListItem Text="Aprendiz" Value="Aprendiz"></asp:ListItem>
                                                                 <asp:ListItem Text="Obra o labor" Value="Obra o labor"></asp:ListItem>

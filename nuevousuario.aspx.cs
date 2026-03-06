@@ -223,6 +223,7 @@ namespace fpWebApp
                     string script = @"
                     Swal.fire({
                         title: 'Usuario creado correctamente',
+                        text: 'Gestión Humana - Fitness People.',
                         icon: 'success',
                         timer: 2500,
                         showConfirmButton: false,

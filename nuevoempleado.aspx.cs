@@ -31,6 +31,7 @@ namespace fpWebApp
                         txbFechaNac.Attributes.Add("type", "date");
                         txbFechaInicio.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
+                        txbFechaExpedicion.Attributes.Add("type", "date");
                         txbEmail.Attributes.Add("type", "email");
                         txbEmailCorp.Attributes.Add("type", "email");
 
@@ -265,6 +266,27 @@ namespace fpWebApp
                     postedFile.SaveAs(filePath);
                     strFilename = nuevoNombre;
                 }
+                string placa = null;
+
+                if (!string.IsNullOrWhiteSpace(txbPlaca.Text))
+                {
+                    placa = txbPlaca.Text.Trim().ToUpper();
+                }
+
+                DateTime? fechaExpedicion = null;
+
+                if (!string.IsNullOrWhiteSpace(txbFechaExpedicion.Text))
+                {
+                    if (DateTime.TryParse(txbFechaExpedicion.Text, out DateTime fechaTemp))
+                    {
+                        fechaExpedicion = fechaTemp;
+                    }
+                    else
+                    {
+                        ltMensaje.Text = "Fecha de expedición inválida";
+                        return;
+                    }
+                }
 
                 try
                 {
@@ -299,6 +321,7 @@ namespace fpWebApp
                         Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), 
                         Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()),
                         Convert.ToInt32(ddlProfesion.SelectedItem.Value.ToString()),
+                        "",
                         ddlNivelEstudio.SelectedItem.Value.ToString(),
                         Convert.ToInt32(txbEstratoSocioeconomico.Text.ToString()),
                         ddlTipoVivienda.SelectedItem.Value.ToString(),
@@ -307,6 +330,12 @@ namespace fpWebApp
                         ddlConsumoLicor.SelectedItem.Value.ToString(),
                         ddlMedioTransporte.SelectedItem.Value.ToString(),
                         ddlTipoSangre.SelectedItem.Value.ToString(),
+                        placa.ToString(),
+                        "NA",
+                        fechaExpedicion,
+                        txbPersonaEncargada.ToString().Trim(),
+                        txbTelContacto.ToString().Trim(),
+                        ddlParentesco.SelectedItem.Value.ToString(),
                         Convert.ToInt32(Session["idUsuario"])
                         );
 
@@ -321,7 +350,7 @@ namespace fpWebApp
                         string script = @"
                             Swal.fire({
                                 title: 'El empleado se creo de forma exitosa',
-                                text: '',
+                                text: 'Gestión Humana - Fitness People',
                                 icon: 'success',
                                 timer: 3000, // 3 segundos
                                 showConfirmButton: false,
