@@ -622,7 +622,7 @@ namespace fpWebApp
                         string script = @"
                                     Swal.fire({
                                         title: '«¡Negociación creada correctamente!»',
-                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        text: 'Corporativo - Fitness People',
                                         icon: 'success',
                                         timer: 3000, // 3 segundos
                                         showConfirmButton: false,

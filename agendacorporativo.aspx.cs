@@ -346,8 +346,7 @@ namespace fpWebApp
                             strQuery = @"
                                 SELECT * FROM AgendaAsesoresCorporativos " +
                                 "WHERE idUsuario = " + idUsuario.ToString() + " " +
-                                "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 " +
-                                "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaHoraInicio) ";
+                                "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 ";
                             DataTable dt1 = cg.TraerDatos(strQuery);
 
                             if (dt1.Rows.Count == 0)
@@ -383,7 +382,7 @@ namespace fpWebApp
                                     script = @"
                                         Swal.fire({
                                             title: 'Agenda creada exitosamente.',
-                                            text: '',
+                                            text: 'Corporativo - Fitness People',
                                             icon: 'success',
                                             timer: 3000, // 3 segundos
                                             showConfirmButton: false,

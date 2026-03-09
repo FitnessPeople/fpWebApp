@@ -176,7 +176,7 @@ namespace fpWebApp
                     string script = @"
                             Swal.fire({
                                 title: 'La empresa convenio se creó de forma exitosa',
-                                text: '',
+                                text: 'Corporativo - Fitness People',
                                 icon: 'success',
                                 timer: 3000, // 3 segundos
                                 showConfirmButton: false,
