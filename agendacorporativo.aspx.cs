@@ -231,11 +231,24 @@ namespace fpWebApp
             try
             {
                 clasesglobales cg = new clasesglobales();
-                DataTable dt = cg.ConsultarEmpresasYProspectosCorporativos();
+                DataTable dt;
+
+                int idPerfil = Convert.ToInt32(Session["idPerfil"]);
+                int idUsuario = Convert.ToInt32(Session["idUsuario"]);
+
+                if (idPerfil == 36)
+                { 
+                    dt = cg.ConsultarEmpresasYProspectosCorporativos();
+                }
+                else
+                {
+                    dt = cg.ConsultarEmpresasYProspectosCorporativosPorUsuario(idUsuario);
+                }
 
                 ddlEmpresas.Items.Clear();
                 ListItem li = new ListItem("Seleccione", "");
                 ddlEmpresas.Items.Add(li);
+
                 ddlEmpresas.DataSource = dt;
                 ddlEmpresas.DataBind();
 
@@ -243,10 +256,10 @@ namespace fpWebApp
             }
             catch (Exception ex)
             {
-                MostrarAlerta("Error", "Ocurrió un error al cargar las empresas. Por favor intente nuevamente." + ex.Message.ToString(), "error");
+                MostrarAlerta("Error", "Ocurrió un error al cargar las empresas. Por favor intente nuevamente. " + ex.Message, "error");
             }
         }
-        
+
         private void CargarDatos()
         {
             DateTime dtHoy = DateTime.Now;
@@ -343,10 +356,14 @@ namespace fpWebApp
 
                         if (dt.Rows.Count == 0)
                         {
+                            DateTime fechaFin = dtFechaIniCita.AddHours(1);
+
                             strQuery = @"
-                                SELECT * FROM AgendaAsesoresCorporativos " +
-                                "WHERE idUsuario = " + idUsuario.ToString() + " " +
-                                "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaHoraInicio) <= 60 ";
+                            SELECT *
+                            FROM AgendaAsesoresCorporativos
+                            WHERE idUsuario = " + idUsuario.ToString() + @"
+                            AND FechaHoraInicio < '" + fechaFin.ToString("yyyy-MM-dd HH:mm:ss") + @"'
+                            AND FechaHoraFinal > '" + dtFechaIniCita.ToString("yyyy-MM-dd HH:mm:ss") + @"'";
                             DataTable dt1 = cg.TraerDatos(strQuery);
 
                             if (dt1.Rows.Count == 0)
@@ -399,7 +416,7 @@ namespace fpWebApp
                                 script = @"
                                     Swal.fire({
                                         title: 'Advertencia',
-                                        text: 'Ya esta ocupado este espacio con la misma empresa.',
+                                        text: 'Ya esta ocupado este espacio.',
                                         icon: 'error'
                                     }).then(() => {
                                     });
