@@ -310,7 +310,7 @@
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
-                                                    <label>Contacto Persona Encargada</label>
+                                                    <label>Teléfono Encargado</label>
                                                     <asp:TextBox ID="txbTelContacto" CssClass="form-control input-sm" runat="server" placeholder="Teléfono"></asp:TextBox>
                                                 </div>
                                             </div>
@@ -736,6 +736,15 @@
                     required: true
                 },
                 ddlEmpresasFP: {
+                    required: true
+                },
+                txbPersonaEncargada: {
+                    required: true
+                },
+                txbTelContacto: {
+                    required: true
+                },
+                ddlParentesco: {
                     required: true
                 },
             },

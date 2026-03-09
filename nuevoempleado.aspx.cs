@@ -333,15 +333,12 @@ namespace fpWebApp
                         placa.ToString(),
                         "NA",
                         fechaExpedicion,
-                        txbPersonaEncargada.ToString().Trim(),
-                        txbTelContacto.ToString().Trim(),
+                        txbPersonaEncargada.Text,
+                        txbTelContacto.Text,
                         ddlParentesco.SelectedItem.Value.ToString(),
                         Convert.ToInt32(Session["idUsuario"])
                         );
 
-                    //var respHist= cg.InsertarIngresoHistoricoNuevoUsuario(txbDocumento.Text.ToString().Trim(), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()),
-                    //    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlTipoContrato.SelectedItem.Value.ToString(),
-                    //    Convert.ToInt32(Session["idUsuario"].ToString()));
 
                     if (mensaje == "OK")
                     {
