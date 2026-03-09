@@ -266,26 +266,18 @@ namespace fpWebApp
                     postedFile.SaveAs(filePath);
                     strFilename = nuevoNombre;
                 }
-                string placa = null;
-
-                if (!string.IsNullOrWhiteSpace(txbPlaca.Text))
-                {
-                    placa = txbPlaca.Text.Trim().ToUpper();
-                }
+                string placa = string.IsNullOrWhiteSpace(txbPlaca.Text) ? null  : txbPlaca.Text.Trim().ToUpper();
 
                 DateTime? fechaExpedicion = null;
 
-                if (!string.IsNullOrWhiteSpace(txbFechaExpedicion.Text))
+                if (DateTime.TryParse(txbFechaExpedicion.Text, out DateTime fechaTemp))
                 {
-                    if (DateTime.TryParse(txbFechaExpedicion.Text, out DateTime fechaTemp))
-                    {
-                        fechaExpedicion = fechaTemp;
-                    }
-                    else
-                    {
-                        ltMensaje.Text = "Fecha de expedición inválida";
-                        return;
-                    }
+                    fechaExpedicion = fechaTemp;
+                }
+                else if (!string.IsNullOrWhiteSpace(txbFechaExpedicion.Text))
+                {
+                    ltMensaje.Text = "Fecha de expedición inválida";
+                    return;
                 }
 
                 try
@@ -330,7 +322,7 @@ namespace fpWebApp
                         ddlConsumoLicor.SelectedItem.Value.ToString(),
                         ddlMedioTransporte.SelectedItem.Value.ToString(),
                         ddlTipoSangre.SelectedItem.Value.ToString(),
-                        placa.ToString(),
+                        placa,
                         "NA",
                         fechaExpedicion,
                         txbPersonaEncargada.Text,

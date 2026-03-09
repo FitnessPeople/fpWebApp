@@ -37,7 +37,8 @@ using System.Web.Services.Description;
 using System.Web.UI;
 using static NPOI.HSSF.Util.HSSFColor;
 using Paragraph = iTextSharp.text.Paragraph;
-
+using System.Data;
+using System.Data.SqlClient;
 
 
 namespace fpWebApp
@@ -8254,10 +8255,9 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_id_cargo", idCargo);
                         cmd.Parameters.AddWithValue("@p_id_profesion", idProfesion);
                         cmd.Parameters.AddWithValue("@p_tipo_sangre", tipoSangre);
-                        cmd.Parameters.AddWithValue("@p_placa_vehiculo",(object)placaVehiculo ?? DBNull.Value);
+                        cmd.Parameters.Add("@p_placa", MySqlDbType.VarChar).Value = (object)placaVehiculo ?? DBNull.Value;
                         cmd.Parameters.AddWithValue("@p_tipo_retiro", tipoRetiro);
-                        cmd.Parameters.AddWithValue("@p_fecha_expedicion_ced", (object)fechaExpedicionCed ?? DBNull.Value);
-
+                        cmd.Parameters.Add("@p_fecha_expedicion", MySqlDbType.Date).Value = (object)fechaExpedicionCed ?? DBNull.Value;
                         cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
                         cmd.Parameters.AddWithValue("@p_tel_contacto", telContacto);
                         cmd.Parameters.AddWithValue("@p_parentesco_contacto", parentescoContacto);
