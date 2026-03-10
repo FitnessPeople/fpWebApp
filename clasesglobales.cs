@@ -37,8 +37,6 @@ using System.Web.Services.Description;
 using System.Web.UI;
 using static NPOI.HSSF.Util.HSSFColor;
 using Paragraph = iTextSharp.text.Paragraph;
-using System.Data;
-using System.Data.SqlClient;
 
 
 namespace fpWebApp
@@ -4734,6 +4732,11 @@ namespace fpWebApp
             return dt;
         }
 
+
+        #endregion
+
+        #region Facturación
+
         public DataTable ConsultarLiquidacionesCarteraPendientes()
         {
             DataTable dt = new DataTable();
@@ -4794,7 +4797,98 @@ namespace fpWebApp
 
             return dt;
         }
+
+        public string InsertarFacturaCorporativo( int idCartera, int idLiquidacion, int idAfiliadoPlan, string documentoEmpresa,
+        string documentoAfiliado, string numeroFactura, DateTime fechaFactura, DateTime periodoInicio, DateTime periodoFin, int diasFacturados,
+        decimal valorPlan, decimal descuento, decimal valorFacturado, int idUsuario)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("PA_INSERTAR_FACTURA_CORPORATIVO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_idCartera", idCartera);
+                        cmd.Parameters.AddWithValue("@p_idLiquidacion", idLiquidacion);
+                        cmd.Parameters.AddWithValue("@p_idAfiliadoPlan", idAfiliadoPlan);
+                        cmd.Parameters.AddWithValue("@p_DocumentoEmpresa", documentoEmpresa);
+                        cmd.Parameters.AddWithValue("@p_DocumentoAfiliado", documentoAfiliado);
+                        cmd.Parameters.AddWithValue("@p_NumeroFactura", numeroFactura);
+                        cmd.Parameters.AddWithValue("@p_FechaFactura", fechaFactura);
+                        cmd.Parameters.AddWithValue("@p_PeriodoInicio", periodoInicio);
+                        cmd.Parameters.AddWithValue("@p_PeriodoFin", periodoFin);
+                        cmd.Parameters.AddWithValue("@p_DiasFacturados", diasFacturados);
+                        cmd.Parameters.AddWithValue("@p_ValorPlan", valorPlan);
+                        cmd.Parameters.AddWithValue("@p_Descuento", descuento);
+                        cmd.Parameters.AddWithValue("@p_ValorFacturado", valorFacturado);
+                        cmd.Parameters.AddWithValue("@p_idUsuario", idUsuario);
+                       
+                        object result = cmd.ExecuteScalar();
+
+                        int idFactura = 0;
+
+                        if (result != null)
+                        {
+                            idFactura = Convert.ToInt32(result);
+                        }
+
+                        respuesta = idFactura.ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
+
+        public DataSet ObtenerDatosLiquidacionFactura(int idLiq)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("PA_OBTENER_DATOS_LIQUIDACION_FACTURA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddWithValue("p_idLiquidacion", idLiq);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(ds);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DataTable dtError = new DataTable();
+                dtError.Columns.Add("Error", typeof(string));
+                dtError.Rows.Add(ex.Message);
+
+                ds.Tables.Add(dtError);
+            }
+
+            return ds;
+        }
+
         #endregion
+
 
         #region Cortesias
 
