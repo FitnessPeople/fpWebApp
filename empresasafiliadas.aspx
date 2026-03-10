@@ -138,7 +138,7 @@
                     <h2><i class="fa fa-building text-success m-r-sm"></i>Empresas convenios</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Afiliados</li>
+                        <li>Corporativo</li>
                         <li class="active"><strong>Empresas convenios</strong></li>
                     </ol>
                 </div>

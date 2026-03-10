@@ -89,7 +89,7 @@
         function changeClass() {
             var element1 = document.querySelector("#asignacionescrm");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
+            var element2 = document.querySelector("#gestioncomercial");
             element2.classList.remove("collapse");
         }
     </script>
@@ -162,7 +162,7 @@
                     <h2><i class="fa fa-id-card text-success m-r-sm"></i>Asignaciones CRM</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>CRM</li>
+                        <li>Gestión Comercial</li>
                         <li class="active"><strong>Asignaciones</strong></li>
                     </ol>
                 </div>

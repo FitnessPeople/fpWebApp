@@ -45,7 +45,7 @@
         function changeClass() {
             var element1 = document.querySelector("#prospectoscrm");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
+            var element2 = document.querySelector("#gestioncomercial");
             element2.classList.remove("collapse");
         }
     </script>
@@ -110,7 +110,7 @@
                     <h2><i class="fa fa-person-running text-success m-r-sm"></i>Prospectos CRM</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>CRM</li>
+                        <li>Gestión Comercial</li>
                         <li class="active"><strong>Prospectos</strong></li>
                     </ol>
                 </div>

@@ -130,7 +130,7 @@
                         <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Empleados</h2>
                         <ol class="breadcrumb">
                             <li><a href="inicio">Inicio</a></li>
-                            <li>Sistema</li>
+                            <li>Gestión Humana</li>
                             <li class="active"><strong>Empleados</strong></li>
                         </ol>
                     </div>

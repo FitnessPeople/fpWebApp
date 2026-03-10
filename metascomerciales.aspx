@@ -42,7 +42,7 @@
         function changeClass() {
             var element1 = document.querySelector("#metascomerciales");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#canalesprocesoscomerciales");
+            var element2 = document.querySelector("#gestioncomercial");
             element2.classList.remove("collapse");
         }
     </script>
@@ -107,7 +107,7 @@
                     <h2><i class="fa fa-chart-column text-success m-r-sm"></i>Metas comerciales</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Comercial</li>
+                        <li>Gestión Comercial</li>
                         <li class="active"><strong>Metas comerciales</strong></li>
                     </ol>
                 </div>
@@ -186,8 +186,7 @@
                                                         <div class="form-group">
                                                             <label>Año:</label>
                                                             <asp:DropDownList ID="ddlAnnio" runat="server"
-                                                                CssClass="form-control input-sm" AppendDataBoundItems="true">
-                                                                <asp:ListItem Text="2025" Value="2025"></asp:ListItem>
+                                                                CssClass="form-control input-sm" AppendDataBoundItems="true">                                                               
                                                                 <asp:ListItem Text="2026" Value="2026"></asp:ListItem>
                                                                 <asp:ListItem Text="2027" Value="2027"></asp:ListItem>
                                                                 <asp:ListItem Text="2028" Value="2028"></asp:ListItem>
@@ -195,6 +194,9 @@
                                                                 <asp:ListItem Text="2030" Value="2030"></asp:ListItem>
                                                                 <asp:ListItem Text="2031" Value="2031"></asp:ListItem>
                                                                 <asp:ListItem Text="2032" Value="2032"></asp:ListItem>
+                                                                <asp:ListItem Text="2033" Value="2033"></asp:ListItem>
+                                                                <asp:ListItem Text="2034" Value="2034"></asp:ListItem>
+                                                                <asp:ListItem Text="2035" Value="2035"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>

@@ -14,7 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | CRM Contactos / Empresas</title>
+    <title>Fitness People | CRM Contactos</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -73,7 +73,7 @@
         function changeClass() {
             var element1 = document.querySelector("#listacontactoscrm");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
+            var element2 = document.querySelector("#gestioncomercial");
             element2.classList.remove("collapse");
         }
     </script>
@@ -253,7 +253,7 @@
                     <h2><i class="fa fa-user-tie text-success m-r-sm"></i>CRM Lista</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong>CRM / Lista contactos CRM</strong></li>
+                        <li class="active"><strong> Gestión Comercial / Lista contactos CRM</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">

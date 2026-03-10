@@ -15,7 +15,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Ventas</title>
+    <title>Fitness People | Efectividad en gestión</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -37,7 +37,7 @@
         function changeClass() {
             var element1 = document.querySelector("#reporteefectividadcrm");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
+            var element2 = document.querySelector("#gestioncomercial");
             element2.classList.remove("collapse");
         }
     </script>
@@ -114,7 +114,7 @@
                     <h2><i class="fas fa-money-bill-trend-up text-success m-r-sm"></i>Efectividad</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>CRM</li>
+                        <li>Gestión Comercial</li>
                         <li class="active"><strong>Efectividad gestión</strong></li>
                     </ol>
                 </div>

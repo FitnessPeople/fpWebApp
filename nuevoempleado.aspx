@@ -149,10 +149,8 @@
                             <div class="row">
                                 <form role="form" id="form" enctype="multipart/form-data" runat="server">
                                     <div class="col-sm-6 b-r">
-                                        <div class="form-group">
-                                            <label>Nombre Completo</label>
-                                            <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server" placeholder="Nombre completo"></asp:TextBox>
-                                        </div>
+
+
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
@@ -170,7 +168,10 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <div class="form-group">
+                                            <label>Nombre Completo</label>
+                                            <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server" placeholder="Nombre completo"></asp:TextBox>
+                                        </div>
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
@@ -406,28 +407,28 @@
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                         <%--   <div class="row">--%>
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label>Medio de transporte</label>
-                                                        <asp:DropDownList ID="ddlMedioTransporte" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
-                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            <asp:ListItem Text="Público" Value="Público"></asp:ListItem>
-                                                            <asp:ListItem Text="Bicicleta" Value="Bicicleta"></asp:ListItem>
-                                                            <asp:ListItem Text="Patineta eléctrica" Value="Patineta eléctrica"></asp:ListItem>
-                                                            <asp:ListItem Text="Moto" Value="Moto"></asp:ListItem>
-                                                            <asp:ListItem Text="Vehículo" Value="Vehículo"></asp:ListItem>
-                                                            <asp:ListItem Text="A pie" Value="A pie"></asp:ListItem>
-                                                        </asp:DropDownList>
-                                                    </div>
+                                            <%--   <div class="row">--%>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label>Medio de transp.</label>
+                                                    <asp:DropDownList ID="ddlMedioTransporte" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Público" Value="Público"></asp:ListItem>
+                                                        <asp:ListItem Text="Bicicleta" Value="Bicicleta"></asp:ListItem>
+                                                        <asp:ListItem Text="Patineta eléctrica" Value="Patineta eléctrica"></asp:ListItem>
+                                                        <asp:ListItem Text="Moto" Value="Moto"></asp:ListItem>
+                                                        <asp:ListItem Text="Vehículo" Value="Vehículo"></asp:ListItem>
+                                                        <asp:ListItem Text="A pie" Value="A pie"></asp:ListItem>
+                                                    </asp:DropDownList>
                                                 </div>
-                                                <div class="col-sm-3">
-                                                    <div class="form-group">
-                                                        <label>Placa vehículo</label>
-                                                        <asp:TextBox ID="txbPlaca" CssClass="form-control input-sm" runat="server" placeholder="MVN743"></asp:TextBox>
-                                                    </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label>Placa vehículo</label>
+                                                    <asp:TextBox ID="txbPlaca" CssClass="form-control input-sm" runat="server" placeholder="MVN743"></asp:TextBox>
                                                 </div>
-                                        <%--    </div>--%>
+                                            </div>
+                                            <%--    </div>--%>
                                         </div>
 
                                         <div class="row">
