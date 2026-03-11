@@ -178,12 +178,12 @@ namespace fpWebApp
                         if (dt.Rows.Count == 0)
                         {
                             
-                            if (dtFechaIniCita.Hour < 5 || dtFechaIniCita.Hour >= 21)
+                            if (dtFechaIniCita.Hour < 5 || dtFechaIniCita.Hour > 21)
                             {
                                 script = @"
                                     Swal.fire({
                                         title: 'Advertencia',
-                                        text: 'Horario fuera del intervalo permitido para la sesión.',
+                                        text: 'Horario fuera del permitido. El horario debe ser entre 5 am hasta 9 pm.',
                                         icon: 'error'
                                     }).then(() => {
                                     });
@@ -281,8 +281,9 @@ namespace fpWebApp
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    IFormatProvider provider = new CultureInfo("en-US");
-                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHora"].ToString(), provider);
+                    //IFormatProvider provider = new CultureInfo("en-US");
+                    //DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHora"].ToString(), provider);
+                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHora"].ToString());
                     DateTime dtFin = dtIni.AddHours(1);
 
                     string strFechaHoraIni = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtIni);
