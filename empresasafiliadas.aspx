@@ -20,6 +20,11 @@
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
 
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <!-- FooTable -->
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-footable/3.1.6/footable.bootstrap.min.css" rel="stylesheet" />
@@ -210,6 +215,8 @@
                                         <th data-breakpoints="xs sm md">Correo</th>
                                         <th data-type="date" data-breakpoints="xs sm md">Fecha Inicio Convenio</th>
                                         <th data-type="date" data-breakpoints="xs sm md">Fecha Fin Convenio</th>
+                                        <th data-type="date" data-breakpoints="xs sm md">Asesor</th>
+                                        <th data-type="date" data-breakpoints="xs sm md">En propiedad</th>
                                         <th class="text-nowrap" data-breakpoints="xs">Estado</th>
                                         <th data-breakpoints="all" data-title="Info"></th>
                                         <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
@@ -225,6 +232,9 @@
                                                 <td><i class="fa fa-envelope m-r-xs font-bold"></i><%# Eval("CorreoEmpresa") %></td>
                                                 <td><%# Eval("FechaConvenio", "{0:dd MMM yyyy}") %></td>
                                                 <td><%# Eval("FechaFinConvenio", "{0:dd MMM yyyy}") %></td>
+                                                 <td><%# Eval("NombreUsuario") %></td>
+                                                 <td>En encargo</td>
+
                                                 <td><span class="badge badge-<%# Eval("badge") %>"><%# Eval("EstadoEmpresa") %></span></td>
                                                 <td>
                                                     <table class="table table-bordered">
