@@ -150,6 +150,42 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlNuevoCanal;
 
         /// <summary>
+        /// Control ddlTipoDocumentoNuevo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlTipoDocumentoNuevo;
+
+        /// <summary>
+        /// Control ddlCanalNuevo.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCanalNuevo;
+
+        /// <summary>
+        /// Control ddlSedeIngreso.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSedeIngreso;
+
+        /// <summary>
+        /// Control ddlCargoIngreso.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCargoIngreso;
+
+        /// <summary>
         /// Control rpEmpleados.
         /// </summary>
         /// <remarks>

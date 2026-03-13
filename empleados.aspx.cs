@@ -1034,6 +1034,14 @@ namespace fpWebApp
 
                 ddlNuevoCargo.Items.Insert(0, new ListItem("Seleccione cargo", ""));
 
+                ddlCargoIngreso.DataSource = dt;
+                ddlCargoIngreso.DataTextField = "NombreCargo";   // texto visible
+                ddlCargoIngreso.DataValueField = "idCargo";     // valor
+                ddlCargoIngreso.DataBind();
+
+                ddlCargoIngreso.Items.Insert(0, new ListItem("Seleccione cargo", ""));
+                
+
                 dt.Dispose();
             }
             catch (Exception ex)
@@ -1072,53 +1080,7 @@ namespace fpWebApp
             }
         }
 
-        //[WebMethod(EnableSession = true)]
-        //[System.Web.Script.Services.ScriptMethod(ResponseFormat = System.Web.Script.Services.ResponseFormat.Json)]
-        //public static object InsertarAscensoEmpleado(string documento, int idNuevoCargo, decimal nuevoSueldo)
-        //{
-        //    try
-        //    {
-        //        clasesglobales cg = new clasesglobales();
 
-        //        DataTable dt = cg.ConsultarEmpleado(documento);
-
-        //        if (dt == null || dt.Rows.Count == 0)
-        //            return new { success = false, mensaje = "Empleado no encontrado." };
-
-        //        if (HttpContext.Current.Session["idUsuario"] == null)
-        //            return new { success = false, mensaje = "La sesión ha expirado. Inicie sesión nuevamente." };
-
-        //        DataRow row = dt.Rows[0];
-
-        //        int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
-        //        int idCargoActual = Convert.ToInt32(row["idCargo"]);
-        //        decimal sueldoActual = Convert.ToDecimal(row["Sueldo"]);
-
-        //        decimal salarioMinimo = 1750000m;
-        //        decimal medioSalarioMinimo = salarioMinimo / 2;
-
-
-        //        if (idCargoActual == idNuevoCargo)
-        //            return new { success = false, mensaje = "El nuevo cargo no puede ser igual al actual." };
-
-        //        if(nuevoSueldo <= 0)    return new { success = false, mensaje = "El salario no puede ser cero o negativo." };
-
-        //        if (nuevoSueldo < medioSalarioMinimo)
-        //            return new { success = false, mensaje = "El salario no puede ser menor a medio salario mínimo legal vigente." };
-
-
-        //        string respuesta = cg.ActualizarAscensoEmpleado(documento, idNuevoCargo,nuevoSueldo, idUsuario);
-
-        //        if (respuesta != "OK")
-        //            return new { success = false, mensaje = respuesta };    
-
-        //        return new { success = true, mensaje = "Gestión Humana - Fitness People." };
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new { success = false, mensaje = ex.Message };
-        //    }
-        //}
 
         [WebMethod(EnableSession = true)]
         public static object InsertarCambioCargoEmpleado(string documento, int idNuevoCargo)
@@ -1246,6 +1208,40 @@ namespace fpWebApp
             }
         }
 
+        [WebMethod(EnableSession = true)]
+        public static object InsertarDatosBasicosEmpleado( string tipoDocumento, string documento, string nombre, string correo,
+        int canal, int sede, int cargo)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+
+                if (HttpContext.Current.Session["idUsuario"] == null)
+                    return new { success = false, mensaje = "Sesión expirada." };
+
+                int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
+                string respuesta = "";
+                //string respuesta = cg.InsertarDatosBasicosEmpleado(
+                //    tipoDocumento,
+                //    documento,
+                //    nombre,
+                //    correo,
+                //    canal,
+                //    sede,
+                //    cargo,
+                //    idUsuario
+                //);
+
+                if (respuesta != "OK")
+                    return new { success = false, mensaje = respuesta };
+
+                return new { success = true, mensaje = "Empleado creado correctamente." };
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, mensaje = ex.Message };
+            }
+        }
         private void MostrarAlerta(string titulo, string mensaje, string tipo)
         {
             clasesglobales cg = new clasesglobales();

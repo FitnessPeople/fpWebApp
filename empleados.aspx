@@ -201,7 +201,7 @@
                                                         <button type="button" class="close text-white" data-dismiss="modal"></button>
                                                     </div>
 
-                                                    <div class="modal-body"> 
+                                                    <div class="modal-body">
 
                                                         <div class="form-group">
                                                             <label>Cargo actual</label>
@@ -271,6 +271,56 @@
                                                             </div>
 
                                                         </div>
+
+                                                        <!-- SECCION INGRESO RAPIDO -->
+                                                        <div id="seccionIngresoRapido" class="seccionMovimiento" style="display: none;">
+
+                                                            <div class="form-group">
+                                                                <label>Tipo documento</label>
+                                                                <asp:DropDownList ID="ddlTipoDocumentoNuevo" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Documento</label>
+                                                                <input type="text" id="txtDocumentoNuevo" class="form-control" />
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Nombre completo</label>
+                                                                <input type="text" id="txtNombreNuevo" class="form-control" />
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Correo electrónico</label>
+                                                                <input type="email" id="txtCorreoNuevo" class="form-control" />
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Canal de venta</label>
+                                                                <asp:DropDownList ID="ddlCanalNuevo" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Sede</label>
+                                                                <asp:DropDownList ID="ddlSedeIngreso" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Cargo</label>
+                                                                <asp:DropDownList ID="ddlCargoIngreso" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                        </div>
+
+
 
                                                     </div>
 
@@ -366,12 +416,19 @@
                                                                     <span class="label label-danger">Rh: <%# Eval("TipoSangre") %></span>
                                                                 </div>
                                                                 <p class="font-bold text-center"><%# Eval("Cargo") %> - <%# Eval("NombreSede") %></p>
-                                                        
+
 
                                                                 <hr class="my-2">
-                                                                 <p class="font-bold text-center">Acción del empleado</p>
+                                                                <p class="font-bold text-center">Acción del empleado</p>
 
                                                                 <div class="text-center">
+
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-xs btn-primary btnIngresoRapido"                                                                        
+                                                                        data-tipo="INGRESO_RAPIDO">
+                                                                        <i class="fa fa-user-edit m-r-xs"></i>Ingreso rápido
+                                                                    </a>
+
                                                                     <a href="javascript:void(0);"
                                                                         class="btn btn-xs btn-warning btnMovimiento"
                                                                         data-doc='<%# Eval("DocumentoEmpleado") %>'
@@ -395,8 +452,8 @@
                                                                         data-tipo="TRASLADO">
                                                                         <i class="fa fa-exchange-alt m-r-xs"></i>Traslado
                                                                     </a>
-                                                                  
-                                                                   
+
+
                                                                     <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio de contrato</a>
                                                                     <a runat="server" id="btnRetiro" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Retiro</a>
 
@@ -409,7 +466,7 @@
                                                                         class='btn btn-xs btn-danger'><i class="fa fa-rotate m-r-xs"></i><%# Eval("Estado") %> (cambiar)
                                                                     </a>
                                                                 </div>
-                                                                 <hr class="m-0">
+                                                                <hr class="m-0">
                                                             </div>
                                                         </div>
                                                         <div class="client-detail">
@@ -1426,63 +1483,6 @@
         });
     </script>
 
-<%--    <script>
-        function guardarAscenso() {
-
-            var documento = $("#hdDocumentoMovimiento").val();
-            var idNuevoCargo = parseInt($("#ddlNuevoCargo").val());
-
-            if (!idNuevoCargo || isNaN(idNuevoCargo)) {
-                alert("Seleccione un nuevo cargo.");
-                return;
-            }
-
-            var sueldoTexto = $("#txtNuevoSalario").val() || "";
-            sueldoTexto = sueldoTexto.replace(/\$/g, "").replace(/\./g, "").trim();
-
-            var nuevoSueldo = parseFloat(sueldoTexto);
-
-            if (isNaN(nuevoSueldo) || nuevoSueldo <= 0) {
-                alert("Ingrese un salario válido.");
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "Empleados.aspx/InsertarAscensoEmpleado",
-                data: JSON.stringify({
-                    documento: documento,
-                    idNuevoCargo: idNuevoCargo,
-                    nuevoSueldo: nuevoSueldo
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-
-                    if (response.d.success) {
-
-                        $("#modalMovimientoEmpleado").modal("hide");
-
-                        Swal.fire({
-                            title: 'Ascenso registrado',
-                            text: response.d.mensaje,
-                            icon: 'success',
-                            timer: 2500,
-                            showConfirmButton: false
-                        }).then(() => {
-                            location.reload();
-                        });
-                        $(this).off("hidden.bs.modal"); // importante
-                    } else {
-
-                        alert(response.d.mensaje);
-                    }
-                }
-            });
-        }
-    </script>--%>
-
-
 
     <script>
         function guardarCambioCargo() {
@@ -1630,6 +1630,60 @@
     </script>
 
     <script>
+        function guardarIngresoRapido() {
+
+            var tipoDocumento = $("#ddlTipoDocumentoNuevo").val();
+            var documento = $("#txtDocumentoNuevo").val();
+            var nombre = $("#txtNombreNuevo").val();
+            var correo = $("#txtCorreoNuevo").val();
+            var canal = $("#ddlCanalNuevo").val();
+            var sede = $("#ddlSedeIngreso").val();
+            var cargo = $("#ddlCargoIngreso").val();
+
+            if (!documento || !nombre) {
+                alert("Documento y nombre son obligatorios");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/InsertarDatosBasicosEmpleado",
+                data: JSON.stringify({
+                    tipoDocumento: tipoDocumento,
+                    documento: documento,
+                    nombre: nombre,
+                    correo: correo,
+                    canal: canal,
+                    sede: sede,
+                    cargo: cargo
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalMovimientoEmpleado").modal("hide");
+
+                        Swal.fire({
+                            title: "Empleado creado",
+                            text: response.d.mensaje,
+                            icon: "success",
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    } else {
+                        alert(response.d.mensaje);
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
         $(document).on("click", ".btnMovimiento", function () {
 
             var documento = $(this).data("doc");
@@ -1718,6 +1772,18 @@
                 $("#seccionSedeActual").show();
                 $("#seccionTraslado").show();
             }
+
+            if (tipo === "INGRESO_RAPIDO") {
+
+                $("#tituloModal").text("Nuevo ingreso rápido");
+
+                $("#btnGuardarMovimiento")
+                    .removeClass()
+                    .addClass("btn btn-primary");
+
+                $("#seccionIngresoRapido").show();
+
+            }
         }
     </script>
 
@@ -1737,6 +1803,10 @@
             if (tipo === "TRASLADO") {
                 guardarTraslado();
             }
+            if (tipo === "INGRESO_RAPIDO") {
+                guardarIngresoRapido();
+            }
+
         }
     </script>
 
@@ -1766,7 +1836,30 @@
         }
     </script>
 
+    <script>
+        function abrirIngresoRapido() {
 
+            $("#hdTipoMovimiento").val("INGRESO_RAPIDO");
+
+            configurarModalSegunTipo("INGRESO_RAPIDO");
+
+            $("#modalMovimientoEmpleado").modal("show");
+        }
+    </script>
+
+    <script>
+        $(document).on("click", ".btnIngresoRapido", function () {
+
+            $("#hdTipoMovimiento").val("INGRESO_RAPIDO");
+
+            configurarModalSegunTipo("INGRESO_RAPIDO");
+            $("#txtDocumentoNuevo").val("");
+            $("#txtNombreNuevo").val("");
+            $("#txtCorreoNuevo").val("");
+
+            $("#modalMovimientoEmpleado").modal("show");
+        });
+    </script>
 
 
 </body>
