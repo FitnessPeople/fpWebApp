@@ -203,7 +203,7 @@
 
                                                     <div class="modal-body">
 
-                                                        <div class="form-group">
+                                                        <div id="seccionCargoActual" class="form-group">
                                                             <label>Cargo actual</label>
                                                             <input type="text" id="txtCargoActual" class="form-control" disabled />
                                                         </div>
@@ -294,19 +294,22 @@
 
                                                             <div class="form-group">
                                                                 <label>Correo electrónico</label>
-                                                                <input type="email" id="txtCorreoNuevo" class="form-control" />
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label>Canal de venta</label>
-                                                                <asp:DropDownList ID="ddlCanalNuevo" runat="server"
-                                                                    CssClass="form-control">
-                                                                </asp:DropDownList>
+                                                                <input type="email" id="txtCorreoNuevo" class="form-control"
+                                                                    oninput="this.value = this.value.toLowerCase();"
+                                                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                                                    title="Ingrese un correo válido (ej: usuario@correo.com)" />
                                                             </div>
 
                                                             <div class="form-group">
                                                                 <label>Sede</label>
                                                                 <asp:DropDownList ID="ddlSedeIngreso" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Canal de venta</label>
+                                                                <asp:DropDownList ID="ddlCanalNuevo" runat="server"
                                                                     CssClass="form-control">
                                                                 </asp:DropDownList>
                                                             </div>
@@ -424,7 +427,7 @@
                                                                 <div class="text-center">
 
                                                                     <a href="javascript:void(0);"
-                                                                        class="btn btn-xs btn-primary btnIngresoRapido"                                                                        
+                                                                        class="btn btn-xs btn-primary btnIngresoRapido"
                                                                         data-tipo="INGRESO_RAPIDO">
                                                                         <i class="fa fa-user-edit m-r-xs"></i>Ingreso rápido
                                                                     </a>
@@ -1636,8 +1639,8 @@
             var documento = $("#txtDocumentoNuevo").val();
             var nombre = $("#txtNombreNuevo").val();
             var correo = $("#txtCorreoNuevo").val();
-            var canal = $("#ddlCanalNuevo").val();
             var sede = $("#ddlSedeIngreso").val();
+            var canal = $("#ddlCanalNuevo").val();
             var cargo = $("#ddlCargoIngreso").val();
 
             if (!documento || !nombre) {
@@ -1743,8 +1746,8 @@
                     .removeClass()
                     .addClass("btn btn-warning");
 
-                $("#seccionCargo").show();          // nuevo cargo
-                $("#seccionSalarioActual").show();  // mostrar salario actual pero no editable
+                $("#seccionCargo").show();
+                $("#seccionSalarioActual").show();
             }
 
             if (tipo === "CAMBIO_SALARIAL") {
@@ -1780,7 +1783,7 @@
                 $("#btnGuardarMovimiento")
                     .removeClass()
                     .addClass("btn btn-primary");
-
+                $("#seccionCargoActual").hide();
                 $("#seccionIngresoRapido").show();
 
             }
@@ -1856,11 +1859,51 @@
             $("#txtDocumentoNuevo").val("");
             $("#txtNombreNuevo").val("");
             $("#txtCorreoNuevo").val("");
+            txtCargoActual
+
 
             $("#modalMovimientoEmpleado").modal("show");
         });
     </script>
 
+    <script>
+        $(document).ready(function () {
+
+            $('#txtDocumentoNuevo').on('change blur', function () {
+
+                var documento = $(this).val().trim();
+                if (documento.length === 0) return;
+
+                var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/' + documento;
+
+                // limpiar campo nombre
+                $('#txtNombreNuevo').val('');
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+
+                    success: function (data) {
+
+                        var nombreCompleto =
+                            [data.nombre, data.s_nombre].filter(Boolean).join(' ') + ' ' +
+                            [data.apellido, data.s_apellido].filter(Boolean).join(' ');
+
+                        $('#txtNombreNuevo').val(nombreCompleto.toUpperCase());
+
+                    },
+
+                    error: function () {
+
+                        console.log("No se encontró información en ADRES");
+
+                    }
+                });
+
+            });
+
+        });
+    </script>
 
 </body>
 

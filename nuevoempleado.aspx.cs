@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -279,6 +280,7 @@ namespace fpWebApp
                     ltMensaje.Text = "Fecha de expedición inválida";
                     return;
                 }
+                string nombre = ConvertirACapital(txbNombre.Text);
 
                 try
                 {
@@ -382,6 +384,16 @@ namespace fpWebApp
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                 }
             }
+        }
+
+        public static string ConvertirACapital(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                return texto;
+
+            TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
+
+            return ti.ToTitleCase(texto.ToLower());
         }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO.Packaging;
 using System.Web;
 using System.Web.Configuration;
@@ -62,12 +63,15 @@ namespace fpWebApp
                     CantidadActividadExtra();
                     CantidadConsumoLicor();
                     
+
+
                     CantidadEdades();
                     CantidadMedioTransporte();
                     CantidadTipoSangre();
                     CargarCargos();
                     CargarSedes();
                     CargarCanalesVenta();
+                    CargarTipoDocumento();
 
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
@@ -1005,8 +1009,16 @@ namespace fpWebApp
                 ddlNuevaSede.DataTextField = "NombreSede";
                 ddlNuevaSede.DataValueField = "idSede";
                 ddlNuevaSede.DataBind();
-
                 ddlNuevaSede.Items.Insert(0, new ListItem("Seleccione sede", ""));
+
+
+                ddlSedeIngreso.DataSource = dt;
+                ddlSedeIngreso.DataSource = dt;
+                ddlSedeIngreso.DataTextField = "NombreSede";
+                ddlSedeIngreso.DataValueField = "idSede";
+                ddlSedeIngreso.DataBind();
+
+                ddlSedeIngreso.Items.Insert(0, new ListItem("Seleccione sede", ""));
 
 
                 dt.Dispose();
@@ -1053,6 +1065,27 @@ namespace fpWebApp
             }
         }
 
+        private void CargarTipoDocumento()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultartiposDocumento();
+                ddlTipoDocumentoNuevo.DataSource = dt;
+                ddlTipoDocumentoNuevo.DataTextField = "TipoDocumento";
+                ddlTipoDocumentoNuevo.DataValueField = "idTipoDoc";
+                ddlTipoDocumentoNuevo.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso","Ocurrió un inconveniente. Código: " + idLog,"error");
+            }
+            
+
+        }
+
         private void CargarCanalesVenta()
         {
             clasesglobales cg = new clasesglobales();
@@ -1069,6 +1102,18 @@ namespace fpWebApp
                 if (item != null)
                 {
                     ddlNuevoCanal.Items.Remove(item);
+                }
+
+                ///
+                ddlCanalNuevo.DataSource = dt;
+                ddlCanalNuevo.DataTextField = "NombreCanalVenta";
+                ddlCanalNuevo.DataValueField = "idCanalVenta";
+                ddlCanalNuevo.DataBind();
+
+                ListItem item1 = ddlCanalNuevo.Items.FindByValue("15");
+                if (item1 != null)
+                {
+                    ddlCanalNuevo.Items.Remove(item1);
                 }
 
                 dt.Dispose();
@@ -1209,7 +1254,7 @@ namespace fpWebApp
         }
 
         [WebMethod(EnableSession = true)]
-        public static object InsertarDatosBasicosEmpleado( string tipoDocumento, string documento, string nombre, string correo,
+        public static object InsertarDatosBasicosEmpleado( int tipoDocumento, string documento, string nombre, string correo,
         int canal, int sede, int cargo)
         {
             try
@@ -1220,22 +1265,15 @@ namespace fpWebApp
                     return new { success = false, mensaje = "Sesión expirada." };
 
                 int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
-                string respuesta = "";
-                //string respuesta = cg.InsertarDatosBasicosEmpleado(
-                //    tipoDocumento,
-                //    documento,
-                //    nombre,
-                //    correo,
-                //    canal,
-                //    sede,
-                //    cargo,
-                //    idUsuario
-                //);
+               
+                nombre = ConvertirACapital(nombre);
+
+                string respuesta = cg.InsertarIngresoRapidoEmpleado(tipoDocumento, documento, nombre, correo, canal, sede, cargo, idUsuario );
 
                 if (respuesta != "OK")
                     return new { success = false, mensaje = respuesta };
 
-                return new { success = true, mensaje = "Empleado creado correctamente." };
+                return new { success = true, mensaje = "El colaorador deberá terminar de diligenciar los datos en la opción Mi Cuenta - Gestión Humana - Fitness People" };
             }
             catch (Exception ex)
             {
@@ -1259,6 +1297,16 @@ namespace fpWebApp
             }});";
 
             ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+        }
+
+        public static string ConvertirACapital(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                return texto;
+
+            TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
+
+            return ti.ToTitleCase(texto.ToLower());
         }
     }
 }

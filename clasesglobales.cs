@@ -8543,6 +8543,44 @@ namespace fpWebApp
             return respuesta;
         }
 
+        public string InsertarIngresoRapidoEmpleado( int tipoDocumento, string documento, string nombre, string correo, int idCanal, int idSede, int idCargo, int idUsuario)
+        {
+            string respuesta = string.Empty;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_INGRESO_RAPIDO_NUEVO_EMPLEADO", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_tipo_documento", tipoDocumento);
+                        cmd.Parameters.AddWithValue("@p_documento", documento);
+                        cmd.Parameters.AddWithValue("@p_nombre", nombre);
+                        cmd.Parameters.AddWithValue("@p_correo", correo);
+                        cmd.Parameters.AddWithValue("@p_id_canal", idCanal);
+                        cmd.Parameters.AddWithValue("@p_id_sede", idSede);
+                        cmd.Parameters.AddWithValue("@p_id_cargo", idCargo);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
+
+                        cmd.ExecuteNonQuery();
+
+                        respuesta = "OK";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                respuesta = "ERROR: " + ex.Message;
+            }
+
+            return respuesta;
+        }
 
         public DataTable ConsultarEmpresasFP()
         {
