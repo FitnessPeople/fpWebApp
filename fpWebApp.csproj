@@ -262,6 +262,7 @@
     <Content Include="biodispositivos.aspx" />
     <Content Include="biopersonas.aspx" />
     <Content Include="blogs.aspx" />
+    <Content Include="bonificaciones.aspx" />
     <Content Include="cajascomp.aspx" />
     <Content Include="calendar.html" />
     <Content Include="calendariofpadmin.aspx" />
@@ -1188,6 +1189,13 @@
     </Compile>
     <Compile Include="blogs.aspx.designer.cs">
       <DependentUpon>blogs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="bonificaciones.aspx.cs">
+      <DependentUpon>bonificaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="bonificaciones.aspx.designer.cs">
+      <DependentUpon>bonificaciones.aspx</DependentUpon>
     </Compile>
     <Compile Include="cajascomp.aspx.cs">
       <DependentUpon>cajascomp.aspx</DependentUpon>

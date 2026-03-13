@@ -1,4 +1,6 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="listacontactoscrm.aspx.cs" Inherits="fpWebApp.listacontactoscrm" EnableEventValidation="false" Culture="es-ES" UICulture="es-ES" ValidateRequest="false" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="bonificaciones.aspx.cs" Inherits="fpWebApp.bonificaciones" %>
+
+<!DOCTYPE html>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -14,7 +16,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | CRM Contactos</title>
+    <title>Fitness People | Bonificaciones</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -250,10 +252,10 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>CRM Lista</h2>
+                    <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Bonificaciones</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong> Gestión Comercial / Lista contactos CRM</strong></li>
+                        <li class="active"><strong>Gestión Comercial / Simulador Bonificaciones</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -380,7 +382,7 @@
                                     <div class="ibox-content">
                                         <span class="text-muted small pull-right">Fitness People: <i class="fa fa-clock-o"></i>
                                             <asp:Literal ID="ltFechaHoy" runat="server"></asp:Literal></span>
-                                        <h2>Contactos CRM Disponibles</h2>
+                                        <h2>Simulador de bonificaciones</h2>
                                         <p>
                                             Visualiza los contactos abiertos para gestión. Solo podrás continuar una vez verificada la información del cliente.
                                         </p>
@@ -401,12 +403,16 @@
                                                 <span class="pull-right small text-muted">
                                                     <p id="contadorFilas"></p>
                                                 </span>
-                                                <li class="active"><a data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i>Contactos</a></li>
-                                                <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Empresas</a></li>
+                                                <li class="active"><a data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i>Simulador </a></li>
+                                                <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Planes </a></li>
+                                                <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Escalas  </a></li>
+                                                <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Objetivos  </a></li>
+                                                <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Reporte  </a></li>
                                             </ul>
                                             <div class="tab-content">
-                                                <%--Pestaña 1 - Contactos--%>
-                                                <div id="tab-1" class="tab-pane active">
+                                                <%--Pestaña 1 - Simulador--%>
+
+                                                <%--                                                <div id="tab-1" class="tab-pane active">
                                                     <div class="full-height-scroll">
                                                         <div class="table-responsive">
                                                             <table id="tablaContactos" class="table table-striped table-hover">
@@ -432,8 +438,7 @@
                                                                                 <td><%# Eval("NombrePlan") %> </td>
                                                                                 <td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>
                                                                                     <%# Eval("NombreEstadoCRM") %></span>
-                                                                                </td>
-                                                                                <%--<td><%# Eval("ValorPropuesta", "{0:C0}") %></td>--%>
+                                                                                </td>                                                                             
                                                                                 <td><%# Eval("NombreCanalVenta", "{0:C0}") %></td>
                                                                             </tr>
                                                                         </ItemTemplate>
@@ -443,9 +448,58 @@
                                                             </table>
                                                         </div>
                                                     </div>
+                                                </div>--%>
+
+
+                                                <div class="tabs">
+
+                                                    <button onclick="mostrarTab('simulador')">Simulador</button>
+                                                    <button onclick="mostrarTab('planes')">Planes</button>
+                                                    <button onclick="mostrarTab('escalas')">Escalas</button>
+                                                    <button onclick="mostrarTab('objetivos')">Objetivos</button>
+
                                                 </div>
 
-                                                <%--Pestaña 2 - Empresas--%>
+
+                                                <div id="simulador" class="tabcontent">
+
+                                                    <table>
+                                                        <tr>
+                                                            <td>Anualidad</td>
+                                                            <td>
+                                                                <input type="number" id="txtAnualidad" onkeyup="calcular()" /></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Semestre</td>
+                                                            <td>
+                                                                <input type="number" id="txtSemestre" onkeyup="calcular()" /></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Trimestre</td>
+                                                            <td>
+                                                                <input type="number" id="txtTrimestre" onkeyup="calcular()" /></td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>Mensual</td>
+                                                            <td>
+                                                                <input type="number" id="txtMensual" onkeyup="calcular()" /></td>
+                                                        </tr>
+                                                    </table>
+
+
+                                                    <div>
+                                                        Puntos Mix: <span id="lblMix">0</span><br>
+                                                        Escala: <span id="lblEscala">-</span><br>
+                                                        Comisión: <span id="lblComision">$0</span>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <%--Pestaña 2 - Planes--%>
                                                 <div id="tab-2" class="tab-pane">
                                                     <div class="full-height-scroll">
                                                         <div class="table-responsive">
@@ -470,6 +524,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
+
+
                                             </div>
 
                                         </div>
@@ -504,7 +560,7 @@
                                                                             <i class="fa fa-envelope" style="margin-right: 5px;"></i>
                                                                             <span><%# Eval("EmailContacto") %></span>
                                                                         </p>
-                                                                         <p><%# Eval("InfoAfiliado") %></p>
+                                                                        <p><%# Eval("InfoAfiliado") %></p>
                                                                         <p><%# Eval("NombreTipoAfiliado") %></p>
                                                                         <p>Mi objetivo es  <%# Eval("Objetivo") %></p>
 
@@ -772,9 +828,36 @@
         });
     </script>
 
+    <script>
+        function calcular() {
+
+            var datos = {
+                anual: $("#txtAnualidad").val(),
+                semestre: $("#txtSemestre").val(),
+                trimestre: $("#txtTrimestre").val(),
+                mensual: $("#txtMensual").val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "Bonificaciones.aspx/CalcularComision",
+                data: JSON.stringify(datos),
+                contentType: "application/json",
+                success: function (r) {
+
+                    $("#lblMix").text(r.d.PuntosMix);
+                    $("#lblEscala").text(r.d.Escala);
+                    $("#lblComision").text(r.d.Comision);
+
+                }
+            });
+        }
+    </script>
+
 
 
 </body>
 
 </html>
+
 
