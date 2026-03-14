@@ -255,7 +255,7 @@
                     <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Bonificaciones</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong>Gestión Comercial / Simulador Bonificaciones</strong></li>
+                        <li class="active"><strong>Gestión Comercial / Bonificaciones</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -281,417 +281,390 @@
                     <form id="form" runat="server">
                         <asp:ScriptManager ID="ScriptManager1" runat="server" />
 
-                        <%-- Modal--%>
-                        <asp:UpdatePanel ID="upModal" runat="server" UpdateMode="Conditional">
-                            <ContentTemplate>
-                                <div class="modal fade" id="ModalContacto" tabindex="-1" role="dialog" aria-labelledby="ModalContactoLabel" aria-hidden="false">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="ModalContactoLabel">Registrar contacto</h5>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <i class="fa fa-user-tie text-info"></i>
-                                                            <label for="nombreContacto" class="col-form-label">Nombre completo:</label>
-                                                            <input type="text" runat="server" class="form-control" id="txbNombreContacto"
-                                                                placeholder="Nombre" spellcheck="false" autocomplete="off"
-                                                                oninput="validarSoloLetras(this)" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <div class="col-sm-6">
-                                                            <i class="fa-solid fa-phone text-info"></i>
-                                                            <label for="telefonoContacto" class="col-form-label">Teléfono:</label>
-                                                            <input type="text" runat="server" class="form-control" id="txbTelefonoContacto"
-                                                                placeholder="ej: 310 123 4567" spellcheck="false" autocomplete="off"
-                                                                onkeyup="formatearTelefono(this)" maxlength="14">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <span class="glyphicon glyphicon-envelope text-info"></span>
-                                                            <label for="correoContacto" class="col-form-label">Correo electrónico:</label>
-                                                            <input type="text" runat="server" class="form-control" id="txbCorreoContacto"
-                                                                spellcheck="false" placeholder="ej: cliente@ejemplo.com" autocomplete="off"
-                                                                oninput="validarCorreo(this)">
-                                                            <asp:Literal ID="ltError" runat="server" Visible="false"></asp:Literal>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <i class="fas fa-industry text-info"></i>
-                                                            <label for="Empresa" class="col-form-label">Empresa / Persona:</label>
-                                                            <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreEmpresaCRM" DataValueField="idEmpresaCRM"
-                                                                runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="No aplica" Value="0"></asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <i class="fas fa-flag text-info"></i>
-                                                    <label for="StatusLead" class="col-form-label">Status Lead:</label>
-                                                    <asp:DropDownList ID="ddlStatusLead" DataTextField="NombreEstadoCRM" DataValueField="idEstadoCRM"
-                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <i class="fa-solid fa-hand-point-up text-info"></i>
-                                                            <label for="txbFechaPrim" class="col-form-label">Primer contacto:</label>
-                                                            <input type="text" runat="server" id="txbFechaPrim" class="form-control input-sm datepicker" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <i class="fas fa-angle-right text-info"></i>
-                                                            <label for="txbFechaProx" class="col-form-label">Próximo contacto:</label>
-                                                            <input type="text" runat="server" id="txbFechaProx" class="form-control input-sm datepicker" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <i class="fas fa-pen text-info"></i>
-                                                    <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
-                                                    <textarea id="txaObservaciones" runat="server" rows="3"
-                                                        cssclass="form-control input-sm" class="form-control">
-                                                    </textarea>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
-                        <%-- Termina Modal --%>
-
                         <div class="row">
-                            <div class="col-sm-8">
+                            <div class="col-sm-12">
                                 <div class="ibox">
+
                                     <div class="ibox-content">
+
                                         <span class="text-muted small pull-right">Fitness People: <i class="fa fa-clock-o"></i>
-                                            <asp:Literal ID="ltFechaHoy" runat="server"></asp:Literal></span>
-                                        <h2>Simulador de bonificaciones</h2>
+                                            <asp:Literal ID="ltFechaHoy" runat="server"></asp:Literal>
+                                        </span>
+
+                                        <h2>Gestión de Bonificaciones de Ventas</h2>
+
                                         <p>
-                                            Visualiza los contactos abiertos para gestión. Solo podrás continuar una vez verificada la información del cliente.
+                                            Configura planes, escalas y objetivos. Usa el simulador para calcular la comisión.
                                         </p>
 
-                                        <div style="display: flex; align-items: center;">
+    <%--                                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
+
                                             <div class="input-group">
                                                 <input type="text" id="buscador" placeholder="Buscar" class="input form-control">
+
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-primary">
-                                                        <i class="fa fa-search"></i>Search
+                                                        <i class="fa fa-search"></i>Buscar
                                                     </button>
                                                 </span>
-                                            </div>
 
-                                        </div>
+                                            </div>
+                                        </div>--%>
+
+
                                         <div class="clients-list">
+
                                             <ul class="nav nav-tabs">
-                                                <span class="pull-right small text-muted">
-                                                    <p id="contadorFilas"></p>
-                                                </span>
-                                                <li class="active"><a data-toggle="tab" href="#tab-1"><i class="fa fa-user"></i>Simulador </a></li>
-                                                <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Planes </a></li>
-                                                <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Escalas  </a></li>
-                                                <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Objetivos  </a></li>
-                                                <li class=""><a data-toggle="tab" href="#tab-2"><i class="fa fa-briefcase"></i>Reporte  </a></li>
+
+                                                <li class="active">
+                                                    <a data-toggle="tab" href="#tab-simulador">
+                                                        <i class="fa fa-calculator"></i>Simulador
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a data-toggle="tab" href="#tab-planes">
+                                                        <i class="fa fa-tags"></i>Planes
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a data-toggle="tab" href="#tab-escalas">
+                                                        <i class="fa fa-signal"></i>Escalas
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a data-toggle="tab" href="#tab-objetivos">
+                                                        <i class="fa fa-bullseye"></i>Objetivos
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a data-toggle="tab" href="#tab-reporte">
+                                                        <i class="fa fa-bar-chart"></i>Reporte
+                                                    </a>
+                                                </li>
+
                                             </ul>
+
+
                                             <div class="tab-content">
-                                                <%--Pestaña 1 - Simulador--%>
 
-                                                <%--                                                <div id="tab-1" class="tab-pane active">
-                                                    <div class="full-height-scroll">
-                                                        <div class="table-responsive">
-                                                            <table id="tablaContactos" class="table table-striped table-hover">
-                                                                <tbody>
-                                                                    <asp:Repeater ID="rpContactosCRM" runat="server" OnItemDataBound="rpContactosCRM_ItemDataBound">
-                                                                        <ItemTemplate>
-                                                                            <tr class="feed-element">
-                                                                                <td class="client-avatar">
-                                                                                    <img alt="image" src='<%# Eval("Foto") %>'>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <a href='listacontactoscrm.aspx?idContacto=<%# Eval("IdContacto") %>' class="client-link">
-                                                                                        <%# Eval("NombreContacto") %> <%# Eval("ApellidoContacto") %>
-                                                                                    </a>
-                                                                                </td>
-                                                                                <td><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></a></td>
-                                                                                <td>
-                                                                                    <%# (Eval("Edad") == DBNull.Value || Convert.ToInt32(Eval("Edad")) == 0) 
-                                                                                      ? "N/D" 
-                                                                                      : Eval("Edad") + " años" %>
-                                                                                </td>
-                                                                                <td class="contact-type"><%# Eval("NombreEstadoVenta") %></td>
-                                                                                <td><%# Eval("NombrePlan") %> </td>
-                                                                                <td><span class='badge badge-<%# Eval("ColorEstadoCRM")%>'>
-                                                                                    <%# Eval("NombreEstadoCRM") %></span>
-                                                                                </td>                                                                             
-                                                                                <td><%# Eval("NombreCanalVenta", "{0:C0}") %></td>
-                                                                            </tr>
-                                                                        </ItemTemplate>
-                                                                    </asp:Repeater>
+                                                <!-- ===================== -->
+                                                <!-- TAB SIMULADOR -->
+                                                <!-- ===================== -->
 
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
+                                                <div id="tab-simulador" class="tab-pane active">
+
+                                                    <div class="panel-body">
+
+                                                        <table class="table table-bordered">
+
+                                                            <tr>
+                                                                <td><b>Anualidad</b></td>
+                                                                <td>
+                                                                    <input type="number" id="txtAnualidad"
+                                                                        class="form-control"
+                                                                        onkeyup="calcular()" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td><b>Semestre</b></td>
+                                                                <td>
+                                                                    <input type="number" id="txtSemestre"
+                                                                        class="form-control"
+                                                                        onkeyup="calcular()" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td><b>Trimestre</b></td>
+                                                                <td>
+                                                                    <input type="number" id="txtTrimestre"
+                                                                        class="form-control"
+                                                                        onkeyup="calcular()" />
+                                                                </td>
+                                                            </tr>
+
+                                                            <tr>
+                                                                <td><b>Mensual</b></td>
+                                                                <td>
+                                                                    <input type="number" id="txtMensual"
+                                                                        class="form-control"
+                                                                        onkeyup="calcular()" />
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+
+                                                        <hr />
+
+                                                        <h4>Resultado</h4>
+
+                                                        <p>Puntos Mix: <b><span id="lblMix">0</span></b></p>
+                                                        <p>Escala: <b><span id="lblEscala">-</span></b></p>
+                                                        <p>Comisión: <b><span id="lblComision">$0</span></b></p>
+
                                                     </div>
-                                                </div>--%>
-
-
-                                                <div class="tabs">
-
-                                                    <button onclick="mostrarTab('simulador')">Simulador</button>
-                                                    <button onclick="mostrarTab('planes')">Planes</button>
-                                                    <button onclick="mostrarTab('escalas')">Escalas</button>
-                                                    <button onclick="mostrarTab('objetivos')">Objetivos</button>
-
                                                 </div>
 
 
-                                                <div id="simulador" class="tabcontent">
+                                                <!-- ===================== -->
+                                                <!-- TAB PLANES -->
+                                                <!-- ===================== -->
 
-                                                    <table>
-                                                        <tr>
-                                                            <td>Anualidad</td>
-                                                            <td>
-                                                                <input type="number" id="txtAnualidad" onkeyup="calcular()" /></td>
-                                                        </tr>
+                                                <div id="tab-planes" class="tab-pane">
 
-                                                        <tr>
-                                                            <td>Semestre</td>
-                                                            <td>
-                                                                <input type="number" id="txtSemestre" onkeyup="calcular()" /></td>
-                                                        </tr>
+                                                    <div class="panel-body">
 
-                                                        <tr>
-                                                            <td>Trimestre</td>
-                                                            <td>
-                                                                <input type="number" id="txtTrimestre" onkeyup="calcular()" /></td>
-                                                        </tr>
+                                                        <h3>Configuración de Planes</h3>
 
-                                                        <tr>
-                                                            <td>Mensual</td>
-                                                            <td>
-                                                                <input type="number" id="txtMensual" onkeyup="calcular()" /></td>
-                                                        </tr>
-                                                    </table>
+                                                        <div class="row">
 
+                                                            <div class="col-md-3">
+                                                                <label>Nombre</label>
+                                                                <asp:TextBox ID="txtNombrePlan" runat="server"
+                                                                    CssClass="form-control"></asp:TextBox>
+                                                            </div>
 
-                                                    <div>
-                                                        Puntos Mix: <span id="lblMix">0</span><br>
-                                                        Escala: <span id="lblEscala">-</span><br>
-                                                        Comisión: <span id="lblComision">$0</span>
+                                                            <div class="col-md-3">
+                                                                <label>Valor</label>
+                                                                <asp:TextBox ID="txtValorPlan" runat="server"
+                                                                    CssClass="form-control"></asp:TextBox>
+                                                            </div>
+
+                                                            <div class="col-md-2">
+                                                                <label>Factor Mix</label>
+                                                                <asp:TextBox ID="txtFactorMix" runat="server"
+                                                                    CssClass="form-control"></asp:TextBox>
+                                                            </div>
+
+                                                            <div class="col-md-2">
+                                                                <label>Es Mensual</label>
+                                                                <asp:DropDownList ID="ddlEsMensual"
+                                                                    runat="server"
+                                                                    CssClass="form-control">
+
+                                                                    <asp:ListItem Text="No" Value="0" />
+                                                                    <asp:ListItem Text="Sí" Value="1" />
+
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                            <div class="col-md-2" style="margin-top: 25px">
+
+                                                                <asp:Button ID="btnGuardarPlan"
+                                                                    runat="server"
+                                                                    Text="Guardar"
+                                                                    CssClass="btn btn-primary" />
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <hr />
+
+                                                        <asp:GridView ID="gvPlanes"
+                                                            runat="server"
+                                                            AutoGenerateColumns="False"
+                                                            CssClass="table table-striped table-bordered">
+
+                                                            <Columns>
+
+                                                                <asp:BoundField DataField="Nombre" HeaderText="Plan" />
+                                                                <asp:BoundField DataField="Valor" HeaderText="Valor" />
+                                                                <asp:BoundField DataField="FactorMix" HeaderText="Factor Mix" />
+                                                                <asp:BoundField DataField="EsMensual" HeaderText="Mensual" />
+
+                                                            </Columns>
+
+                                                        </asp:GridView>
 
                                                     </div>
-
                                                 </div>
 
-                                                <%--Pestaña 2 - Planes--%>
-                                                <div id="tab-2" class="tab-pane">
-                                                    <div class="full-height-scroll">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-striped table-hover">
 
-                                                                <asp:Repeater ID="rpEmpresaCRM" runat="server">
-                                                                    <ItemTemplate>
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td><a href='listacontactoscrm.aspx?empresaId=<%# Eval("IdEmpresaCRM") %>#tab-2' class="client-link">
-                                                                                    <%# Eval("NombreEmpresaCRM") %>
-                                                                                </a></td>
-                                                                                <td><%# Eval("NombreContacto") %></td>
-                                                                                <td><i class="fa fa-flag"></i><%# Eval("NombreCiudad") %></td>
-                                                                                <td class="client-status"><span class="label label-primary"><%# Eval("ObservacionesEmp") %></span></td>
-                                                                            </tr>
-                                                                        </tbody>
-                                                                    </ItemTemplate>
-                                                                </asp:Repeater>
+                                                <!-- ===================== -->
+                                                <!-- TAB ESCALAS -->
+                                                <!-- ===================== -->
 
-                                                            </table>
+                                                <div id="tab-escalas" class="tab-pane">
+
+                                                    <div class="panel-body">
+
+                                                        <h3>Configuración de Escalas</h3>
+
+                                                        <div class="row">
+
+                                                            <div class="col-md-3">
+                                                                <label>Nombre Escala</label>
+                                                                <asp:TextBox ID="txtNombreEscala"
+                                                                    runat="server"
+                                                                    CssClass="form-control"></asp:TextBox>
+                                                            </div>
+
+                                                            <div class="col-md-3">
+                                                                <label>Puntos mínimos</label>
+                                                                <asp:TextBox ID="txtPuntosMin"
+                                                                    runat="server"
+                                                                    CssClass="form-control"></asp:TextBox>
+                                                            </div>
+
+                                                            <div class="col-md-3">
+                                                                <label>Puntos máximos</label>
+                                                                <asp:TextBox ID="txtPuntosMax"
+                                                                    runat="server"
+                                                                    CssClass="form-control"></asp:TextBox>
+                                                            </div>
+
+                                                            <div class="col-md-3" style="margin-top: 25px">
+
+                                                                <asp:Button ID="btnGuardarEscala"
+                                                                    runat="server"
+                                                                    Text="Guardar"
+                                                                    CssClass="btn btn-primary" />
+
+                                                            </div>
+
                                                         </div>
+
+                                                        <hr />
+
+                                                        <asp:GridView ID="gvEscalas"
+                                                            runat="server"
+                                                            AutoGenerateColumns="False"
+                                                            CssClass="table table-striped table-bordered">
+
+                                                            <Columns>
+
+                                                                <asp:BoundField DataField="Nombre" HeaderText="Escala" />
+                                                                <asp:BoundField DataField="PuntosMin" HeaderText="Min" />
+                                                                <asp:BoundField DataField="PuntosMax" HeaderText="Max" />
+
+                                                            </Columns>
+
+                                                        </asp:GridView>
+
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- ===================== -->
+                                                <!-- TAB OBJETIVOS -->
+                                                <!-- ===================== -->
+
+                                                <div id="tab-objetivos" class="tab-pane">
+
+                                                    <div class="panel-body">
+
+                                                        <h3>Configuración de Objetivos</h3>
+
+                                                        <div class="row">
+
+                                                            <div class="col-md-3">
+
+                                                                <label>Escala</label>
+
+                                                                <asp:DropDownList ID="ddlEscala"
+                                                                    runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+
+                                                            </div>
+
+                                                            <div class="col-md-3">
+
+                                                                <label>Plan</label>
+
+                                                                <asp:DropDownList ID="ddlPlan"
+                                                                    runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+
+                                                            </div>
+
+                                                            <div class="col-md-2">
+
+                                                                <label>Cantidad Objetivo</label>
+
+                                                                <asp:TextBox ID="txtCantidadObjetivo"
+                                                                    runat="server"
+                                                                    CssClass="form-control"></asp:TextBox>
+
+                                                            </div>
+
+                                                            <div class="col-md-2">
+
+                                                                <label>Comisión Unidad</label>
+
+                                                                <asp:TextBox ID="txtComisionUnidad"
+                                                                    runat="server"
+                                                                    CssClass="form-control"></asp:TextBox>
+
+                                                            </div>
+
+                                                            <div class="col-md-2" style="margin-top: 25px">
+
+                                                                <asp:Button ID="btnGuardarObjetivo"
+                                                                    runat="server"
+                                                                    Text="Guardar"
+                                                                    CssClass="btn btn-primary" />
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <hr />
+
+                                                        <asp:GridView ID="gvObjetivos"
+                                                            runat="server"
+                                                            AutoGenerateColumns="False"
+                                                            CssClass="table table-striped table-bordered">
+
+                                                            <Columns>
+
+                                                                <asp:BoundField DataField="Escala" HeaderText="Escala" />
+                                                                <asp:BoundField DataField="Plan" HeaderText="Plan" />
+                                                                <asp:BoundField DataField="CantidadObjetivo" HeaderText="Objetivo" />
+                                                                <asp:BoundField DataField="ComisionUnidad" HeaderText="Comisión" />
+
+                                                            </Columns>
+
+                                                        </asp:GridView>
+
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- ===================== -->
+                                                <!-- TAB REPORTE -->
+                                                <!-- ===================== -->
+
+                                                <div id="tab-reporte" class="tab-pane">
+
+                                                    <div class="panel-body">
+
+                                                        <h3>Reporte general</h3>
+
+                                                        <asp:GridView ID="gvReporte"
+                                                            runat="server"
+                                                            CssClass="table table-striped table-bordered">
+                                                        </asp:GridView>
+
                                                     </div>
                                                 </div>
 
 
                                             </div>
-
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="ibox ">
-                                    <div class="ibox-content">
-                                        <div class="tab-content">
-                                            <%-- Detalle contacto--%>
-                                            <div class="tab-content">
-                                                <asp:Panel ID="pnlContacto" runat="server" Visible="false">
-                                                    <asp:Repeater ID="rptContenido" runat="server">
-                                                        <ItemTemplate>
-                                                            <div id='<%# Eval("IdContacto") %>' class='tab-pane <%# Eval("IdContacto").ToString() == Session["contactoId"]?.ToString() ? "active" : "" %>'>
-                                                                <div class="row m-b-lg">
-                                                                    <div class="col-lg-4 text-center">
-                                                                        <h2><%# Eval("NombreContacto") %> </h2>
-                                                                        <div class="m-b-sm">
-                                                                            <img alt="image" class="img-circle" src='<%# Eval("Foto") %>'
-                                                                                style="width: 92px">
-                                                                        </div>
-                                                                    </div>
 
-                                                                    <div class="col-lg-8">
-                                                                        <strong>Acerca de mí</strong><br />
-                                                                        <p>
-                                                                            Edad: <%# Convert.ToInt32(Eval("Edad")) > 0 ? Eval("Edad") : "No disponible" %> - Género: <%# Eval("Genero") ?? "No especificado" %>
-                                                                        </p>
-                                                                        <p class="contact-type" style="display: inline-flex; align-items: center; margin-bottom: 10px;">
-                                                                            <i class="fa fa-envelope" style="margin-right: 5px;"></i>
-                                                                            <span><%# Eval("EmailContacto") %></span>
-                                                                        </p>
-                                                                        <p><%# Eval("InfoAfiliado") %></p>
-                                                                        <p><%# Eval("NombreTipoAfiliado") %></p>
-                                                                        <p>Mi objetivo es  <%# Eval("Objetivo") %></p>
-
-                                                                        <div class="d-flex justify-content-end mt-2">
-
-                                                                            <%--<button type="button" class="btn btn-primary" data-toggle="tooltip" data-placement="top" title="Agregar información" onclick="confirmarGestion()">
-                                                                                <i class="fa fa-edit"></i>Gestionar contacto
-                                                                            </button>--%>
-
-                                                                            <asp:LinkButton ID="btnGestionarContacto" runat="server" CssClass="btn btn-primary" CommandName="Gestionar" CommandArgument='<%# Eval("idContacto") %>'
-                                                                                OnCommand="btnGestionarContacto_Command" data-toggle="tooltip" data-placement="top" title="Agregar información" OnClientClick="return confirmarGestion();">
-                                                                                <i class="fa fa-edit"></i> Gestionar contacto
-                                                                            </asp:LinkButton>
-
-
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-                                                                <!-- Contenido de detalle del contacto -->
-                                                                <div class="client-detail">
-                                                                    <div class="full-height-scroll">
-                                                                        <ul class="list-group clear-list" runat="server"
-                                                                            visible='<%# (Eval("NombreEstadoCRM") != null && Eval("idEstadoCRM").ToString() != "3" && Eval("idEstadoCRM").ToString() != "4") %>'>
-                                                                            <li class="list-group-item fist-item">
-                                                                                <div style="display: flex; flex-direction: column; gap: 5px;">
-                                                                                    <div style="display: flex; align-items: center; flex-wrap: wrap;">
-                                                                                        <i class="fa fa-phone" style="margin-right: 5px; color: green;"></i>
-                                                                                        <strong>Por favor, contáctame al:</strong>
-                                                                                        <span style="margin-left: 5px;"><%# GetTelefonoHTML(Eval("TelefonoContacto")) %></span>
-                                                                                    </div>
-                                                                                    <div style="margin-left: 20px;">
-                                                                                        <%# Eval("FechaProximoCon", "{0:dddd dd MMM yyyy hh:mm tt}") %>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </li>
-                                                                        </ul>
-                                                                        <hr />
-                                                                        <strong>Notas del cliente</strong>
-                                                                        <p>
-                                                                            Contacto creado el <%# ((DateTime)Eval("FechaGestion")).ToString("dddd d 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES")) %><hr />
-                                                                            Preferencias Entreno por las noches, fines de semana y he completado N asistencias.
-                                                                        </p>
-
-                                                                        <%-- <strong>Medio de pago sugerido</strong>
-                                                                    <p>
-                                                                        Efectivo
-                                                                        Tarjeta.
-                                                                        Pagos en linea (Wompi)
-                                                                        Transferencia
-                                                                    </p>--%>
-                                                                        <hr />
-                                                                        <strong>Historial de gestión del asesor</strong>
-                                                                        <%# Eval("historialHTML2") %>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </ItemTemplate>
-                                                    </asp:Repeater>
-                                                </asp:Panel>
-                                            </div>
-
-                                            <%--Detalle empresa--%>
-                                            <asp:Panel ID="pnlEmpresa" runat="server" Visible="false">
-                                                <asp:Repeater ID="rpContenidoEmpresaCRM" runat="server">
-                                                    <ItemTemplate>
-                                                        <div id='<%# Eval("IdEmpresaCRM") %>' class='tab-pane <%# Eval("IdEmpresaCRM").ToString() == Session["empresaId"]?.ToString() ? "active" : "" %>'>
-                                                            <div class="m-b-lg">
-                                                                <h2><%# Eval("NombreEmpresaCRM") %></h2>
-                                                                <%# FormatearUbicacion(Eval("NombreCiudad"), Eval("NombreEstado")) %>
-                                                                <p>
-                                                                    <%# GetEnlaceWeb(Eval("ObservacionesEmp")) %>
-                                                                </p>
-                                                                <div>
-                                                                    <small>Active project completion with: 48%</small>
-                                                                    <div class="progress progress-mini">
-                                                                        <div style="width: 48%;" class="progress-bar"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="client-detail">
-                                                                <div class="full-height-scroll">
-
-                                                                    <strong>Contacto</strong>
-
-                                                                    <ul class="list-group clear-list">
-                                                                        <li class="list-group-item fist-item">
-                                                                            <span class="pull-right"><span class="label label-primary">NEW</span> </span>
-                                                                            <%# Eval("NombreContacto") %> 
-                                                                        </li>
-                                                                        <li class="list-group-item">
-                                                                            <span class="pull-right"><span class="label label-warning">WAITING</span></span>
-                                                                            <%# Eval("CelularEmpresa") %>
-                                                                        </li>
-                                                                        <%--                                                                        <li class="list-group-item">
-                                                                            <span class="pull-right"><span class="label label-success">ACCEPTED</span> </span>
-                                                                            Valor Propuesta:<%# FormatearCOP(Eval("ValorPropuesta")) %>
-                                                                        </li>--%>
-                                                                        <li class="list-group-item">
-                                                                            <span class="pull-right"><span class="label label-danger">BLOCKED</span> </span>
-                                                                            Asesor: <%# Eval("NombreUsuario") %>
-                                                                        </li>
-                                                                    </ul>
-                                                                    <hr />
-                                                                    <strong>Observaciones</strong>
-                                                                    <div id="vertical-timeline" class="vertical-container dark-timeline">
-                                                                        <div class="vertical-timeline-block">
-                                                                            <div class="vertical-timeline-icon gray-bg">
-                                                                                <i class="fa fa-coffee"></i>
-                                                                            </div>
-                                                                            <div class="vertical-timeline-content">
-                                                                                <p>
-                                                                                    <%# Eval("ObservacionesEmp") %>
-                                                                                </p>
-                                                                                <span class="vertical-date small text-muted"><%# Eval("FechaCreacion") %> </span>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        </div>
-                                                    </ItemTemplate>
-                                                </asp:Repeater>
-                                            </asp:Panel>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </form>
 
                     <%--Fin Contenido!!!!--%>

@@ -14275,6 +14275,50 @@ namespace fpWebApp
 
         #endregion
 
+        #region Bonificaciones
+
+        public DataSet CrudPlanesSimulador(int acc, int idPlan, string nombre, decimal valor, decimal factorMix, bool esMensual)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("pa_planessimulador_crud", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("acc", acc);
+                        cmd.Parameters.AddWithValue("p_IdPlanSimulador", idPlan);
+                        cmd.Parameters.AddWithValue("p_Nombre", nombre);
+                        cmd.Parameters.AddWithValue("p_Valor", valor);
+                        cmd.Parameters.AddWithValue("p_FactorMix", factorMix);
+                        cmd.Parameters.AddWithValue("p_EsMensual", esMensual);
+
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            da.Fill(ds);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DataTable errorTable = new DataTable();
+                errorTable.Columns.Add("Error", typeof(string));
+                errorTable.Rows.Add(ex.Message);
+                ds.Tables.Add(errorTable);
+            }
+
+            return ds;
+        }
+
+        #endregion
+
         #region Preguntas ParQ
 
         public DataTable ConsultarPreguntasParq()
