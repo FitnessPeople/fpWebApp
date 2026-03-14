@@ -15,111 +15,6 @@ namespace fpWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            //if (!IsPostBack)
-            //{
-            //    clasesglobales cg = new clasesglobales();
-            //    try
-            //    {
-            //        int idContacto = 0;
-            //        int idEmpresa = 0;
-            //        bool hayContacto = int.TryParse(Request.QueryString["idContacto"], out idContacto);
-            //        bool hayEmpresa = int.TryParse(Request.QueryString["empresaId"], out idEmpresa);
-
-            //        if (hayContacto)
-            //        {
-            //            Session["contactoId"] = idContacto;
-            //            Session["empresaId"] = null;
-            //            //pnlContacto.Visible = true;
-            //            //pnlEmpresa.Visible = false;
-            //            CargarDatosContacto(idContacto);
-            //        }
-            //        else if (hayEmpresa)
-            //        {
-            //            Session["empresaId"] = idEmpresa;
-            //            Session["contactoId"] = null;
-            //            //pnlEmpresa.Visible = true;
-            //            //pnlContacto.Visible = false;
-            //            CargarDatosEmpresaCRM(idEmpresa);
-
-            //            // Activar tab-2 (Empresas) visualmente con JS
-            //            ScriptManager.RegisterStartupScript(this, GetType(), "activarTab", "$('a[href=\"#tab-2\"]').tab('show');", true);
-            //        }
-
-            //        // Si no hay ninguno en la URL, puedes mostrar el último contacto por defecto
-            //        if (!hayContacto && !hayEmpresa)
-            //        {
-            //            decimal valorT = 0;
-            //            DataTable dtContactos = cg.ConsultarContactosCRM(out valorT);
-
-            //            if (dtContactos.Rows.Count > 0)
-            //            {
-            //                int ultimoIdContacto = Convert.ToInt32(dtContactos.Rows[0]["IdContacto"]);
-            //                Session["contactoId"] = ultimoIdContacto;
-            //                Session["empresaId"] = null;
-            //                //pnlContacto.Visible = true;
-            //                //pnlEmpresa.Visible = false;
-            //                CargarDatosContacto(ultimoIdContacto);
-            //            }
-            //        }
-
-            //        // Mostrar modal si está seteado
-            //        if (ViewState["AbrirModal"] != null && (bool)ViewState["AbrirModal"] == true)
-            //        {
-            //            ScriptManager.RegisterStartupScript(this, GetType(), "abrirModal", "$('#ModalContacto').modal('show');", true);
-            //            ViewState["AbrirModal"] = null;
-            //        }
-
-            //        // Validar usuario y permisos
-            //        if (Session["idUsuario"] != null)
-            //        {
-            //            ValidarPermisos("Lista contactos CRM");
-
-            //            if (ViewState["SinPermiso"]?.ToString() == "1")
-            //            {
-            //                divMensaje.Visible = true;
-            //                paginasperfil.Visible = true;
-            //            }
-            //            else
-            //            {
-            //                if (ViewState["CrearModificar"]?.ToString() == "1")
-            //                {
-            //                    //txbFechaPrim.Attributes.Add("type", "date");
-            //                    //txbFechaPrim.Attributes.Add("min", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd"));
-            //                    //txbFechaPrim.Value = DateTime.Now.ToString("yyyy-MM-dd");
-            //                    //txbFechaProx.Attributes.Add("type", "date");
-            //                    //txbFechaProx.Value = DateTime.Now.ToString("yyyy-MM-dd");
-            //                    //txbCorreoContacto.Attributes.Add("type", "email");
-            //                }
-
-            //              //  rpContactosCRM.ItemDataBound += rpContactosCRM_ItemDataBound;
-
-            //                ConsultarEmpresasCRM();
-            //                ListaEstadosCRM();
-            //                ListaContactos();
-            //                ltFechaHoy.Text = DateTime.Now.ToString("h:mm tt - dd.MM.yyyy").ToLower();
-            //            }
-            //        }
-            //        else
-            //        {
-            //            Response.StatusCode = 401;
-            //            Response.End();
-            //            Response.Redirect("logout.aspx");
-            //        }
-
-            //        // Activar validación botón si aplica
-            //        ScriptManager.RegisterStartupScript(this, GetType(), "activarBoton", "setTimeout(validarBotonActualizar, 100);", true);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-            //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            //    }
-            //}
-
-            //pnlContacto.Visible = Session["contactoId"] != null;
-            //pnlEmpresa.Visible = Session["empresaId"] != null && Session["contactoId"] == null;
-
             if (!IsPostBack)
             {
                 if (Session["idUsuario"] != null)
@@ -134,56 +29,11 @@ namespace fpWebApp
                     }
                     else
                     {
-                        //Si tiene acceso a esta página
-                        //divBotonesLista.Visible = false;
-                        //btnAgregar.Visible = false;
-                        //if (ViewState["Consulta"].ToString() == "1")
-                        //{
-                        //    divBotonesLista.Visible = true;
-                        //    lbExportarExcel.Visible = false;
-                        //}
-                        //if (ViewState["Exportar"].ToString() == "1")
-                        //{
-                        //    divBotonesLista.Visible = true;
-                        //    lbExportarExcel.Visible = true;
-                        //}
-                        //if (ViewState["CrearModificar"].ToString() == "1")
-                        //{
-                        //    btnAgregar.Visible = true;
-                        //}
-                    }
-                    CargarPlanesSimulador();
-                    //listaSedes();
-                    //listaCiudades();
-                    //ltTitulo.Text = "Agregar sede";
+                        ObtenerPlanes();
+                        ObtenerEscalas();
+                        ObtenerObjetivos();
+                    } 
 
-                    if (Request.QueryString.Count > 0)
-                    {
-                        //rpSedes.Visible = false;
-                        if (Request.QueryString["editid"] != null)
-                        {
-                            //Editar
-                            //clasesglobales cg = new clasesglobales();
-                            //DataTable dt = cg.ConsultarSedePorId(int.Parse(Request.QueryString["editid"].ToString()));
-                            //if (dt.Rows.Count > 0)
-                            //{
-                            //    string contenidoEditor = hiddenEditor.Value;
-                            //    txbSede.Text = dt.Rows[0]["NombreSede"].ToString();
-                            //    txbDireccion.Text = dt.Rows[0]["DireccionSede"].ToString();
-                            //    ddlCiudadSede.SelectedIndex = Convert.ToInt16(ddlCiudadSede.Items.IndexOf(ddlCiudadSede.Items.FindByValue(dt.Rows[0]["idCiudadSede"].ToString())));
-                            //    txbTelefono.Text = dt.Rows[0]["TelefonoSede"].ToString();
-                            //    hiddenEditor.Value = dt.Rows[0]["HorarioSede"].ToString();
-                            //    rblTipoSede.SelectedValue = dt.Rows[0]["TipoSede"].ToString();
-                            //    rblClaseSede.SelectedValue = dt.Rows[0]["ClaseSede"].ToString();
-                            //    btnAgregar.Text = "Actualizar";
-                            //    ltTitulo.Text = "Actualizar sede";
-                            //}
-                        }
-                        if (Request.QueryString["deleteid"] != null)
-                        {
-                            //Borrar
-                        }
-                    }
                 }
                 else
                 {
@@ -216,637 +66,287 @@ namespace fpWebApp
             dt.Dispose();
         }
 
+        #region Planes Simulador
 
-        private void CargarPlanesSimulador()
+       [WebMethod]
+       public static object ObtenerPlanes()
         {
             clasesglobales cg = new clasesglobales();
+
             try
             {
-                //acc = 1 - Insertar plan
-                //acc = 4 - Consultar todos los planes
-                //acc = 2 - Actualizar plan
-                //acc = 3  Eliminar plan
-                //acc = 5  Consultar por ID
-
                 DataSet ds = cg.CrudPlanesSimulador(4, 0, null, 0, 0, false);
 
-                gvPlanes.DataSource = ds;
-                gvPlanes.DataBind();
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-        }
+                var lista = new List<object>();
 
-        protected void btnGuardar_Click(object sender, EventArgs e)
-        {
-            clasesglobales cg = new clasesglobales();
-
-            bool esMensual = ddlEsMensual.SelectedValue == "1";
-
-            DataSet ds = cg.CrudPlanesSimulador( 1, 0, txtNombrePlan.Text, Convert.ToDecimal(txtValorPlan.Text),
-                Convert.ToDecimal(txtFactorMix.Text), esMensual);
-
-            bool ok = false;
-
-            if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
-            {
-                string resultado = ds.Tables[0].Rows[0]["Resultado"].ToString();
-
-                if (resultado == "OK")
+                foreach (DataRow row in ds.Tables[0].Rows)
                 {
-                    ok = true;
-                }
-            }
-
-            if (ok)
-            {
-                CargarPlanesSimulador();
-            }
-        }
-        private void ListaContactos()
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                decimal valorTotal = 0;
-                DataTable dt = cg.ConsultarContactosCRM(out valorTotal);
-                if (dt.Rows.Count > 0)
-                {
-                    //rpContactosCRM.DataSource = dt;
-                    //rpContactosCRM.DataBind();
-                    //ltValorTotal.Text = valorTotal.ToString("C0");
-                    dt.Dispose();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-        }
-
-        private void MostrarAlerta(string titulo, string mensaje, string tipo)
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
-                string script = $@"
-                Swal.hideLoading();
-                Swal.fire({{
-                title: '{titulo}',
-                text: '{mensaje}',
-                icon: '{tipo}', 
-                allowOutsideClick: false, 
-                showCloseButton: false, 
-                confirmButtonText: 'Aceptar'
-            }});";
-
-                ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-        private void ConsultarEmpresasCRM()
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                DataTable dt = cg.ConsultarEmpresasCRM();
-                //ddlEmpresa.DataSource = dt;
-                //ddlEmpresa.DataBind();
-                //rpEmpresaCRM.DataSource = dt;
-                //rpEmpresaCRM.DataBind();
-                dt.Dispose();
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-        }
-        private void CargarDatosEmpresaCRM(int idEmpresaCMR)
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                bool respuesta = false;
-
-                DataTable dt = cg.ConsultarEmpresaCRMPorId(idEmpresaCMR, out respuesta);
-                //rpContenidoEmpresaCRM.DataSource = dt;
-                //rpContenidoEmpresaCRM.DataBind();
-                dt.Dispose();
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-
-        }
-        private void ListaEstadosCRM()
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                DataTable dt = cg.ConsultarEstadossCRM();
-                //ddlStatusLead.DataSource = dt;
-                //ddlStatusLead.DataBind();
-                dt.Dispose();
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-        }
-
-        protected void rpContactosCRM_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-            clasesglobales cg = new clasesglobales();
-
-            try
-            {
-                bool salida = false;
-                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-                {
-                    DataRowView drv = (DataRowView)e.Item.DataItem;
-                    int idContacto = Convert.ToInt32(drv["IdContacto"]);
-
-                    DataTable historial = cg.ConsultarHistorialPorContactoCMR(idContacto, out salida); // tu función personalizada
-
-                    Repeater rptHistorial = (Repeater)e.Item.FindControl("rptHistorial");
-
-                    if (historial != null && rptHistorial != null)
+                    lista.Add(new
                     {
-                        rptHistorial.DataSource = historial;
-                        rptHistorial.DataBind();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-        }
-
-        private void CargarDatosContacto(int idContacto)
-        {
-            bool respuesta = false;
-            clasesglobales cg = new clasesglobales();
-
-            try
-            {
-                DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
-                Session["contactoId"] = idContacto;
-
-                if (respuesta && dt.Rows.Count > 0)
-                {
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        string infoAfiliado = "Sin registro de planes activos o anteriores.";
-
-                        if (!string.IsNullOrEmpty(row["DocumentoAfiliado"].ToString()))
-                        {
-                            int idAfiliado = 0;
-                            string DiasRestantes = string.Empty;
-                            string EstadoDias = string.Empty;
-
-                            // Consultar afiliado por documento
-                            DataTable dtAfiliado = cg.ConsultarAfiliadoPorDocumento(Convert.ToInt32(row["DocumentoAfiliado"]));
-
-                            if (dtAfiliado.Rows.Count > 0)
-                            {
-                                idAfiliado = Convert.ToInt32(dtAfiliado.Rows[0]["idAfiliado"]);
-                                DataTable dtPlan = cg.ConsultarAfiliadoEstadoActivo(idAfiliado);
-
-                                if (dtPlan.Rows.Count > 0)
-                                {
-                                    DiasRestantes = "" /*dtPlan.Rows[0]["DiasRestantes"].ToString()*/;
-                                    EstadoDias = ""/* dtPlan.Rows[0]["EstadoDias"].ToString()*/;
-
-                                    infoAfiliado = $"Le restan <strong>{DiasRestantes}</strong> días para finalizar su plan. <br/>Estado: <strong>{EstadoDias}</strong>.";
-                                }
-                                else
-                                {
-                                    infoAfiliado = "Sin registro de planes activos o anteriores.";
-                                }
-                            }
-                        }
-
-                        if (!dt.Columns.Contains("InfoAfiliado"))
-                            dt.Columns.Add("InfoAfiliado", typeof(string));
-
-                        row["InfoAfiliado"] = infoAfiliado;
-                    }
-                }
-
-                // Ahora sí, enlazas el Repeater
-                //rptContenido.DataSource = dt;
-                //rptContenido.DataBind();
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-        }
-
-        protected void btnAgregar_Click(object sender, EventArgs e)
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                bool salida = false;
-                ViewState["AbrirModal"] = true;
-                string mensaje = string.Empty;
-                string mensajeValidacion = string.Empty;
-                string respuesta = string.Empty;
-
-                //if (ddlEmpresa.SelectedItem.Value != "")
-                //    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-                //else
-                //    ddlEmpresa.SelectedItem.Value = "0";
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-        }
-
-        public string GetTelefonoHTML(object telefonoObj)
-        {
-            if (telefonoObj == null) return "";
-
-            // 1. Limpiar el número (quitar espacios, guiones, paréntesis, etc.)
-            string telefonoLimpio = Regex.Replace(telefonoObj.ToString(), @"\D", "");
-
-            // 2. Validar longitud y aplicar formato visual
-            string telefonoFormateado = telefonoLimpio;
-            if (telefonoLimpio.Length == 10)
-            {
-                telefonoFormateado = $"{telefonoLimpio.Substring(0, 3)} {telefonoLimpio.Substring(3, 3)} {telefonoLimpio.Substring(6, 4)}";
-            }
-
-            bool esCelular = telefonoLimpio.StartsWith("3");
-            bool esFijo = telefonoLimpio.StartsWith("60");
-            string icono = esCelular ? "fab fa-whatsapp" : "fas fa-phone";
-            string color = esCelular ? "forestgreen" : "#007bff";
-            string enlace = esCelular ? $"https://wa.me/57{telefonoLimpio}" : $"tel:{telefonoLimpio}";
-
-            // 4. Devolver HTML
-            return $"<a href='{enlace}' target='_blank'>" +
-                   $"<i class='{icono} m-r-xs font-bold' style='color:{color};'></i> {telefonoFormateado}</a>";
-        }
-
-        protected string GetEnlaceWeb(object url)
-        {
-            string pagina = url as string;
-            if (!string.IsNullOrEmpty(pagina))
-            {
-                return $"<a href='{pagina}' target='_blank'>Visitar sitio</a>";
-            }
-            return "";
-        }
-
-        protected string FormatearUbicacion(object ciudad, object estado)
-        {
-            string c = ciudad as string ?? "";
-            string e = estado as string ?? "";
-            if (!string.IsNullOrEmpty(c) && !string.IsNullOrEmpty(e))
-                return $"{c} - {e}";
-            else
-                return c + e; // Si uno está vacío, solo muestra el otro
-        }
-
-        protected string FormatearCOP(object valor)
-        {
-            if (valor == null || valor == DBNull.Value) return "";
-
-            decimal monto = Convert.ToDecimal(valor);
-            CultureInfo culturaCol = new CultureInfo("es-CO");
-            return monto.ToString("C0", culturaCol); // C0 = sin decimales
-        }
-
-        protected void btnEditar_Click(object sender, EventArgs e)
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                Button btnEditar = (Button)sender;
-                int idContacto = Convert.ToInt32(btnEditar.CommandArgument);
-
-                if (idContacto > 0)
-                {
-                    //CargarDatosContacto(idContacto);
-                    //upModal.Update();
-                    //ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
-                }
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-        }
-
-        private void MostrarModalEditar(int idContacto)
-        {
-            //CargarDatosContacto(idContacto);
-            //upModal.Update();
-            //ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#ModalContacto').modal('show');", true);
-        }
-
-        protected void btnActualizar_Click(object sender, EventArgs e)
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                bool salida = false;
-                string mensaje = string.Empty;
-                string respuesta = string.Empty;
-                string mensajeValidacion = string.Empty;
-
-                //if (ddlEmpresa.SelectedItem.Value != "")
-                //    ddlEmpresa.SelectedIndex = Convert.ToInt32(ddlEmpresa.Items.IndexOf(ddlEmpresa.Items.FindByValue(ddlEmpresa.SelectedItem.Value)));
-                //else
-                //    ddlEmpresa.SelectedItem.Value = "0";
-
-
-
-                // Obtener y limpiar valores
-                //string nombre = txbNombreContacto.Value?.ToString().Trim();
-                //string telefono = Regex.Replace(txbTelefonoContacto.Value?.ToString().Trim(), @"\D", "");
-                //string correo = txbCorreoContacto.Value?.ToString().Trim();
-                //string fechaPrim = txbFechaPrim?.Value?.ToString().Trim();
-                //string fechaProx = txbFechaProx?.Value?.ToString().Trim();
-                ////string valorPropuestaTexto = Regex.Replace(txbValorPropuesta.Text, @"[^\d]", "");
-                //string empresa = ddlEmpresa.SelectedItem?.Value;
-                //string statusLead = ddlStatusLead.SelectedItem?.Value;
-
-                // Validar campos requeridos
-                //if (string.IsNullOrWhiteSpace(nombre) ||
-                //    string.IsNullOrWhiteSpace(telefono) ||
-                //    string.IsNullOrWhiteSpace(correo) ||
-                //    string.IsNullOrWhiteSpace(empresa) ||
-                //    string.IsNullOrWhiteSpace(statusLead) ||
-                //    string.IsNullOrWhiteSpace(fechaPrim) ||
-                //    string.IsNullOrWhiteSpace(fechaProx))
-                ////string.IsNullOrWhiteSpace(valorPropuestaTexto))
-                //{
-                //    mensajeValidacion = "Todos los campos son obligatorios.";
-
-                //    //ltMensajeVal.Text = "<div class='alert alert-danger'>Todos los campos son obligatorios.</div>";
-                //    MostrarModalEditar(Convert.ToInt32(Session["contactoId"]));
-                //    return;
-                //}
-                //else
-                //{
-
-
-                //    if (salida)
-                //    {
-                //        string script = @"
-                //            $('#ModalContacto').modal('hide');
-                //            $('.modal-backdrop').remove();
-                //            Swal.fire({
-                //                title: 'El contacto se actualizó de forma exitosa',
-                //                text: '" + mensaje.Replace("'", "\\'") + @"',
-                //                icon: 'success',
-                //                timer: 3000, // 3 segundos
-                //                showConfirmButton: false,
-                //                timerProgressBar: true
-                //            }).then(() => {
-                //                window.location.href = 'listacontactoscrm';
-                //            });
-                //        ";
-
-                //        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                //    }
-                //    else
-                //    {
-                //        string script = @"
-                //            $('#ModalContacto').modal('hide');
-                //            $('.modal-backdrop').remove();
-                //            Swal.fire({
-                //                title: 'Error',
-                //                text: '" + mensaje.Replace("'", "\\'") + @"',
-                //                icon: 'error'
-                //            }).then((result) => {
-                //                if (result.isConfirmed) {
-                //                    $('#ModalContacto').modal('show');
-                //                }
-                //            });
-                //        ";
-                //        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                //    }
-                //}
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-        }
-
-        protected void btnEliminar_Click(object sender, EventArgs e)
-        {
-            Button btnEliminar = (Button)sender;
-            bool respuesta = false;
-            clasesglobales cg = new clasesglobales();
-
-            int idContacto = Convert.ToInt32(btnEliminar.CommandArgument);
-
-            DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out respuesta);
-            Session["Contacto"] = dt.Rows[0]["NombreContacto"].ToString();
-
-
-            //if (idContacto > 0)
-            //{
-            //    Session["contactoId"] = idContacto;
-
-            //    string nombreContacto = Session["Contacto"].ToString().Trim();
-            //    ltEliminar.Text = $@"
-            //    <div style='color: #b30000; font-weight: bold; '>
-            //        ⚠ ¿Está seguro de que desea eliminar el contacto <span style='text-decoration: underline;'>{nombreContacto}</span>?
-            //    </div>";
-
-            //    upEliminar.Update();
-            //    ScriptManager.RegisterStartupScript(this, GetType(), "AbrirModal", "$('#Modaleliminar').modal('show');", true);
-            //}
-        }
-
-        protected void btnAccionEliminar_Click(object sender, EventArgs e)
-        {
-            //ltEliminar.Text = string.Empty;
-            bool respuesta = false;
-            bool _respuesta = false;
-            string mensaje = string.Empty;
-            int idContacto = Convert.ToInt32(Session["contactoId"]);
-            int idUsuario = Convert.ToInt32(Session["idUsuario"].ToString());
-            string Usuario = Session["NombreUsuario"].ToString();
-            clasesglobales cg = new clasesglobales();
-
-            try
-            {
-                DataTable dt = cg.ConsultarContactosCRMPorId(idContacto, out _respuesta);
-                Session["contactoId"] = idContacto;
-
-                if (idContacto > 0)
-                {
-                    cg.EliminarContactoCRM(idContacto, idUsuario, Usuario, out respuesta, out mensaje);
-
-                    if (respuesta)
-                    {
-                        string tipoMensaje = respuesta ? "Éxito" : "Error";
-                        string tipoIcono = respuesta ? "success" : "error";
-                        string script = @"
-                                $('#Modaleliminar').modal('hide');
-                                $('.modal-backdrop').remove();
-                                Swal.fire({
-                                    title: '" + tipoMensaje + @"',
-                                    text: '" + mensaje + @"',
-                                    icon: '" + tipoIcono + @"'
-                                }).then((result) => {
-                                    if (result.isConfirmed) {
-                                        location.reload();
-                                    }
-                                });
-                            ";
-
-                        ScriptManager.RegisterStartupScript(this, GetType(), "EliminarYAlerta", script, true);
-                    }
-                    else
-                    {
-                        string script = @"
-                            $('#ModalContacto').modal('hide');
-                            $('.modal-backdrop').remove();
-                            Swal.fire({
-                                title: 'Error',
-                                text: '" + mensaje.Replace("'", "\\'") + @"',
-                                icon: 'error',
-                                timer: 3000,
-                                timerProgressBar: true,
-                                showConfirmButton: false
-                            }).then(() => {
-                                location.reload();
-                            });
-                        ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                mensaje = ex.Message;
-                string script = @"
-                    $('#ModalContacto').modal('hide');
-                    $('.modal-backdrop').remove();
-                    Swal.fire({
-                        title: 'Error',                       
-                        text: '"" + mensaje.Replace(""'"", ""\\'"") + @""',
-                        icon: 'error'
+                        Id = row["IdPlanSimulador"],
+                        Nombre = row["Nombre"].ToString(),
+                        Valor = row["Valor"],
+                        FactorMix = row["FactorMix"],
+                        EsMensual = Convert.ToBoolean(row["EsMensual"])
                     });
-                ";
-                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-            }
-        }
-
-        //protected void btnGestionarContacto_Command(object sender, CommandEventArgs e)
-        //{
-
-        //    string respuesta = string.Empty;
-        //    try
-        //    {
-        //        clasesglobales cg = new clasesglobales();
-
-        //        int idContacto = Convert.ToInt32(e.CommandArgument);               
-        //        int idUsuario = Convert.ToInt32(Session["idUsuario"]);               
-        //        respuesta =  cg.ActualizarUsuarioGestionaCRM(idContacto, idUsuario);
-        //        if (respuesta == "OK")
-        //        {
-        //            Response.Redirect("crmnuevocontacto.aspx");
-        //        }
-        //        else
-        //        {
-        //            ScriptManager.RegisterStartupScript(this, this.GetType(), "alerta",
-        //                $"alert('{respuesta}');", true);
-        //        }
-        //    }
-        //    catch (Exception ex)            
-        //    {              
-        //        Console.WriteLine("Error: " + ex.Message);
-        //    }
-        //}
-
-        protected void btnGestionarContacto_Command(object sender, CommandEventArgs e)
-        {
-            string respuesta = string.Empty;
-
-            try
-            {
-                clasesglobales cg = new clasesglobales();
-
-                int idContacto = Convert.ToInt32(e.CommandArgument);
-                int idUsuario = Convert.ToInt32(Session["idUsuario"]);
-
-                respuesta = cg.ActualizarUsuarioGestionaCRM(idContacto, idUsuario);
-
-                // Si fue exitosa la gestión
-                if (respuesta == "OK")
-                {
-                    string script = @"
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Gestión completada',
-                            text: 'El contacto fue tomado correctamente.',
-                            confirmButtonText: 'Continuar'
-                        }).then(() => {
-                            window.location.href = 'crmnuevocontacto.aspx';
-                        });
-                    ";
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "swalOk", script, true);
                 }
-                else
-                {
-                    string mensajeSeguro = HttpUtility.JavaScriptStringEncode(respuesta);
-                    string script = $@"
-                        Swal.fire({{
-                            icon: 'info',
-                            title: 'Contacto no disponible',
-                            text: '{mensajeSeguro}',
-                            confirmButtonText: 'Entendido'
-                        }}).then(() => {{
-                            window.location.href = 'listacontactoscrm.aspx';
-                        }});
-                    ";
 
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "swalError", script, true);
-                }
+                return lista;
             }
             catch (Exception ex)
             {
-                string script = $@"
-                    Swal.fire({{
-                        icon: 'error',
-                        title: 'Error inesperado',
-                        text: '{ex.Message.Replace("'", "\\'")}',
-                        confirmButtonText: 'Aceptar'
-                    }});
-                ";
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "swalCatch", script, true);
+                int idLog = cg.ManejarError(
+                    ex,
+                    "bonificaciones.aspx",
+                    Convert.ToInt32(HttpContext.Current.Session["idUsuario"])
+                );
+
+                return new
+                {
+                    ok = false,
+                    errorId = idLog
+                };
             }
         }
+
+        [WebMethod(EnableSession = true)]
+        public static object EliminarPlan(int id)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            cg.CrudPlanesSimulador(3, id, null, 0, 0, false);
+
+            return new { ok = true };
+        }
+
+        [WebMethod]
+        public static object ObtenerPlanPorId(int id)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            DataSet ds = cg.CrudPlanesSimulador(5, id, null, 0, 0, false);
+
+            DataRow row = ds.Tables[0].Rows[0];
+
+            return new
+            {
+                Id = row["IdPlanSimulador"],
+                Nombre = row["Nombre"],
+                Valor = row["Valor"],
+                FactorMix = row["FactorMix"],
+                EsMensual = Convert.ToBoolean(row["EsMensual"])
+            };
+        }
+
+        [WebMethod(EnableSession = true)]
+        public static object GuardarPlan(int accion, int id, string nombre, decimal valor, decimal factorMix, bool esMensual)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                DataSet ds = cg.CrudPlanesSimulador(accion, id, nombre, valor, factorMix, esMensual);
+
+                return new { ok = true };
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, "bonificaciones.aspx", Convert.ToInt32(HttpContext.Current.Session["idUsuario"]));
+                return new { ok = false, errorId = idLog };
+            }
+        }
+
+        #endregion
+
+
+        #region Escalas
+
+        [WebMethod]
+        public static object ObtenerEscalas()
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                DataSet ds = cg.CrudEscalasSimulador(4, 0, null, 0, 0);
+
+                var lista = new List<object>();
+
+                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow row in ds.Tables[0].Rows)
+                    {
+                        lista.Add(new
+                        {
+                            IdEscala = row["IdEscala"],
+                            Nombre = row["Nombre"].ToString(),
+                            PuntosMin = row["PuntosMin"],
+                            PuntosMax = row["PuntosMax"]
+                        });
+                    }
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, "bonificaciones.aspx",Convert.ToInt32(HttpContext.Current.Session["idUsuario"]));
+
+                return new
+                {
+                    ok = false,
+                    errorId = idLog
+                };
+            }
+        }
+
+        [WebMethod]
+        public static object ObtenerEscalaPorId(int id)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            DataSet ds = cg.CrudEscalasSimulador(5, id, null, 0, 0);
+
+            DataRow row = ds.Tables[0].Rows[0];
+
+            return new
+            {
+                Id = row["IdEscala"],
+                Nombre = row["Nombre"],
+                PuntosMin = row["PuntosMin"],
+                PuntosMax = row["PuntosMax"]
+            };
+        }
+
+
+        [WebMethod(EnableSession = true)]
+        public static object GuardarEscala(int accion, int id, string nombre, decimal puntosMin, decimal puntosMax)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                DataSet ds = cg.CrudEscalasSimulador(accion, id, nombre, puntosMin, puntosMax);
+
+                return new { ok = true };
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, "bonificaciones.aspx",
+                    Convert.ToInt32(HttpContext.Current.Session["idUsuario"]));
+
+                return new { ok = false, errorId = idLog };
+            }
+        }
+
+
+        [WebMethod]
+        public static object EliminarEscala(int id)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            DataSet ds = cg.CrudEscalasSimulador(3, id, null, 0, 0);
+
+            return new { ok = true };
+        }
+        #endregion
+
+        #region Objetivos
+
+        [WebMethod]
+        public static object ObtenerObjetivos()
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                DataSet ds = cg.CrudObjetivoPlan(4, 0, 0, 0, 0, 0);
+
+                var lista = new List<object>();
+
+                if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    foreach (DataRow row in ds.Tables[0].Rows)
+                    {
+                        lista.Add(new
+                        {
+                            IdObjetivo = row["IdObjetivo"],
+                            Escala = row["Escala"].ToString(),
+                            Plan = row["Plan"].ToString(),
+                            CantidadObjetivo = row["CantidadObjetivo"],
+                            ValorUnitarioComision = row["ValorUnitarioComision"]
+                        });
+                    }
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(
+                    ex,
+                    "bonificaciones.aspx",
+                    Convert.ToInt32(HttpContext.Current.Session["idUsuario"])
+                );
+
+                return new
+                {
+                    ok = false,
+                    errorId = idLog
+                };
+            }
+        }
+
+        [WebMethod]
+        public static object ObtenerObjetivoPorId(int id)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            DataSet ds = cg.CrudObjetivoPlan(5, id, 0, 0, 0, 0);
+
+            DataRow row = ds.Tables[0].Rows[0];
+
+            return new
+            {
+                Id = row["IdObjetivo"],
+                IdEscala = row["IdEscala"],
+                IdPlanSimulador = row["IdPlanSimulador"],
+                CantidadObjetivo = row["CantidadObjetivo"],
+                ValorUnitarioComision = row["ValorUnitarioComision"]
+            };
+        }
+
+        [WebMethod(EnableSession = true)]
+        public static object GuardarObjetivo(int accion, int id, int idEscala, int idPlan, int cantidadObjetivo, decimal valorUnitarioComision)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                cg.CrudObjetivoPlan(accion, id, idEscala, idPlan, cantidadObjetivo, valorUnitarioComision);
+
+                return new { ok = true };
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, "bonificaciones.aspx",
+                Convert.ToInt32(HttpContext.Current.Session["idUsuario"]));
+
+                return new { ok = false, errorId = idLog };
+            }
+        }
+
+        [WebMethod]
+        public static object EliminarObjetivo(int id)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            cg.CrudObjetivoPlan(3, id, 0, 0, 0, 0);
+
+            return new { ok = true };
+        }
+
+        #endregion
 
         [WebMethod]
         public static ResultadoSimulador CalcularComision(int anual, int semestre, int trimestre, int mensual)
@@ -876,13 +376,15 @@ namespace fpWebApp
             };
         }
 
-
         public class ResultadoSimulador
         {
             public decimal PuntosMix { get; set; }
             public string Escala { get; set; }
             public decimal Comision { get; set; }
         }
+
+  
+
 
     }
 }

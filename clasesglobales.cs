@@ -14287,16 +14287,95 @@ namespace fpWebApp
 
                 using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand("pa_planessimulador_crud", mysqlConexion))
+                    using (MySqlCommand cmd = new MySqlCommand("PA_CRUD_PLANES_SIMULADOR", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("acc", acc);
                         cmd.Parameters.AddWithValue("p_IdPlanSimulador", idPlan);
-                        cmd.Parameters.AddWithValue("p_Nombre", nombre);
+                        cmd.Parameters.AddWithValue("p_Nombre", nombre ?? (object)DBNull.Value);
                         cmd.Parameters.AddWithValue("p_Valor", valor);
                         cmd.Parameters.AddWithValue("p_FactorMix", factorMix);
                         cmd.Parameters.AddWithValue("p_EsMensual", esMensual);
+
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            da.Fill(ds);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DataTable errorTable = new DataTable();
+                errorTable.Columns.Add("Error", typeof(string));
+                errorTable.Rows.Add(ex.Message);
+                ds.Tables.Add(errorTable);
+            }
+
+            return ds;
+        }
+
+        public DataSet CrudEscalasSimulador(int acc, int idEscala, string nombre, decimal puntosMin, decimal puntosMax)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("PA_CRUD_ESCALAS_SIMULADOR", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("acc", acc);
+                        cmd.Parameters.AddWithValue("p_IdEscala", idEscala);
+                        cmd.Parameters.AddWithValue("p_Nombre", nombre ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("p_PuntosMin", puntosMin);
+                        cmd.Parameters.AddWithValue("p_PuntosMax", puntosMax);
+
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            da.Fill(ds);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                DataTable errorTable = new DataTable();
+                errorTable.Columns.Add("Error", typeof(string));
+                errorTable.Rows.Add(ex.Message);
+                ds.Tables.Add(errorTable);
+            }
+
+            return ds;
+        }
+
+        public DataSet CrudObjetivoPlan(int acc, int idObjetivo, int idEscala, int idPlanSimulador, int cantidadObjetivo, decimal valorUnitarioComision)
+        {
+            DataSet ds = new DataSet();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("PA_CRUD_OBJETIVO_PLAN", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("acc", acc);
+                        cmd.Parameters.AddWithValue("p_IdObjetivo", idObjetivo);
+                        cmd.Parameters.AddWithValue("p_IdEscala", idEscala);
+                        cmd.Parameters.AddWithValue("p_IdPlanSimulador", idPlanSimulador);
+                        cmd.Parameters.AddWithValue("p_CantidadObjetivo", cantidadObjetivo);
+                        cmd.Parameters.AddWithValue("p_ValorUnitarioComision", valorUnitarioComision);
 
                         using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
                         {

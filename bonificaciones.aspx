@@ -194,6 +194,7 @@
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body onload="changeClass()">
@@ -297,19 +298,7 @@
                                             Configura planes, escalas y objetivos. Usa el simulador para calcular la comisión.
                                         </p>
 
-    <%--                                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
 
-                                            <div class="input-group">
-                                                <input type="text" id="buscador" placeholder="Buscar" class="input form-control">
-
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-primary">
-                                                        <i class="fa fa-search"></i>Buscar
-                                                    </button>
-                                                </span>
-
-                                            </div>
-                                        </div>--%>
 
 
                                         <div class="clients-list">
@@ -454,33 +443,31 @@
                                                             </div>
 
                                                             <div class="col-md-2" style="margin-top: 25px">
-
-                                                                <asp:Button ID="btnGuardarPlan"
-                                                                    runat="server"
-                                                                    Text="Guardar"
-                                                                    CssClass="btn btn-primary" />
-
+                                                                <button type="button" class="btn btn-primary" onclick="guardarPlan()">
+                                                                    Guardar Plan
+                                                                </button>
                                                             </div>
-
                                                         </div>
-
                                                         <hr />
 
-                                                        <asp:GridView ID="gvPlanes"
-                                                            runat="server"
-                                                            AutoGenerateColumns="False"
-                                                            CssClass="table table-striped table-bordered">
 
-                                                            <Columns>
 
-                                                                <asp:BoundField DataField="Nombre" HeaderText="Plan" />
-                                                                <asp:BoundField DataField="Valor" HeaderText="Valor" />
-                                                                <asp:BoundField DataField="FactorMix" HeaderText="Factor Mix" />
-                                                                <asp:BoundField DataField="EsMensual" HeaderText="Mensual" />
+                                                        <table class="table table-striped table-bordered" id="tablaPlanes">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Plan</th>
+                                                                    <th>Valor</th>
+                                                                    <th>Factor Mix</th>
+                                                                    <th>Mensual</th>
+                                                                    <th>Acciones</th>
+                                                                </tr>
+                                                            </thead>
 
-                                                            </Columns>
+                                                            <tbody>
+                                                            </tbody>
 
-                                                        </asp:GridView>
+                                                        </table>
+                                                        <input type="hidden" id="idPlanEditar" value="0" />
 
                                                     </div>
                                                 </div>
@@ -520,11 +507,12 @@
                                                             </div>
 
                                                             <div class="col-md-3" style="margin-top: 25px">
-
-                                                                <asp:Button ID="btnGuardarEscala"
-                                                                    runat="server"
-                                                                    Text="Guardar"
-                                                                    CssClass="btn btn-primary" />
+                                                                <button type="button"
+                                                                    id="btnGuardarEscala"
+                                                                    class="btn btn-primary"
+                                                                    onclick="guardarEscala()">
+                                                                    Guardar
+                                                                </button>
 
                                                             </div>
 
@@ -532,20 +520,24 @@
 
                                                         <hr />
 
-                                                        <asp:GridView ID="gvEscalas"
-                                                            runat="server"
-                                                            AutoGenerateColumns="False"
-                                                            CssClass="table table-striped table-bordered">
+                                                        <table id="tablaEscalas" class="table table-striped table-bordered">
 
-                                                            <Columns>
+                                                            <thead>
 
-                                                                <asp:BoundField DataField="Nombre" HeaderText="Escala" />
-                                                                <asp:BoundField DataField="PuntosMin" HeaderText="Min" />
-                                                                <asp:BoundField DataField="PuntosMax" HeaderText="Max" />
+                                                                <tr>
+                                                                    <th>Escala</th>
+                                                                    <th>Puntos Min</th>
+                                                                    <th>Puntos Max</th>
+                                                                    <th>Acciones</th>
+                                                                </tr>
 
-                                                            </Columns>
+                                                            </thead>
 
-                                                        </asp:GridView>
+                                                            <tbody></tbody>
+
+                                                        </table>
+
+                                                        <input type="hidden" id="idEscalaEditar" value="0" />
 
                                                     </div>
                                                 </div>
@@ -555,7 +547,7 @@
                                                 <!-- TAB OBJETIVOS -->
                                                 <!-- ===================== -->
 
-                                                <div id="tab-objetivos" class="tab-pane">
+                                                <%--         <div id="tab-objetivos" class="tab-pane">
 
                                                     <div class="panel-body">
 
@@ -635,8 +627,90 @@
                                                         </asp:GridView>
 
                                                     </div>
-                                                </div>
+                                                </div>--%>
 
+                                                <div id="tab-objetivos" class="tab-pane">
+
+                                                    <div class="panel-body">
+
+                                                        <h3>Configuración de Objetivos</h3>
+                                                   
+
+                                                        <div class="row">
+
+                                                            <div class="col-md-3">
+
+                                                                <label>Escala</label>
+
+                                                                <asp:DropDownList ID="ddlEscala"
+                                                                    runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                            <div class="col-md-3">
+
+                                                                <label>Plan</label>
+
+                                                                <asp:DropDownList ID="ddlPlan"
+                                                                    runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                            <div class="col-md-2">
+
+                                                                <label>Cantidad Objetivo</label>
+
+                                                                <asp:TextBox ID="txtCantidadObjetivo"
+                                                                    runat="server"
+                                                                    CssClass="form-control"></asp:TextBox>
+
+                                                            </div>
+
+                                                            <div class="col-md-2">
+
+                                                                <label>Comisión Unidad</label>
+
+                                                                <asp:TextBox ID="txtComisionUnidad"
+                                                                    runat="server"
+                                                                    CssClass="form-control"></asp:TextBox>
+                                                            </div>
+
+                                                            <div class="col-md-2" style="margin-top: 25px">
+
+                                                                <button type="button"
+                                                                    onclick="guardarObjetivo()"
+                                                                    id="btnGuardarObjetivo"
+                                                                    class="btn btn-primary">
+                                                                    Guardar
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        <hr />
+
+                                                        <table id="tablaObjetivos"
+                                                            class="table table-striped table-bordered">
+
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Escala</th>
+                                                                    <th>Plan</th>
+                                                                    <th>Objetivo</th>
+                                                                    <th>Comisión</th>
+                                                                    <th></th>
+
+                                                                </tr>
+
+                                                            </thead>
+
+                                                            <tbody></tbody>
+
+                                                        </table>
+                                                         <input type="hidden" id="idObjetivoEditar" value="0" />
+                                                    </div>
+                                                </div>
 
                                                 <!-- ===================== -->
                                                 <!-- TAB REPORTE -->
@@ -735,41 +809,9 @@
         });
 
         $('.chosen-select').chosen({ width: "100%", disable_search_threshold: 10, no_results_text: "Sin resultados" });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            if (window.location.href.indexOf("empresaId") > -1) {
-                // Activa la pestaña 2 manualmente
-                $('#tab-2-tab').click(); // Reemplaza esto con el ID real del botón o tab que activa "Empresas"
-            }
-        });
+
     </script>
 
-    <%--Contador de filas--%>
-    <script type="text/javascript">
-        function actualizarContador() {
-            var visibles = $('#tablaContactos tbody tr:visible').length;
-            $('#contadorFilas').text(visibles + ' contactos');
-        }
-
-        Sys.Application.add_load(function () {
-            // Evento al escribir en el buscador
-            $('#buscador').off('keyup').on('keyup', function () {
-                var valorBusqueda = $(this).val().toLowerCase();
-
-                $('#tablaContactos tbody tr').each(function () {
-                    var textoFila = $(this).text().toLowerCase();
-                    var coincide = textoFila.indexOf(valorBusqueda) > -1;
-                    $(this).toggle(coincide);
-                });
-
-                actualizarContador();
-            });
-
-            // Actualiza el contador al cargar
-            actualizarContador();
-        });
-    </script>
 
     <script type="text/javascript">
         Sys.Application.add_load(function () {
@@ -813,7 +855,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "Bonificaciones.aspx/CalcularComision",
+                url: "bonificaciones.aspx/CalcularComision",
                 data: JSON.stringify(datos),
                 contentType: "application/json",
                 success: function (r) {
@@ -828,6 +870,747 @@
     </script>
 
 
+
+
+    <%--ZONA PLANES--%>
+
+    <script>
+        function cargarPlanes() {
+
+            $.ajax({
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerPlanes",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    console.log("respuesta:", response);
+
+                    var datos = response.d;
+
+                    if (!datos || datos.length == 0) {
+                        $("#tablaPlanes tbody").html("<tr><td colspan='5'>Sin datos</td></tr>");
+                        return;
+                    }
+
+                    var filas = "";
+
+                    datos.forEach(function (p) {
+
+                        filas += "<tr>";
+
+                        filas += "<td>" + p.Nombre + "</td>";
+                        filas += "<td>" + formatoMoneda(p.Valor) + "</td>";
+                        filas += "<td>" + p.FactorMix + "</td>";
+                        filas += "<td>" + (p.EsMensual ? "Sí" : "No") + "</td>";
+
+                        filas += "<td>";
+
+                        filas += "<a href='#' onclick='editarPlan(" + p.Id + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px' title='Editar'>";
+                        filas += "<i class='fa fa-edit'></i>";
+                        filas += "</a>";
+
+                        filas += "<a href='#' onclick='eliminarPlan(" + p.Id + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px' title='Eliminar'>";
+                        filas += "<i class='fa fa-trash'></i>";
+                        filas += "</a>";
+
+                        filas += "</td>";
+
+                        filas += "</tr>";
+
+                    });
+
+                    $("#tablaPlanes tbody").html(filas);
+
+                },
+
+                error: function (err) {
+                    console.log("ERROR:", err);
+                }
+
+            });
+
+        }
+    </script>
+
+    <script>
+        function guardarPlan() {
+
+            var id = $("#idPlanEditar").val();
+            var nombre = $("#<%=txtNombrePlan.ClientID%>").val();
+            var valor = $("#<%=txtValorPlan.ClientID%>").val();
+            var factorMix = $("#<%=txtFactorMix.ClientID%>").val();
+            var esMensual = $("#<%=ddlEsMensual.ClientID%>").val() == "1";
+
+            var accion = 1;
+
+            if (id != 0)
+                accion = 2;
+
+            $.ajax({
+                type: "POST",
+                url: "bonificaciones.aspx/GuardarPlan",
+                data: JSON.stringify({
+                    accion: accion,
+                    id: parseInt(id),
+                    nombre: nombre,
+                    valor: parseFloat(valor),
+                    factorMix: parseFloat(factorMix),
+                    esMensual: esMensual
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    console.log("Guardado:", response);
+
+                    cargarPlanes();
+
+                    $("#idPlanEditar").val(0);
+                    $("#<%=txtNombrePlan.ClientID%>").val("");
+                    $("#<%=txtValorPlan.ClientID%>").val("");
+                    $("#<%=txtFactorMix.ClientID%>").val("");
+
+                    $("#btnGuardarPlan").text("Guardar Plan");
+                },
+
+                error: function (err) {
+                    console.log("Error:", err);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function editarPlan(id) {
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerPlanPorId",
+
+                data: JSON.stringify({
+                    id: id
+                }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    var p = response.d;
+
+                    $("#<%=txtNombrePlan.ClientID%>").val(p.Nombre);
+                    $("#<%=txtValorPlan.ClientID%>").val(p.Valor);
+                    $("#<%=txtFactorMix.ClientID%>").val(p.FactorMix);
+                    $("#<%=ddlEsMensual.ClientID%>").val(p.EsMensual ? "1" : "0");
+
+                    $("#idPlanEditar").val(p.Id);
+                    $("#btnGuardarPlan").text("Actualizar Plan");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function eliminarPlan(id) {
+
+            if (!confirm("¿Desea eliminar este plan?"))
+                return;
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/EliminarPlan",
+
+                data: JSON.stringify({
+                    id: id
+                }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function () {
+
+                    cargarPlanes();
+
+                },
+                error: function (err) {
+                    console.log("Error:", err);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            cargarPlanes();
+        });
+    </script>
+
+    <script>
+        function cargarPlanesCombo() {
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerPlanes",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    console.log("Planes:", response);
+
+                    var datos = response.d;
+                    var combo = $("#ddlPlan");
+
+                    combo.empty();
+                    combo.append("<option value='0'>Seleccione</option>");
+
+                    if (datos && datos.length > 0) {
+
+                        datos.forEach(function (p) {
+
+                            combo.append(
+                                "<option value='" + p.Id + "'>" + p.Nombre + "</option>"
+                            );
+
+                        });
+
+                    }
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+    <%--ZONA ESCALAS--%>
+    <script>
+
+        $(document).ready(function () {
+
+            console.log("Página lista");
+
+            cargarEscalas();
+
+        });
+
+        function cargarEscalas() {
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerEscalas",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    var datos = response.d;
+
+                    var filas = "";
+
+                    if (!datos || datos.length == 0) {
+
+                        filas = "<tr><td colspan='4'>Sin datos</td></tr>";
+
+                    } else {
+
+                        datos.forEach(function (e) {
+
+                            filas += "<tr>";
+
+                            filas += "<td>" + e.Nombre + "</td>";
+                            filas += "<td>" + e.PuntosMin + "</td>";
+                            filas += "<td>" + e.PuntosMax + "</td>";
+
+                            filas += "<td>";
+
+                            filas += "<a href='#' onclick='editarEscala(" + e.IdEscala + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px' title='Editar'>";
+                            filas += "<i class='fa fa-edit'></i>";
+                            filas += "</a>";
+
+                            filas += "<a href='#' onclick='eliminarEscala(" + e.IdEscala + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px' title='Eliminar'>";
+                            filas += "<i class='fa fa-trash'></i>";
+                            filas += "</a>";
+
+                            filas += "</td>";
+
+                            filas += "</tr>";
+
+                        });
+
+                    }
+
+                    $("#tablaEscalas tbody").html(filas);
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+    <script>
+        function guardarEscala() {
+
+            var nombre = $("#txtNombreEscala").val().trim();
+            var min = $("#txtPuntosMin").val();
+            var max = $("#txtPuntosMax").val();
+
+            if (nombre == "" || min == "" || max == "") {
+
+                alert("Debe completar todos los campos");
+                return;
+
+            }
+
+            var idEscalaEditar = $("#idEscalaEditar").val();
+
+            var accion = (idEscalaEditar == 0) ? 1 : 2;
+
+            console.log("Acción:", accion);
+            console.log("IdEscalaEditar:", idEscalaEditar);
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/GuardarEscala",
+
+                data: JSON.stringify({
+
+                    accion: accion,
+                    id: idEscalaEditar,
+                    nombre: nombre,
+                    puntosMin: min,
+                    puntosMax: max
+
+                }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    if (response.d.ok) {
+
+                        limpiarEscala();
+
+                        cargarEscalas();
+
+                        cargarEscalasCombo();
+
+                        idEscalaEditar = 0;
+
+                        $("#btnGuardarEscala").text("Guardar");
+
+                    }
+                    else {
+
+                        alert("Error código: " + response.d.errorId);
+
+                    }
+
+                },
+
+                error: function (err) {
+
+                    console.log("ERROR:", err);
+
+                }
+
+            });
+
+        }
+    </script>
+
+    <script>
+        function editarEscala(id) {
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerEscalaPorId",
+
+                data: JSON.stringify({
+                    id: id
+                }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    var e = response.d;
+
+                    $("#txtNombreEscala").val(e.Nombre);
+                    $("#txtPuntosMin").val(e.PuntosMin);
+                    $("#txtPuntosMax").val(e.PuntosMax);
+
+                    $("#idEscalaEditar").val(e.Id);
+                    $("#btnGuardarEscala").text("Actualizar Escala");
+                }
+
+            });
+
+        }
+    </script>
+
+    <script>
+        function limpiarEscala() {
+
+            $("#txtNombreEscala").val("");
+            $("#txtPuntosMin").val("");
+            $("#txtPuntosMax").val("");
+
+        }
+    </script>
+
+    <script>
+        function eliminarEscala(id) {
+
+            if (!confirm("¿Eliminar escala?"))
+                return;
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/EliminarEscala",
+
+                data: JSON.stringify({ id: id }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    if (response.d.ok) {
+
+                        cargarEscalas();
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function cargarEscalasCombo() {
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerEscalas",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    console.log("Escalas:", response);
+
+                    var datos = response.d;
+                    var combo = $("#ddlEscala");
+
+                    combo.empty();
+
+                    combo.append("<option value='0'>Seleccione</option>");
+
+                    if (datos && datos.length > 0) {
+
+                        datos.forEach(function (e) {
+
+                            combo.append(
+                                "<option value='" + e.IdEscala + "'>" + e.Nombre + "</option>"
+                            );
+
+                        });
+
+                    }
+
+                },
+
+                error: function (err) {
+
+                    console.log("Error escalas:", err);
+
+                }
+
+            });
+
+        }
+
+
+    </script>
+
+<%--    OBJETIVOS PLAN--%>
+
+    <script>
+
+        $(document).ready(function () {
+
+            cargarObjetivos();
+
+        });
+
+        function cargarObjetivos() {
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerObjetivos",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    var datos = response.d;
+
+                    var filas = "";
+
+                    if (!datos || datos.length == 0) {
+
+                        filas = "<tr><td colspan='5'>Sin datos</td></tr>";
+
+                    }
+                    else {
+
+                        datos.forEach(function (o) {
+
+                            filas += "<tr>";
+
+                            filas += "<td>" + o.Escala + "</td>";
+                            filas += "<td>" + o.Plan + "</td>";
+                            filas += "<td>" + o.CantidadObjetivo + "</td>";
+                            filas += "<td>" + o.ValorUnitarioComision + "</td>";
+
+                            filas += "<td>";
+
+                            filas += "<a href='#' onclick='editarObjetivo(" + o.IdObjetivo + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px'>";
+                            filas += "<i class='fa fa-edit'></i>";
+                            filas += "</a>";
+
+                            filas += "<a href='#' onclick='eliminarObjetivo(" + o.IdObjetivo + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px'>";
+                            filas += "<i class='fa fa-trash'></i>";
+                            filas += "</a>";
+
+                            filas += "</td>";
+
+                            filas += "</tr>";
+
+                        });
+
+                    }
+
+                    $("#tablaObjetivos tbody").html(filas);
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+    <script>
+
+        function guardarObjetivo() {
+
+            var escala = $("#ddlEscala").val();
+            var plan = $("#ddlPlan").val();
+            var cantidad = $("#txtCantidadObjetivo").val();
+            var comision = $("#txtComisionUnidad").val();
+
+            if (escala == "" || plan == "" || cantidad == "" || comision == "") {
+
+                alert("Debe completar todos los campos");
+                return;
+
+            }
+
+            var idEditar = $("#idObjetivoEditar").val();
+
+            if (!idEditar) {
+                idEditar = 0;
+            }
+
+            var accion = (parseInt(idEditar) === 0) ? 1 : 2;
+
+            var datos = {
+
+                accion: parseInt(accion),
+                id: parseInt(idEditar),
+                idEscala: parseInt(escala),
+                idPlan: parseInt(plan),
+                cantidadObjetivo: parseInt(cantidad),
+                valorUnitarioComision: parseFloat(comision)
+
+            };
+
+            console.log("Datos enviados:", datos);
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/GuardarObjetivo",
+                data: JSON.stringify(datos),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    console.log("Respuesta:", response);
+
+                    if (response.d.ok) {
+
+                        limpiarObjetivo();
+                        cargarObjetivos();
+
+                        $("#btnGuardarObjetivo").text("Guardar");
+                        $("#idObjetivoEditar").val(0);
+
+                    }
+                    else {
+
+                        alert("Error código: " + response.d.errorId);
+
+                    }
+
+                },
+
+                error: function (err) {
+
+                    console.log("ERROR AJAX:", err.responseText);
+
+                }
+
+            });
+
+        }
+
+
+    </script>
+
+    <script>
+
+        function editarObjetivo(id) {
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerObjetivoPorId",
+
+                data: JSON.stringify({ id: id }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    var o = response.d;
+
+                    $("#ddlEscala").val(o.IdEscala);
+                    $("#ddlPlan").val(o.IdPlanSimulador);
+                    $("#txtCantidadObjetivo").val(o.CantidadObjetivo);
+                    $("#txtComisionUnidad").val(o.ValorUnitarioComision);
+
+                    $("#idObjetivoEditar").val(o.Id);
+
+                    $("#btnGuardarObjetivo").text("Actualizar Objetivo");
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+    <script>
+
+        function eliminarObjetivo(id) {
+
+            if (!confirm("¿Eliminar objetivo?"))
+                return;
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/EliminarObjetivo",
+
+                data: JSON.stringify({ id: id }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    if (response.d.ok) {
+
+                        cargarObjetivos();
+
+                    }
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+    <script>
+        function limpiarObjetivo() {
+
+            $("#ddlEscala").val("");
+            $("#ddlPlan").val("");
+            $("#txtCantidadObjetivo").val("");
+            $("#txtComisionUnidad").val("");
+
+        }
+    </script>
+
+
+    <script>
+        function formatoMoneda(valor) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(valor);
+        }
+    </script>
+
+    <script>
+        function limpiarEscala() {
+
+            $("#txtNombreEscala").val("");
+            $("#txtPuntosMin").val("");
+            $("#txtPuntosMax").val("");
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            cargarPlanes();
+            cargarPlanesCombo();
+            cargarEscalasCombo();
+            cargarObjetivos();
+
+        });
+
+    </script>
 
 </body>
 
