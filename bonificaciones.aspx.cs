@@ -159,7 +159,6 @@ namespace fpWebApp
 
         #endregion
 
-
         #region Escalas
 
         [WebMethod]
@@ -376,6 +375,85 @@ namespace fpWebApp
 
         #endregion
 
+        #region Recomendaciones
+        [WebMethod]
+        public static object ObtenerRecomendacion(string mix)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            decimal mixDecimal = Convert.ToDecimal(mix.Replace(",", "."),
+                System.Globalization.CultureInfo.InvariantCulture);
+
+            DataTable dt = cg.ObtenerRecomendacionEscala(mixDecimal);
+
+            if (dt.Rows.Count == 0)
+            {
+                return new
+                {
+                    Escala = "",
+                    MixObjetivo = 0,
+                    MixFaltante = 0
+                };
+            }
+
+            return new
+            {
+                Escala = dt.Rows[0]["SiguienteEscala"].ToString(),
+                MixObjetivo = dt.Rows[0]["MixObjetivo"].ToString(),
+                MixFaltante = dt.Rows[0]["MixFaltante"].ToString()
+            };
+        }
+
+        [WebMethod]
+        public static object ObtenerDetalleComision(List<VentaSimulador> ventas)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.DetalleComisionPlan(ventas);
+
+            var lista = new List<object>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                lista.Add(new
+                {
+                    Plan = row["Plan"].ToString(),
+                    Cantidad = row["Cantidad"],
+                    Objetivo = row["Objetivo"],
+                    ComisionUnidad = row["ComisionUnidad"],
+                    ComisionTotal = row["ComisionTotal"]
+                });
+            }
+
+            return lista;
+        }
+
+        [WebMethod]
+        public static object ObtenerSimulacionEscala(string mix)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            decimal mixDecimal = Convert.ToDecimal(
+                mix.Replace(",", "."),
+                System.Globalization.CultureInfo.InvariantCulture
+            );
+
+            DataTable dt = cg.SimularEscala(mixDecimal);
+
+            var lista = new List<object>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                lista.Add(new
+                {
+                    Plan = row["Plan"].ToString(),
+                    CantidadNecesaria = row["CantidadNecesaria"]
+                });
+            }
+
+            return lista;
+        }
+        #endregion
 
 
         public class ResultadoSimulador

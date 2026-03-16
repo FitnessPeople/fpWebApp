@@ -407,6 +407,38 @@
                                                         <p>Escala: <b><span id="lblEscala">-</span></b></p>
                                                         <p>Comisión: <b><span id="lblComision">$0</span></b></p>
 
+                                                        <div class="alert alert-info mt-3">
+                                                            <span id="lblRecomendacion"></span>
+                                                        </div>
+
+                                                        <h4>Detalle de Comisión</h4>
+
+                                                        <table class="table table-bordered" id="tablaDetalleComision">
+
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Plan</th>
+                                                                    <th>Cantidad</th>
+                                                                    <th>Objetivo</th>
+                                                                    <th>Comisión Unidad</th>
+                                                                    <th>Comisión Total</th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                            </tbody>
+
+                                                        </table>
+
+
+                                                        <div class="alert alert-success mt-3">
+
+                                                            <b>Cómo subir de escala:</b>
+
+                                                            <div id="lblSimulacion"></div>
+
+                                                        </div>
+
                                                     </div>
                                                 </div>
 
@@ -1521,102 +1553,105 @@
     </script>
 
 
-<script>
+    <script>
 
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        cargarPlanesSimulador();
+            cargarPlanesSimulador();
 
-        $(document).on("input", ".plan-cantidad", function () {
-            console.log("evento input detectado");
-            calcular();
-        });
-
-    });
-
-
-    function calcular() {
-
-        console.log("calcular ejecutado");
-
-        var ventas = [];
-
-        $(".plan-cantidad").each(function () {
-
-            var idPlan = $(this).attr("planid");
-            var cantidad = parseInt($(this).val()) || 0;
-
-            ventas.push({
-                idPlan: parseInt(idPlan),
-                cantidad: cantidad
+            $(document).on("input", ".plan-cantidad", function () {
+                console.log("evento input detectado");
+                calcular();
             });
 
         });
 
-        console.log("ventas:", ventas);
 
-        $.ajax({
+        function calcular() {
 
-            type: "POST",
-            url: "bonificaciones.aspx/CalcularSimulador",
+            console.log("calcular ejecutado");
 
-            data: JSON.stringify({ ventas: ventas }),
+            var ventas = [];
 
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
+            $(".plan-cantidad").each(function () {
 
-            success: function (response) {
+                var idPlan = $(this).attr("planid");
+                var cantidad = parseInt($(this).val()) || 0;
 
-                console.log("respuesta servidor:", response);
+                ventas.push({
+                    idPlan: parseInt(idPlan),
+                    cantidad: cantidad
+                });
 
-                var r = response.d;
+            });
 
-                $("#lblMix").text(r.Mix);
-                $("#lblEscala").text(r.Escala);
-                var comision = parseFloat(r.Comision) || 0;
+            console.log("ventas:", ventas);
 
-                $("#lblComision").text(
-                    comision.toLocaleString('es-CO', {
-                        style: 'currency',
-                        currency: 'COP',
-                        minimumFractionDigits: 0
-                    })
-                );
-              
+            $.ajax({
 
-            },
+                type: "POST",
+                url: "bonificaciones.aspx/CalcularSimulador",
 
-            error: function (xhr) {
+                data: JSON.stringify({ ventas: ventas }),
 
-                console.log("ERROR:", xhr.responseText);
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
 
-            }
+                success: function (response) {
 
-        });
+                    console.log("respuesta servidor:", response);
 
-    }
+                    var r = response.d;
+
+                    $("#lblMix").text(r.Mix);
+                    $("#lblEscala").text(r.Escala);
+                    var comision = parseFloat(r.Comision) || 0;
+
+                    $("#lblComision").text(
+                        comision.toLocaleString('es-CO', {
+                            style: 'currency',
+                            currency: 'COP',
+                            minimumFractionDigits: 0
+                        })
+                    );
+                    console.log("Mix recibido:", r.Mix);
+
+                    obtenerRecomendacion(r.Mix);
+                    obtenerSimulacionEscala(r.Mix);
+                    obtenerDetalleComision(ventas, parseInt(r.Escala) || 0);
+                },
+
+                error: function (xhr) {
+
+                    console.log("ERROR:", xhr.responseText);
+
+                }
+
+            });
+
+        }
 
 
-    function cargarPlanesSimulador() {
+        function cargarPlanesSimulador() {
 
-        $.ajax({
+            $.ajax({
 
-            type: "POST",
-            url: "bonificaciones.aspx/ObtenerPlanes",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerPlanes",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
 
-            success: function (response) {
+                success: function (response) {
 
-                console.log("Planes:", response);
+                    console.log("Planes:", response);
 
-                var planes = response.d;
+                    var planes = response.d;
 
-                $("#tablaPlanesSimulador").html("");
+                    $("#tablaPlanesSimulador").html("");
 
-                $.each(planes, function (i, p) {
+                    $.each(planes, function (i, p) {
 
-                    var fila = `
+                        var fila = `
                 <tr>
                     <td>${p.Nombre}</td>
                     <td>
@@ -1627,19 +1662,177 @@
                     </td>
                 </tr>`;
 
-                    $("#tablaPlanesSimulador").append(fila);
+                        $("#tablaPlanesSimulador").append(fila);
+
+                    });
+
+                    calcular();
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+    <script>
+        success: function (response) {
+
+            var r = response.d;
+
+            $("#lblMix").text(r.Mix);
+            $("#lblEscala").text(r.Escala);
+
+            var comision = parseFloat(r.Comision) || 0;
+
+            $("#lblComision").text(
+                comision.toLocaleString('es-CO', {
+                    style: 'currency',
+                    currency: 'COP',
+                    minimumFractionDigits: 0
+                })
+            );
+
+            var mix = parseFloat(r.Mix.toString().replace(",", "."));
+            console.log("Mix convertido:", mix);
+            obtenerRecomendacion(mix);
+
+        }
+    </script>
+
+    <script>
+        function obtenerRecomendacion(mix) {
+
+            var mixEnviar = mix.toString().replace(",", ".");
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerRecomendacion",
+
+                data: JSON.stringify({
+                    mix: mixEnviar
+                }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    var r = response.d;
+
+                    $("#lblRecomendacion").html(
+                        "🚀 Te faltan <b>" + r.MixFaltante +
+                        "</b> puntos mix para la escala <b>" +
+                        r.Escala + "</b>"
+                    );
+
+                }
+
+            });
+
+        }
+    </script>
+
+    <script>
+
+        function obtenerSimulacionEscala(mix) {
+
+            console.log("Simulando escala con mix:", mix);
+
+            $.ajax({
+
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerSimulacionEscala",
+
+                data: JSON.stringify({
+                    mix: mix
+                }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    console.log("respuesta simulacion:", response);
+
+                    var datos = response.d;
+
+                    var html = "";
+
+                    datos.forEach(function (p) {
+
+                        if (p.CantidadNecesaria > 0) {
+
+                            html += "✔ " + p.CantidadNecesaria + " " + p.Plan + "<br>";
+
+                        }
+
+                    });
+
+                    $("#lblSimulacion").html(html);
+
+                },
+
+                error: function (xhr) {
+
+                    console.log("ERROR simulacion:", xhr.responseText);
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+    <script>
+
+            function obtenerDetalleComision(ventas) {
+
+                $.ajax({
+
+                    type: "POST",
+                    url: "bonificaciones.aspx/ObtenerDetalleComision",
+
+                    data: JSON.stringify({
+                        ventas: ventas
+                    }),
+
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    success: function (response) {
+
+                        var datos = response.d;
+
+                        var filas = "";
+
+                        datos.forEach(function (d) {
+
+                            filas += "<tr>";
+                            filas += "<td>" + d.Plan + "</td>";
+                            filas += "<td>" + d.Cantidad + "</td>";
+                            filas += "<td>" + d.Objetivo + "</td>";
+                            filas += "<td>$" + d.ComisionUnidad + "</td>";
+                            filas += "<td>$" + d.ComisionTotal + "</td>";
+                            filas += "</tr>";
+
+                        });
+
+                        $("#tablaDetalleComision tbody").html(filas);
+
+                    }
 
                 });
 
-                calcular();
-
             }
 
-        });
+    </script>
 
-    }
 
-</script>
+
 
 </body>
 
