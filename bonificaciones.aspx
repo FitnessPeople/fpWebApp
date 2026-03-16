@@ -348,14 +348,14 @@
 
                                                     <div class="panel-body">
 
-                                                        <table class="table table-bordered">
+                                                        <%--                     <table class="table table-bordered">
 
                                                             <tr>
                                                                 <td><b>Anualidad</b></td>
                                                                 <td>
                                                                     <input type="number" id="txtAnualidad"
                                                                         class="form-control"
-                                                                        onkeyup="calcular()" />
+                                                                         />
                                                                 </td>
                                                             </tr>
 
@@ -364,7 +364,7 @@
                                                                 <td>
                                                                     <input type="number" id="txtSemestre"
                                                                         class="form-control"
-                                                                        onkeyup="calcular()" />
+                                                                         />
                                                                 </td>
                                                             </tr>
 
@@ -373,7 +373,7 @@
                                                                 <td>
                                                                     <input type="number" id="txtTrimestre"
                                                                         class="form-control"
-                                                                        onkeyup="calcular()" />
+                                                                         />
                                                                 </td>
                                                             </tr>
 
@@ -382,10 +382,21 @@
                                                                 <td>
                                                                     <input type="number" id="txtMensual"
                                                                         class="form-control"
-                                                                        onkeyup="calcular()" />
+                                                                         />
                                                                 </td>
                                                             </tr>
 
+                                                        </table>--%>
+
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Plan</th>
+                                                                    <th>Cantidad</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody id="tablaPlanesSimulador">
+                                                            </tbody>
                                                         </table>
 
                                                         <hr />
@@ -547,94 +558,12 @@
                                                 <!-- TAB OBJETIVOS -->
                                                 <!-- ===================== -->
 
-                                                <%--         <div id="tab-objetivos" class="tab-pane">
-
-                                                    <div class="panel-body">
-
-                                                        <h3>Configuración de Objetivos</h3>
-
-                                                        <div class="row">
-
-                                                            <div class="col-md-3">
-
-                                                                <label>Escala</label>
-
-                                                                <asp:DropDownList ID="ddlEscala"
-                                                                    runat="server"
-                                                                    CssClass="form-control">
-                                                                </asp:DropDownList>
-
-                                                            </div>
-
-                                                            <div class="col-md-3">
-
-                                                                <label>Plan</label>
-
-                                                                <asp:DropDownList ID="ddlPlan"
-                                                                    runat="server"
-                                                                    CssClass="form-control">
-                                                                </asp:DropDownList>
-
-                                                            </div>
-
-                                                            <div class="col-md-2">
-
-                                                                <label>Cantidad Objetivo</label>
-
-                                                                <asp:TextBox ID="txtCantidadObjetivo"
-                                                                    runat="server"
-                                                                    CssClass="form-control"></asp:TextBox>
-
-                                                            </div>
-
-                                                            <div class="col-md-2">
-
-                                                                <label>Comisión Unidad</label>
-
-                                                                <asp:TextBox ID="txtComisionUnidad"
-                                                                    runat="server"
-                                                                    CssClass="form-control"></asp:TextBox>
-
-                                                            </div>
-
-                                                            <div class="col-md-2" style="margin-top: 25px">
-
-                                                                <asp:Button ID="btnGuardarObjetivo"
-                                                                    runat="server"
-                                                                    Text="Guardar"
-                                                                    CssClass="btn btn-primary" />
-
-                                                            </div>
-
-                                                        </div>
-
-                                                        <hr />
-
-                                                        <asp:GridView ID="gvObjetivos"
-                                                            runat="server"
-                                                            AutoGenerateColumns="False"
-                                                            CssClass="table table-striped table-bordered">
-
-                                                            <Columns>
-
-                                                                <asp:BoundField DataField="Escala" HeaderText="Escala" />
-                                                                <asp:BoundField DataField="Plan" HeaderText="Plan" />
-                                                                <asp:BoundField DataField="CantidadObjetivo" HeaderText="Objetivo" />
-                                                                <asp:BoundField DataField="ComisionUnidad" HeaderText="Comisión" />
-
-                                                            </Columns>
-
-                                                        </asp:GridView>
-
-                                                    </div>
-                                                </div>--%>
-
                                                 <div id="tab-objetivos" class="tab-pane">
 
                                                     <div class="panel-body">
 
                                                         <h3>Configuración de Objetivos</h3>
-                                                   
+
 
                                                         <div class="row">
 
@@ -708,7 +637,7 @@
                                                             <tbody></tbody>
 
                                                         </table>
-                                                         <input type="hidden" id="idObjetivoEditar" value="0" />
+                                                        <input type="hidden" id="idObjetivoEditar" value="0" />
                                                     </div>
                                                 </div>
 
@@ -843,34 +772,6 @@
         });
     </script>
 
-    <script>
-        function calcular() {
-
-            var datos = {
-                anual: $("#txtAnualidad").val(),
-                semestre: $("#txtSemestre").val(),
-                trimestre: $("#txtTrimestre").val(),
-                mensual: $("#txtMensual").val()
-            };
-
-            $.ajax({
-                type: "POST",
-                url: "bonificaciones.aspx/CalcularComision",
-                data: JSON.stringify(datos),
-                contentType: "application/json",
-                success: function (r) {
-
-                    $("#lblMix").text(r.d.PuntosMix);
-                    $("#lblEscala").text(r.d.Escala);
-                    $("#lblComision").text(r.d.Comision);
-
-                }
-            });
-        }
-    </script>
-
-
-
 
     <%--ZONA PLANES--%>
 
@@ -968,6 +869,7 @@
                     console.log("Guardado:", response);
 
                     cargarPlanes();
+                    cargarPlanesCombo();
 
                     $("#idPlanEditar").val(0);
                     $("#<%=txtNombrePlan.ClientID%>").val("");
@@ -1352,7 +1254,7 @@
 
     </script>
 
-<%--    OBJETIVOS PLAN--%>
+    <%--    OBJETIVOS PLAN--%>
 
     <script>
 
@@ -1602,15 +1504,142 @@
     </script>
 
     <script>
+
         $(document).ready(function () {
+            cargarPlanesSimulador();
             cargarPlanes();
             cargarPlanesCombo();
             cargarEscalasCombo();
             cargarObjetivos();
 
+            // Cuando el usuario escriba en cualquier input
+            $("#txtAnualidad,#txtSemestre,#txtTrimestre,#txtMensual").on("input", function () {
+                calcular();
+            });
+
+        });
+    </script>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        cargarPlanesSimulador();
+
+        $(document).on("input", ".plan-cantidad", function () {
+            console.log("evento input detectado");
+            calcular();
         });
 
-    </script>
+    });
+
+
+    function calcular() {
+
+        console.log("calcular ejecutado");
+
+        var ventas = [];
+
+        $(".plan-cantidad").each(function () {
+
+            var idPlan = $(this).attr("planid");
+            var cantidad = parseInt($(this).val()) || 0;
+
+            ventas.push({
+                idPlan: parseInt(idPlan),
+                cantidad: cantidad
+            });
+
+        });
+
+        console.log("ventas:", ventas);
+
+        $.ajax({
+
+            type: "POST",
+            url: "bonificaciones.aspx/CalcularSimulador",
+
+            data: JSON.stringify({ ventas: ventas }),
+
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (response) {
+
+                console.log("respuesta servidor:", response);
+
+                var r = response.d;
+
+                $("#lblMix").text(r.Mix);
+                $("#lblEscala").text(r.Escala);
+                var comision = parseFloat(r.Comision) || 0;
+
+                $("#lblComision").text(
+                    comision.toLocaleString('es-CO', {
+                        style: 'currency',
+                        currency: 'COP',
+                        minimumFractionDigits: 0
+                    })
+                );
+              
+
+            },
+
+            error: function (xhr) {
+
+                console.log("ERROR:", xhr.responseText);
+
+            }
+
+        });
+
+    }
+
+
+    function cargarPlanesSimulador() {
+
+        $.ajax({
+
+            type: "POST",
+            url: "bonificaciones.aspx/ObtenerPlanes",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (response) {
+
+                console.log("Planes:", response);
+
+                var planes = response.d;
+
+                $("#tablaPlanesSimulador").html("");
+
+                $.each(planes, function (i, p) {
+
+                    var fila = `
+                <tr>
+                    <td>${p.Nombre}</td>
+                    <td>
+                        <input type="number"
+                               class="form-control plan-cantidad"
+                               planid="${p.Id}"
+                               value="0">
+                    </td>
+                </tr>`;
+
+                    $("#tablaPlanesSimulador").append(fila);
+
+                });
+
+                calcular();
+
+            }
+
+        });
+
+    }
+
+</script>
 
 </body>
 

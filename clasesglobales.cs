@@ -33,8 +33,11 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Script.Serialization;
+using System.Web.Services;
 using System.Web.Services.Description;
 using System.Web.UI;
+using static fpWebApp.bonificaciones;
 using static NPOI.HSSF.Util.HSSFColor;
 using Paragraph = iTextSharp.text.Paragraph;
 
@@ -14356,6 +14359,8 @@ namespace fpWebApp
             return ds;
         }
 
+
+
         public DataSet CrudObjetivoPlan(int acc, int idObjetivo, int idEscala, int idPlanSimulador, int cantidadObjetivo, decimal valorUnitarioComision)
         {
             DataSet ds = new DataSet();
@@ -14395,6 +14400,60 @@ namespace fpWebApp
 
             return ds;
         }
+
+
+        //Pruebas
+        //public DataTable CalcularSimulador(int anual, int semestre, int trimestre, int mensual)
+        //{
+        //    DataTable dt = new DataTable();
+
+        //    string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+        //    using (MySqlConnection conn = new MySqlConnection(strConexion))
+        //    {
+        //        conn.Open();
+
+        //        MySqlCommand cmd = new MySqlCommand("PA_OBTENER_COMISION_SIMULADOR", conn);
+        //        cmd.CommandType = CommandType.StoredProcedure;
+
+        //        cmd.Parameters.AddWithValue("@p_anual", anual);
+        //        cmd.Parameters.AddWithValue("@p_semestre", semestre);
+        //        cmd.Parameters.AddWithValue("@p_trimestre", trimestre);
+        //        cmd.Parameters.AddWithValue("@p_mensual", mensual);
+
+        //        MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+        //        da.Fill(dt);
+        //    }
+
+        //    return dt;
+        //}
+
+
+        //Producción
+        public DataTable CalcularSimulador(List<VentaSimulador> ventas)
+        {
+            DataTable dt = new DataTable();
+
+            string json = new JavaScriptSerializer().Serialize(ventas);
+
+            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+            using (MySqlConnection conn = new MySqlConnection(strConexion))
+            {
+                conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand("PA_OBTENER_COMISION_SIMULADOR", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@p_ventas", json);
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+
+            return dt;
+        }
+
 
         #endregion
 

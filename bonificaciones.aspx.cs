@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -348,33 +349,34 @@ namespace fpWebApp
 
         #endregion
 
-        [WebMethod]
-        public static ResultadoSimulador CalcularComision(int anual, int semestre, int trimestre, int mensual)
+        #region Calcular Comisión
+
+        public class VentaSimulador
         {
-            decimal mix =
-                (anual * 1.0m) +
-                (semestre * 0.8m) +
-                (trimestre * 0.5m) +
-                (mensual * 0.2m);
+            public int? idPlan { get; set; }
+            public int? cantidad { get; set; }
+        }
 
-            string escala = "Sin escala";
+        //Prtoduccion
+        [WebMethod]
+        public static object CalcularSimulador(List<VentaSimulador> ventas)
+        {
+            clasesglobales cg = new clasesglobales();
 
-            if (mix >= 68)
-                escala = "Full";
-            else if (mix >= 54)
-                escala = "Escala 2";
-            else if (mix >= 41)
-                escala = "Escala 1";
+            DataTable dt = cg.CalcularSimulador(ventas);
 
-            decimal comision = mix * 10000; // ejemplo
-
-            return new ResultadoSimulador
+            return new
             {
-                PuntosMix = mix,
-                Escala = escala,
-                Comision = comision
+                Estado = dt.Rows[0]["Estado"].ToString(),
+                Mix = dt.Rows[0]["Mix"].ToString(),
+                Escala = dt.Rows[0]["Escala"].ToString(),
+                Comision = dt.Rows[0]["Comision"].ToString()
             };
         }
+
+        #endregion
+
+
 
         public class ResultadoSimulador
         {
@@ -383,7 +385,7 @@ namespace fpWebApp
             public decimal Comision { get; set; }
         }
 
-  
+
 
 
     }
