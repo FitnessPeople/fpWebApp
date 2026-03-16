@@ -611,6 +611,7 @@
     <Content Include="incapacidades.aspx" />
     <Content Include="incapacidadesAfil.aspx" />
     <Content Include="inicio.aspx" />
+    <Content Include="inscripcionesclases.aspx" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\bootstrap.min.js" />
     <Content Include="js\demo\chartjs-demo.js" />
@@ -2000,6 +2001,13 @@
     </Compile>
     <Compile Include="inicio.aspx.designer.cs">
       <DependentUpon>inicio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="inscripcionesclases.aspx.cs">
+      <DependentUpon>inscripcionesclases.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="inscripcionesclases.aspx.designer.cs">
+      <DependentUpon>inscripcionesclases.aspx</DependentUpon>
     </Compile>
     <Compile Include="liquidacionesgeneradas.aspx.cs">
       <DependentUpon>liquidacionesgeneradas.aspx</DependentUpon>
