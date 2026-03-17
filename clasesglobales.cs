@@ -14429,7 +14429,7 @@ namespace fpWebApp
         //}
 
 
-        //Producción
+        // Funiona solo en Producción Mysql 8.0
         public DataTable CalcularSimulador(List<VentaSimulador> ventas)
         {
             DataTable dt = new DataTable();
@@ -14454,7 +14454,82 @@ namespace fpWebApp
             return dt;
         }
 
+        public DataTable ObtenerRecomendacionEscala(decimal mix)
+        {
+            DataTable dt = new DataTable();
 
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("PA_OBTENER_RECOMENDACION_ESCALA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_mix", mix);
+
+                        mysqlConexion.Open();
+
+                        MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                        da.Fill(dt);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dt;
+        }
+
+        public DataTable DetalleComisionPlan(List<VentaSimulador> ventas)
+        {
+            DataTable dt = new DataTable();
+
+            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+            using (MySqlConnection conn = new MySqlConnection(strConexion))
+            {
+                conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand("PA_DETALLE_COMISION_PLAN", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                string ventasJson = JsonConvert.SerializeObject(ventas);
+
+                cmd.Parameters.AddWithValue("p_ventas", ventasJson);
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+
+            return dt;
+        }
+
+        public DataTable SimularEscala(decimal mix)
+        {
+            DataTable dt = new DataTable();
+
+            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+            using (MySqlConnection conn = new MySqlConnection(strConexion))
+            {
+                conn.Open();
+
+                MySqlCommand cmd = new MySqlCommand("PA_SIMULADOR_ESCALA", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("p_mix", mix);
+
+                MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                da.Fill(dt);
+            }
+
+            return dt;
+        }
         #endregion
 
         #region Preguntas ParQ
