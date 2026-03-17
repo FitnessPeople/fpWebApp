@@ -40,8 +40,8 @@ namespace fpWebApp
                         {
                             btnAgregar.Visible = true;
                         }
-                    }
-                    listaEmpresasAfiliadas();
+                        listaEmpresasAfiliadas();
+                    }                    
                 }
                 else
                 {

@@ -169,7 +169,7 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-                            <div class="row">
+                            <div class="row"> 
                                 <form role="form" id="form" enctype="multipart/form-data" runat="server">
                                     <div class="col-sm-6 b-r">
                                         <div class="row">
@@ -286,13 +286,7 @@
                                             <div class="col-sm-12">
                                                 <div class="row">
                                                     <div class="form-group">
-                                                        <%--                                                        <i class="fas fa-pen text-info"></i>
-                                                        <label for="message-text" class="col-form-label">Descripción de la negociación / oferta y beneficios:</label>
-                                                        <textarea id="txaObservaciones" runat="server" rows="3"
-                                                            cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
-                                                        <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txaObservaciones"
-                                                            ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />--%>
-                                                        <%--</div>--%>
+
                                                         <div class="form-group">
                                                             <label>Descripción de la negociación / oferta y beneficios:</label>
                                                             <div id="editor" cssclass="form-control input-sm"></div>

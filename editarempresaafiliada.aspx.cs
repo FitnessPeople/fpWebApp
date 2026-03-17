@@ -24,8 +24,8 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         txbTelefonoPpal.Attributes.Add("type", "number");
-                        txbTelefonoSrio.Attributes.Add("type", "number");
-                        txbCelular.Attributes.Add("type", "number");
+                        //txbTelefonoSrio.Attributes.Add("type", "number");
+                        //txbCelular.Attributes.Add("type", "number");
                         txbFechaConvenio.Attributes.Add("type", "date");
                         txbNroEmpleados.Attributes.Add("type", "number");
                         CargarTipoDocumento();
@@ -105,9 +105,13 @@ namespace fpWebApp
                     txbRazonSocial.Text = dt.Rows[0]["RazonSocial"].ToString();
                     txbDocumento.Text = dt.Rows[0]["DocumentoEmpresa"].ToString();
                     ddlTipoDocumento.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idTipoDocumento"].ToString());
-                    txbTelefonoPpal.Text = dt.Rows[0]["TelefonoPpal"].ToString();
-                    txbTelefonoSrio.Text = dt.Rows[0]["TelefonoSrio"].ToString();
-                    txbCelular.Text = dt.Rows[0]["CelularEmpresa"].ToString();
+                    txbDV.Text = dt.Rows[0]["digitoverificacion"].ToString();
+                    txbNombreContacto.Text = dt.Rows[0]["NombreContacto"].ToString();
+                    txbCargoContacto.Text = dt.Rows[0]["CargoContacto"].ToString();
+
+                    txbTelefonoPpal.Text = dt.Rows[0]["CelularEmpresa"].ToString();
+                    //txbTelefonoSrio.Text = dt.Rows[0]["TelefonoPagador"].ToString();
+                    //txbCelular.Text = dt.Rows[0]["CelularEmpresa"].ToString();
                     txbCorreo.Text = dt.Rows[0]["CorreoEmpresa"].ToString();
                     txbDireccion.Text = dt.Rows[0]["DireccionEmpresa"].ToString();
                     ddlCiudadEmpresa.SelectedIndex = Convert.ToInt16(ddlCiudadEmpresa.Items.IndexOf(ddlCiudadEmpresa.Items.FindByValue(dt.Rows[0]["idCiudadEmpresa"].ToString())));
@@ -173,9 +177,9 @@ namespace fpWebApp
                     "RazonSocial = '" + txbRazonSocial.Text.ToString().Replace("'", "").Replace("<", "").Replace(">", "").Replace("=", "").Trim() + "', " +
                     "DocumentoEmpresa = '" + txbDocumento.Text.ToString().Trim() + "', " +
                     "idTipoDocumento = " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
-                    "TelefonoPpal = '" + txbTelefonoPpal.Text.ToString().Replace("e", "").Replace("+", "").Replace("-", "").Replace(".", "") + "', " +
-                    "TelefonoSrio = '" + txbTelefonoSrio.Text.ToString().Replace("e", "").Replace("+", "").Replace("-", "").Replace(".", "") + "', " +
-                    "CelularEmpresa = '" + txbCelular.Text.ToString().Replace("e", "").Replace("+", "").Replace("-", "").Replace(".", "") + "', " +
+                    //"TelefonoPpal = '" + txbTelefonoPpal.Text.ToString().Replace("e", "").Replace("+", "").Replace("-", "").Replace(".", "") + "', " +
+                    //"TelefonoSrio = '" + txbTelefonoSrio.Text.ToString().Replace("e", "").Replace("+", "").Replace("-", "").Replace(".", "") + "', " +
+                    //"CelularEmpresa = '" + txbCelular.Text.ToString().Replace("e", "").Replace("+", "").Replace("-", "").Replace(".", "") + "', " +
                     "CorreoEmpresa = '" + txbCorreo.Text.ToString().Trim() + "', " +
                     "DireccionEmpresa = '" + txbDireccion.Text.ToString().Trim() + "', " +
                     "idCiudadEmpresa = '" + ddlCiudadEmpresa.SelectedItem.Value.ToString() + "', " +
