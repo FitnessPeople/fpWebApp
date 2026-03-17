@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="editarempresaafiliada.aspx.cs" Inherits="fpWebApp.editarempresaafiliada" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="editarempresaafiliada.aspx.cs" Inherits="fpWebApp.editarempresaafiliada" ValidateRequest="false" %>
 
 <%@ Register Src="~/controles/footer.ascx" TagPrefix="uc1" TagName="footer" %>
 <%@ Register Src="~/controles/navbar.ascx" TagPrefix="uc1" TagName="navbar" %>
@@ -39,6 +39,49 @@
             element2.classList.remove("collapse");
         }
     </script>
+
+
+    <!-- CSS de Quill -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- JS de Quill -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+    <script>
+        var quill;
+        document.addEventListener("DOMContentLoaded", function () {
+            quill = new Quill("#editor", {
+                theme: "snow",
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold'], // Negrita y Tachado
+                        ['italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                    ]
+                }
+            });
+            function ajustarAlturaEditor() {
+                var editorContenido = document.querySelector(".ql-editor");
+                editorContenido.style.height = "auto";
+                editorContenido.style.height = editorContenido.scrollHeight + "px";
+            }
+            quill.on("text-change", ajustarAlturaEditor);
+
+            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
+            if (contenidoGuardado.trim() !== "") {
+                quill.root.innerHTML = contenidoGuardado;
+            }
+        });
+        function guardarContenidoEditor() {
+            var contenido = quill.root.innerHTML;
+            document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
+        }
+    </script>
+
+        <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 
 <body onload="changeClass()">
@@ -245,18 +288,7 @@
                                             </div>
                                         </div>
 
-<%--                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Celular</label>
-                                                    <asp:TextBox ID="txbCelular" CssClass="form-control input-sm" runat="server" placeholder="Celular"></asp:TextBox>
-                                                </div>
-                                            </div>
-
-                                        </div>--%>
-                                    </div>
-
-                                                                            <div class="row">
+                                        <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Nombre del Pagador</label>
@@ -270,6 +302,10 @@
                                                     <asp:TextBox ID="txbCelularPagador" CssClass="form-control input-sm" runat="server" placeholder="Celular del Pagador"></asp:TextBox>
                                                 </div>
                                             </div>
+                                        </div>
+
+
+                                        <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Correo del pagador</label>
@@ -293,20 +329,42 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12">
-                                                <div class="row">
-                                                    <div class="form-group">
+                                        </div>
 
-                                                        <div class="form-group">
-                                                            <label>Descripción de la negociación / oferta y beneficios:</label>
-                                                            <div id="editor" cssclass="form-control input-sm"></div>
-                                                            <asp:HiddenField ID="hiddenEditor" runat="server" />
-                                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="form-group">
+
+                                                    <div class="form-group">
+                                                        <label>Descripción de la negociación / oferta y beneficios:</label>
+                                                        <div id="editor" cssclass="form-control input-sm"></div>
+                                                        <asp:HiddenField ID="hiddenEditor" runat="server" />
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
+
+
+
+                                        <%--                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Celular</label>
+                                                    <asp:TextBox ID="txbCelular" CssClass="form-control input-sm" runat="server" placeholder="Celular"></asp:TextBox>
+                                                </div>
+                                            </div>
+
+                                        </div>--%>
+                                    </div>
+
+
+
+
+
+
+
+
 
 
 
@@ -335,13 +393,19 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <div class="form-group">
-                                                    <label>Fecha convenio</label>
+                                                    <label>Fecha inicio convenio</label>
                                                     <asp:TextBox ID="txbFechaConvenio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Fecha fin convenio</label>
+                                                    <asp:TextBox ID="txbFechaFinConvenio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
                                                 <div class="form-group">
                                                     <label>Nro de empleados</label>
                                                     <asp:TextBox ID="txbNroEmpleados" CssClass="form-control input-sm" runat="server"></asp:TextBox>
@@ -375,19 +439,82 @@
 
                                         <div class="form-group">
                                             <label>Contrato:</label>
+
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+
+                                                <div class="form-control input-sm" data-trigger="fileinput">
+                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                    <span class="fileinput-filename"></span>
+                                                </div>
+
+                                                <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                    <span class="fileinput-new">Seleccionar archivo *.Pdf</span>
+                                                    <span class="fileinput-exists">Cambiar</span>
+                                                    <input type="file" name="fileConvenio" id="fileConvenio" accept="application/pdf">
+                                                </span>
+
+                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists"
+                                                    data-dismiss="fileinput">Quitar</a>
+
+                                            </div>
+
+                                            <!-- ESTE ES EL LINK DEL ARCHIVO ACTUAL -->
+                                            <asp:HyperLink ID="lnkContrato" runat="server" Target="_blank" CssClass="text-primary"></asp:HyperLink>
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Camara de comercio:</label>
                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput">
                                                 <div class="form-control input-sm" data-trigger="fileinput">
                                                     <i class="glyphicon glyphicon-file fileinput-exists"></i>
                                                     <span class="fileinput-filename"></span>
                                                 </div>
                                                 <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                    <span class="fileinput-new input-sm">Seleccionar archivo</span>
+                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
                                                     <span class="fileinput-exists input-sm">Cambiar</span>
-                                                    <input type="file" name="fileConvenio" id="fileConvenio" accept="application/pdf">
+                                                    <input type="file" name="fileCamara" id="fileCamara" accept="application/pdf">
                                                 </span>
-                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm" data-dismiss="fileinput">Quitar</a>
+                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
+                                                    data-dismiss="fileinput">Quitar</a>
                                             </div>
-                                            <asp:Literal ID="ltContrato" runat="server"></asp:Literal>
+                                            <asp:HyperLink ID="lnkCamara" runat="server" Target="_blank"></asp:HyperLink>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>RUT:</label>
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="form-control input-sm" data-trigger="fileinput">
+                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                    <span class="fileinput-filename"></span>
+                                                </div>
+                                                <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
+                                                    <span class="fileinput-exists input-sm">Cambiar</span>
+                                                    <input type="file" name="fileRut" id="fileRut" accept="application/pdf">
+                                                </span>
+                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
+                                                    data-dismiss="fileinput">Quitar</a>
+                                            </div>
+                                            <asp:HyperLink ID="lnkRut" runat="server" Target="_blank"></asp:HyperLink>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Cédula Representante Legal:</label>
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                <div class="form-control input-sm" data-trigger="fileinput">
+                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                    <span class="fileinput-filename"></span>
+                                                </div>
+                                                <span class="input-group-addon btn btn-success btn-file input-sm">
+                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
+                                                    <span class="fileinput-exists input-sm">Cambiar</span>
+                                                    <input type="file" name="fileCedulaRepLeg" id="fileCedulaRepLeg" accept="application/pdf">
+                                                </span>
+                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
+                                                    data-dismiss="fileinput">Quitar</a>
+                                            </div>
+                                            <asp:HyperLink ID="lnkCedula" runat="server" Target="_blank"></asp:HyperLink>
                                         </div>
 
                                         <div class="form-group">

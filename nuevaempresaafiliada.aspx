@@ -246,7 +246,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row"> 
                                             <div class="col-sm-6">
                                                 <div class="form-group">
                                                     <label>Nombre del Pagador</label>
@@ -414,6 +414,7 @@
                                                     data-dismiss="fileinput">Quitar</a>
                                             </div>
                                         </div>
+
                                         <div class="form-group">
                                             <label>Cédula Representante Legal:</label>
                                             <div class="fileinput fileinput-new input-group" data-provides="fileinput">

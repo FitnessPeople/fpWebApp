@@ -4089,6 +4089,105 @@ namespace fpWebApp
             return mensaje;
         }
 
+
+        public string EditarEmpresaAfiliada(
+        int idEmpresaAfiliada, string DocumentoEmpresa, int idTipoDocumento, string NombreComercial, string RazonSocial, DateTime FechaConvenio, DateTime FechaFinConvenio,
+        string NombreContacto, string CargoContacto, string CelularEmpresa, string CorreoEmpresa, string NombrePagador, string TelefonoPagador, string CorreoPagador,
+        string DireccionEmpresa, int idCiudadEmpresa, int NroEmpleados, string TipoNegociacion, int DiasCredito, string Contrato, string CamaraComercio,
+        string Rut, string CedulaRepLeg, string EstadoEmpresa, int RetornoAdm, string digitoverificacion, string Descripcion, int idUsuarioActualiza)
+        {
+
+            string respuesta = "";
+
+            try
+            {
+
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection conn = new MySqlConnection(strConexion))
+                {
+
+                    conn.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("PA_ACTUALIZAR_EMPRESA_AFILIADA", conn))
+                    {
+
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("p_idEmpresaAfiliada", idEmpresaAfiliada);
+                        cmd.Parameters.AddWithValue("p_DocumentoEmpresa", DocumentoEmpresa);
+                        cmd.Parameters.AddWithValue("p_idTipoDocumento", idTipoDocumento);
+                        cmd.Parameters.AddWithValue("p_NombreComercial", NombreComercial);
+                        cmd.Parameters.AddWithValue("p_RazonSocial", RazonSocial);
+                        cmd.Parameters.AddWithValue("p_FechaConvenio", FechaConvenio);
+                        cmd.Parameters.AddWithValue("p_FechaFinConvenio", FechaFinConvenio);
+                        cmd.Parameters.AddWithValue("p_NombreContacto", NombreContacto);
+                        cmd.Parameters.AddWithValue("p_CargoContacto", CargoContacto);
+                        cmd.Parameters.AddWithValue("p_CelularEmpresa", CelularEmpresa);
+                        cmd.Parameters.AddWithValue("p_CorreoEmpresa", CorreoEmpresa);
+                        cmd.Parameters.AddWithValue("p_NombrePagador", NombrePagador);
+                        cmd.Parameters.AddWithValue("p_TelefonoPagador", TelefonoPagador);
+                        cmd.Parameters.AddWithValue("p_CorreoPagador", CorreoPagador);
+                        cmd.Parameters.AddWithValue("p_DireccionEmpresa", DireccionEmpresa);
+                        cmd.Parameters.AddWithValue("p_idCiudadEmpresa", idCiudadEmpresa);
+                        cmd.Parameters.AddWithValue("p_NroEmpleados", NroEmpleados);
+                        cmd.Parameters.AddWithValue("p_TipoNegociacion", TipoNegociacion);
+                        cmd.Parameters.AddWithValue("p_DiasCredito", DiasCredito);
+                        cmd.Parameters.AddWithValue("p_Contrato", Contrato);
+                        cmd.Parameters.AddWithValue("p_CamaraComercio", CamaraComercio);
+                        cmd.Parameters.AddWithValue("p_Rut", Rut);
+                        cmd.Parameters.AddWithValue("p_CedulaRepLeg", CedulaRepLeg);
+                        cmd.Parameters.AddWithValue("p_EstadoEmpresa", EstadoEmpresa);
+                        cmd.Parameters.AddWithValue("p_RetornoAdm", RetornoAdm);
+                        cmd.Parameters.AddWithValue("p_digitoverificacion", digitoverificacion);
+                        cmd.Parameters.AddWithValue("p_Descripcion", Descripcion);
+                        cmd.Parameters.AddWithValue("p_idUsuarioActualiza", idUsuarioActualiza);
+
+                        cmd.ExecuteNonQuery();
+
+                        respuesta = "OK";
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                respuesta = ex.Message;
+            }
+            return respuesta;
+        }
+
+        public DataTable ConsultarEmpresaAfiliadaPorId(int idEmpresaAfiliada)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection conn = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("PA_CONSULTAR_EMPRESA_AFILIADA_POR_ID", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("p_idEmpresaAfiliada", idEmpresaAfiliada);
+
+                        MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+
+                        da.Fill(dt);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return dt;
+        }
+
         public DataTable ConsultarEmpresasYProspectosCorporativos()
         {
             DataTable dt = new DataTable();
@@ -4118,7 +4217,7 @@ namespace fpWebApp
 
             return dt;
         }
-        
+
 
         public DataTable ConsultarEmpresasYProspectosCorporativosPorUsuario(int idUsuario)
         {
@@ -4304,9 +4403,9 @@ namespace fpWebApp
 
             return dt;
         }
-        
 
-        public DataTable ConsultarIndicadoresInicioLidCoporativo(int mes, int dia,decimal memtames)
+
+        public DataTable ConsultarIndicadoresInicioLidCoporativo(int mes, int dia, decimal memtames)
         {
             DataTable dt = new DataTable();
 
@@ -4398,7 +4497,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public DataTable ConsultarKpisDirOperacionMes( int mes, int annio)
+        public DataTable ConsultarKpisDirOperacionMes(int mes, int annio)
         {
             DataTable dt = new DataTable();
 
@@ -4801,7 +4900,7 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarFacturaCorporativo( int idCartera, int idLiquidacion, int idAfiliadoPlan, string documentoEmpresa,
+        public string InsertarFacturaCorporativo(int idCartera, int idLiquidacion, int idAfiliadoPlan, string documentoEmpresa,
         string documentoAfiliado, string numeroFactura, DateTime fechaFactura, DateTime periodoInicio, DateTime periodoFin, int diasFacturados,
         decimal valorPlan, decimal descuento, decimal valorFacturado, int idUsuario)
         {
@@ -4833,7 +4932,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_Descuento", descuento);
                         cmd.Parameters.AddWithValue("@p_ValorFacturado", valorFacturado);
                         cmd.Parameters.AddWithValue("@p_idUsuario", idUsuario);
-                       
+
                         object result = cmd.ExecuteScalar();
 
                         int idFactura = 0;
@@ -5175,7 +5274,7 @@ namespace fpWebApp
 
         public DataTable ConsultarEmpresaAfiliadaPorDocumento(string doc_empresa)
         {
-            DataTable dt = new DataTable();            
+            DataTable dt = new DataTable();
 
             try
             {
@@ -5191,7 +5290,7 @@ namespace fpWebApp
                         {
                             mysqlConexion.Open();
                             dataAdapter.Fill(dt);
-                        }                        
+                        }
                     }
                 }
             }
@@ -5200,7 +5299,7 @@ namespace fpWebApp
                 dt = new DataTable();
                 dt.Columns.Add("Error", typeof(string));
                 dt.Rows.Add(ex.Message);
-               
+
             }
 
             return dt;
@@ -8321,11 +8420,11 @@ namespace fpWebApp
         //}
 
         public string InsertarNuevoEmpleado(string documentoEmpleado, int tipoDocumento, string nombreEmpleado, string telEmpleado, string telEmpleadoCorp,
-        string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado,string nroContrato,
+        string emailEmpleado, string emailEmpleadoCorp, string dirEmpleado, int idCiudadEmpleado, string fechaNacEmpleado, string fotoEmpleado, string nroContrato,
         string tipoContrato, int idEmpresaFP, int idSede, string fechaIni, string fechaFin, decimal sueldo, string grupoNomina, int idEps, int idFondo, int idArl,
-        int idCajaCompensa, int idCesantias, string estadoEmpleado,int idGenero,int idEstadoCivil,int idCanalVenta, int idCargo, int idProfesion, string profesion,
-        string nivelEstudio,int estrato, string tipoVivienda,int nroPersonas, string actividadExtra, string consumeLicor, string medioTransporte, string tipoSangre,
-        string placaVehiculo, string tipoRetiro,DateTime? fechaExpedicionCed, string nombreContacto,string telContacto,string parentescoContacto, int idUsuario)
+        int idCajaCompensa, int idCesantias, string estadoEmpleado, int idGenero, int idEstadoCivil, int idCanalVenta, int idCargo, int idProfesion, string profesion,
+        string nivelEstudio, int estrato, string tipoVivienda, int nroPersonas, string actividadExtra, string consumeLicor, string medioTransporte, string tipoSangre,
+        string placaVehiculo, string tipoRetiro, DateTime? fechaExpedicionCed, string nombreContacto, string telContacto, string parentescoContacto, int idUsuario)
         {
             string respuesta = string.Empty;
 
@@ -8407,7 +8506,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string InsertarIngresoHistoricoNuevoUsuario( string documentoEmpleado, int idCargoNuevo, int idSedeNueva, decimal sueldoNuevo, string tipoContratoNuevo, int idUsuario)
+        public string InsertarIngresoHistoricoNuevoUsuario(string documentoEmpleado, int idCargoNuevo, int idSedeNueva, decimal sueldoNuevo, string tipoContratoNuevo, int idUsuario)
         {
             string respuesta = string.Empty;
 
@@ -8478,7 +8577,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarCambioSalarialEmpleado(string documentoEmpleado,  decimal nuevoSueldo, int idUsuario)
+        public string ActualizarCambioSalarialEmpleado(string documentoEmpleado, decimal nuevoSueldo, int idUsuario)
         {
             string respuesta = string.Empty;
 
@@ -8530,14 +8629,14 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_doc_empleado", documento);
                         cmd.Parameters.AddWithValue("@p_id_sede_nueva", idNuevaSede);
                         cmd.Parameters.AddWithValue("@p_id_canal_nuevo", idNuevoCanal);
-                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);                        
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
                         cmd.ExecuteNonQuery();
 
                         respuesta = "OK";
                     }
-                   
-                }                
+
+                }
             }
             catch (Exception ex)
             {
@@ -8546,7 +8645,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string InsertarIngresoRapidoEmpleado( int tipoDocumento, string documento, string nombre, string correo, int idCanal, int idSede, int idCargo, int idUsuario)
+        public string InsertarIngresoRapidoEmpleado(int tipoDocumento, string documento, string nombre, string correo, int idCanal, int idSede, int idCargo, int idUsuario)
         {
             string respuesta = string.Empty;
 
@@ -10711,10 +10810,10 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarHistoriaClinica(int idUsuario, int idAfiliado, string MedicinaPrepagada, int idObjetivoIngreso, 
-            string DescripcionObjetivoIngreso, string Remision, string TipoConsulta, string MotivoConsulta, string AnteFamiliar, 
+        public string InsertarHistoriaClinica(int idUsuario, int idAfiliado, string MedicinaPrepagada, int idObjetivoIngreso,
+            string DescripcionObjetivoIngreso, string Remision, string TipoConsulta, string MotivoConsulta, string AnteFamiliar,
             string AntePatologico, string AnteQuirurgico, string AnteToxicologico, string AnteHospitalario, string AnteTraumatologico,
-            string AnteFarmacologico, string AnteActividadFisica, string AnteGineco, string AnteFUM, int Tabaquismo, int Cigarrillos, 
+            string AnteFarmacologico, string AnteActividadFisica, string AnteGineco, string AnteFUM, int Tabaquismo, int Cigarrillos,
             int Alcoholismo, string Bebidas, int Sedentarismo, int Diabetes, int Colesterol, int Trigliceridos, int HTA)
         {
             string respuesta = string.Empty;
@@ -10780,7 +10879,7 @@ namespace fpWebApp
             string TAReposo, string FCMax)
         {
             string respuesta = string.Empty;
-            
+
             try
             {
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
@@ -10795,7 +10894,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("@p_FCReposo", FCReposo);
                         cmd.Parameters.AddWithValue("@p_TAReposo", TAReposo);
                         cmd.Parameters.AddWithValue("@p_FCMax", FCMax);
-                        
+
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -10843,10 +10942,10 @@ namespace fpWebApp
         }
 
         public string ActualizarHistoriaDeportologo2(int idHistoria, double peso, double talla,
-            double imc, double perimCintura, double perimCadera, double perimAbdomen, double perimPecho, 
-            double perimMuslo, double perimPantorrilla, double perimBrazo, double pliegueTricipital, 
-            double pliegueIliocrestal, double pliegueAbdominal, double pliegueSubescapular, 
-            double pliegueMuslo, double plieguePantorrilla, double porcGrasa, double porcMuscular, 
+            double imc, double perimCintura, double perimCadera, double perimAbdomen, double perimPecho,
+            double perimMuslo, double perimPantorrilla, double perimBrazo, double pliegueTricipital,
+            double pliegueIliocrestal, double pliegueAbdominal, double pliegueSubescapular,
+            double pliegueMuslo, double plieguePantorrilla, double porcGrasa, double porcMuscular,
             double FCETanaka, double pesoEsperado, double pesoGraso, double pesoMagro)
         {
             string respuesta = string.Empty;
@@ -11080,7 +11179,7 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarHistoriaFisioterapeuta3(int idHistoria, double wells, double testPushup, double testSentadillas, 
+        public string ActualizarHistoriaFisioterapeuta3(int idHistoria, double wells, double testPushup, double testSentadillas,
             double nivel, double testCore, double fcReposoPrc, double fcTerminaPrueba, double fcMinuto, double indiceRend)
         {
             string respuesta = string.Empty;
@@ -11118,9 +11217,9 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarHistoriaFisioterapeuta4(int idHistoria, string cabezaAdelantada, string hombrosDesalineados, 
-            string hipercifosisDorsal, string escoliosis, string dismetrias, string genuValgus, string genuVarus, 
-            string genuRecurbatum, string genuAntecurbatum, string piePlano, string pieCavus, string apto, 
+        public string ActualizarHistoriaFisioterapeuta4(int idHistoria, string cabezaAdelantada, string hombrosDesalineados,
+            string hipercifosisDorsal, string escoliosis, string dismetrias, string genuValgus, string genuVarus,
+            string genuRecurbatum, string genuAntecurbatum, string piePlano, string pieCavus, string apto,
             string restricciones, string diagnostico, string observaciones, string recomendaciones, int idCie10)
         {
             string respuesta = string.Empty;
@@ -11166,9 +11265,9 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string InsertarHistoriaNutricionistaParteUno(int idHistoria, int gastritis, int colon, int estrenimiento, 
-            string cafeina, string alimNoTolerados, string complementos, string nutriAnterior, string paraclinicos, 
-            string apetito, string masticacion, string habitoIntestinal, string sintGastrointestinales, 
+        public string InsertarHistoriaNutricionistaParteUno(int idHistoria, int gastritis, int colon, int estrenimiento,
+            string cafeina, string alimNoTolerados, string complementos, string nutriAnterior, string paraclinicos,
+            string apetito, string masticacion, string habitoIntestinal, string sintGastrointestinales,
             string alimPreferidos)
         {
             string respuesta = string.Empty;
@@ -11254,9 +11353,9 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarHistoriaNutricionistaParteDos(int idHistoria, string desayuno, string nueves, string almuerzo, 
-            string onces, string cena, string merienda, string datosBioquimicos, string medicamentos, string alergias, 
-            string proteinas, string carbohidratos, string somatotipo, string horaLevanta, string horaDesayuno, 
+        public string ActualizarHistoriaNutricionistaParteDos(int idHistoria, string desayuno, string nueves, string almuerzo,
+            string onces, string cena, string merienda, string datosBioquimicos, string medicamentos, string alergias,
+            string proteinas, string carbohidratos, string somatotipo, string horaLevanta, string horaDesayuno,
             string horaAcuesta)
         {
             string respuesta = string.Empty;
@@ -11300,9 +11399,9 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarHistoriaNutricionista3(int idHistoria, string lacteos, string azucares, string gaseosa, string verduras, 
-            string salsamentaria, string agua, string frutas, string carnes, string comidasRapidas, string cigarrillos, string psicoactivos, 
-            string huevos, string visceras, string sopas, string paquetes, string cereales, string raices, string pan, string grasas, 
+        public string ActualizarHistoriaNutricionista3(int idHistoria, string lacteos, string azucares, string gaseosa, string verduras,
+            string salsamentaria, string agua, string frutas, string carnes, string comidasRapidas, string cigarrillos, string psicoactivos,
+            string huevos, string visceras, string sopas, string paquetes, string cereales, string raices, string pan, string grasas,
             string alcohol, string bebidaHidratante)
         {
             string respuesta = string.Empty;
@@ -11352,11 +11451,11 @@ namespace fpWebApp
             return respuesta;
         }
 
-        public string ActualizarHistoriaNutricionista4(int idHistoria, double peso, double talla, double imc, double perimCintura, 
-            double perimCadera, double perimAbdomen, double perimPecho,double perimMuslo, double perimPantorrilla, double perimBrazo, 
+        public string ActualizarHistoriaNutricionista4(int idHistoria, double peso, double talla, double imc, double perimCintura,
+            double perimCadera, double perimAbdomen, double perimPecho, double perimMuslo, double perimPantorrilla, double perimBrazo,
             double pliegueTricipital, double pliegueIliocrestal, double pliegueAbdominal, double pliegueSubescapular,
-            double pliegueMuslo, double plieguePantorrilla, double porcGrasa, double porcMuscular, double FCETanaka, double pesoEsperado, 
-            double pesoGraso, double pesoMagro, double gastoCalorico, string actividadFisica, double gastoTotal, string diagnostico, 
+            double pliegueMuslo, double plieguePantorrilla, double porcGrasa, double porcMuscular, double FCETanaka, double pesoEsperado,
+            double pesoGraso, double pesoMagro, double gastoCalorico, string actividadFisica, double gastoTotal, string diagnostico,
             string planManejo, string recomendaciones, string observaciones)
         {
             string respuesta = string.Empty;
@@ -12213,7 +12312,7 @@ namespace fpWebApp
 
             for (int i = 0; i < dt.Columns.Count; i++)
             {
-                sheet.SetColumnWidth(i, 20 * 256); 
+                sheet.SetColumnWidth(i, 20 * 256);
             }
 
 
@@ -12537,7 +12636,7 @@ namespace fpWebApp
                     HorizontalAlignment = Element.ALIGN_LEFT
                 };
                 encabezado.AddCell(colLogo);
-                
+
                 PdfPCell colFecha = new PdfPCell(new Phrase(
                     "Fecha reporte: " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                     FontFactory.GetFont(FontFactory.HELVETICA, 8)))
@@ -12639,7 +12738,7 @@ namespace fpWebApp
                     PdfPCell celda = new PdfPCell(new Phrase(col.ColumnName, headerFont2))
                     {
                         BackgroundColor = iTextSharp.text.BaseColor.WHITE,
-                        Border = iTextSharp.text.Rectangle.NO_BORDER, 
+                        Border = iTextSharp.text.Rectangle.NO_BORDER,
                         HorizontalAlignment = Element.ALIGN_CENTER,
                         Padding = 4
                     };
@@ -12721,7 +12820,7 @@ namespace fpWebApp
                 }
 
                 // ❌ NO CERRAR EL DOCUMENTO AQUÍ
-                 doc.Close(); //  
+                doc.Close(); //  
                 writer.Close();
 
 
@@ -12729,7 +12828,7 @@ namespace fpWebApp
                 // Descargar archivo
                 HttpContext.Current.Response.Clear();
                 HttpContext.Current.Response.ContentType = "application/pdf";
-                HttpContext.Current.Response.AddHeader( "Content-Disposition", $"attachment; filename={nombreArchivo}.pdf");
+                HttpContext.Current.Response.AddHeader("Content-Disposition", $"attachment; filename={nombreArchivo}.pdf");
                 HttpContext.Current.Response.BinaryWrite(ms.ToArray());
                 HttpContext.Current.Response.Flush();
                 HttpContext.Current.Response.SuppressContent = true;
@@ -12794,7 +12893,7 @@ namespace fpWebApp
                 {
                     foreach (object item in row.ItemArray)
                     {
-                        PdfPCell cell = new PdfPCell( new Phrase(item?.ToString() ?? string.Empty, fontCell));
+                        PdfPCell cell = new PdfPCell(new Phrase(item?.ToString() ?? string.Empty, fontCell));
                         cell.HorizontalAlignment = Element.ALIGN_CENTER;
                         cell.Padding = 4;
                         cell.Border = iTextSharp.text.Rectangle.NO_BORDER;
@@ -12808,7 +12907,7 @@ namespace fpWebApp
                 iTextSharp.text.Font fontFechaPie =
                 FontFactory.GetFont(FontFactory.HELVETICA, 7, BaseColor.GRAY);
 
-                Paragraph fechaPie = new Paragraph($"Generado el: {DateTime.Now:dd/MM/yyyy HH:mm:ss}",fontFechaPie);
+                Paragraph fechaPie = new Paragraph($"Generado el: {DateTime.Now:dd/MM/yyyy HH:mm:ss}", fontFechaPie);
 
 
                 fechaPie.Alignment = Element.ALIGN_CENTER;
@@ -12833,7 +12932,7 @@ namespace fpWebApp
             }
         }
 
-        public void ExportarExcelGen( DataTable dt, string nombreArchivo, string tituloReporte, string usuario)
+        public void ExportarExcelGen(DataTable dt, string nombreArchivo, string tituloReporte, string usuario)
         {
             if (dt == null || dt.Rows.Count == 0)
                 return;
@@ -16121,8 +16220,8 @@ namespace fpWebApp
             return dt;
         }
 
-        #endregion        
-        
+        #endregion
+
         #region Tipos de Incapacidad
 
         public DataTable ConsultarTiposIncapacidades()
@@ -16513,7 +16612,7 @@ namespace fpWebApp
             return idGenerado;
         }
 
-        public string ActualizarUsuario( int idUsuario, string email,  string clave,  string nombre, int idCargo, int idPerfil, string idEmpleado,  string estado, int idCanalVenta)
+        public string ActualizarUsuario(int idUsuario, string email, string clave, string nombre, int idCargo, int idPerfil, string idEmpleado, string estado, int idCanalVenta)
         {
             string respuesta = string.Empty;
 

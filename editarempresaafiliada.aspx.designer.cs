@@ -222,6 +222,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbFechaConvenio;
 
         /// <summary>
+        /// Control txbFechaFinConvenio.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txbFechaFinConvenio;
+
+        /// <summary>
         /// Control txbNroEmpleados.
         /// </summary>
         /// <remarks>
@@ -249,13 +258,40 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlDiasCredito;
 
         /// <summary>
-        /// Control ltContrato.
+        /// Control lnkContrato.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal ltContrato;
+        protected global::System.Web.UI.WebControls.HyperLink lnkContrato;
+
+        /// <summary>
+        /// Control lnkCamara.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkCamara;
+
+        /// <summary>
+        /// Control lnkRut.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkRut;
+
+        /// <summary>
+        /// Control lnkCedula.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink lnkCedula;
 
         /// <summary>
         /// Control rblEstado.
