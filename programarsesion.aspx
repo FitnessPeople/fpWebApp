@@ -14,7 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Programar clase grupal</title>
+    <title>Fitness People | Programar agenda grupal</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -121,11 +121,11 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-timeline text-success m-r-sm"></i>Programar clase grupal</h2>
+                    <h2><i class="fa fa-calendar-days text-success m-r-sm"></i>Programar agenda grupal</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Coordinación deportiva</li>
-                        <li class="active"><strong>Programar clase grupal</strong></li>
+                        <li class="active"><strong>Programar agenda grupal</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">

@@ -17,7 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Programar clase grupal");
+                    ValidarPermisos("Programar agenda grupal");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         divMensaje.Visible = true;
