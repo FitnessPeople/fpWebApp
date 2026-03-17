@@ -195,6 +195,30 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+    <style>
+        .table {
+            width: 100%;
+        }
+
+        #tablaDetalleComision {
+            background: white;
+        }
+
+        .tab-content {
+            overflow-x: hidden;
+        }
+
+        .panel-body {
+            overflow-x: auto;
+        }
+
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+    </style>
+    }
+
 </head>
 
 <body onload="changeClass()">
@@ -348,57 +372,18 @@
 
                                                     <div class="panel-body">
 
-                                                        <%--                     <table class="table table-bordered">
-
-                                                            <tr>
-                                                                <td><b>Anualidad</b></td>
-                                                                <td>
-                                                                    <input type="number" id="txtAnualidad"
-                                                                        class="form-control"
-                                                                         />
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td><b>Semestre</b></td>
-                                                                <td>
-                                                                    <input type="number" id="txtSemestre"
-                                                                        class="form-control"
-                                                                         />
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td><b>Trimestre</b></td>
-                                                                <td>
-                                                                    <input type="number" id="txtTrimestre"
-                                                                        class="form-control"
-                                                                         />
-                                                                </td>
-                                                            </tr>
-
-                                                            <tr>
-                                                                <td><b>Mensual</b></td>
-                                                                <td>
-                                                                    <input type="number" id="txtMensual"
-                                                                        class="form-control"
-                                                                         />
-                                                                </td>
-                                                            </tr>
-
-                                                        </table>--%>
-
-                                                        <table class="table table-bordered">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Plan</th>
-                                                                    <th>Cantidad</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody id="tablaPlanesSimulador">
-                                                            </tbody>
-                                                        </table>
-
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Plan</th>
+                                                                        <th>Cantidad</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tablaPlanesSimulador">
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                         <hr />
 
                                                         <h4>Resultado</h4>
@@ -407,28 +392,30 @@
                                                         <p>Escala: <b><span id="lblEscala">-</span></b></p>
                                                         <p>Comisión: <b><span id="lblComision">$0</span></b></p>
 
-                                                        <div class="alert alert-info mt-3">
+                                                        <div class="alert alert-success mt-3" style="margin-top: 15px;">
                                                             <span id="lblRecomendacion"></span>
                                                         </div>
 
+
                                                         <h4>Detalle de Comisión</h4>
 
-                                                        <table class="table table-bordered" id="tablaDetalleComision">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="tablaDetalleComision">
 
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Plan</th>
-                                                                    <th>Cantidad</th>
-                                                                    <th>Objetivo</th>
-                                                                    <th>Comisión Unidad</th>
-                                                                    <th>Comisión Total</th>
-                                                                </tr>
-                                                            </thead>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Plan</th>
+                                                                        <th>Cantidad</th>
+                                                                        <th>Objetivo</th>
+                                                                        <th>Comisión Unidad</th>
+                                                                        <th>Comisión Total</th>
+                                                                    </tr>
+                                                                </thead>
 
-                                                            <tbody>
-                                                            </tbody>
+                                                                <tbody></tbody>
 
-                                                        </table>
+                                                            </table>
+                                                        </div>
 
 
                                                         <div class="alert alert-success mt-3">
@@ -440,6 +427,7 @@
                                                         </div>
 
                                                     </div>
+
                                                 </div>
 
 
@@ -494,22 +482,26 @@
                                                         <hr />
 
 
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped table-bordered" id="tablaPlanes">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Plan</th>
+                                                                        <th>Valor</th>
+                                                                        <th>Factor Mix</th>
+                                                                        <th>Mensual</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
+                                                                </thead>
 
-                                                        <table class="table table-striped table-bordered" id="tablaPlanes">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Plan</th>
-                                                                    <th>Valor</th>
-                                                                    <th>Factor Mix</th>
-                                                                    <th>Mensual</th>
-                                                                    <th>Acciones</th>
-                                                                </tr>
-                                                            </thead>
+                                                                <tbody>
+                                                                </tbody>
 
-                                                            <tbody>
-                                                            </tbody>
+                                                            </table>
+                                                        </div>
 
-                                                        </table>
+
+
                                                         <input type="hidden" id="idPlanEditar" value="0" />
 
                                                     </div>
@@ -563,22 +555,25 @@
 
                                                         <hr />
 
-                                                        <table id="tablaEscalas" class="table table-striped table-bordered">
+                                                        <div class="table-responsive">
+                                                            <table id="tablaEscalas" class="table table-striped table-bordered">
 
-                                                            <thead>
+                                                                <thead>
 
-                                                                <tr>
-                                                                    <th>Escala</th>
-                                                                    <th>Puntos Min</th>
-                                                                    <th>Puntos Max</th>
-                                                                    <th>Acciones</th>
-                                                                </tr>
+                                                                    <tr>
+                                                                        <th>Escala</th>
+                                                                        <th>Puntos Min</th>
+                                                                        <th>Puntos Max</th>
+                                                                        <th>Acciones</th>
+                                                                    </tr>
 
-                                                            </thead>
+                                                                </thead>
 
-                                                            <tbody></tbody>
+                                                                <tbody></tbody>
 
-                                                        </table>
+                                                            </table>
+                                                        </div>
+
 
                                                         <input type="hidden" id="idEscalaEditar" value="0" />
 
@@ -651,24 +646,27 @@
 
                                                         <hr />
 
-                                                        <table id="tablaObjetivos"
-                                                            class="table table-striped table-bordered">
+                                                        <div class="table-responsive">
+                                                            <table id="tablaObjetivos"
+                                                                class="table table-striped table-bordered">
 
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Escala</th>
-                                                                    <th>Plan</th>
-                                                                    <th>Objetivo</th>
-                                                                    <th>Comisión</th>
-                                                                    <th></th>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Escala</th>
+                                                                        <th>Plan</th>
+                                                                        <th>Objetivo</th>
+                                                                        <th>Comisión</th>
+                                                                        <th></th>
 
-                                                                </tr>
+                                                                    </tr>
 
-                                                            </thead>
+                                                                </thead>
 
-                                                            <tbody></tbody>
+                                                                <tbody></tbody>
 
-                                                        </table>
+                                                            </table>
+                                                        </div>
+
                                                         <input type="hidden" id="idObjetivoEditar" value="0" />
                                                     </div>
                                                 </div>
@@ -683,10 +681,12 @@
 
                                                         <h3>Reporte general</h3>
 
-                                                        <asp:GridView ID="gvReporte"
-                                                            runat="server"
-                                                            CssClass="table table-striped table-bordered">
-                                                        </asp:GridView>
+                                                        <div class="table-responsive">
+                                                            <asp:GridView ID="gvReporte"
+                                                                runat="server"
+                                                                CssClass="table table-striped table-bordered">
+                                                            </asp:GridView>
+                                                        </div>
 
                                                     </div>
                                                 </div>
@@ -1789,45 +1789,45 @@
 
     <script>
 
-            function obtenerDetalleComision(ventas) {
+        function obtenerDetalleComision(ventas) {
 
-                $.ajax({
+            $.ajax({
 
-                    type: "POST",
-                    url: "bonificaciones.aspx/ObtenerDetalleComision",
+                type: "POST",
+                url: "bonificaciones.aspx/ObtenerDetalleComision",
 
-                    data: JSON.stringify({
-                        ventas: ventas
-                    }),
+                data: JSON.stringify({
+                    ventas: ventas
+                }),
 
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
 
-                    success: function (response) {
+                success: function (response) {
 
-                        var datos = response.d;
+                    var datos = response.d;
 
-                        var filas = "";
+                    var filas = "";
 
-                        datos.forEach(function (d) {
+                    datos.forEach(function (d) {
 
-                            filas += "<tr>";
-                            filas += "<td>" + d.Plan + "</td>";
-                            filas += "<td>" + d.Cantidad + "</td>";
-                            filas += "<td>" + d.Objetivo + "</td>";
-                            filas += "<td>$" + d.ComisionUnidad + "</td>";
-                            filas += "<td>$" + d.ComisionTotal + "</td>";
-                            filas += "</tr>";
+                        filas += "<tr>";
+                        filas += "<td>" + d.Plan + "</td>";
+                        filas += "<td>" + d.Cantidad + "</td>";
+                        filas += "<td>" + d.Objetivo + "</td>";
+                        filas += "<td>$" + d.ComisionUnidad + "</td>";
+                        filas += "<td>$" + d.ComisionTotal + "</td>";
+                        filas += "</tr>";
 
-                        });
+                    });
 
-                        $("#tablaDetalleComision tbody").html(filas);
+                    $("#tablaDetalleComision tbody").html(filas);
 
-                    }
+                }
 
-                });
+            });
 
-            }
+        }
 
     </script>
 
