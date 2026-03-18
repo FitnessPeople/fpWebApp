@@ -4437,6 +4437,61 @@ namespace fpWebApp
 
             return dt;
         }
+
+
+        public int InsertarConvenioEmpresa( int idEmpresaAfiliada, DateTime fechaConvenio, DateTime fechaFinConvenio, string nombreContacto, string cargoContacto,
+        string nombrePagador,  string telefonoPagador, string correoPagador, string tipoNegociacion, int diasCredito,  decimal retornoAdm, string contrato,
+        string camaraComercio, string rut, string cedulaRepLeg, string descripcion, int idUsuario)
+        {
+            int idConvenio = 0;
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    mysqlConexion.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("PA_INSERTAR_CONVENIO_EMPRESA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("p_idEmpresaAfiliada", idEmpresaAfiliada);
+                        cmd.Parameters.AddWithValue("p_FechaConvenio", fechaConvenio);
+                        cmd.Parameters.AddWithValue("p_FechaFinConvenio", fechaFinConvenio);
+                        cmd.Parameters.AddWithValue("p_NombreContacto", nombreContacto);
+                        cmd.Parameters.AddWithValue("p_CargoContacto", cargoContacto);
+                        cmd.Parameters.AddWithValue("p_NombrePagador", nombrePagador);
+                        cmd.Parameters.AddWithValue("p_TelefonoPagador", telefonoPagador);
+                        cmd.Parameters.AddWithValue("p_CorreoPagador", correoPagador);
+                        cmd.Parameters.AddWithValue("p_TipoNegociacion", tipoNegociacion);
+                        cmd.Parameters.AddWithValue("p_DiasCredito", diasCredito);
+                        cmd.Parameters.AddWithValue("p_RetornoAdm", retornoAdm);
+                        cmd.Parameters.AddWithValue("p_Contrato", contrato);
+                        cmd.Parameters.AddWithValue("p_CamaraComercio", camaraComercio);
+                        cmd.Parameters.AddWithValue("p_Rut", rut);
+                        cmd.Parameters.AddWithValue("p_CedulaRepLeg", cedulaRepLeg);
+                        cmd.Parameters.AddWithValue("p_Descripcion", descripcion);
+                        cmd.Parameters.AddWithValue("p_idUsuario", idUsuario);
+                      
+                        object result = cmd.ExecuteScalar();
+
+                        if (result != null)
+                            idConvenio = Convert.ToInt32(result);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al insertar el convenio: " + ex.Message, ex);
+            }
+
+            return idConvenio;
+        }
+
+
+
         public DataTable ConsultarIndicadoresInicioDirComercial()
         {
             DataTable dt = new DataTable();
