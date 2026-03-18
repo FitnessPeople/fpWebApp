@@ -31,21 +31,6 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
-    <%--        Validación postback modal--%>
-    <script>
-        // Función para reabrir el modal si fue cerrado por un PostBack
-        function reopenModal() {
-            setTimeout(function () {
-                $('#ModalContacto').modal('show');
-            }, 100);
-        }
-
-        // Detectar cuándo se actualiza el UpdatePanel y reabrir el Modal
-        var prm = Sys.WebForms.PageRequestManager.getInstance();
-        prm.add_endRequest(function () {
-            reopenModal();
-        });
-    </script>
 
     <%--        formato de moneda--%>
     <script>
@@ -80,83 +65,8 @@
         }
     </script>
 
-    <%--        Validar botón Agregar --%>
-    <script>
-        function validarFormulario() {
-            const nombre = document.getElementById('txbNombreContacto').value.trim();
-            const telefono = document.getElementById('txbTelefonoContacto').value.trim();
-            const correo = document.getElementById('txbCorreoContacto').value.trim();
-            const fechaPrim = document.getElementById('txbFechaPrim').value.trim();
-            const fechaProx = document.getElementById('txbFechaProx').value.trim();
-            const valor = document.getElementById('txbValorPropuesta').value.trim();
-            const status = document.getElementById('ddlStatusLead').value;
 
-<%--            //const boton = document.getElementById('<%= btnAgregar.ClientID %>');--%>
 
-            const camposCompletos =
-                nombre !== "" &&
-                telefono !== "" &&
-                correo !== "" &&
-                fechaPrim !== "" &&
-                fechaProx !== "" &&
-                valor !== "" &&
-                status !== "0";
-
-            if (camposCompletos) {
-                boton.disabled = false;
-                boton.classList.remove('btn-secondary');
-                boton.classList.add('btn-primary');
-            } else {
-                boton.disabled = true;
-                boton.classList.remove('btn-primary');
-                boton.classList.add('btn-secondary');
-            }
-        }
-
-        // Asignar eventos a cada campo
-        document.addEventListener("DOMContentLoaded", function () {
-            const campos = [
-                'txbNombreContacto', 'txbTelefonoContacto', 'txbCorreoContacto',
-                'txbFechaPrim', 'txbFechaProx', 'txbValorPropuesta',
-                , 'ddlStatusLead'
-            ];
-
-            campos.forEach(id => {
-                const campo = document.getElementById(id);
-                if (campo) {
-                    campo.addEventListener('input', validarFormulario);
-                    campo.addEventListener('change', validarFormulario);
-                }
-            });
-
-            validarFormulario(); // Ejecutar al cargar
-        });
-    </script>
-
-    <%--        Abrir modal--%>
-    <script>
-        function AbrirModal() {
-            $("#ModalContacto").modal("show");
-        }
-    </script>
-
-    <%--        Formatear telefono --%>
-    <script>
-        function formatearTelefono(input) {
-            let num = input.value.replace(/\D/g, ''); // Eliminar caracteres no numéricos
-
-            // Si el número tiene 10 dígitos, es un celular
-            if (num.length === 10) {
-                input.value = num.substring(0, 3) + '-' + num.substring(3, 6) + '-' + num.substring(6, 10);
-            }
-            // Si el número tiene 7 o más dígitos, es un teléfono fijo
-            else if (num.length > 6) {
-                input.value = '(' + num.substring(0, 3) + ') ' + num.substring(3, 6) + '-' + num.substring(6, 10);
-            } else {
-                input.value = num;
-            }
-        }
-    </script>
 
     <%--        Formatear solo letraas --%>
     <script>
@@ -166,32 +76,12 @@
         }
     </script>
 
-    <%--        Formatear solo correo --%>
-    <script>
-        function validarCorreo(input) {
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            if (!emailRegex.test(input.value)) {
-                input.setCustomValidity('Por favor ingrese un correo electrónico válido.');
-            } else {
-                input.setCustomValidity('');
-            }
-        }
-    </script>
+
 
     <!--        SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <%--         Filtro de buscar--%>
-    <script type="text/javascript">
-        Sys.Application.add_load(function () {
-            $('#buscador').on('keyup', function () {
-                var valorBusqueda = $(this).val().toLowerCase();
-                $('.table tbody tr').filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(valorBusqueda) > -1);
-                });
-            });
-        });
-    </script>
+
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -368,7 +258,7 @@
                                                 <!-- TAB SIMULADOR -->
                                                 <!-- ===================== -->
 
-                                                <div id="tab-simulador" class="tab-pane active">
+                                                <%--<div id="tab-simulador" class="tab-pane active">
 
                                                     <div class="panel-body">
 
@@ -423,6 +313,117 @@
                                                             <b>Cómo subir de escala:</b>
 
                                                             <div id="lblSimulacion"></div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>--%>
+
+                                                <div id="tab-simulador" class="tab-pane active">
+
+                                                    <div class="panel-body">
+
+                                                        <div class="row">
+
+                                                            <!-- ========================= -->
+                                                            <!-- PLANES (4 COLUMNAS) -->
+                                                            <!-- ========================= -->
+                                                            <div class="col-md-4">
+
+                                                                <h4>Ventas</h4>
+
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-bordered table-striped">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Plan</th>
+                                                                                <th>Cantidad</th>
+                                                                            </tr>
+                                                                        </thead>
+
+                                                                        <tbody id="tablaPlanesSimulador"></tbody>
+
+                                                                    </table>
+                                                                </div>
+
+                                                            </div>
+
+
+                                                            <!-- ========================= -->
+                                                            <!-- RESULTADOS (8 COLUMNAS) -->
+                                                            <!-- ========================= -->
+                                                            <div class="col-md-8">
+
+                                                                <h4>Resultado</h4>
+
+                                                                <div class="row">
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="well text-center">
+                                                                            <b>Puntos Mix</b>
+                                                                            <h3><span id="lblMix">0</span></h3>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="well text-center">
+                                                                            <b>Escala</b>
+                                                                            <h3><span id="lblEscala">-</span></h3>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-4">
+                                                                        <div class="well text-center">
+                                                                            <b>Comisión</b>
+                                                                            <h3><span id="lblComision">$0</span></h3>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+
+                                                                <!-- RECOMENDACION -->
+
+                                                                <div class="alert alert-success" style="margin-top: 10px;">
+                                                                    <span id="lblRecomendacion"></span>
+                                                                </div>
+
+
+                                                                <!-- DETALLE -->
+
+                                                                <h4>Detalle de Comisión</h4>
+
+                                                                <div class="table-responsive">
+                                                                    <table class="table table-bordered table-striped" id="tablaDetalleComision">
+
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Plan</th>
+                                                                                <th>Cantidad</th>
+                                                                                <th>Objetivo</th>
+                                                                                <th>Comisión Unidad</th>
+                                                                                <th>Comisión Total</th>
+                                                                            </tr>
+                                                                        </thead>
+
+                                                                        <tbody></tbody>
+
+                                                                    </table>
+                                                                </div>
+
+
+                                                                <!-- SIMULACION -->
+
+                                                                <div class="alert alert-info" style="margin-top: 10px;">
+
+                                                                    <b>Cómo subir de escala</b>
+
+                                                                    <div id="lblSimulacion"></div>
+
+                                                                </div>
+
+                                                            </div>
 
                                                         </div>
 
