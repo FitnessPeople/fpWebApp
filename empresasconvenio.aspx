@@ -33,6 +33,39 @@
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
+    <script>
+        var quill;
+        document.addEventListener("DOMContentLoaded", function () {
+            quill = new Quill("#editor", {
+                theme: "snow",
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold'], // Negrita y Tachado
+                        ['italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'align': [] }],
+                    ]
+                }
+            });
+            function ajustarAlturaEditor() {
+                var editorContenido = document.querySelector(".ql-editor");
+                editorContenido.style.height = "auto";
+                editorContenido.style.height = editorContenido.scrollHeight + "px";
+            }
+            quill.on("text-change", ajustarAlturaEditor);
+
+            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
+            if (contenidoGuardado.trim() !== "") {
+                quill.root.innerHTML = contenidoGuardado;
+            }
+        });
+        function guardarContenidoEditor() {
+            var contenido = quill.root.innerHTML;
+            document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
+        }
+    </script>
+
     <!-- Sweet Alert -->
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
     <!-- Sweet alert -->
@@ -415,6 +448,7 @@
                                                             <label>Descripción</label>
                                                             <div id="editor"></div>
                                                         </div>
+                                                        <asp:HiddenField ID="hiddenEditor" runat="server" />
 
                                                     </div>
 
@@ -445,9 +479,10 @@
                                             <thead>
                                                 <tr>
                                                     <th data-breakpoints="xs"></th>
-                                                    <th data-sortable="true" data-type="text">Razon social</th>
                                                     <th data-sortable="false">Documento</th>
+                                                    <th data-sortable="true" data-type="text">Razon social</th>
                                                     <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs sm">Asesor</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -457,9 +492,10 @@
                                                         <tr>
                                                             <td class="client-avatar">
 
-                                                            <td><a data-toggle="tab" href='#contact-<%# Eval("NombreComercial").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpresa") %>' class="client-link"><%# Eval("Nombrecomercial") %></a></td>
                                                             <td><%# Eval("DocumentoEmpresa") %></td>
-                                                            <td><%# Eval("EstadoEmpresa") %></td>
+                                                            <td><a data-toggle="tab" href='#contact-<%# Eval("NombreComercial").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpresa") %>' class="client-link"><%# Eval("Nombrecomercial") %></a></td>
+                                                            <td><%# Eval("EstadoAsignacion") %></td>
+                                                            <td><%# Eval("NombreUsuario") %></td>
                                                             <td>
                                                                 <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
                                                                     style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Eliminar"><i class="fa fa-trash"></i></a>
@@ -494,6 +530,7 @@
                                                                     <a href="javascript:void(0);"
                                                                         class="btn btn-xs btn-primary btnNuevoConvenio"
                                                                         data-idempresa='<%# Eval("idEmpresaAfiliada") %>'
+                                                                        data-documento='<%# Eval("DocumentoEmpresa") %>'
                                                                         data-nombre='<%# Eval("NombreComercial") %>'>
                                                                         <i class="fa fa-file-signature m-r-xs"></i>Nuevo convenio
                                                                     </a>
@@ -507,13 +544,18 @@
                                                                     </a>
 
 
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-xs btn-info btnDocumentos"
+                                                                        <%--   data-idconvenio='<%# Eval("idConvenio") %>'--%>
+                                                                        data-nombre='<%# Eval("NombreComercial") %>'>
+                                                                        <i class="fa fa-file-pdf m-r-xs"></i>Documentos
                                                                     </a>
 
 
                                                                     <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Anular convenio</a>
                                                                     <a runat="server" id="btnRetiro" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Renovar convenio</a>
 
-                                                                    <a runat="server" id="btnEditarTab" href="#" class="btn btn-xs btn-primary"><i class="fa fa-edit m-r-xs" visible="false"></i>Editar</a>
+                                                                    <%--                                                                    <a runat="server" id="btnEditarTab" href="#" class="btn btn-xs btn-primary"><i class="fa fa-edit m-r-xs" visible="false"></i>Editar</a>--%>
                                                                     <%--<asp:LinkButton ID="lkbCambiarEstado" runat="server" 
                                                                     CssClass="btn btn-xs btn-warning" OnClick="lkbCambiarEstado_Click">
                                                                     <i class="fa fa-rotate m-r-xs"></i>Cambiar estado
@@ -1867,14 +1909,25 @@
 
         $(document).on("click", ".btnNuevoConvenio", function () {
 
+            $("#txbFechaConvenio").val("");
+            $("#txbFechaFinConvenio").val("");
+            $("#txbNroEmpleados").val("");
+            $("#ddlTipoNegociacion").val("");
+            $("#ddlDiasCredito").val("");
+
+
             var idEmpresa = $(this).data("idempresa");
-            var nombreEmpresa = $(this).data("nombre");
+            var documento = $(this).data("documento");
+            var nombre = $(this).data("nombre");
 
             $("#hdEmpresaConvenio").val(idEmpresa);
 
-            $("#tituloModal").text("Nuevo Convenio");
+            $("#tituloModal1").text("Nuevo convenio");
 
-            $("#lblNombreEmpleado").text(nombreEmpresa);
+            $("#lblNombreEmpresa").html(
+                "<b>" + nombre + "</b><br>" +
+                "<small>Documento: " + documento + "</small>"
+            );
 
             $("#modalConvenioEmpresa").modal("show");
 
