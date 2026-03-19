@@ -142,7 +142,6 @@
         </div>
 
 
-        <input type="hidden" id="hdEmpresaConvenio" />
 
         <asp:HiddenField ID="hdDocumentoMovimiento" runat="server" />
         <asp:HiddenField ID="hdTipoMovimiento" runat="server" />
@@ -443,12 +442,63 @@
 
                                                         </div>
 
+                                                        <div class="row">
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Nombre del Pagador</label>
+                                                                    <input type="text" id="txbNombrePagador"
+                                                                        class="form-control input-sm"
+                                                                        placeholder="Pagador"
+                                                                        style="text-transform: uppercase;" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Celular</label>
+                                                                    <input type="text" id="txbCelularPagador"
+                                                                        class="form-control input-sm"
+                                                                        placeholder="Celular del Pagador" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Correo del pagador</label>
+                                                                    <input type="email" id="txbCorreoPagador"
+                                                                        class="form-control input-sm"
+                                                                        placeholder="Correo Pagador" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>Retorno administrativo</label>
+
+                                                                    <div>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="rblRetorno" value="1">
+                                                                            Sí
+                                                                        </label>
+                                                                        <label class="radio-inline">
+                                                                            <input type="radio" name="rblRetorno" value="0" checked>
+                                                                            No
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
 
                                                         <div class="form-group">
                                                             <label>Descripción</label>
                                                             <div id="editor"></div>
                                                         </div>
                                                         <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                        <input type="hidden" id="hdEmpresaConvenio" />
+                                                        <input type="hidden" id="hdTipoConvenio" />
+                                                        <input type="hidden" id="hdIdConvenio" />
 
                                                     </div>
 
@@ -457,8 +507,9 @@
                                                         <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 
                                                         <button type="button"
+                                                            id="btnGuardarConvenio"
                                                             class="btn btn-primary"
-                                                            onclick="guardarNuevoConvenio()">
+                                                            onclick="guardarConvenio()">
                                                             Guardar convenio
                                                         </button>
 
@@ -466,7 +517,9 @@
 
                                                 </div>
                                             </div>
+
                                         </div>
+
 
 
                                         <table id="tabla" class="footable table table-striped list-group-item-text" data-paging-size="15"
@@ -531,40 +584,105 @@
                                                                         class="btn btn-xs btn-primary btnNuevoConvenio"
                                                                         data-idempresa='<%# Eval("idEmpresaAfiliada") %>'
                                                                         data-documento='<%# Eval("DocumentoEmpresa") %>'
-                                                                        data-nombre='<%# Eval("NombreComercial") %>'>
+                                                                        data-nombre='<%# Eval("NombreComercial") %>'
+                                                                        data-nombrepagador='<%# Eval("NombrePagador") %>'
+                                                                        data-telefono='<%# Eval("TelefonoPagador") %>'
+                                                                        data-correo='<%# Eval("CorreoPagador") %>'
+                                                                        data-retorno='<%# Eval("RetornoAdm") %>'>
+
                                                                         <i class="fa fa-file-signature m-r-xs"></i>Nuevo convenio
                                                                     </a>
 
-                                                                    <a href="javascript:void(0);"
-                                                                        class="btn btn-xs btn-warning btnMovimiento"
-                                                                        data-doc='<%# Eval("DocumentoEmpresa") %>'
-                                                                        data-nombre='<%# Eval("NombreComercial") %>'
-                                                                        data-tipo="CAMBIO_CARGO">
-                                                                        <i class="fa fa-user-edit m-r-xs"></i>Editar convenio
-                                                                    </a>
-
-
-                                                                    <a href="javascript:void(0);"
-                                                                        class="btn btn-xs btn-info btnDocumentos"
-                                                                        <%--   data-idconvenio='<%# Eval("idConvenio") %>'--%>
-                                                                        data-nombre='<%# Eval("NombreComercial") %>'>
-                                                                        <i class="fa fa-file-pdf m-r-xs"></i>Documentos
-                                                                    </a>
-
-
-                                                                    <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Anular convenio</a>
-                                                                    <a runat="server" id="btnRetiro" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Renovar convenio</a>
-
-                                                                    <%--                                                                    <a runat="server" id="btnEditarTab" href="#" class="btn btn-xs btn-primary"><i class="fa fa-edit m-r-xs" visible="false"></i>Editar</a>--%>
-                                                                    <%--<asp:LinkButton ID="lkbCambiarEstado" runat="server" 
-                                                                    CssClass="btn btn-xs btn-warning" OnClick="lkbCambiarEstado_Click">
-                                                                    <i class="fa fa-rotate m-r-xs"></i>Cambiar estado
-                                                                </asp:LinkButton>--%>
                                                                     <a runat="server" id="btnCambiarEstado" href="#" visible="false"
                                                                         class='btn btn-xs btn-danger'><i class="fa fa-rotate m-r-xs"></i><%# Eval("EstadoEmpresa") %> (cambiar)
                                                                     </a>
                                                                 </div>
                                                                 <hr class="m-0">
+
+                                                                <div class="table-responsive m-t-sm">
+                                                                    <table class="table table-bordered table-hover">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th>Convenio</th>
+                                                                                <th>Fecha</th>
+                                                                                <th>Acciones</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <asp:Repeater ID="rpConvenios" runat="server">
+                                                                                <ItemTemplate>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <span class="label label-primary">
+                                                                                                <%# Eval("NombreConvenio") %>
+                                                                                            </span>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%# Eval("FechaConvenio", "{0:dd/MM/yyyy}") %>
+                                                                                        </td>
+                                                                                        <td class="text-center">
+                                                                                            <div class="btn-group">
+                                                                                                <!-- VER -->
+                                                                                                <a href="javascript:void(0);"
+                                                                                                    class="btn btn-xs btn-default m-r-xs btnVerConvenio"
+                                                                                                    title="Ver convenio"
+                                                                                                    data-idconvenio='<%# Eval("idConvenio") %>'
+                                                                                                    data-fecha='<%# Eval("FechaConvenio", "{0:yyyy-MM-dd}") %>'
+                                                                                                    data-fechafin='<%# Eval("FechaFinConvenio", "{0:yyyy-MM-dd}") %>'
+                                                                                                    data-tipo='<%# Eval("TipoNegociacion") %>'
+                                                                                                    data-dias='<%# Eval("DiasCredito") %>'
+                                                                                                    data-desc='<%# Eval("Descripcion") %>'>
+                                                                                                    <i class="fa fa-eye"></i>
+                                                                                                </a>
+
+                                                                                                <!-- DOCUMENTOS -->
+                                                                                                <a href="javascript:void(0);"
+                                                                                                    class="btn btn-xs btn-warning m-r-xs"
+                                                                                                    title="Documentos"
+                                                                                                    data-toggle="tooltip"
+                                                                                                    data-idconvenio='<%# Eval("idConvenio") %>'>
+                                                                                                    <i class="fa fa-file-pdf"></i>
+                                                                                                </a>
+
+                                                                                                <!-- EDITAR -->
+                                                                                                <a href="javascript:void(0);"
+                                                                                                    class="btn btn-xs btn-primary m-r-xs"
+                                                                                                    title="Editar convenio"
+                                                                                                    data-toggle="tooltip"
+                                                                                                    data-idconvenio='<%# Eval("idConvenio") %>'>
+                                                                                                    <i class="fa fa-edit"></i>
+                                                                                                </a>
+
+                                                                                                <!-- RENOVAR -->
+                                                                                                <a href="javascript:void(0);"
+                                                                                                    class="btn btn-xs btn-success m-r-xs"
+                                                                                                    title="Renovar convenio"
+                                                                                                    data-toggle="tooltip"
+                                                                                                    data-idconvenio='<%# Eval("idConvenio") %>'>
+                                                                                                    <i class="fa fa-sync"></i>
+                                                                                                </a>
+
+                                                                                                <!-- ANULAR -->
+                                                                                                <a href="javascript:void(0);"
+                                                                                                    class="btn btn-xs btn-danger m-r-xs"
+                                                                                                    title="Anular convenio"
+                                                                                                    data-toggle="tooltip"
+                                                                                                    data-idconvenio='<%# Eval("idConvenio") %>'>
+                                                                                                    <i class="fa fa-times"></i>
+                                                                                                </a>
+
+
+                                                                                            </div>
+
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </ItemTemplate>
+                                                                            </asp:Repeater>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+
+
                                                             </div>
                                                         </div>
                                                         <div class="client-detail">
@@ -719,20 +837,6 @@
         </div>
 
 
-        <%--        <script>
-
-        var documentoSeleccionado = "";
-
-        function abrirAscenso(doc) {
-
-            documentoSeleccionado = doc;
-
-            console.log("Documento recibido:", documentoSeleccionado);
-
-            $("#modalAscenso").modal("show");
-        }
-
-        </script>--%>
     </form>
 
     <!-- Mainly scripts -->
@@ -765,1145 +869,8 @@
         });
     </script>
 
-    <!-- Gráficas -->
 
-    <script>
-        // Gráfico de Géneros
-
-        $(function () {
-
-            const colores1 = cantidades1.map((_, index) => {
-                const hue = (index * 360) / cantidades1.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres1,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores1,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades1
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x, bar._model.y - 5);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("barChart1").getContext("2d");
-            new Chart(ctx4, { type: 'bar', data: barData, options: barOptions });
-
-
-            // Grafica Ciudades
-
-            const colores2 = cantidades2.map((_, index) => {
-                const hue = (index * 360) / cantidades2.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres2,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores2,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades2
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x + 10, bar._model.y + 8);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("barChart2").getContext("2d");
-            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
-
-
-
-            // Grafica Estado civil
-
-            const colores3 = cantidades3.map((_, index) => {
-                const hue = (index * 360) / cantidades3.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres3,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores3,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades3
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("barChart3").getContext("2d");
-            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
-
-
-            // Grafica TipoContrato
-
-            const colores4 = cantidades4.map((_, index) => {
-                const hue = (index * 360) / cantidades4.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres4,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores4,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades4
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("barChart4").getContext("2d");
-            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
-
-
-            // Gráfica Nivel de Estudio
-
-            const colores5 = cantidades5.map((_, index) => {
-                const hue = (index * 360) / cantidades5.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres5,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores5,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades5
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("barChart").getContext("2d");
-            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
-
-
-            // Gráfica Tipo de Vivienda
-
-            const colores6 = cantidades6.map((_, index) => {
-                const hue = (index * 360) / cantidades6.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres6,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores6,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades6
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("doughnutChart6").getContext("2d");
-            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
-
-
-            // Gráfica Actividad Extra
-
-            const colores7 = cantidades7.map((_, index) => {
-                const hue = (index * 360) / cantidades7.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres7,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores7,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades7
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("doughnutChart7").getContext("2d");
-            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
-
-
-            // Gráfica Consume Licor
-
-            const colores8 = cantidades8.map((_, index) => {
-                const hue = (index * 360) / cantidades8.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres8,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores8,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades8
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("doughnutChart8").getContext("2d");
-            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
-
-
-            // Gráfico de edades
-
-            const colores9 = cantidades9.map((_, index) => {
-                const hue = (index * 360) / cantidades9.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres9,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores9,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades9
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("barChart9").getContext("2d");
-            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
-
-
-            // Gráfico de Medio de Transporte
-
-            const colores10 = cantidades10.map((_, index) => {
-                const hue = (index * 360) / cantidades10.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres10,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores10,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades10
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("barChart10").getContext("2d");
-            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
-
-
-            // Gráfico de Tipo de Sangre
-
-            const colores11 = cantidades11.map((_, index) => {
-                const hue = (index * 360) / cantidades11.length;
-                return `hsla(${hue}, 70%, 55%, 0.7)`;
-
-            });
-
-            var barData = {
-                labels: nombres11,
-                datasets: [
-                    {
-                        label: "Empleados",
-                        backgroundColor: colores11,
-                        borderColor: "rgba(26,179,148,0.7)",
-                        pointBackgroundColor: "rgba(26,179,148,1)",
-                        pointBorderColor: "#fff",
-                        data: cantidades11
-                    }
-                ]
-            };
-
-            var barOptions = {
-                responsive: true,
-                legend: {
-                    display: false
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                },
-                animation: {
-                    onComplete: function () {
-                        var chartInstance = this.chart;
-                        var ctx = chartInstance.ctx;
-
-                        ctx.font = "10px Arial";
-                        ctx.fillStyle = "#000";
-                        ctx.textAlign = "center";
-                        ctx.textBaseline = "bottom";
-
-                        this.data.datasets.forEach(function (dataset, i) {
-                            var meta = chartInstance.controller.getDatasetMeta(i);
-                            meta.data.forEach(function (bar, index) {
-                                var value = dataset.data[index];
-                                ctx.fillText(value, bar._model.x + 7, bar._model.y + 8);
-                            });
-                        });
-                    }
-                }
-            };
-
-            var ctx4 = document.getElementById("barChart11").getContext("2d");
-            new Chart(ctx4, { type: 'horizontalBar', data: barData, options: barOptions });
-        });
-
-    </script>
-
-    <script>
-        $(document).on("click", ".btnAscenso", function () {
-
-            var documento = $(this).data("doc");
-            var nombreEmpleado = $(this).data("nombre");
-            $("#lblNombreEmpleado").text(nombreEmpleado);
-
-            $("#txtDocumentoAscenso").val(documento);
-
-            // Llamar método para traer info actual
-            $.ajax({
-                type: "POST",
-                url: "Empleados.aspx/ObtenerDatosEmpleado",
-                data: JSON.stringify({ documento: documento }),
-                contentType: "application/json; charset=utf-8",
-                success: function (response) {
-
-                    var data = response.d;
-
-                    $("#txtCargoActual").val(data.Cargo);
-                    $("#txtSalarioActual").val(data.Sueldo);
-                    $("#txtNuevoSalario").val(data.Sueldo);
-
-                    $("#modalAscenso").modal("show");
-                }
-            });
-
-        });
-
-    </script>
-
-    <script>
-        $(document).on("click", ".btnAscenso", function () {
-
-            var documento = $(this).data("doc");
-
-            console.log("Documento detectado:", documento);
-
-            $("#hdDocumentoAscenso").val(documento);
-
-            $.ajax({
-                type: "POST",
-                url: "Empleados.aspx/ObtenerDatosEmpleado",
-                data: JSON.stringify({ documento: documento }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-
-                    var data = response.d;
-
-                    $("#txtCargoActual").val(data.Cargo);
-                    var sueldoActual = parseFloat(data.Sueldo);
-
-                    $("#txtSalarioActual").val(
-                        "$ " + sueldoActual.toLocaleString("es-CO")
-                    );
-                    $("#txtNuevoSalario").val("$ 0");
-
-                    $("#modalAscenso").modal("show");
-                }
-            });
-        });
-    </script>
-
-
-    <script>
-        function guardarCambioCargo() {
-
-            var documento = $("#hdDocumentoMovimiento").val();
-            var idNuevoCargo = parseInt($("#ddlNuevoCargo").val());
-
-            if (!idNuevoCargo || isNaN(idNuevoCargo)) {
-                alert("Seleccione un nuevo cargo.");
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "Empleados.aspx/InsertarCambioCargoEmpleado",
-                data: JSON.stringify({
-                    documento: documento,
-                    idNuevoCargo: idNuevoCargo
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-
-                    if (response.d.success) {
-
-                        $("#modalMovimientoEmpleado").modal("hide");
-
-                        Swal.fire({
-                            title: 'Cambio de cargo registrado',
-                            text: response.d.mensaje,
-                            icon: 'success',
-                            timer: 2500,
-                            showConfirmButton: false
-                        }).then(() => {
-                            location.reload();
-                        });
-
-                    } else {
-                        alert(response.d.mensaje);
-                    }
-                }
-            });
-        }
-    </script>
-
-    <script>
-        function guardarCambioSalarial() {
-
-            var documento = $("#hdDocumentoMovimiento").val();
-
-            var sueldoTexto = $("#txtNuevoSalario").val() || "";
-            sueldoTexto = sueldoTexto.replace(/\$/g, "").replace(/\./g, "").trim();
-
-            var nuevoSueldo = parseFloat(sueldoTexto);
-
-            if (isNaN(nuevoSueldo) || nuevoSueldo <= 0) {
-                alert("Ingrese un salario válido.");
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "Empleados.aspx/InsertarCambioSalarialEmpleado",
-                data: JSON.stringify({
-                    documento: documento,
-                    nuevoSueldo: nuevoSueldo
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-
-                    if (response.d.success) {
-
-                        $("#modalMovimientoEmpleado").modal("hide");
-
-                        Swal.fire({
-                            title: 'Cambio salarial registrado',
-                            text: response.d.mensaje,
-                            icon: 'success',
-                            timer: 2500,
-                            showConfirmButton: false
-                        }).then(() => {
-                            location.reload();
-                        });
-
-                    } else {
-                        alert(response.d.mensaje);
-                    }
-                }
-            });
-        }
-    </script>
-
-
-
-    <script>
-        function guardarTraslado() {
-
-            var documento = $("#hdDocumentoMovimiento").val();
-            var idNuevaSede = parseInt($("#ddlNuevaSede").val());
-            var idNuevoCanal = parseInt($("#ddlNuevoCanal").val());
-
-            if (!idNuevaSede || isNaN(idNuevaSede)) {
-                alert("Seleccione una sede válida.");
-                return;
-            }
-
-            if (!idNuevoCanal || isNaN(idNuevoCanal)) {
-                alert("Seleccione un canal de venta.");
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "Empleados.aspx/InsertarTrasladoEmpleado",
-                data: JSON.stringify({
-                    documento: documento,
-                    idNuevaSede: idNuevaSede,
-                    idNuevoCanal: idNuevoCanal
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-
-                    if (response.d.success) {
-
-                        $("#modalMovimientoEmpleado").modal("hide");
-
-                        Swal.fire({
-                            title: 'Traslado registrado',
-                            text: response.d.mensaje,
-                            icon: 'success',
-                            timer: 2500,
-                            showConfirmButton: false
-                        }).then(() => {
-                            location.reload();
-                        });
-
-                    } else {
-                        alert(response.d.mensaje);
-                    }
-                }
-            });
-        }
-    </script>
-
-    <script>
-        function guardarIngresoRapido() {
-
-            var tipoDocumento = $("#ddlTipoDocumentoNuevo").val();
-            var documento = $("#txtDocumentoNuevo").val();
-            var nombre = $("#txtNombreNuevo").val();
-            var correo = $("#txtCorreoNuevo").val();
-            var sede = $("#ddlSedeIngreso").val();
-            var canal = $("#ddlCanalNuevo").val();
-            var cargo = $("#ddlCargoIngreso").val();
-
-            if (!documento || !nombre) {
-                alert("Documento y nombre son obligatorios");
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "Empleados.aspx/InsertarDatosBasicosEmpleado",
-                data: JSON.stringify({
-                    tipoDocumento: tipoDocumento,
-                    documento: documento,
-                    nombre: nombre,
-                    correo: correo,
-                    canal: canal,
-                    sede: sede,
-                    cargo: cargo
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-
-                    if (response.d.success) {
-
-                        $("#modalMovimientoEmpleado").modal("hide");
-
-                        Swal.fire({
-                            title: "Empleado creado",
-                            text: response.d.mensaje,
-                            icon: "success",
-                            timer: 2500,
-                            showConfirmButton: false
-                        }).then(() => {
-                            location.reload();
-                        });
-
-                    } else {
-                        alert(response.d.mensaje);
-                    }
-                }
-            });
-        }
-    </script>
-
-    <script>
-        $(document).on("click", ".btnMovimiento", function () {
-
-            var documento = $(this).data("doc");
-            var nombreEmpleado = $(this).data("nombre");
-            var tipo = $(this).data("tipo");
-
-            $("#hdDocumentoMovimiento").val(documento);
-            $("#hdTipoMovimiento").val(tipo);
-            $("#lblNombreEmpleado").text(nombreEmpleado);
-
-            cargarDatosEmpleado(documento, tipo);
-        });
-    </script>
-
-    <script>
-        function cargarDatosEmpleado(documento, tipo) {
-
-            $.ajax({
-                type: "POST",
-                url: "Empleados.aspx/ObtenerDatosEmpleado",
-                data: JSON.stringify({ documento: documento }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (response) {
-
-                    var data = response.d;
-
-                    $("#txtCargoActual").val(data.Cargo);
-
-                    var sueldoActual = parseFloat(data.Sueldo);
-                    $("#txtSalarioActual").val(
-                        "$ " + sueldoActual.toLocaleString("es-CO")
-                    );
-
-                    $("#txtSedeActual").val(data.Sede);
-
-                    $("#txtCanalActual").val(data.CanalVenta);
-
-                    configurarModalSegunTipo(tipo);
-
-                    $("#modalMovimientoEmpleado").modal("show");
-                }
-            });
-        }
-    </script>
-
-    <script>
-        function configurarModalSegunTipo(tipo) {
-
-            $(".seccionMovimiento").hide();
-
-            if (tipo === "CAMBIO_CARGO") {
-
-                $("#tituloModal").text("Cambio de cargo");
-
-                $("#btnGuardarMovimiento")
-                    .removeClass()
-                    .addClass("btn btn-warning");
-
-                $("#seccionCargo").show();
-                $("#seccionSalarioActual").show();
-            }
-
-            if (tipo === "CAMBIO_SALARIAL") {
-
-                $("#tituloModal").text("Cambio salarial");
-
-                $("#btnGuardarMovimiento")
-                    .removeClass()
-                    .addClass("btn btn-success");
-
-                $("#seccionSalarioActual").show();
-                $("#seccionSalario").show();
-
-                $("#txtNuevoSalario").val("$ 0");
-            }
-
-            if (tipo === "TRASLADO") {
-
-                $("#tituloModal").text("Traslado de empleado");
-
-                $("#btnGuardarMovimiento")
-                    .removeClass()
-                    .addClass("btn btn-info");
-
-                $("#seccionSedeActual").show();
-                $("#seccionTraslado").show();
-            }
-
-            if (tipo === "INGRESO_RAPIDO") {
-
-                $("#tituloModal").text("Nuevo ingreso rápido");
-
-                $("#btnGuardarMovimiento")
-                    .removeClass()
-                    .addClass("btn btn-primary");
-                $("#seccionCargoActual").hide();
-                $("#seccionIngresoRapido").show();
-
-            }
-        }
-    </script>
-
-    <script>
-        function guardarMovimiento() {
-
-            var tipo = $("#hdTipoMovimiento").val();
-
-            if (tipo === "CAMBIO_CARGO") {
-                guardarCambioCargo();
-            }
-
-            if (tipo === "CAMBIO_SALARIAL") {
-                guardarCambioSalarial();
-            }
-
-            if (tipo === "TRASLADO") {
-                guardarTraslado();
-            }
-            if (tipo === "INGRESO_RAPIDO") {
-                guardarIngresoRapido();
-            }
-
-        }
-    </script>
-
-    <script>
-        function formatCurrency(input) {
-
-            let value = input.value.replace(/\D/g, "");
-
-            if (value === "") {
-                input.value = "";
-                return;
-            }
-
-            let number = parseInt(value, 10);
-
-            input.value = "$ " + number.toLocaleString("es-CO");
-        }
-
-        function keepFormatted(input) {
-
-            if (input.value === "") return;
-
-            let value = input.value.replace(/\D/g, "");
-            let number = parseInt(value, 10);
-
-            input.value = "$ " + number.toLocaleString("es-CO");
-        }
-    </script>
-
-    <script>
-        function abrirIngresoRapido() {
-
-            $("#hdTipoMovimiento").val("INGRESO_RAPIDO");
-
-            configurarModalSegunTipo("INGRESO_RAPIDO");
-
-            $("#modalMovimientoEmpleado").modal("show");
-        }
-    </script>
-
-    <script>
-        $(document).on("click", ".btnIngresoRapido", function () {
-
-            $("#hdTipoMovimiento").val("INGRESO_RAPIDO");
-
-            configurarModalSegunTipo("INGRESO_RAPIDO");
-            $("#txtDocumentoNuevo").val("");
-            $("#txtNombreNuevo").val("");
-            $("#txtCorreoNuevo").val("");
-            txtCargoActual
-
-
-            $("#modalMovimientoEmpleado").modal("show");
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-
-            $('#txtDocumentoNuevo').on('change blur', function () {
-
-                var documento = $(this).val().trim();
-                if (documento.length === 0) return;
-
-                var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/' + documento;
-
-                // limpiar campo nombre
-                $('#txtNombreNuevo').val('');
-
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-
-                    success: function (data) {
-
-                        var nombreCompleto =
-                            [data.nombre, data.s_nombre].filter(Boolean).join(' ') + ' ' +
-                            [data.apellido, data.s_apellido].filter(Boolean).join(' ');
-
-                        $('#txtNombreNuevo').val(nombreCompleto.toUpperCase());
-
-                    },
-
-                    error: function () {
-
-                        console.log("No se encontró información en ADRES");
-
-                    }
-                });
-
-            });
-
-        });
-    </script>
+    <!-- CONVENIOS -->
 
     <script>
 
@@ -1915,6 +882,7 @@
             $("#ddlTipoNegociacion").val("");
             $("#ddlDiasCredito").val("");
 
+            $("#hdTipoConvenio").val("NUEVO");
 
             var idEmpresa = $(this).data("idempresa");
             var documento = $(this).data("documento");
@@ -1926,7 +894,7 @@
 
             $("#lblNombreEmpresa").html(
                 "<b>" + nombre + "</b><br>" +
-                "<small>Documento: " + documento + "</small>"
+                "<b>Documento: " + documento + "</b>"
             );
 
             $("#modalConvenioEmpresa").modal("show");
@@ -1937,8 +905,9 @@
 
 
     <script>
-        function guardarNuevoConvenio() {
-
+        function |NuevoConvenio() {
+            alert("entra a la función");
+           
             var idEmpresa = $("#hdEmpresaConvenio").val();
             var fechaConvenio = $("#txbFechaConvenio").val();
             var fechaFin = $("#txbFechaFinConvenio").val();
@@ -1947,6 +916,11 @@
             var diasCredito = $("#ddlDiasCredito").val();
 
             var descripcion = $("#editor").html();
+
+            var nombrePagador = $("#txbNombrePagador").val();
+            var telefonoPagador = $("#txbCelularPagador").val();
+            var correoPagador = $("#txbCorreoPagador").val();
+            var retornoAdm = $("input[name='rblRetorno']:checked").val();
 
             if (!fechaConvenio) {
                 alert("Debe ingresar la fecha de inicio del convenio");
@@ -1970,7 +944,11 @@
                     nroEmpleados: nroEmpleados,
                     tipoNegociacion: tipoNegociacion,
                     diasCredito: diasCredito,
-                    descripcion: descripcion
+                    descripcion: descripcion,
+                    nombrePagador: nombrePagador,
+                    telefonoPagador: telefonoPagador,
+                    correoPagador: correoPagador,
+                    retornoAdm: retornoAdm
                 }),
 
                 contentType: "application/json; charset=utf-8",
@@ -1983,8 +961,8 @@
                         $("#modalConvenioEmpresa").modal("hide");
 
                         Swal.fire({
-                            title: "Convenio creado",
-                            text: "Registro guardado correctamente",
+                            title: "Convenio creado correctamente",
+                            text: "Corporativo - Fitness People",
                             icon: "success",
                             timer: 2000,
                             showConfirmButton: false
@@ -1995,9 +973,7 @@
                     } else {
 
                         Swal.fire("Error", response.d.mensaje, "error");
-
                     }
-
                 },
 
                 error: function (xhr) {
@@ -2009,13 +985,177 @@
                         "Error al guardar el convenio",
                         "error"
                     );
-
                 }
-
             });
+        }
+    </script>
+
+
+    <script>
+        function abrirModalConvenio(tipo, data) {
+
+        $("#hdTipoConvenio").val(tipo);
+
+          //LIMPIAR SI ES NUEVO
+        if (tipo === "NUEVO") {
+            limpiarFormulario();
+        }
+
+        // CARGAR DATOS SI ES EDITAR / VER / RENOVAR
+        if (data) {
+
+            $("#hdIdConvenio").val(data.idConvenio);
+
+            $("#txbFechaConvenio").val(data.fechaConvenio);
+            $("#txbFechaFinConvenio").val(data.fechaFinConvenio);
+            $("#txbNroEmpleados").val(data.nroEmpleados);
+            $("#ddlTipoNegociacion").val(data.tipoNegociacion);
+            $("#ddlDiasCredito").val(data.diasCredito);
+            $("#editor").html(data.descripcion);
+
+            $("#txbNombrePagador").val(data.nombrePagador);
+            $("#txbCelularPagador").val(data.telefonoPagador);
+            $("#txbCorreoPagador").val(data.correoPagador);
+
+            $("input[name='rblRetorno'][value='" + data.retornoAdm + "']")
+                .prop("checked", true);
+        }
+
+        // CONFIGURAR TITULO
+        if (tipo === "NUEVO") $("#tituloModal1").text("Nuevo convenio");
+        if (tipo === "EDITAR") $("#tituloModal1").text("Editar convenio");
+        if (tipo === "RENOVAR") $("#tituloModal1").text("Renovar convenio");
+        if (tipo === "VER") $("#tituloModal1").text("Detalle del convenio");
+
+
+        if (tipo === "VER") {
+
+            // deshabilitar campos
+            $("#modalConvenioEmpresa input, #modalConvenioEmpresa select")
+                .prop("disabled", true);
+
+            // ocultar botón guardar
+            $("#btnGuardarConvenio").hide();
+
+        } else {
+
+            // habilitar campos
+            $("#modalConvenioEmpresa input, #modalConvenioEmpresa select")
+                .prop("disabled", false);
+
+            $("#btnGuardarConvenio").show();
+        }
+
+        // BOTÓN
+        if (tipo === "VER") {
+            $("#btnGuardarConvenio").hide();
+        } else {
+            $("#btnGuardarConvenio").show();
+        }
+
+        $("#modalConvenioEmpresa").modal("show");
+    }
+    </script>
+
+
+
+
+    <script>
+        function limpiarFormulario() {
+
+            $("#txbFechaConvenio").val("");
+            $("#txbFechaFinConvenio").val("");
+            $("#txbNroEmpleados").val("");
+            $("#ddlTipoNegociacion").val("");
+            $("#ddlDiasCredito").val("");
+            $("#editor").html("");
+
+            $("#txbNombrePagador").val("");
+            $("#txbCelularPagador").val("");
+            $("#txbCorreoPagador").val("");
+            $("input[name='rblRetorno'][value='0']").prop("checked", true);
 
         }
     </script>
+
+
+    <script>
+        function guardarConvenio() {
+
+        var tipo = $("#hdTipoConvenio").val();
+        console.log("tipo:", tipo);
+
+        if (tipo === "NUEVO") {
+            guardarNuevoConvenio();
+        }
+
+        if (tipo === "EDITAR") {
+            actualizarConvenio();
+        }
+
+        if (tipo === "RENOVAR") {
+            renovarConvenio();
+        }
+    }
+    </script>
+
+    <script>
+        $(document).on("click", ".btnEditarConvenio", function () {
+
+        var data = {
+            idConvenio: $(this).data("id"),
+            fechaConvenio: $(this).data("fecha"),
+            fechaFinConvenio: $(this).data("fechafin"),
+            tipoNegociacion: $(this).data("tipo"),
+            diasCredito: $(this).data("dias"),
+            descripcion: $(this).data("desc")
+        };
+
+        abrirModalConvenio("EDITAR", data);
+
+    });
+    </script>
+
+    <script>
+    function anularConvenio(id) {
+
+        Swal.fire({
+            title: "¿Anular convenio?",
+            text: "Esta acción no se puede deshacer",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Sí, anular"
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+                // llamar AJAX
+            }
+
+        });
+    }
+    </script>
+
+    <script>
+    $(document).on("click", ".btnVerConvenio", function () {
+
+        var data = {
+            idConvenio: $(this).data("idconvenio"),
+            fechaConvenio: $(this).data("fecha"),
+            fechaFinConvenio: $(this).data("fechafin"),
+            tipoNegociacion: $(this).data("tipo"),
+            diasCredito: $(this).data("dias"),
+            descripcion: $(this).data("desc")
+        };
+
+        abrirModalConvenio("VER", data);
+
+    });
+    </script>
+
+
+
+
+
 
 
 

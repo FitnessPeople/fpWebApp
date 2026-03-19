@@ -4522,6 +4522,47 @@ namespace fpWebApp
             return dt;
         }
 
+
+        public DataTable ListarConveniosPorEmpresa(int idEmpresaAfiliada)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection mysqlConexion = new MySqlConnection(strConexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("PA_LISTAR_CONVENIOS_EMPRESA_POR_ID_EMPRESA", mysqlConexion))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                                               
+                        cmd.Parameters.AddWithValue("p_idEmpresaAfiliada", idEmpresaAfiliada);
+
+                        using (MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd))
+                        {
+                            mysqlConexion.Open();
+                            dataAdapter.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+
+        /// <summary>
+        /// INDICADORES
+        /// </summary>
+        /// <returns></returns>
+
         public DataTable ConsultarIndicadoresInicioDirOperativo()
         {
             DataTable dt = new DataTable();

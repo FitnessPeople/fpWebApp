@@ -626,7 +626,8 @@ namespace fpWebApp
 
 
         [WebMethod(EnableSession = true)]
-        public static object InsertarConvenioEmpresa( int idEmpresaAfiliada, string fechaConvenio, string fechaFinConvenio, string tipoNegociacion, int diasCredito, string descripcion )
+        public static object InsertarConvenioEmpresa( int idEmpresaAfiliada, string fechaConvenio, string fechaFinConvenio, string tipoNegociacion, int diasCredito, string descripcion,
+            string nombrePagador, string telefonoPagador, string correoPagador, decimal retornoAdm)
         {
             try
             {
@@ -643,12 +644,12 @@ namespace fpWebApp
                     Convert.ToDateTime(fechaFinConvenio),
                     "", //NombreContacto
                     "", //CargoContacto
-                    "", //NombrePagador
-                    "", //TelefonoPagador
-                    "", //CorreoPagador
+                    telefonoPagador, //NombrePagador
+                    telefonoPagador, //TelefonoPagador
+                    correoPagador, //CorreoPagador
                     tipoNegociacion,
                     diasCredito,
-                    0, //RetornoAdm
+                    retornoAdm, //RetornoAdm
                     "", //Contrato
                     "", //CamaraComercio
                     "", //Rut
@@ -674,12 +675,24 @@ namespace fpWebApp
         }
 
 
-
-
-
         protected void rpTabEmpresas_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                int idEmpresa = Convert.ToInt32(DataBinder.Eval(e.Item.DataItem, "idEmpresaAfiliada"));
 
+                Repeater rpConvenios = (Repeater)e.Item.FindControl("rpConvenios");
+
+                clasesglobales cg = new clasesglobales();
+
+                DataTable dt = cg.ListarConveniosPorEmpresa(idEmpresa); // usa tu SP
+
+                rpConvenios.DataSource = dt;
+                rpConvenios.DataBind();
+            }
         }
+
+
+
     }
 }
