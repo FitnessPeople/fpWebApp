@@ -70,37 +70,12 @@
             document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
         }
     </script>
-        var quill;
-        document.addEventListener("DOMContentLoaded", function () {
-            quill = new Quill("#editor", {
-                theme: "snow",
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold'], // Negrita y Tachado
-                        ['italic', 'underline'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        [{ 'align': [] }],
-                    ]
-                }
-            });
-            function ajustarAlturaEditor() {
-                var editorContenido = document.querySelector(".ql-editor");
-                editorContenido.style.height = "auto";
-                editorContenido.style.height = editorContenido.scrollHeight + "px";
-            }
-            quill.on("text-change", ajustarAlturaEditor);
 
-            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
-            if (contenidoGuardado.trim() !== "") {
-                quill.root.innerHTML = contenidoGuardado;
-            }
-        });
-        function guardarContenidoEditor() {
-            var contenido = quill.root.innerHTML;
-            document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
+    <style>
+        #editor .ql-editor {
+            min-height: 80px; /* 🔥 ajusta aquí (2-3 líneas) */
         }
-    </script>
+    </style>
 
     <!-- Sweet Alert -->
     <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
@@ -666,7 +641,7 @@
                                                                                                     data-fechafin='<%# Eval("FechaFinConvenio", "{0:yyyy-MM-dd}") %>'
                                                                                                     data-tipo='<%# Eval("TipoNegociacion") %>'
                                                                                                     data-dias='<%# Eval("DiasCredito") %>'
-                                                                                                    data-desc='<%# Eval("Descripcion") %>'
+                                                                                                    data-desc='<%# HttpUtility.HtmlEncode(Eval("Descripcion").ToString()) %>'
                                                                                                     data-nroempleados='<%# Eval("NroEmpleados") %>'
                                                                                                     data-nombrepagador='<%# Eval("NombrePagador") %>'
                                                                                                     data-telefono='<%# Eval("TelefonoPagador") %>'
@@ -687,10 +662,20 @@
 
                                                                                                 <!-- EDITAR -->
                                                                                                 <a href="javascript:void(0);"
-                                                                                                    class="btn btn-xs btn-primary m-r-xs"
+                                                                                                    class="btn btn-xs btn-primary m-r-xs btnEditarConvenio"
                                                                                                     title="Editar convenio"
-                                                                                                    data-toggle="tooltip"
-                                                                                                    data-idconvenio='<%# Eval("idConvenio") %>'>
+                                                                                                    data-idconvenio='<%# Eval("idConvenio") %>'
+                                                                                                    data-fecha='<%# Eval("FechaConvenio", "{0:yyyy-MM-dd}") %>'
+                                                                                                    data-fechafin='<%# Eval("FechaFinConvenio", "{0:yyyy-MM-dd}") %>'
+                                                                                                    data-tipo='<%# Eval("TipoNegociacion") %>'
+                                                                                                    data-dias='<%# Eval("DiasCredito") %>'
+                                                                                                    data-desc='<%# HttpUtility.HtmlEncode(Eval("Descripcion").ToString()) %>'
+                                                                                                    data-nroempleados='<%# Eval("NroEmpleados") %>'
+                                                                                                    data-nombrepagador='<%# Eval("NombrePagador") %>'
+                                                                                                    data-telefono='<%# Eval("TelefonoPagador") %>'
+                                                                                                    data-correo='<%# Eval("CorreoPagador") %>'
+                                                                                                    data-retorno='<%# Eval("RetornoAdm") %>'>
+
                                                                                                     <i class="fa fa-edit"></i>
                                                                                                 </a>
 
@@ -914,48 +899,6 @@
 
     <!-- CONVENIOS -->
 
-<%--    <script>
-$(document).on("click", ".btnNuevoConvenio", function () {
-
-    console.log("CLICK NUEVO CONVENIO"); // 🔥 prueba
-
-    // limpiar
-    $("#txbFechaConvenio").val("");
-    $("#txbFechaFinConvenio").val("");
-    $("#txbNroEmpleados").val("");
-    $("#ddlTipoNegociacion").val("");
-    $("#ddlDiasCredito").val("");
-    if (quill) {
-    quill.root.innerHTML = "";
-    }
-
-    $("#txbNombrePagador").val("");
-    $("#txbCelularPagador").val("");
-    $("#txbCorreoPagador").val("");
-    $("input[name='rblRetorno'][value='0']").prop("checked", true);
-
-    // set tipo
-    $("#hdTipoConvenio").val("NUEVO");
-
-    // datos empresa
-    var idEmpresa = $(this).data("idempresa");
-    var documento = $(this).data("documento");
-    var nombre = $(this).data("nombre");
-
-    $("#hdEmpresaConvenio").val(idEmpresa);
-
-    // título
-    $("#tituloModal1").text("Nuevo convenio");
-
-    $("#lblNombreEmpresa").html(
-        "<b>" + nombre + "</b><br>" +
-        "<b>Documento: " + documento + "</b>"
-    );
-
-    // abrir modal
-    $("#modalConvenioEmpresa").modal("show");
-});
-    </script>--%>
 
     <script>    
         $(document).on("click", ".btnNuevoConvenio", function () {
@@ -974,7 +917,6 @@ $(document).on("click", ".btnNuevoConvenio", function () {
             "<b>Documento: " + documento + "</b>"
         );
 
-        //  LLAMAR FUNCIÓN CENTRAL (AQUÍ ESTÁ LA CLAVE)
         abrirModalConvenio("NUEVO", null);
     });
     </script>
@@ -991,7 +933,7 @@ $(document).on("click", ".btnNuevoConvenio", function () {
             fechafin: $(this).data("fechafin"),
             tipo: $(this).data("tipo"),
             dias: $(this).data("dias"),
-            desc: $(this).attr("data-desc"),
+            desc: $(this).data("desc"),
 
             nroempleados: $(this).data("nroempleados"),
             nombrepagador: $(this).data("nombrepagador"),
@@ -1006,17 +948,16 @@ $(document).on("click", ".btnNuevoConvenio", function () {
     </script>
 
     <script> 
-       function guardarNuevoConvenio() {
-           alert("entra a la función");
+       function guardarNuevoConvenio() {          
            
             var idEmpresa = $("#hdEmpresaConvenio").val();
             var fechaConvenio = $("#txbFechaConvenio").val();
             var fechaFin = $("#txbFechaFinConvenio").val();
             var nroEmpleados = $("#txbNroEmpleados").val();
             var tipoNegociacion = $("#ddlTipoNegociacion").val();
-           var diasCredito = $("#ddlDiasCredito").val();
+            var diasCredito = $("#ddlDiasCredito").val();
 
-            var descripcion = $("#editor").html();
+            var descripcion = quill.root.innerHTML;
 
             var nombrePagador = $("#txbNombrePagador").val();
             var telefonoPagador = $("#txbCelularPagador").val();
@@ -1066,7 +1007,7 @@ $(document).on("click", ".btnNuevoConvenio", function () {
                         title: "Convenio creado correctamente",
                         text: "Corporativo - Fitness People",
                         icon: "success",
-                        timer: 2000,
+                        timer: 2500,
                         showConfirmButton: false
                     }).then(() => {
                         location.reload();
@@ -1092,90 +1033,97 @@ $(document).on("click", ".btnNuevoConvenio", function () {
     }
     </script>
 
-    <script>    
-function abrirModalConvenio(tipo, data) {
+    <script>   
+        
+    function abrirModalConvenio(tipo, data) {
 
-    $("#hdTipoConvenio").val(tipo);
+        $("#hdTipoConvenio").val(tipo);
 
-    //  RESET GENERAL
-    $("#modalConvenioEmpresa input, #modalConvenioEmpresa select")
-        .prop("disabled", false);
-
-    $("#editor").css("pointer-events", "auto").css("background", "#fff");
-    $("#btnGuardarConvenio").show();
-
-    //  ASEGURAR QUE QUILL EXISTE
-    if (!quill) {
-        quill = new Quill("#editor", {
-            theme: "snow",
-            modules: {
-                toolbar: [
-                    [{ 'header': [1, 2, 3, false] }],
-                    ['bold'],
-                    ['italic', 'underline'],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    [{ 'align': [] }]
-                ]
-            }
-        });
-    }
-
-    //  LIMPIAR SI ES NUEVO
-    if (tipo === "NUEVO") {
-        limpiarFormulario();
-
-        if (quill) {
-            quill.root.innerHTML = "";
-        }
-    }
-
-    //  CARGAR DATOS
-    if (data) {
-
-        $("#hdIdConvenio").val(data.idconvenio || "");
-
-        $("#txbFechaConvenio").val(data.fecha || "");
-        $("#txbFechaFinConvenio").val(data.fechafin || "");
-        $("#txbNroEmpleados").val(data.nroempleados || "");
-        $("#ddlTipoNegociacion").val(data.tipo || "");
-        $("#ddlDiasCredito").val(data.dias || "");
-
-        //  QUILL CORRECTO
-        if (quill) {
-            quill.root.innerHTML = data.desc || "";
-        }
-
-        $("#txbNombrePagador").val(data.nombrepagador || "");
-        $("#txbCelularPagador").val(data.telefono || "");
-        $("#txbCorreoPagador").val(data.correo || "");
-
-        var retorno = (data.retorno == "1,00" || data.retorno == "1") ? "1" : "0";
-
-        $("input[name='rblRetorno'][value='" + retorno + "']")
-            .prop("checked", true);
-    }
-
-    //  TITULO
-    var titulo = "Convenio";
-    if (tipo === "NUEVO") titulo = "Nuevo convenio";
-    if (tipo === "EDITAR") titulo = "Editar convenio";
-    if (tipo === "RENOVAR") titulo = "Renovar convenio";
-    if (tipo === "VER") titulo = "Detalle del convenio";
-
-    $("#tituloModal1").text(titulo);
-
-    // 🔥 MODO VER
-    if (tipo === "VER") {
+        //  RESET GENERAL
         $("#modalConvenioEmpresa input, #modalConvenioEmpresa select")
-            .prop("disabled", true);
+            .prop("disabled", false);
 
-        $("#editor").css("pointer-events", "none").css("background", "#f5f5f5");
+        $("#editor").css("pointer-events", "auto").css("background", "#fff");
+        $("#btnGuardarConvenio").show();
 
-        $("#btnGuardarConvenio").hide();
-    }
+        //  ASEGURAR QUE QUILL EXISTE
+        if (!quill) {
+            quill = new Quill("#editor", {
+                theme: "snow",
+                modules: {
+                    toolbar: [
+                        [{ 'header': [1, 2, 3, false] }],
+                        ['bold'],
+                        ['italic', 'underline'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        [{ 'align': [] }]
+                    ]
+                }
+            });
+        }
 
-    //  ABRIR MODAL
-    $("#modalConvenioEmpresa").modal("show");
+        //  LIMPIAR SI ES NUEVO
+        if (tipo === "NUEVO") {
+            limpiarFormulario();
+
+            if (quill) {
+                quill.root.innerHTML = "";
+            }
+        }
+
+        //  CARGAR DATOS
+        if (data) {
+
+            $("#hdIdConvenio").val(data.idconvenio || "");
+
+            $("#txbFechaConvenio").val(data.fecha || "");
+            $("#txbFechaFinConvenio").val(data.fechafin || "");
+            $("#txbNroEmpleados").val(data.nroempleados || "");
+            $("#ddlTipoNegociacion").val(data.tipo || "");
+            $("#ddlDiasCredito").val(data.dias || "");
+
+            //  QUILL CORRECTO
+            if (quill && data.desc) {
+
+                var contenido = data.desc;
+               
+                contenido = contenido.replace(/<div class="ql-editor[^>]*>/i, "");
+                contenido = contenido.replace(/<\/div>\s*<div class="ql-clipboard[^>]*>.*?<\/div>/i, "");
+
+                quill.root.innerHTML = contenido;
+            }
+
+            $("#txbNombrePagador").val(data.nombrepagador || "");
+            $("#txbCelularPagador").val(data.telefono || "");
+            $("#txbCorreoPagador").val(data.correo || "");
+
+            var retorno = (data.retorno == "1,00" || data.retorno == "1") ? "1" : "0";
+
+            $("input[name='rblRetorno'][value='" + retorno + "']")
+                .prop("checked", true);
+        }
+
+        //  TITULO
+        var titulo = "Convenio";
+        if (tipo === "NUEVO") titulo = "Nuevo convenio";
+        if (tipo === "EDITAR") titulo = "Editar convenio";
+        if (tipo === "RENOVAR") titulo = "Renovar convenio";
+        if (tipo === "VER") titulo = "Detalle del convenio";
+
+        $("#tituloModal1").text(titulo);
+
+        // 🔥 MODO VER
+        if (tipo === "VER") {
+            $("#modalConvenioEmpresa input, #modalConvenioEmpresa select")
+                .prop("disabled", true);
+
+            $("#editor").css("pointer-events", "none").css("background", "#f5f5f5");
+
+            $("#btnGuardarConvenio").hide();
+        }
+
+        //  ABRIR MODAL
+        $("#modalConvenioEmpresa").modal("show");
 }
     </script>
 
@@ -1218,27 +1166,106 @@ function abrirModalConvenio(tipo, data) {
         }
     </script>
 
-    <script>
-        $(document).on("click", ".btnEditarConvenio", function () {
 
-        var data = {
-            idConvenio: $(this).data("id"),
-            fechaConvenio: $(this).data("fecha"),
-            fechaFinConvenio: $(this).data("fechafin"),
-            tipoNegociacion: $(this).data("tipo"),
-            diasCredito: $(this).data("dias"),
-            descripcion: $(this).data("desc"),
-            nroEmpleados: $(this).data("nroempleados"),  
-            nombrePagador: $(this).data("nombrepagador"),
-            telefonoPagador: $(this).data("telefono"),
-            correoPagador: $(this).data("correo"),
-            retornoAdm: $(this).data("retorno")
-        };
+    <script>  
+            $(document).on("click", ".btnEditarConvenio", function () {
 
-        abrirModalConvenio("EDITAR", data);
+            console.log("EDITAR DATA:", $(this).data());
 
-    });
+            var data = {
+                idconvenio: $(this).data("idconvenio"),
+                fecha: $(this).data("fecha"),
+                fechafin: $(this).data("fechafin"),
+                tipo: $(this).data("tipo"),
+                dias: $(this).data("dias"),
+                desc: $(this).data("desc"),
+
+                nroempleados: $(this).data("nroempleados"),
+                nombrepagador: $(this).data("nombrepagador"),
+                telefono: $(this).data("telefono"),
+                correo: $(this).data("correo"),
+                retorno: $(this).data("retorno")
+            };
+
+            abrirModalConvenio("EDITAR", data);
+        });
     </script>
+
+
+    <script>
+        function actualizarConvenio() {
+
+        var idConvenio = $("#hdIdConvenio").val();
+
+        var fechaConvenio = $("#txbFechaConvenio").val();
+        var fechaFin = $("#txbFechaFinConvenio").val();
+        var nroEmpleados = $("#txbNroEmpleados").val();
+        var tipoNegociacion = $("#ddlTipoNegociacion").val();
+        var diasCredito = $("#ddlDiasCredito").val();
+
+        var descripcion = quill.root.innerHTML;
+
+        var nombrePagador = $("#txbNombrePagador").val();
+        var telefonoPagador = $("#txbCelularPagador").val();
+        var correoPagador = $("#txbCorreoPagador").val();
+        var retornoAdm = $("input[name='rblRetorno']:checked").val();
+
+        if (!fechaConvenio) {
+            Swal.fire("Error", "Debe ingresar la fecha de inicio", "error");
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "empresasconvenio.aspx/ActualizarConvenioEmpresa",
+
+            data: JSON.stringify({
+                idConvenio: idConvenio,
+                fechaConvenio: fechaConvenio,
+                fechaFinConvenio: fechaFin,
+                nroEmpleados: nroEmpleados,
+                tipoNegociacion: tipoNegociacion,
+                diasCredito: diasCredito,
+                descripcion: descripcion,
+
+                nombrePagador: nombrePagador,
+                telefonoPagador: telefonoPagador,
+                correoPagador: correoPagador,
+                retornoAdm: retornoAdm
+            }),
+
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function (response) {
+
+                if (response.d.success) {
+
+                    $("#modalConvenioEmpresa").modal("hide");
+
+                    Swal.fire({
+                        title: "Convenio actualizado",
+                        text: "Corporativo - Fitness People",
+                        icon: "success",
+                        timer: 2500,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    });
+
+                } else {
+                    Swal.fire("Error", response.d.mensaje, "error");
+                }
+            },
+
+            error: function (xhr) {
+                console.log(xhr.responseText);
+                Swal.fire("Error", "Error al actualizar", "error");
+            }
+        });
+    }
+    </script>
+
 
     <script>
     function anularConvenio(id) {

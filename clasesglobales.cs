@@ -4441,7 +4441,7 @@ namespace fpWebApp
 
         public int InsertarConvenioEmpresa( int idEmpresaAfiliada, DateTime fechaConvenio, DateTime fechaFinConvenio, string nombreContacto, string cargoContacto,
         string nombrePagador,  string telefonoPagador, string correoPagador, string tipoNegociacion, int diasCredito,  decimal retornoAdm, string contrato,
-        string camaraComercio, string rut, string cedulaRepLeg, string descripcion, int idUsuario)
+        string camaraComercio, string rut, string cedulaRepLeg, string descripcion, int idUsuario, int nroEmpleados)
         {
             int idConvenio = 0;
 
@@ -4474,6 +4474,7 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("p_CedulaRepLeg", cedulaRepLeg);
                         cmd.Parameters.AddWithValue("p_Descripcion", descripcion);
                         cmd.Parameters.AddWithValue("p_idUsuario", idUsuario);
+                        cmd.Parameters.AddWithValue("p_nroEmpleados", nroEmpleados);
                       
                         object result = cmd.ExecuteScalar();
 

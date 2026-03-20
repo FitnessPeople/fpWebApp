@@ -1,10 +1,12 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Script.Serialization;
 using System.Web.Services;
 using System.Web.UI;
@@ -53,11 +55,6 @@ namespace fpWebApp
 
 
 
-                    CargarCargos();
-                    CargarSedes();
-                    CargarCanalesVenta();
-                    CargarTipoDocumento();
-
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
                 }
@@ -92,35 +89,6 @@ namespace fpWebApp
         }
 
 
-
-        //private void listaEmpleados()
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    DataTable dt = new DataTable();
-        //    if (Session["idSede"].ToString() == "11") // Usuario administrativo
-        //    {
-        //        dt = cg.ConsultarEmpleados();
-        //    }
-        //    else
-        //    {
-        //        dt = cg.ConsultarEmpleadosPorSede(Session["idSede"].ToString());
-        //    }
-
-        //    if (dt != null && dt.Rows.Count > 0)
-        //    {
-        //        string firstRow = dt.Rows[0]["DocumentoEmpleado"].ToString();
-        //        ViewState.Add("EmployeeDoc", firstRow);
-        //    }
-
-        //    rpEmpleados.DataSource = dt;
-        //    rpEmpleados.DataBind();
-
-        //    rpTabEmpleados.DataSource = dt;
-        //    rpTabEmpleados.DataBind();
-
-        //    dt.Dispose();
-        //}
-
         private void listaEmpresasConvenio()
         {
             clasesglobales cg = new clasesglobales();
@@ -150,33 +118,6 @@ namespace fpWebApp
         }
 
 
-
-
-        //protected void rpEmpleados_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        if (ViewState["CrearModificar"].ToString() == "1")
-        //        {
-        //            string valor = ((DataRowView)e.Item.DataItem).Row[0].ToString();
-        //            string cifrado = HttpUtility.UrlEncode(cg.Encrypt(valor).Replace("+", "-").Replace("/", "_").Replace("=", ""));
-
-        //            HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-        //            //btnEditar.Attributes.Add("href", "editarempleado?editid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            btnEditar.Attributes.Add("href", "editarempleado?editid=" + cifrado);
-        //            btnEditar.Visible = true;
-        //        }
-        //        if (ViewState["Borrar"].ToString() == "1")
-        //        {
-        //            HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-        //            btnEliminar.Attributes.Add("href", "eliminarempleado?deleteid=" + ((DataRowView)e.Item.DataItem).Row[0].ToString());
-        //            btnEliminar.Visible = true;
-        //        }
-        //    }
-        //}
-
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
             try
@@ -202,187 +143,15 @@ namespace fpWebApp
             }
         }
 
-        protected void rpTabEmpleados_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        {
-
-        }
-
-        protected void lkbCambiarEstado_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        [WebMethod]
-        public static object ObtenerDatosEmpleado(string documento)
-        {
-            clasesglobales cg = new clasesglobales();
-
-            try
-            {
-
-                DataTable dt = cg.ConsultarEmpleado(documento);
-
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    DataRow row = dt.Rows[0];
-
-                    return new
-                    {
-                        Cargo = row["Cargo"].ToString(),
-                        Sueldo = row["Sueldo"] != DBNull.Value ? Convert.ToDecimal(row["Sueldo"]) : 0,
-                        idCargo = row["idCargo"] != DBNull.Value ? Convert.ToInt32(row["idCargo"]) : 0,
-
-                        Sede = row["NombreSede"].ToString(),
-                        idSede = Convert.ToInt32(row["idSede"]),
-
-                        CanalVenta = row["NombreCanalVenta"].ToString(),
-                        idCanalVenta = row["idCanalVenta"] != DBNull.Value ? Convert.ToInt32(row["idCanalVenta"]) : 0
-
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                return new
-                {
-                    error = true,
-                    mensaje = ex.Message
-                };
-            }
-
-            return null;
-        }
 
 
 
 
-        private void CargarSedes()
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                DataTable dt = cg.ConsultaCargarSedes("Todos");
-                ddlNuevaSede.DataSource = dt;
-
-                ddlNuevaSede.DataSource = dt;
-                ddlNuevaSede.DataTextField = "NombreSede";
-                ddlNuevaSede.DataValueField = "idSede";
-                ddlNuevaSede.DataBind();
-                ddlNuevaSede.Items.Insert(0, new ListItem("Seleccione sede", ""));
 
 
-                ddlSedeIngreso.DataSource = dt;
-                ddlSedeIngreso.DataSource = dt;
-                ddlSedeIngreso.DataTextField = "NombreSede";
-                ddlSedeIngreso.DataValueField = "idSede";
-                ddlSedeIngreso.DataBind();
-
-                ddlSedeIngreso.Items.Insert(0, new ListItem("Seleccione sede", ""));
 
 
-                dt.Dispose();
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Código: " + idLog, "error");
-            }
 
-
-        }
-        private void CargarCargos()
-        {
-            clasesglobales cg = new clasesglobales();
-
-            try
-            {
-                DataTable dt = cg.ConsultarCargos();
-
-                ddlNuevoCargo.DataSource = dt;
-                ddlNuevoCargo.DataTextField = "NombreCargo";   // texto visible
-                ddlNuevoCargo.DataValueField = "idCargo";     // valor
-                ddlNuevoCargo.DataBind();
-
-                ddlNuevoCargo.Items.Insert(0, new ListItem("Seleccione cargo", ""));
-
-                ddlCargoIngreso.DataSource = dt;
-                ddlCargoIngreso.DataTextField = "NombreCargo";   // texto visible
-                ddlCargoIngreso.DataValueField = "idCargo";     // valor
-                ddlCargoIngreso.DataBind();
-
-                ddlCargoIngreso.Items.Insert(0, new ListItem("Seleccione cargo", ""));
-
-
-                dt.Dispose();
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso",
-                    "Ocurrió un inconveniente. Código: " + idLog,
-                    "error");
-            }
-        }
-
-        private void CargarTipoDocumento()
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                DataTable dt = cg.ConsultartiposDocumento();
-                ddlTipoDocumentoNuevo.DataSource = dt;
-                ddlTipoDocumentoNuevo.DataTextField = "TipoDocumento";
-                ddlTipoDocumentoNuevo.DataValueField = "idTipoDoc";
-                ddlTipoDocumentoNuevo.DataBind();
-                dt.Dispose();
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Código: " + idLog, "error");
-            }
-
-
-        }
-
-        private void CargarCanalesVenta()
-        {
-            clasesglobales cg = new clasesglobales();
-            try
-            {
-                DataTable dt = cg.ConsultarCanalesVenta();
-
-                ddlNuevoCanal.DataSource = dt;
-                ddlNuevoCanal.DataTextField = "NombreCanalVenta";
-                ddlNuevoCanal.DataValueField = "idCanalVenta";
-                ddlNuevoCanal.DataBind();
-
-                ListItem item = ddlNuevoCanal.Items.FindByValue("15");
-                if (item != null)
-                {
-                    ddlNuevoCanal.Items.Remove(item);
-                }
-
-                ///
-                ddlCanalNuevo.DataSource = dt;
-                ddlCanalNuevo.DataTextField = "NombreCanalVenta";
-                ddlCanalNuevo.DataValueField = "idCanalVenta";
-                ddlCanalNuevo.DataBind();
-
-                ListItem item1 = ddlCanalNuevo.Items.FindByValue("15");
-                if (item1 != null)
-                {
-                    ddlCanalNuevo.Items.Remove(item1);
-                }
-
-                dt.Dispose();
-            }
-            catch (Exception ex)
-            {
-                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-            }
-        }
 
 
 
@@ -627,7 +396,7 @@ namespace fpWebApp
 
         [WebMethod(EnableSession = true)]
         public static object InsertarConvenioEmpresa( int idEmpresaAfiliada, string fechaConvenio, string fechaFinConvenio, string tipoNegociacion, int diasCredito, string descripcion,
-            string nombrePagador, string telefonoPagador, string correoPagador, decimal retornoAdm)
+            string nombrePagador, string telefonoPagador, string correoPagador, decimal retornoAdm, int nroEmpleados)
         {
             try
             {
@@ -644,7 +413,7 @@ namespace fpWebApp
                     Convert.ToDateTime(fechaFinConvenio),
                     "", //NombreContacto
                     "", //CargoContacto
-                    telefonoPagador, //NombrePagador
+                    nombrePagador, //NombrePagador
                     telefonoPagador, //TelefonoPagador
                     correoPagador, //CorreoPagador
                     tipoNegociacion,
@@ -655,7 +424,8 @@ namespace fpWebApp
                     "", //Rut
                     "", //CedulaRepLeg
                     descripcion,
-                    idUsuario
+                    idUsuario,
+                    nroEmpleados
                 );
 
                 return new
@@ -671,6 +441,46 @@ namespace fpWebApp
                     success = false,
                     mensaje = ex.Message
                 };
+            }
+        }
+
+        [WebMethod]
+        public static object ActualizarConvenioEmpresa( int idConvenio, string fechaConvenio, string fechaFinConvenio, int nroEmpleados, string tipoNegociacion,
+        int diasCredito, string descripcion, string nombrePagador,  string telefonoPagador,  string correoPagador, string retornoAdm)
+        {
+            try
+            {
+                string conexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection conn = new MySqlConnection(conexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("PA_ACTUALIZAR_CONVENIO_EMPRESA", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_idConvenio", idConvenio);
+                        cmd.Parameters.AddWithValue("@p_fechaConvenio", fechaConvenio);
+                        cmd.Parameters.AddWithValue("@p_fechaFinConvenio", fechaFinConvenio);
+                        cmd.Parameters.AddWithValue("@p_nroEmpleados", nroEmpleados);
+                        cmd.Parameters.AddWithValue("@p_tipoNegociacion", tipoNegociacion);
+                        cmd.Parameters.AddWithValue("@p_diasCredito", diasCredito);
+                        cmd.Parameters.AddWithValue("@p_descripcion", descripcion);
+
+                        cmd.Parameters.AddWithValue("@p_nombrePagador", nombrePagador);
+                        cmd.Parameters.AddWithValue("@p_telefonoPagador", telefonoPagador);
+                        cmd.Parameters.AddWithValue("@p_correoPagador", correoPagador);
+                        cmd.Parameters.AddWithValue("@p_retornoAdm", retornoAdm);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return new { success = true };
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, mensaje = ex.Message };
             }
         }
 
