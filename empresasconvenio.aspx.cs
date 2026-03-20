@@ -685,7 +685,7 @@ namespace fpWebApp
 
                 clasesglobales cg = new clasesglobales();
 
-                DataTable dt = cg.ListarConveniosPorEmpresa(idEmpresa); // usa tu SP
+                DataTable dt = cg.ListarConveniosPorEmpresa(idEmpresa); 
 
                 rpConvenios.DataSource = dt;
                 rpConvenios.DataBind();
