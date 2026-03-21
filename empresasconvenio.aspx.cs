@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
@@ -444,6 +445,8 @@ namespace fpWebApp
             }
         }
 
+
+
         [WebMethod]
         public static object ActualizarConvenioEmpresa( int idConvenio, string fechaConvenio, string fechaFinConvenio, int nroEmpleados, string tipoNegociacion,
         int diasCredito, string descripcion, string nombrePagador,  string telefonoPagador,  string correoPagador, string retornoAdm)
@@ -485,23 +488,253 @@ namespace fpWebApp
         }
 
 
+        [WebMethod(EnableSession = true)]
+        public static object RenovarConvenioEmpresa( int idConvenioAnterior, int idEmpresaAfiliada, string fechaConvenio, string fechaFinConvenio,
+            string tipoNegociacion, int diasCredito, string descripcion, string nombrePagador, string telefonoPagador, string correoPagador,
+            decimal retornoAdm,int nroEmpleados)
+        {
+            try
+            {
+                if (HttpContext.Current.Session["idUsuario"] == null)
+                    return new { success = false, mensaje = "Sesión expirada" };
+
+                int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
+
+                clasesglobales cg = new clasesglobales();
+
+                // 
+                int idNuevoConvenio = cg.InsertarConvenioEmpresa(
+                    idEmpresaAfiliada,
+                    Convert.ToDateTime(fechaConvenio),
+                    Convert.ToDateTime(fechaFinConvenio),
+                    "", //NombreContacto
+                    "", //CargoContacto
+                    nombrePagador,
+                    telefonoPagador,
+                    correoPagador,
+                    tipoNegociacion,
+                    diasCredito,
+                    retornoAdm,
+                    "", //Contrato
+                    "", //CamaraComercio
+                    "", //Rut
+                    "", //CedulaRepLeg
+                    descripcion,
+                    idUsuario,
+                    nroEmpleados
+                );
+
+                // . ACTUALIZAR ESTADO DEL ANTERIOR
+                cg.ActualizarEstadoConvenio(idConvenioAnterior, "RENOVADO");
+
+                return new
+                {
+                    success = true,
+                    idConvenio = idNuevoConvenio
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    success = false,
+                    mensaje = ex.Message
+                };
+            }
+        }
+
         protected void rpTabEmpresas_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                int idEmpresa = Convert.ToInt32(DataBinder.Eval(e.Item.DataItem, "idEmpresaAfiliada"));
+                // 🔥 Obtener datos de la empresa actual
+                DataRowView row = (DataRowView)e.Item.DataItem;
 
+                int idEmpresa = Convert.ToInt32(row["idEmpresaAfiliada"]);
+
+                // 🔥 Buscar el repeater interno
                 Repeater rpConvenios = (Repeater)e.Item.FindControl("rpConvenios");
 
-                clasesglobales cg = new clasesglobales();
+                if (rpConvenios != null)
+                {
+                    clasesglobales cg = new clasesglobales();
 
-                DataTable dt = cg.ListarConveniosPorEmpresa(idEmpresa); 
+                    var convenios = cg.ListarConveniosPorEmpresa(idEmpresa); // 👈 TU MÉTODO
 
-                rpConvenios.DataSource = dt;
-                rpConvenios.DataBind();
+                    rpConvenios.DataSource = convenios;
+                    rpConvenios.DataBind();
+                }
             }
         }
 
+        [WebMethod(EnableSession = true)]
+        public static object AnularConvenioEmpresa(int idConvenio)
+        {
+            try
+            {
+                if (HttpContext.Current.Session["idUsuario"] == null)
+                    return new { success = false, mensaje = "Sesión expirada" };
+
+                clasesglobales cg = new clasesglobales();
+
+                // 🔥 reutilizas tu método
+                cg.ActualizarEstadoConvenio(idConvenio, "ANULADO");
+
+                return new { success = true };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    success = false,
+                    mensaje = ex.Message
+                };
+            }
+        }
+
+        [WebMethod]
+        public static List<object> ObtenerDocumentosConvenio(int idConvenio)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.ObtenerDocumentosConvenio(idConvenio);
+
+            var lista = new List<object>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                lista.Add(new
+                {
+                    IdDocumento = row["idDocumento"],
+                    TipoDocumento = row["tipoDocumento"].ToString(),
+                    NombreArchivo = row["nombreArchivo"].ToString(),
+                    Fecha = Convert.ToDateTime(row["fechaCarga"]).ToString("dd/MM/yyyy"),
+                    Url = row["rutaArchivo"].ToString()
+                });
+            }
+
+            return lista;
+        }
+
+
+        protected void btnSubirDocumento_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Session["idUsuario"] == null)
+                {
+                    MostrarAlerta("Error", "Sesión expirada", "error");
+                    return;
+                }
+
+                if (!fileDocumento.HasFile)
+                {
+                    MostrarAlerta("Error", "Seleccione un archivo", "error");
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(ddlTipoDocumento.SelectedValue))
+                {
+                    MostrarAlerta("Error", "Seleccione tipo de documento", "error");
+                    return;
+                }
+
+                int idConvenio = Convert.ToInt32(hdIdConvenioDoc.Value);
+                int idUsuario = Convert.ToInt32(Session["idUsuario"]);
+                string tipoDocumento = ddlTipoDocumento.SelectedValue;
+
+                string carpeta = Server.MapPath("~/docs/contratos/");
+
+                if (!Directory.Exists(carpeta))
+                    Directory.CreateDirectory(carpeta);
+
+                //  EXTENSIÓN ORIGINAL
+                string extension = Path.GetExtension(fileDocumento.FileName);
+
+                //  NOMBRE LIMPIO Y CONTROLADO
+                string nombreArchivo = idConvenio + "_" + tipoDocumento + extension;
+
+                string rutaCompleta = Path.Combine(carpeta, nombreArchivo);
+
+                //  SI EXISTE, LO REEMPLAZA
+                if (File.Exists(rutaCompleta))
+                {
+                    File.Delete(rutaCompleta);
+                }
+
+                //  GUARDAR ARCHIVO
+                fileDocumento.SaveAs(rutaCompleta);
+
+                //  GUARDAR EN BD
+                clasesglobales cg = new clasesglobales();
+
+                cg.InsertarDocumentoConvenio(
+                    idConvenio,
+                    tipoDocumento,
+                    "/docs/contratos/" + nombreArchivo,
+                    nombreArchivo,
+                    idUsuario
+                );
+
+                MostrarAlerta("OK", "Documento subido correctamente", "success");
+
+                // RECARGAR TABLA SIN RECARGAR PÁGINA
+                ScriptManager.RegisterStartupScript(this, GetType(), "reload",
+                    $"cargarDocumentos({idConvenio});", true);
+            }
+            catch (Exception ex)
+            {
+                MostrarAlerta("Error", ex.Message, "error");
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        [System.Web.Script.Services.ScriptMethod(ResponseFormat = System.Web.Script.Services.ResponseFormat.Json)]
+
+        public static object EliminarDocumentoConvenio(int idDocumento)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+
+                DataTable dt = cg.ObtenerDocumentoPorId(idDocumento);
+
+                if (dt.Rows.Count == 0)
+                {
+                    return new
+                    {
+                        success = false,
+                        mensaje = "Documento no encontrado"
+                    };
+                }
+
+                string rutaArchivo = dt.Rows[0]["rutaArchivo"].ToString();
+                string ruta = HttpContext.Current.Server.MapPath(rutaArchivo);
+
+                // eliminar archivo físico
+                if (File.Exists(ruta))
+                {
+                    File.Delete(ruta);
+                }
+
+                // eliminar en BD
+                cg.EliminarDocumentoConvenio(idDocumento);
+
+                //  IMPORTANTE: retorno limpio
+                return new
+                {
+                    success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    success = false,
+                    mensaje = ex.Message
+                };
+            }
+        }
 
 
     }

@@ -4558,6 +4558,119 @@ namespace fpWebApp
             return dt;
         }
 
+        public bool ActualizarEstadoConvenio(int idConvenio, string estado)
+        {
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection cn = new MySqlConnection(strConexion))
+                {
+                    cn.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("PA_ACTUALIZAR_ESTADO_CONVENIO", cn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("p_idConvenio", idConvenio);
+                        cmd.Parameters.AddWithValue("p_estado", estado);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar estado del convenio: " + ex.Message);
+            }
+        }
+
+        public DataTable ObtenerDocumentosConvenio(int idConvenio)
+        {
+            DataTable dt = new DataTable();
+            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+            using (MySqlConnection cn = new MySqlConnection(strConexion))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("PA_OBTENER_DOCUMENTOS_CONVENIO", cn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@p_idConvenio", idConvenio);
+
+                    cn.Open();
+
+                    MySqlDataAdapter da = new MySqlDataAdapter(cmd);
+                    da.Fill(dt);
+                }
+            }
+
+            return dt;
+        }
+
+        public void InsertarDocumentoConvenio( int idConvenio, string tipoDocumento,string rutaArchivo,string nombreArchivo,int idUsuario)
+        {
+            string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+            using (MySqlConnection conn = new MySqlConnection(strConexion))
+            {
+                conn.Open();
+
+                using (MySqlCommand cmd = new MySqlCommand("PA_INSERTAR_DOCUMENTO_CONVENIO", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("p_idConvenio", idConvenio);
+                    cmd.Parameters.AddWithValue("p_tipoDocumento", tipoDocumento);
+                    cmd.Parameters.AddWithValue("p_rutaArchivo", rutaArchivo);
+                    cmd.Parameters.AddWithValue("p_nombreArchivo", nombreArchivo);
+                    cmd.Parameters.AddWithValue("p_idUsuario", idUsuario);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        
+        }
+
+        public DataTable ObtenerDocumentoPorId(int idDocumento)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+            using (MySqlConnection conn = new MySqlConnection(conexion))
+            {
+                string query = "SELECT rutaArchivo FROM documentosconvenio WHERE idDocumento = @id";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", idDocumento);
+
+                    conn.Open();
+
+                    DataTable dt = new DataTable();
+                    dt.Load(cmd.ExecuteReader());
+
+                    return dt;
+                }
+            }
+        }
+
+        public void EliminarDocumentoConvenio(int idDocumento)
+        {
+            string conexion = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+            using (MySqlConnection conn = new MySqlConnection(conexion))
+            {
+                using (MySqlCommand cmd = new MySqlCommand("PA_ELIMINAR_DOCUMENTO_CONVENIO", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@p_idDocumento", idDocumento);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
         /// <summary>
         /// INDICADORES

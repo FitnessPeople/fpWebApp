@@ -32,44 +32,12 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <!-- JS de Quill -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
-
-    <script>    <!-- CSS de Quill -->
+    <!-- CSS de Quill -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <!-- JS de Quill -->
+
     <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
-    <script>
-        var quill;
-        document.addEventListener("DOMContentLoaded", function () {
-            quill = new Quill("#editor", {
-                theme: "snow",
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold'], // Negrita y Tachado
-                        ['italic', 'underline'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        [{ 'align': [] }],
-                    ]
-                }
-            });
-            function ajustarAlturaEditor() {
-                var editorContenido = document.querySelector(".ql-editor");
-                editorContenido.style.height = "auto";
-                editorContenido.style.height = editorContenido.scrollHeight + "px";
-            }
-            quill.on("text-change", ajustarAlturaEditor);
 
-            var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
-            if (contenidoGuardado.trim() !== "") {
-                quill.root.innerHTML = contenidoGuardado;
-            }
-        });
-        function guardarContenidoEditor() {
-            var contenido = quill.root.innerHTML;
-            document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
-        }
-    </script>
 
     <style>
         #editor .ql-editor {
@@ -89,6 +57,16 @@
         }
     </style>
 
+       <style>
+            .swal2-container {
+            z-index: 20000 !important;
+        }
+       </style>
+
+    .swal2-popup {
+        z-index: 20001 !important;
+    }
+
 
     <script>
         function changeClass() {
@@ -102,7 +80,7 @@
 
 <body onload="changeClass()">
 
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" enctype="multipart/form-data">
 
         <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
@@ -225,162 +203,6 @@
                                                     OnClick="lbExportarExcel_Click">
                                                     <i class="fa fa-file-excel m-r-xs"></i>EXCEL
                                                 </asp:LinkButton>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="modal fade" id="modalMovimientoEmpleado" tabindex="-1">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-
-                                                    <div class="modal-header text-white bg-primary">
-                                                        <h4 class="modal-title mb-0">
-                                                            <span id="tituloModal"></span>
-                                                            <br />
-                                                            <div id="lblNombreEmpleado" class="h5 font-weight-bold mt-1"></div>
-                                                        </h4>
-                                                        <button type="button" class="close text-white" data-dismiss="modal"></button>
-                                                    </div>
-
-                                                    <div class="modal-body">
-
-                                                        <div id="seccionCargoActual" class="form-group">
-                                                            <label>Cargo actual</label>
-                                                            <input type="text" id="txtCargoActual" class="form-control" disabled />
-                                                        </div>
-                                                        <!-- SECCION SALARIO ACTUAL -->
-                                                        <div id="seccionSalarioActual" class="seccionMovimiento">
-                                                            <div class="form-group">
-                                                                <label>Salario actual</label>
-                                                                <input type="text" id="txtSalarioActual" class="form-control" disabled />
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- SECCION SEDE ACTUAL -->
-                                                        <div id="seccionSedeActual" class="seccionMovimiento" style="display: none;">
-                                                            <div class="form-group">
-                                                                <label>Sede actual</label>
-                                                                <input type="text" id="txtSedeActual" class="form-control" disabled />
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- SECCION ASCENSO -->
-                                                        <div id="seccionCargo" class="seccionMovimiento">
-                                                            <div class="form-group">
-                                                                <label>Nuevo cargo</label>
-                                                                <asp:DropDownList ID="ddlNuevoCargo" runat="server"
-                                                                    CssClass="form-control">
-                                                                </asp:DropDownList>
-                                                            </div>
-                                                        </div>
-
-                                                        <div id="seccionSalario" class="seccionMovimiento">
-                                                            <div class="form-group">
-                                                                <label>Nuevo salario</label>
-                                                                <input type="text" id="txtNuevoSalario"
-                                                                    class="form-control"
-                                                                    onkeyup="formatCurrency(this)"
-                                                                    onblur="keepFormatted(this)"
-                                                                    autocomplete="off" />
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- SECCION TRASLADO -->
-                                                        <div id="seccionTraslado" class="seccionMovimiento" style="display: none;">
-
-
-
-                                                            <div class="form-group">
-                                                                <label>Canal de venta actual</label>
-                                                                <input type="text" id="txtCanalActual" class="form-control" disabled />
-                                                            </div>
-
-
-                                                            <div class="form-group">
-                                                                <label>Nueva sede</label>
-                                                                <asp:DropDownList ID="ddlNuevaSede" runat="server"
-                                                                    CssClass="form-control">
-                                                                </asp:DropDownList>
-                                                            </div>
-
-
-                                                            <div class="form-group">
-                                                                <label>Nuevo canal de venta</label>
-                                                                <asp:DropDownList ID="ddlNuevoCanal" runat="server"
-                                                                    CssClass="form-control">
-                                                                </asp:DropDownList>
-                                                            </div>
-
-                                                        </div>
-
-                                                        <!-- SECCION INGRESO RAPIDO -->
-                                                        <div id="seccionIngresoRapido" class="seccionMovimiento" style="display: none;">
-
-                                                            <div class="form-group">
-                                                                <label>Tipo documento</label>
-                                                                <asp:DropDownList ID="ddlTipoDocumentoNuevo" runat="server"
-                                                                    CssClass="form-control">
-                                                                </asp:DropDownList>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label>Documento</label>
-                                                                <input type="text" id="txtDocumentoNuevo" class="form-control" />
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label>Nombre completo</label>
-                                                                <input type="text" id="txtNombreNuevo" class="form-control" />
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label>Correo electrónico</label>
-                                                                <input type="email" id="txtCorreoNuevo" class="form-control"
-                                                                    oninput="this.value = this.value.toLowerCase();"
-                                                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
-                                                                    title="Ingrese un correo válido (ej: usuario@correo.com)" />
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label>Sede</label>
-                                                                <asp:DropDownList ID="ddlSedeIngreso" runat="server"
-                                                                    CssClass="form-control">
-                                                                </asp:DropDownList>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label>Canal de venta</label>
-                                                                <asp:DropDownList ID="ddlCanalNuevo" runat="server"
-                                                                    CssClass="form-control">
-                                                                </asp:DropDownList>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label>Cargo</label>
-                                                                <asp:DropDownList ID="ddlCargoIngreso" runat="server"
-                                                                    CssClass="form-control">
-                                                                </asp:DropDownList>
-                                                            </div>
-
-                                                        </div>
-
-
-
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                                            Cancelar
-                                                        </button>
-                                                        <button type="button"
-                                                            id="btnGuardarMovimiento"
-                                                            class="btn btn-primary"
-                                                            onclick="guardarMovimiento()">
-                                                            Guardar
-                                                        </button>
-                                                    </div>
-
-                                                </div>
                                             </div>
                                         </div>
 
@@ -531,6 +353,86 @@
 
                                         </div>
 
+                                        <div class="modal fade" id="modalDocumentosConvenio" tabindex="-1">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+
+                                                    <!-- HEADER -->
+                                                    <div class="modal-header bg-warning text-white">
+                                                        <h4 class="modal-title">
+                                                            <i class="fa fa-file-pdf"></i>Documentos del convenio
+                                                        </h4>
+                                                        <button type="button" class="close text-white" data-dismiss="modal">&times;</button>
+                                                    </div>
+
+                                                    <!-- BODY -->
+                                                    <div class="modal-body">
+
+                                                        <!-- 🔽 FORMULARIO SUBIDA -->
+                                                        <div class="row">
+
+                                                            <div class="col-sm-4">
+                                                                <div class="form-group">
+                                                                    <label>Tipo documento</label>
+                                                                    <asp:DropDownList ID="ddlTipoDocumento" runat="server" CssClass="form-control">
+                                                                        <asp:ListItem Value="">Seleccione</asp:ListItem>
+                                                                        <asp:ListItem Value="CONTRATO">Contrato</asp:ListItem>
+                                                                        <asp:ListItem Value="CAMARA">Cámara</asp:ListItem>
+                                                                        <asp:ListItem Value="RUT">RUT</asp:ListItem>
+                                                                        <asp:ListItem Value="CEDULA">Cédula</asp:ListItem>
+                                                                    </asp:DropDownList>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-5">
+                                                                <div class="form-group">
+                                                                    <label>Archivo</label>
+                                                                    <asp:FileUpload ID="fileDocumento" runat="server" CssClass="form-control" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>&nbsp;</label>
+                                                                    <%--                                                                    <button type="button" class="btn btn-primary btn-block" onclick="subirDocumento()">
+                                                                        <i class="fa fa-upload"></i>Subir
+                                                                    </button>--%>
+                                                                    <asp:Button ID="btnSubirDocumento" runat="server"
+                                                                        Text="Subir"
+                                                                        CssClass="btn btn-primary"
+                                                                        OnClick="btnSubirDocumento_Click" />
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <hr />
+
+                                                        <!-- 📋 LISTA DOCUMENTOS -->
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-hover">
+                                                                <thead class="thead-light">
+                                                                    <tr>
+                                                                        <th>Tipo</th>
+                                                                        <th>Nombre</th>
+                                                                        <th>Fecha</th>
+                                                                        <th style="width: 120px;">Acciones</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tblDocumentosConvenio">
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                        <!-- HIDDEN -->
+                                                        <asp:HiddenField ID="hdIdConvenioDoc" runat="server" />
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
 
 
                                         <table id="tabla" class="footable table table-striped list-group-item-text" data-paging-size="15"
@@ -653,10 +555,10 @@
 
                                                                                                 <!-- DOCUMENTOS -->
                                                                                                 <a href="javascript:void(0);"
-                                                                                                    class="btn btn-xs btn-warning m-r-xs"
+                                                                                                    class="btn btn-xs btn-warning m-r-xs btnDocumentosConvenio"
                                                                                                     title="Documentos"
-                                                                                                    data-toggle="tooltip"
                                                                                                     data-idconvenio='<%# Eval("idConvenio") %>'>
+
                                                                                                     <i class="fa fa-file-pdf"></i>
                                                                                                 </a>
 
@@ -681,19 +583,29 @@
 
                                                                                                 <!-- RENOVAR -->
                                                                                                 <a href="javascript:void(0);"
-                                                                                                    class="btn btn-xs btn-success m-r-xs"
+                                                                                                    class="btn btn-xs btn-success m-r-xs btnRenovarConvenio"
                                                                                                     title="Renovar convenio"
-                                                                                                    data-toggle="tooltip"
-                                                                                                    data-idconvenio='<%# Eval("idConvenio") %>'>
+                                                                                                    data-idconvenio='<%# Eval("idConvenio") %>'
+                                                                                                    data-fecha='<%# Eval("FechaConvenio", "{0:yyyy-MM-dd}") %>'
+                                                                                                    data-fechafin='<%# Eval("FechaFinConvenio", "{0:yyyy-MM-dd}") %>'
+                                                                                                    data-tipo='<%# Eval("TipoNegociacion") %>'
+                                                                                                    data-dias='<%# Eval("DiasCredito") %>'
+                                                                                                    data-desc='<%# HttpUtility.HtmlEncode(Eval("Descripcion").ToString()) %>'
+                                                                                                    data-nroempleados='<%# Eval("NroEmpleados") %>'
+                                                                                                    data-nombrepagador='<%# Eval("NombrePagador") %>'
+                                                                                                    data-telefono='<%# Eval("TelefonoPagador") %>'
+                                                                                                    data-correo='<%# Eval("CorreoPagador") %>'
+                                                                                                    data-retorno='<%# Eval("RetornoAdm") %>'>
+
                                                                                                     <i class="fa fa-sync"></i>
                                                                                                 </a>
 
                                                                                                 <!-- ANULAR -->
                                                                                                 <a href="javascript:void(0);"
-                                                                                                    class="btn btn-xs btn-danger m-r-xs"
+                                                                                                    class="btn btn-xs btn-danger m-r-xs btnAnularConvenio <%# Eval("EstadoConvenio").ToString() == "ANULADO" ? "disabled" : "" %>"
                                                                                                     title="Anular convenio"
-                                                                                                    data-toggle="tooltip"
                                                                                                     data-idconvenio='<%# Eval("idConvenio") %>'>
+
                                                                                                     <i class="fa fa-times"></i>
                                                                                                 </a>
 
@@ -903,53 +815,53 @@
     <script>    
         $(document).on("click", ".btnNuevoConvenio", function () {
 
-        console.log("CLICK NUEVO CONVENIO");
+            console.log("CLICK NUEVO CONVENIO");
 
-        // datos empresa
-        var idEmpresa = $(this).data("idempresa");
-        var documento = $(this).data("documento");
-        var nombre = $(this).data("nombre");
+            // datos empresa
+            var idEmpresa = $(this).data("idempresa");
+            var documento = $(this).data("documento");
+            var nombre = $(this).data("nombre");
 
-        $("#hdEmpresaConvenio").val(idEmpresa);
+            $("#hdEmpresaConvenio").val(idEmpresa);
 
-        $("#lblNombreEmpresa").html(
-            "<b>" + nombre + "</b><br>" +
-            "<b>Documento: " + documento + "</b>"
-        );
+            $("#lblNombreEmpresa").html(
+                "<b>" + nombre + "</b><br>" +
+                "<b>Documento: " + documento + "</b>"
+            );
 
-        abrirModalConvenio("NUEVO", null);
-    });
+            abrirModalConvenio("NUEVO", null);
+        });
     </script>
 
     <script>
 
-    $(document).on("click", ".btnVerConvenio", function () {
+        $(document).on("click", ".btnVerConvenio", function () {
 
-        console.log("DATA:", $(this).data()); // debug
+            console.log("DATA:", $(this).data()); // debug
 
-        var data = {
-            idconvenio: $(this).data("idconvenio"),
-            fecha: $(this).data("fecha"),
-            fechafin: $(this).data("fechafin"),
-            tipo: $(this).data("tipo"),
-            dias: $(this).data("dias"),
-            desc: $(this).data("desc"),
+            var data = {
+                idconvenio: $(this).data("idconvenio"),
+                fecha: $(this).data("fecha"),
+                fechafin: $(this).data("fechafin"),
+                tipo: $(this).data("tipo"),
+                dias: $(this).data("dias"),
+                desc: $(this).data("desc"),
 
-            nroempleados: $(this).data("nroempleados"),
-            nombrepagador: $(this).data("nombrepagador"),
-            telefono: $(this).data("telefono"),
-            correo: $(this).data("correo"),
-            retorno: $(this).data("retorno")
-        };
+                nroempleados: $(this).data("nroempleados"),
+                nombrepagador: $(this).data("nombrepagador"),
+                telefono: $(this).data("telefono"),
+                correo: $(this).data("correo"),
+                retorno: $(this).data("retorno")
+            };
 
-        abrirModalConvenio("VER", data);
-    });
+            abrirModalConvenio("VER", data);
+        });
 
     </script>
 
     <script> 
-       function guardarNuevoConvenio() {          
-           
+        function guardarNuevoConvenio() {
+
             var idEmpresa = $("#hdEmpresaConvenio").val();
             var fechaConvenio = $("#txbFechaConvenio").val();
             var fechaFin = $("#txbFechaFinConvenio").val();
@@ -964,167 +876,186 @@
             var correoPagador = $("#txbCorreoPagador").val();
             var retornoAdm = $("input[name='rblRetorno']:checked").val();
 
-           if (!fechaConvenio) {
+            if (!fechaConvenio) {
                 alert("Debe ingresar la fecha de inicio del convenio");
                 return;
             }
 
             if (!tipoNegociacion) {
-            alert("Seleccione el tipo de negociación");
-            return;
-        }
+                alert("Seleccione el tipo de negociación");
+                return;
+            }
 
-        $.ajax({
+            $.ajax({
 
-            type: "POST",
-            url: "empresasconvenio.aspx/InsertarConvenioEmpresa",
+                type: "POST",
+                url: "empresasconvenio.aspx/InsertarConvenioEmpresa",
 
-            data: JSON.stringify({
-                idEmpresaAfiliada: idEmpresa,
-                fechaConvenio: fechaConvenio,
-                fechaFinConvenio: fechaFin,
-                nroEmpleados: nroEmpleados,
-                tipoNegociacion: tipoNegociacion,
-                diasCredito: diasCredito,
-                descripcion: descripcion,  
+                data: JSON.stringify({
+                    idEmpresaAfiliada: idEmpresa,
+                    fechaConvenio: fechaConvenio,
+                    fechaFinConvenio: fechaFin,
+                    nroEmpleados: nroEmpleados,
+                    tipoNegociacion: tipoNegociacion,
+                    diasCredito: diasCredito,
+                    descripcion: descripcion,
 
-                nombrePagador: nombrePagador,
-                telefonoPagador: telefonoPagador,
-                correoPagador: correoPagador,
-                retornoAdm: retornoAdm
-            }),
+                    nombrePagador: nombrePagador,
+                    telefonoPagador: telefonoPagador,
+                    correoPagador: correoPagador,
+                    retornoAdm: retornoAdm
+                }),
 
                 contentType: "application/json; charset=utf-8",
-            dataType: "json",
+                dataType: "json",
 
-            success: function (response) {
+                success: function (response) {
 
-                if (response.d.success) {
+                    if (response.d.success) {
 
-                    $("#modalConvenioEmpresa").modal("hide");
+                        $("#modalConvenioEmpresa").modal("hide");
 
-                    Swal.fire({
-                        title: "Convenio creado correctamente",
-                        text: "Corporativo - Fitness People",
-                        icon: "success",
-                        timer: 2500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        location.reload();
-                    });
+                        Swal.fire({
+                            title: "Convenio creado correctamente",
+                            text: "Corporativo - Fitness People",
+                            icon: "success",
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
 
-                } else {
+                    } else {
 
-                    Swal.fire("Error", response.d.mensaje, "error");
-                }
-            },
+                        Swal.fire("Error", response.d.mensaje, "error");
+                    }
+                },
 
                 error: function (xhr) {
 
-                console.log(xhr.responseText);
+                    console.log(xhr.responseText);
 
-                Swal.fire(
-                    "Error",
-                    "Error al guardar el convenio",
-                    "error"
-                );
-            }
-        });
-    }
-    </script>
-
-    <script>   
-        
-    function abrirModalConvenio(tipo, data) {
-
-        $("#hdTipoConvenio").val(tipo);
-
-        //  RESET GENERAL
-        $("#modalConvenioEmpresa input, #modalConvenioEmpresa select")
-            .prop("disabled", false);
-
-        $("#editor").css("pointer-events", "auto").css("background", "#fff");
-        $("#btnGuardarConvenio").show();
-
-        //  ASEGURAR QUE QUILL EXISTE
-        if (!quill) {
-            quill = new Quill("#editor", {
-                theme: "snow",
-                modules: {
-                    toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
-                        ['bold'],
-                        ['italic', 'underline'],
-                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                        [{ 'align': [] }]
-                    ]
+                    Swal.fire(
+                        "Error",
+                        "Error al guardar el convenio",
+                        "error"
+                    );
                 }
             });
         }
+    </script>
 
-        //  LIMPIAR SI ES NUEVO
-        if (tipo === "NUEVO") {
-            limpiarFormulario();
+    <script>   
 
-            if (quill) {
-                quill.root.innerHTML = "";
-            }
-        }
+        function abrirModalConvenio(tipo, data) {
 
-        //  CARGAR DATOS
-        if (data) {
+            $("#hdTipoConvenio").val(tipo);
 
-            $("#hdIdConvenio").val(data.idconvenio || "");
-
-            $("#txbFechaConvenio").val(data.fecha || "");
-            $("#txbFechaFinConvenio").val(data.fechafin || "");
-            $("#txbNroEmpleados").val(data.nroempleados || "");
-            $("#ddlTipoNegociacion").val(data.tipo || "");
-            $("#ddlDiasCredito").val(data.dias || "");
-
-            //  QUILL CORRECTO
-            if (quill && data.desc) {
-
-                var contenido = data.desc;
-               
-                contenido = contenido.replace(/<div class="ql-editor[^>]*>/i, "");
-                contenido = contenido.replace(/<\/div>\s*<div class="ql-clipboard[^>]*>.*?<\/div>/i, "");
-
-                quill.root.innerHTML = contenido;
-            }
-
-            $("#txbNombrePagador").val(data.nombrepagador || "");
-            $("#txbCelularPagador").val(data.telefono || "");
-            $("#txbCorreoPagador").val(data.correo || "");
-
-            var retorno = (data.retorno == "1,00" || data.retorno == "1") ? "1" : "0";
-
-            $("input[name='rblRetorno'][value='" + retorno + "']")
-                .prop("checked", true);
-        }
-
-        //  TITULO
-        var titulo = "Convenio";
-        if (tipo === "NUEVO") titulo = "Nuevo convenio";
-        if (tipo === "EDITAR") titulo = "Editar convenio";
-        if (tipo === "RENOVAR") titulo = "Renovar convenio";
-        if (tipo === "VER") titulo = "Detalle del convenio";
-
-        $("#tituloModal1").text(titulo);
-
-        // 🔥 MODO VER
-        if (tipo === "VER") {
+            //  RESET GENERAL
             $("#modalConvenioEmpresa input, #modalConvenioEmpresa select")
-                .prop("disabled", true);
+                .prop("disabled", false);
 
-            $("#editor").css("pointer-events", "none").css("background", "#f5f5f5");
+            $("#editor").css("pointer-events", "auto").css("background", "#fff");
+            $("#btnGuardarConvenio").show();
 
-            $("#btnGuardarConvenio").hide();
+            //  ASEGURAR QUE QUILL EXISTE
+            //if (!quill) {
+            //    quill = new Quill("#editor", {
+            //        theme: "snow",
+            //        modules: {
+            //            toolbar: [
+            //                [{ 'header': [1, 2, 3, false] }],
+            //                ['bold'],
+            //                ['italic', 'underline'],
+            //                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            //                [{ 'align': [] }]
+            //            ]
+            //        }
+            //    });
+            //}
+
+            //  LIMPIAR SI ES NUEVO
+            if (tipo === "NUEVO") {
+                limpiarFormulario();
+
+                if (quill) {
+                    quill.root.innerHTML = "";
+                }
+            }
+
+            if (tipo === "RENOVAR") {
+
+                // NUEVAS FECHAS AUTOMÁTICAS
+                var hoy = new Date();
+
+                var fechaInicio = hoy.toISOString().split("T")[0];
+
+                var fechaFin = new Date(hoy);
+                fechaFin.setFullYear(fechaFin.getFullYear() + 1);
+
+                var fechaFinStr = fechaFin.toISOString().split("T")[0];
+
+                $("#txbFechaConvenio").val(fechaInicio);
+                $("#txbFechaFinConvenio").val(fechaFinStr);
+
+                //  IMPORTANTE: limpiar ID (para que sea INSERT)
+                $("#hdIdConvenio").val("");
+            }
+
+            //  CARGAR DATOS
+            if (data) {
+
+                $("#hdIdConvenio").val(data.idconvenio || "");
+
+                $("#txbFechaConvenio").val(data.fecha || "");
+                $("#txbFechaFinConvenio").val(data.fechafin || "");
+                $("#txbNroEmpleados").val(data.nroempleados || "");
+                $("#ddlTipoNegociacion").val(data.tipo || "");
+                $("#ddlDiasCredito").val(data.dias || "");
+
+                //  QUILL CORRECTO
+                if (quill && data.desc) {
+
+                    var contenido = data.desc;
+
+                    contenido = contenido.replace(/<div class="ql-editor[^>]*>/i, "");
+                    contenido = contenido.replace(/<\/div>\s*<div class="ql-clipboard[^>]*>.*?<\/div>/i, "");
+
+                    quill.root.innerHTML = contenido;
+                }
+
+                $("#txbNombrePagador").val(data.nombrepagador || "");
+                $("#txbCelularPagador").val(data.telefono || "");
+                $("#txbCorreoPagador").val(data.correo || "");
+
+                var retorno = (data.retorno == "1,00" || data.retorno == "1") ? "1" : "0";
+
+                $("input[name='rblRetorno'][value='" + retorno + "']")
+                    .prop("checked", true);
+            }
+
+            //  TITULO
+            var titulo = "Convenio";
+            if (tipo === "NUEVO") titulo = "Nuevo convenio";
+            if (tipo === "EDITAR") titulo = "Editar convenio";
+            if (tipo === "RENOVAR") titulo = "Renovar convenio";
+            if (tipo === "VER") titulo = "Detalle del convenio";
+
+            $("#tituloModal1").text(titulo);
+
+            // 🔥 MODO VER
+            if (tipo === "VER") {
+                $("#modalConvenioEmpresa input, #modalConvenioEmpresa select")
+                    .prop("disabled", true);
+
+                $("#editor").css("pointer-events", "none").css("background", "#f5f5f5");
+
+                $("#btnGuardarConvenio").hide();
+            }
+
+            //  ABRIR MODAL
+            $("#modalConvenioEmpresa").modal("show");
         }
-
-        //  ABRIR MODAL
-        $("#modalConvenioEmpresa").modal("show");
-}
     </script>
 
 
@@ -1149,26 +1080,27 @@
     <script>
         function guardarConvenio() {
 
-        var tipo = $("#hdTipoConvenio").val();
-        console.log("tipo:", tipo);
+            var tipo = $("#hdTipoConvenio").val();
+            console.log("tipo:", tipo);
 
-        if (tipo === "NUEVO") {
-            guardarNuevoConvenio();
-        }
+            if (tipo === "NUEVO") {
+                guardarNuevoConvenio();
+            }
 
-        if (tipo === "EDITAR") {
-            actualizarConvenio();
-        }
+            if (tipo === "EDITAR") {
+                actualizarConvenio();
+            }
 
             if (tipo === "RENOVAR") {
                 renovarConvenio();
             }
         }
+
     </script>
 
 
     <script>  
-            $(document).on("click", ".btnEditarConvenio", function () {
+        $(document).on("click", ".btnEditarConvenio", function () {
 
             console.log("EDITAR DATA:", $(this).data());
 
@@ -1195,99 +1127,511 @@
     <script>
         function actualizarConvenio() {
 
-        var idConvenio = $("#hdIdConvenio").val();
+            var idConvenio = $("#hdIdConvenio").val();
 
-        var fechaConvenio = $("#txbFechaConvenio").val();
-        var fechaFin = $("#txbFechaFinConvenio").val();
-        var nroEmpleados = $("#txbNroEmpleados").val();
-        var tipoNegociacion = $("#ddlTipoNegociacion").val();
-        var diasCredito = $("#ddlDiasCredito").val();
+            var fechaConvenio = $("#txbFechaConvenio").val();
+            var fechaFin = $("#txbFechaFinConvenio").val();
+            var nroEmpleados = $("#txbNroEmpleados").val();
+            var tipoNegociacion = $("#ddlTipoNegociacion").val();
+            var diasCredito = $("#ddlDiasCredito").val();
 
-        var descripcion = quill.root.innerHTML;
+            var descripcion = quill.root.innerHTML;
 
-        var nombrePagador = $("#txbNombrePagador").val();
-        var telefonoPagador = $("#txbCelularPagador").val();
-        var correoPagador = $("#txbCorreoPagador").val();
-        var retornoAdm = $("input[name='rblRetorno']:checked").val();
+            var nombrePagador = $("#txbNombrePagador").val();
+            var telefonoPagador = $("#txbCelularPagador").val();
+            var correoPagador = $("#txbCorreoPagador").val();
+            var retornoAdm = $("input[name='rblRetorno']:checked").val();
 
-        if (!fechaConvenio) {
-            Swal.fire("Error", "Debe ingresar la fecha de inicio", "error");
-            return;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "empresasconvenio.aspx/ActualizarConvenioEmpresa",
-
-            data: JSON.stringify({
-                idConvenio: idConvenio,
-                fechaConvenio: fechaConvenio,
-                fechaFinConvenio: fechaFin,
-                nroEmpleados: nroEmpleados,
-                tipoNegociacion: tipoNegociacion,
-                diasCredito: diasCredito,
-                descripcion: descripcion,
-
-                nombrePagador: nombrePagador,
-                telefonoPagador: telefonoPagador,
-                correoPagador: correoPagador,
-                retornoAdm: retornoAdm
-            }),
-
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-
-            success: function (response) {
-
-                if (response.d.success) {
-
-                    $("#modalConvenioEmpresa").modal("hide");
-
-                    Swal.fire({
-                        title: "Convenio actualizado",
-                        text: "Corporativo - Fitness People",
-                        icon: "success",
-                        timer: 2500,
-                        showConfirmButton: false
-                    }).then(() => {
-                        location.reload();
-                    });
-
-                } else {
-                    Swal.fire("Error", response.d.mensaje, "error");
-                }
-            },
-
-            error: function (xhr) {
-                console.log(xhr.responseText);
-                Swal.fire("Error", "Error al actualizar", "error");
+            if (!fechaConvenio) {
+                Swal.fire("Error", "Debe ingresar la fecha de inicio", "error");
+                return;
             }
-        });
-    }
+
+            $.ajax({
+                type: "POST",
+                url: "empresasconvenio.aspx/ActualizarConvenioEmpresa",
+
+                data: JSON.stringify({
+                    idConvenio: idConvenio,
+                    fechaConvenio: fechaConvenio,
+                    fechaFinConvenio: fechaFin,
+                    nroEmpleados: nroEmpleados,
+                    tipoNegociacion: tipoNegociacion,
+                    diasCredito: diasCredito,
+                    descripcion: descripcion,
+
+                    nombrePagador: nombrePagador,
+                    telefonoPagador: telefonoPagador,
+                    correoPagador: correoPagador,
+                    retornoAdm: retornoAdm
+                }),
+
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalConvenioEmpresa").modal("hide");
+
+                        Swal.fire({
+                            title: "Convenio actualizado",
+                            text: "Corporativo - Fitness People",
+                            icon: "success",
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    } else {
+                        Swal.fire("Error", response.d.mensaje, "error");
+                    }
+                },
+
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    Swal.fire("Error", "Error al actualizar", "error");
+                }
+            });
+        }
     </script>
 
 
     <script>
-    function anularConvenio(id) {
+        function anularConvenio(id) {
 
-        Swal.fire({
-            title: "¿Anular convenio?",
-            text: "Esta acción no se puede deshacer",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Sí, anular"
-        }).then((result) => {
+            Swal.fire({
+                title: "¿Anular convenio?",
+                text: "Esta acción no se puede deshacer",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, anular"
+            }).then((result) => {
 
-            if (result.isConfirmed) {
-                // llamar AJAX
+                if (result.isConfirmed) {
+                    // llamar AJAX
+                }
+
+            });
+        }
+    </script>
+
+    <script>
+        $(document).on("click", ".btnRenovarConvenio", function () {
+
+            var data = {
+                idconvenio: $(this).data("idconvenio"),
+                fecha: $(this).data("fecha"),
+                fechafin: $(this).data("fechafin"),
+                tipo: $(this).data("tipo"),
+                dias: $(this).data("dias"),
+                desc: $(this).attr("data-desc"),
+
+                nroempleados: $(this).data("nroempleados"),
+                nombrepagador: $(this).data("nombrepagador"),
+                telefono: $(this).data("telefono"),
+                correo: $(this).data("correo"),
+                retorno: $(this).data("retorno")
+            };
+
+            abrirModalConvenio("RENOVAR", data);
+        });
+    </script>
+
+    <script>
+        function renovarConvenio() {
+
+            var idAnterior = $("#hdIdConvenio").val();
+
+            var data = {
+                idConvenioAnterior: parseInt($("#hdIdConvenio").val()) || 0,
+                idEmpresaAfiliada: parseInt($("#hdEmpresaConvenio").val()) || 0,
+                fechaConvenio: $("#txbFechaConvenio").val(),
+                fechaFinConvenio: $("#txbFechaFinConvenio").val(),
+                tipoNegociacion: $("#ddlTipoNegociacion").val(),
+                diasCredito: parseInt($("#ddlDiasCredito").val()) || 0,
+                descripcion: quill.root.innerHTML,
+
+                nombrePagador: $("#txbNombrePagador").val(),
+                telefonoPagador: $("#txbCelularPagador").val(),
+                correoPagador: $("#txbCorreoPagador").val(),
+                retornoAdm: parseFloat($("input[name='rblRetorno']:checked").val()) || 0,
+                nroEmpleados: parseInt($("#txbNroEmpleados").val()) || 0
+            };
+
+            $.ajax({
+                type: "POST",
+                url: "empresasconvenio.aspx/RenovarConvenioEmpresa",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalConvenioEmpresa").modal("hide");
+
+                        setTimeout(() => {
+                            Swal.fire({
+                                title: "Convenio renovado correctamente",
+                                text: "Corporativo - Fitness People",
+                                icon: "success",
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }, 300);
+
+                    } else {
+                        Swal.fire("Error", response.d.mensaje, "error");
+                    }
+                },
+
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    Swal.fire("Error", "Error al renovar convenio", "error");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $(document).on("click", ".btnAnularConvenio", function () {
+
+            var idConvenio = parseInt($(this).data("idconvenio"));
+
+            if (!idConvenio) {
+                Swal.fire("Error", "No se encontró el convenio", "error");
+                return;
             }
 
+            Swal.fire({
+                title: "¿Anular convenio?",
+                text: "Esta acción no se puede deshacer",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, anular",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "empresasconvenio.aspx/AnularConvenioEmpresa",
+                        data: JSON.stringify({ idConvenio: idConvenio }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+
+                        success: function (response) {
+
+                            if (response.d.success) {
+
+                                $("#modalConvenioEmpresa").modal("hide");
+
+                                setTimeout(() => {
+                                    Swal.fire({
+                                        title: "Convenio anulado",
+                                        text: "Corporativo - Fitness People",
+                                        icon: "success",
+                                        timer: 1500,
+                                        showConfirmButton: false
+                                    }).then(() => {
+                                        location.reload();
+                                    });
+                                }, 300);
+
+                            } else {
+                                Swal.fire("Error", response.d.mensaje, "error");
+                            }
+                        },
+
+                        error: function (xhr) {
+                            console.log(xhr.responseText);
+                            Swal.fire("Error", "Error al anular convenio", "error");
+                        }
+                    });
+                }
+            });
         });
-    }
+    </script>
+
+    <script>
+        $(document).on("click", ".btnDocumentosConvenio", function () {
+
+            var idConvenio = $(this).data("idconvenio");
+
+            $("#hdIdConvenioDoc").val(idConvenio);
+
+            cargarDocumentos(idConvenio);
+
+            $("#modalDocumentosConvenio").modal("show");
+        });
+    </script>
+
+    <script>
+        function cargarDocumentos(idConvenio) {
+
+            $.ajax({
+                type: "POST",
+                url: "empresasconvenio.aspx/ObtenerDocumentosConvenio",
+                data: JSON.stringify({ idConvenio: idConvenio }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function (response) {
+
+                    var html = "";
+                    var data = response.d;
+
+                    for (var i = 0; i < data.length; i++) {
+
+                        html += "<tr>";
+                        html += "<td>" + data[i].TipoDocumento + "</td>";
+                        html += "<td>" + data[i].NombreArchivo + "</td>";
+                        html += "<td>" + data[i].Fecha + "</td>";
+                        html += "<td>";
+                        html += "<a href='" + data[i].Url + "' download class='btn btn-xs btn-success'>Descargar</a>";
+                        html += "<button type='button' class='btn btn-xs btn-danger btnEliminarDoc' " +
+                            "data-id='" + data[i].IdDocumento + "' " +
+                            "data-nombre='" + data[i].NombreArchivo + "'>Eliminar</button>";
+                        html += "</td>";
+                        html += "</tr>";
+                    }
+
+                    $("#tblDocumentosConvenio").html(html);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function subirDocumento() {
+
+            var fileInput = document.getElementById("fileDocumento");
+            var tipo = $("#ddlTipoDocumento").val();
+
+            if (!tipo) {
+                Swal.fire("Atención", "Seleccione tipo de documento", "warning");
+                return;
+            }
+
+            if (fileInput.files.length === 0) {
+                Swal.fire("Atención", "Seleccione un archivo", "warning");
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+            formData.append("idConvenio", $("#hdIdConvenioDoc").val());
+            formData.append("tipoDocumento", tipo); // 🔥 ESTE ES EL FIX
+
+            $.ajax({
+                url: "HandlerDocumentos.ashx",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+
+                success: function () {
+                    Swal.fire("OK", "Documento cargado", "success");
+                    $("#fileDocumento").val("");
+                    cargarDocumentos($("#hdIdConvenioDoc").val());
+                },
+
+                error: function (xhr) {
+                    console.log("ERROR REAL:", xhr.responseText);
+                    Swal.fire("Error", xhr.responseText, "error");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function guardarConvenioConArchivos() {
+
+            var formData = new FormData();
+
+            formData.append("idEmpresa", $("#hdEmpresaConvenio").val());
+            formData.append("fecha", $("#txbFechaConvenio").val());
+            formData.append("descripcion", quill.root.innerHTML);
+
+            // archivos
+            formData.append("fileContrato", $("#fileContrato")[0].files[0]);
+            formData.append("fileCamara", $("#fileCamara")[0].files[0]);
+            formData.append("fileRut", $("#fileRut")[0].files[0]);
+            formData.append("fileCedula", $("#fileCedula")[0].files[0]);
+
+            $.ajax({
+                url: "HandlerConvenio.ashx",
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+
+                success: function () {
+                    Swal.fire("OK", "Convenio guardado", "success")
+                        .then(() => location.reload());
+                },
+
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                    Swal.fire("Error", xhr.responseText, "error");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $(document).on("click", ".btnEliminarDoc", function (e) {
+
+    
+
+            var boton = $(this);
+            var fila = boton.closest("tr");
+
+            var idDocumento = boton.data("id");
+            var nombreArchivo = boton.data("nombre");
+
+            Swal.fire({
+                title: "¿Eliminar documento?",
+                text: nombreArchivo,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "empresasconvenio.aspx/EliminarDocumentoConvenio",
+                        data: JSON.stringify({ idDocumento: idDocumento }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+
+                        success: function (response) {
+
+                            var res = response.d ? response.d : response;
+
+                            if (res && res.success === true) {
+
+                                // 🔥 ELIMINAR VISUAL SIN RECARGAR
+                                fila.fadeOut(300, function () {
+                                    $(this).remove();
+                                });
+
+                                Swal.fire({
+                                    toast: true,
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Documento eliminado",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+
+                            } else {
+                                Swal.fire("Error", res?.mensaje || "Error desconocido", "error");
+                            }
+                        }
+                    });
+                }
+            });
+        });
     </script>
 
 
+<%--    <script>
+        $(document).on("click", ".btnEliminarDoc", function (e) {
 
+            e.preventDefault(); // 🔥 evita postback
+
+            var idDocumento = $(this).data("id");
+            var nombreArchivo = $(this).data("nombre");
+
+            console.log("ID:", idDocumento);
+            console.log("Nombre:", nombreArchivo);
+
+            Swal.fire({
+                title: "¿Eliminar documento?",
+                text: nombreArchivo,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar",
+                didOpen: () => {
+                    // 🔥 asegurar que esté por encima de la modal
+                    document.querySelector(".swal2-container").style.zIndex = 20000;
+                }
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "empresasconvenio.aspx/EliminarDocumentoConvenio",
+                        data: JSON.stringify({ idDocumento: idDocumento }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+
+                        success: function (response) {
+
+                            console.log("RESPUESTA:", response);
+
+                            if (response.d && response.d.success) {
+
+                                // 🔥 toast (NO bloquea la modal)
+                                Swal.fire({
+                                    toast: true,
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Documento eliminado",
+                                    showConfirmButton: false,
+                                    timer: 1500,
+                                    didOpen: () => {
+                                        document.querySelector(".swal2-container").style.zIndex = 20000;
+                                    }
+                                });
+
+                                // 🔥 recargar tabla
+                                cargarDocumentos($("#hdIdConvenioDoc").val());
+
+                            } else {
+
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error",
+                                    text: response.d ? response.d.mensaje : "Error desconocido",
+                                    didOpen: () => {
+                                        document.querySelector(".swal2-container").style.zIndex = 20000;
+                                    }
+                                });
+                            }
+                        },
+
+                        error: function (xhr) {
+
+                            console.log("ERROR:", xhr.responseText);
+
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error real",
+                                html: "<pre style='text-align:left'>" + xhr.responseText + "</pre>",
+                                width: 800,
+                                didOpen: () => {
+                                    document.querySelector(".swal2-container").style.zIndex = 20000;
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>--%>
 
 </body>
 

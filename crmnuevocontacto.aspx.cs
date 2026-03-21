@@ -866,7 +866,7 @@ namespace fpWebApp
                                 string script = @"
                                 Swal.fire({
                                     title: 'El contacto se actualizó correctamente',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    text: 'Gestión Comercial - Fitness People',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
                                     showConfirmButton: false,
@@ -931,7 +931,7 @@ namespace fpWebApp
 
                                 if (respuesta)
                                 {
-                                    string tipoMensaje = respuesta ? "Fitness People" : "Error";
+                                    string tipoMensaje = respuesta ? "Gestión Comercial - Fitness People" : "Error";
                                     string tipoIcono = respuesta ? "success" : "error";
                                     string script = @"
                                         Swal.fire({
@@ -1054,7 +1054,7 @@ namespace fpWebApp
                             string script = @"
                         Swal.fire({
                             title: '«¡Creado correctamente!»',
-                            text: '" + mensaje.Replace("'", "\\'") + @"',
+                            text: 'Gestión Comercial - Fitness People',
                             icon: 'success',
                             timer: 3000, // 3 segundos
                             showConfirmButton: false,
