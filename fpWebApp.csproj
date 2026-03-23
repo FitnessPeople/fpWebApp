@@ -1435,6 +1435,9 @@
     <Compile Include="controles\graficosLidAsis.ascx.designer.cs">
       <DependentUpon>graficosLidAsis.ascx</DependentUpon>
     </Compile>
+    <Compile Include="controles\HandlerDocumentos.ashx.cs">
+      <DependentUpon>HandlerDocumentos.ashx</DependentUpon>
+    </Compile>
     <Compile Include="controles\header.ascx.cs">
       <DependentUpon>header.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -2532,6 +2535,7 @@
     <Content Include="docs\traspasos\Ori_2206_Des_2207_Logística.pdf" />
     <Content Include="docs\traspasos\Ori_2336_Des_2260_Fitness People 250425-1.pdf" />
     <Content Include="docs\traspasos\RutActualizadoChristian.pdf" />
+    <Content Include="controles\HandlerDocumentos.ashx" />
     <None Include="packages.config" />
     <Content Include="UploadImage.ashx" />
     <Content Include="UploadFile.ashx" />

@@ -182,7 +182,7 @@ namespace fpWebApp
                                 showConfirmButton: false,
                                 timerProgressBar: true
                             }).then(() => {
-                                window.location.href = 'empresasafiliadas';
+                                window.location.href = 'empresasconvenio';
                             });
                             ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);

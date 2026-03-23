@@ -16,7 +16,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Empresas afiliadas");
+                    ValidarPermisos("Empresas convenio");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         divMensaje.Visible = true;
@@ -287,7 +287,7 @@ namespace fpWebApp
 
                 string strNewData = TraerData();
 
-                cg.InsertarLog(Session["idusuario"].ToString(), "empresas afiliadas", "Modifica", "El usuario modificó datos a la empresa afiliada con documento: " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+                cg.InsertarLog(Session["idusuario"].ToString(), "empresas convenio", "Modifica", "El usuario modificó datos a la empresa afiliada con documento: " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
 
                 if (respuesta != "OK")
                 {
@@ -315,12 +315,12 @@ namespace fpWebApp
                                 showConfirmButton: false,
                                 timerProgressBar: true
                             }).then(() => {
-                                window.location.href = 'empresasafiliadas';
+                                window.location.href = 'empresasconvenio';
                             });
                             ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
 
-                    cg.InsertarLog(Session["idusuario"].ToString(), "empresas afiliadas", "Nuevo", "El usuario creó una nueva empresa convenio con documento: " + txbDocumento.Text.ToString() + ".", "", "");
+                    cg.InsertarLog(Session["idusuario"].ToString(), "empresas convenio", "Nuevo", "El usuario creó una nueva empresa convenio con documento: " + txbDocumento.Text.ToString() + ".", "", "");
                 }
             }
             catch (SqlException ex)

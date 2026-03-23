@@ -4654,6 +4654,51 @@ namespace fpWebApp
             }
         }
 
+        public string ActualizarConvenioEmpresa(   int idConvenio, string fechaConvenio, string fechaFinConvenio, int nroEmpleados,
+        string tipoNegociacion, int diasCredito, string descripcion, string nombrePagador, string telefonoPagador, string correoPagador,
+        string retornoAdm, string estadoConvenio)
+        {
+            try
+            {
+                string conexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection conn = new MySqlConnection(conexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("PA_ACTUALIZAR_CONVENIO_EMPRESA", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_idConvenio", idConvenio);
+                        cmd.Parameters.AddWithValue("@p_fechaConvenio", Convert.ToDateTime(fechaConvenio));
+                        cmd.Parameters.AddWithValue("@p_fechaFinConvenio", Convert.ToDateTime(fechaFinConvenio));
+                        cmd.Parameters.AddWithValue("@p_nroEmpleados", nroEmpleados);
+                        cmd.Parameters.AddWithValue("@p_tipoNegociacion", tipoNegociacion);
+                        cmd.Parameters.AddWithValue("@p_diasCredito", diasCredito);
+                        cmd.Parameters.AddWithValue("@p_descripcion", descripcion);
+
+                        cmd.Parameters.AddWithValue("@p_nombrePagador", nombrePagador);
+                        cmd.Parameters.AddWithValue("@p_telefonoPagador", telefonoPagador);
+                        cmd.Parameters.AddWithValue("@p_correoPagador", correoPagador);
+
+                        decimal retorno = 0;
+                        decimal.TryParse(retornoAdm, out retorno);
+                        cmd.Parameters.AddWithValue("@p_retornoAdm", retorno);
+
+                        cmd.Parameters.AddWithValue("@p_estadoConvenio", estadoConvenio);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return "OK";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
         public void EliminarDocumentoConvenio(int idDocumento)
         {
             string conexion = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
@@ -4669,6 +4714,36 @@ namespace fpWebApp
                     conn.Open();
                     cmd.ExecuteNonQuery();
                 }
+            }
+        }
+
+        public bool ActualizarEstadoAsignacionEmpresa(int idEmpresa, int idAsesor, string estado, int idUsuarioActualiza)
+        {
+            try
+            {
+                string conexion = ConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+                using (MySqlConnection conn = new MySqlConnection(conexion))
+                {
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_ACTUALIZAR_ESTADO_ASIGNACION_EMPRESA", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("p_idEmpresa", idEmpresa);
+                        cmd.Parameters.AddWithValue("p_idAsesor", idAsesor);
+                        cmd.Parameters.AddWithValue("p_idUsuarioActualiza", idUsuarioActualiza);
+                        cmd.Parameters.AddWithValue("p_estado", estado);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 

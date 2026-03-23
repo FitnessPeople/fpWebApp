@@ -275,7 +275,7 @@ namespace fpWebApp
                     SELECT u.* 
                     FROM usuarios u 
                     INNER JOIN perfiles p ON p.idPerfil = u.idPerfil 
-                    WHERE p.idPerfil = 10 "; // Perfil 10: Asesor corporativo
+                    WHERE p.idPerfil IN ( 10,36) "; // Perfil 10: Asesor corporativo
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(strQuery);
