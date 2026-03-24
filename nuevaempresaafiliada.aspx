@@ -433,7 +433,7 @@
                                         </div>
 
                                         <div>
-                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='empresasafiliadas'"><strong>Cancelar</strong></button>
+                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='empresasconvenio'"><strong>Cancelar</strong></button>
                                             <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClientClick="guardarContenidoEditor();" OnClick="btnAgregar_Click"  />
                                         </div>
                                     </div>
