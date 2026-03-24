@@ -440,24 +440,46 @@ namespace fpWebApp
             }
         }
 
-        [WebMethod]
+
+
+        [WebMethod(EnableSession = true)]
         public static List<object> ObtenerDocumentosConvenio(int idConvenio)
         {
             clasesglobales cg = new clasesglobales();
-
             DataTable dt = cg.ObtenerDocumentosConvenio(idConvenio);
 
             var lista = new List<object>();
 
             foreach (DataRow row in dt.Rows)
             {
+                DateTime? fecha = null;
+
+                // Validación segura
+                if (row["fechaCarga"] != DBNull.Value)
+                {
+                    // Si ya es DateTime (lo ideal)
+                    if (row["fechaCarga"] is DateTime)
+                    {
+                        fecha = (DateTime)row["fechaCarga"];
+                    }
+                    else
+                    {
+                        // Si viene como string
+                        DateTime temp;
+                        if (DateTime.TryParse(row["fechaCarga"].ToString(), out temp))
+                        {
+                            fecha = temp;
+                        }
+                    }
+                }
+
                 lista.Add(new
                 {
                     IdDocumento = row["idDocumento"],
-                    TipoDocumento = row["tipoDocumento"].ToString(),
-                    NombreArchivo = row["nombreArchivo"].ToString(),
-                    Fecha = Convert.ToDateTime(row["fechaCarga"]).ToString("dd/MM/yyyy"),
-                    Url = row["rutaArchivo"].ToString()
+                    TipoDocumento = row["tipoDocumento"]?.ToString(),
+                    NombreArchivo = row["nombreArchivo"]?.ToString(),
+                    Fecha = fecha.HasValue ? fecha.Value.ToString("dd/MM/yyyy") : "",
+                    Url = row["rutaArchivo"]?.ToString()
                 });
             }
 

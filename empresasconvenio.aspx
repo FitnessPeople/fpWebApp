@@ -483,7 +483,7 @@
                                                                         <th>Tipo</th>
                                                                         <th>Nombre</th>
                                                                         <th>Fecha</th>
-                                                                        <th style="width: 120px;">Acciones</th>
+                                                                        <th class="text-center">Acciones</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody id="tblDocumentosConvenio">
@@ -516,7 +516,7 @@
                                                     <th data-sortable="true" data-type="text">Razon social</th>
                                                     <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
                                                     <th class="text-nowrap" data-breakpoints="xs sm">Asesor</th>
-                                                    <th data-sortable="false" data-filterable="false" class="text-right">Acciones</th>
+                                                    <th data-sortable="false" data-filterable="false" class="text-left">Acciones</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -529,19 +529,13 @@
                                                             <td><a data-toggle="tab" href='#contact-<%# Eval("NombreComercial").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpresa") %>' class="client-link"><%# Eval("Nombrecomercial") %></a></td>
                                                             <td><%# Eval("EstadoAsignacion") %></td>
                                                             <td><%# Eval("NombreUsuario") %></td>
-                                                            <td>
-                                                                
+                                                            <td>                                                               
                                                                     <!-- EDITAR -->
                                                                     <a runat="server" id="btnEditarEmpresa"
                                                                         class="btn btn-outline btn-primary btn-xs m-r-xs"
                                                                         title="Editar empresa">
                                                                         <i class="fa fa-edit"></i>
-                                                                    </a>
-                                                               
-<%--                                                                <a runat="server" id="btnEliminar" href="#" class="btn btn-outline btn-danger pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Eliminar"><i class="fa fa-trash"></i></a>
-                                                                <a runat="server" id="btnEditar" href="#" class="btn btn-outline btn-primary pull-right m-r-xs"
-                                                                    style="padding: 1px 2px 1px 2px; margin-bottom: 0px;" visible="false" title="Editar"><i class="fa fa-edit"></i></a>--%>
+                                                                    </a>                                                               
                                                             </td>
                                                         </tr>
                                                     </ItemTemplate>
