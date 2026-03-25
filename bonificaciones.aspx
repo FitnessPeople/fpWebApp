@@ -258,68 +258,6 @@
                                                 <!-- TAB SIMULADOR -->
                                                 <!-- ===================== -->
 
-                                                <%--<div id="tab-simulador" class="tab-pane active">
-
-                                                    <div class="panel-body">
-
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Plan</th>
-                                                                        <th>Cantidad</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="tablaPlanesSimulador">
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <hr />
-
-                                                        <h4>Resultado</h4>
-
-                                                        <p>Puntos Mix: <b><span id="lblMix">0</span></b></p>
-                                                        <p>Escala: <b><span id="lblEscala">-</span></b></p>
-                                                        <p>Comisión: <b><span id="lblComision">$0</span></b></p>
-
-                                                        <div class="alert alert-success mt-3" style="margin-top: 15px;">
-                                                            <span id="lblRecomendacion"></span>
-                                                        </div>
-
-
-                                                        <h4>Detalle de Comisión</h4>
-
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered" id="tablaDetalleComision">
-
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>Plan</th>
-                                                                        <th>Cantidad</th>
-                                                                        <th>Objetivo</th>
-                                                                        <th>Comisión Unidad</th>
-                                                                        <th>Comisión Total</th>
-                                                                    </tr>
-                                                                </thead>
-
-                                                                <tbody></tbody>
-
-                                                            </table>
-                                                        </div>
-
-
-                                                        <div class="alert alert-success mt-3">
-
-                                                            <b>Cómo subir de escala:</b>
-
-                                                            <div id="lblSimulacion"></div>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>--%>
-
                                                 <div id="tabSimulador" class="tab-pane active" runat="server">
 
                                                     <div class="panel-body">
@@ -787,7 +725,6 @@
 
     </script>
 
-
     <script type="text/javascript">
         Sys.Application.add_load(function () {
             console.log("Script cargado");
@@ -807,6 +744,7 @@
             });
         });
     </script>
+
     <script type="text/javascript">
         function confirmarGestion() {
             return confirm("¿Está seguro de gestionar el contacto seleccionado?");
@@ -817,7 +755,6 @@
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
-
 
     <%--ZONA PLANES--%>
 
@@ -852,18 +789,6 @@
                         filas += "<td>" + formatoMoneda(p.Valor) + "</td>";
                         filas += "<td>" + p.FactorMix + "</td>";
                         filas += "<td>" + (p.EsMensual ? "Sí" : "No") + "</td>";
-
-                        ////filas += "<td>";
-
-                        ////filas += "<a href='#' onclick='editarPlan(" + p.Id + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px' title='Editar'>";
-                        ////filas += "<i class='fa fa-edit'></i>";
-                        ////filas += "</a>";
-
-                        ////filas += "<a href='#' onclick='eliminarPlan(" + p.Id + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px' title='Eliminar'>";
-                        ////filas += "<i class='fa fa-trash'></i>";
-                        ////filas += "</a>";
-
-                        ////filas += "</td>";
 
                         filas += "<td>";
 
@@ -1093,18 +1018,6 @@
                             filas += "<td>" + e.Nombre + "</td>";
                             filas += "<td>" + e.PuntosMin + "</td>";
                             filas += "<td>" + e.PuntosMax + "</td>";
-
-                            //filas += "<td>";
-
-                            //filas += "<a href='#' onclick='editarEscala(" + e.IdEscala + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px' title='Editar'>";
-                            //filas += "<i class='fa fa-edit'></i>";
-                            //filas += "</a>";
-
-                            //filas += "<a href='#' onclick='eliminarEscala(" + e.IdEscala + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px' title='Eliminar'>";
-                            //filas += "<i class='fa fa-trash'></i>";
-                            //filas += "</a>";
-
-                            //filas += "</td>";
 
                             filas += "<td>";
 
@@ -1368,18 +1281,6 @@
                             filas += "<td>" + o.CantidadObjetivo + "</td>";
                             filas += "<td>" + formatoMoneda(o.ValorUnitarioComision) + "</td>";
 
-                            //filas += "<td>";
-
-                            //filas += "<a href='#' onclick='editarObjetivo(" + o.IdObjetivo + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px'>";
-                            //filas += "<i class='fa fa-edit'></i>";
-                            //filas += "</a>";
-
-                            //filas += "<a href='#' onclick='eliminarObjetivo(" + o.IdObjetivo + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px'>";
-                            //filas += "<i class='fa fa-trash'></i>";
-                            //filas += "</a>";
-
-                            //filas += "</td>";
-
                             filas += "<td>";
 
                             filas += "<td>";
@@ -1568,7 +1469,6 @@
         }
     </script>
 
-
     <script>
         function formatoMoneda(valor) {
             return new Intl.NumberFormat('es-CO', {
@@ -1604,7 +1504,6 @@
 
         });
     </script>
-
 
     <script>
 
