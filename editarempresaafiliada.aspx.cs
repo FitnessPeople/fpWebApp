@@ -28,9 +28,9 @@ namespace fpWebApp
                         txbTelefonoPpal.Attributes.Add("type", "number");
                         //txbTelefonoSrio.Attributes.Add("type", "number");
                         //txbCelular.Attributes.Add("type", "number");
-                        txbFechaConvenio.Attributes.Add("type", "date");
-                        txbFechaFinConvenio.Attributes.Add("type", "date");
-                        txbNroEmpleados.Attributes.Add("type", "number");
+                        //txbFechaConvenio.Attributes.Add("type", "date");
+                        //txbFechaFinConvenio.Attributes.Add("type", "date");
+                        //txbNroEmpleados.Attributes.Add("type", "number");
                         CargarTipoDocumento();
                         CargarCiudad();
                         CargarEmpresa();
@@ -115,81 +115,81 @@ namespace fpWebApp
                     txbTelefonoPpal.Text = dt.Rows[0]["CelularEmpresa"].ToString();
                     txbCorreo.Text = dt.Rows[0]["CorreoEmpresa"].ToString();
 
-                    txbNombrepagador.Text = dt.Rows[0]["NombrePagador"].ToString();
-                    txbCelularPagador.Text = dt.Rows[0]["TelefonoPagador"].ToString();
-                    txbCorreoPagador.Text = dt.Rows[0]["CorreoPagador"].ToString();
+                    //txbNombrepagador.Text = dt.Rows[0]["NombrePagador"].ToString();
+                    //txbCelularPagador.Text = dt.Rows[0]["TelefonoPagador"].ToString();
+                    //txbCorreoPagador.Text = dt.Rows[0]["CorreoPagador"].ToString();
 
-                    if (dt.Rows.Count > 0 && dt.Rows[0]["RetornoAdm"] != DBNull.Value)
-                    {
-                        rblActivo.SelectedValue = dt.Rows[0]["RetornoAdm"].ToString();
-                    }
+                    //if (dt.Rows.Count > 0 && dt.Rows[0]["RetornoAdm"] != DBNull.Value)
+                    //{
+                    //    rblActivo.SelectedValue = dt.Rows[0]["RetornoAdm"].ToString();
+                    //}
                     hiddenEditor.Value = dt.Rows[0]["Descripcion"].ToString();
 
                     //string activo = rblActivo.SelectedValue;
 
                     txbDireccion.Text = dt.Rows[0]["DireccionEmpresa"].ToString();
                     ddlCiudadEmpresa.SelectedIndex = Convert.ToInt16(ddlCiudadEmpresa.Items.IndexOf(ddlCiudadEmpresa.Items.FindByValue(dt.Rows[0]["idCiudadEmpresa"].ToString())));
-                    txbFechaConvenio.Attributes.Add("type", "date");
+                    //txbFechaConvenio.Attributes.Add("type", "date");
 
                     DateTime dtFecha = Convert.ToDateTime(dt.Rows[0]["FechaConvenio"].ToString());
                     DateTime dtFechaFin = Convert.ToDateTime(dt.Rows[0]["FechaFinConvenio"].ToString());
 
-                    txbFechaConvenio.Text = dtFecha.ToString("yyyy-MM-dd");
-                    txbFechaFinConvenio.Text = dtFechaFin.ToString("yyyy-MM-dd");
-                    txbNroEmpleados.Text = dt.Rows[0]["NroEmpleados"].ToString();
-                    ddlTipoNegociacion.SelectedIndex = Convert.ToInt16(ddlTipoNegociacion.Items.IndexOf(ddlTipoNegociacion.Items.FindByText(dt.Rows[0]["TipoNegociacion"].ToString())));
-                    ddlDiasCredito.SelectedIndex = Convert.ToInt16(ddlDiasCredito.Items.IndexOf(ddlDiasCredito.Items.FindByText(dt.Rows[0]["DiasCredito"].ToString())));
+                    //txbFechaConvenio.Text = dtFecha.ToString("yyyy-MM-dd");
+                    //txbFechaFinConvenio.Text = dtFechaFin.ToString("yyyy-MM-dd");
+                    //txbNroEmpleados.Text = dt.Rows[0]["NroEmpleados"].ToString();
+                    //ddlTipoNegociacion.SelectedIndex = Convert.ToInt16(ddlTipoNegociacion.Items.IndexOf(ddlTipoNegociacion.Items.FindByText(dt.Rows[0]["TipoNegociacion"].ToString())));
+                    //ddlDiasCredito.SelectedIndex = Convert.ToInt16(ddlDiasCredito.Items.IndexOf(ddlDiasCredito.Items.FindByText(dt.Rows[0]["DiasCredito"].ToString())));
 
-                    if (dt.Rows.Count > 0)
-                    {
+                    //if (dt.Rows.Count > 0)
+                    //{
 
-                        string rutaDocs = "~/docs/contratos/";
+                    //    string rutaDocs = "~/docs/contratos/";
 
-                        string contrato = dt.Rows[0]["Contrato"].ToString();
+                    //    string contrato = dt.Rows[0]["Contrato"].ToString();
 
-                        if (!string.IsNullOrEmpty(contrato) &&
-                            File.Exists(Server.MapPath(rutaDocs + contrato)))
-                        {
-                            lnkContrato.Text = contrato;
-                            lnkContrato.NavigateUrl = rutaDocs + contrato;
-                        }
-                        else
-                        {
-                            lnkContrato.Text = "No hay archivo cargado";
-                            lnkContrato.NavigateUrl = "";
-                        }
-                        // CAMARA
-                        string camara = dt.Rows[0]["CamaraComercio"].ToString();
+                    //    if (!string.IsNullOrEmpty(contrato) &&
+                    //        File.Exists(Server.MapPath(rutaDocs + contrato)))
+                    //    {
+                    //        lnkContrato.Text = contrato;
+                    //        lnkContrato.NavigateUrl = rutaDocs + contrato;
+                    //    }
+                    //    else
+                    //    {
+                    //        lnkContrato.Text = "No hay archivo cargado";
+                    //        lnkContrato.NavigateUrl = "";
+                    //    }
+                    //    // CAMARA
+                    //    string camara = dt.Rows[0]["CamaraComercio"].ToString();
 
-                        if (!string.IsNullOrEmpty(camara) &&
-                            File.Exists(Server.MapPath(rutaDocs + camara)))
-                        {
-                            lnkCamara.Text = camara;
-                            lnkCamara.NavigateUrl = rutaDocs + camara;
-                        }
+                    //    if (!string.IsNullOrEmpty(camara) &&
+                    //        File.Exists(Server.MapPath(rutaDocs + camara)))
+                    //    {
+                    //        lnkCamara.Text = camara;
+                    //        lnkCamara.NavigateUrl = rutaDocs + camara;
+                    //    }
 
-                        // RUT
-                        string rut = dt.Rows[0]["Rut"].ToString();
+                    //    // RUT
+                    //    string rut = dt.Rows[0]["Rut"].ToString();
 
-                        if (!string.IsNullOrEmpty(rut) &&
-                            File.Exists(Server.MapPath(rutaDocs + rut)))
-                        {
-                            lnkRut.Text = rut;
-                            lnkRut.NavigateUrl = rutaDocs + rut;
-                        }
+                    //    if (!string.IsNullOrEmpty(rut) &&
+                    //        File.Exists(Server.MapPath(rutaDocs + rut)))
+                    //    {
+                    //        lnkRut.Text = rut;
+                    //        lnkRut.NavigateUrl = rutaDocs + rut;
+                    //    }
 
-                        // CEDULA
-                        string cedula = dt.Rows[0]["CedulaRepLeg"].ToString();
+                    //    // CEDULA
+                    //    string cedula = dt.Rows[0]["CedulaRepLeg"].ToString();
 
-                        if (!string.IsNullOrEmpty(cedula) &&
-                            File.Exists(Server.MapPath(rutaDocs + cedula)))
-                        {
-                            lnkCedula.Text = cedula;
-                            lnkCedula.NavigateUrl = rutaDocs + cedula;
-                        }
-                    }
+                    //    if (!string.IsNullOrEmpty(cedula) &&
+                    //        File.Exists(Server.MapPath(rutaDocs + cedula)))
+                    //    {
+                    //        lnkCedula.Text = cedula;
+                    //        lnkCedula.NavigateUrl = rutaDocs + cedula;
+                    //    }
+                    //}
  
-                    rblEstado.Items.FindByValue(dt.Rows[0]["EstadoEmpresa"].ToString()).Selected = true;
+                    //rblEstado.Items.FindByValue(dt.Rows[0]["EstadoEmpresa"].ToString()).Selected = true;
                 }
                 else
                 {
@@ -276,12 +276,14 @@ namespace fpWebApp
                     strFilenameCedula = nombre;
                 }
 
+                DateTime hoy = DateTime.Now;
+
                 clasesglobales cg = new clasesglobales();
                 respuesta = cg.EditarEmpresaAfiliada(Convert.ToInt32(Request.QueryString["editid"].ToString()), txbDocumento.Text, Convert.ToInt32(ddlTipoDocumento.SelectedValue),
-                txbNombreCcial.Text, txbRazonSocial.Text, Convert.ToDateTime(txbFechaConvenio.Text), Convert.ToDateTime(txbFechaFinConvenio.Text), txbNombreContacto.Text,
-                txbCargoContacto.Text, txbTelefonoPpal.Text, txbCorreo.Text, txbNombrepagador.Text, txbCelularPagador.Text, txbCorreoPagador.Text,
-                txbDireccion.Text, Convert.ToInt32(ddlCiudadEmpresa.SelectedValue), Convert.ToInt32(txbNroEmpleados.Text), ddlTipoNegociacion.SelectedItem.Text,
-                Convert.ToInt32(ddlDiasCredito.SelectedItem.Text), strFilenameContrato, strFilenameCamara, strFilenameRut, strFilenameCedula, "Activo", Convert.ToInt32(rblActivo.SelectedValue),
+                txbNombreCcial.Text, txbRazonSocial.Text, hoy, hoy, txbNombreContacto.Text,
+                txbCargoContacto.Text, txbTelefonoPpal.Text, txbCorreo.Text, "", "", "",
+                txbDireccion.Text, Convert.ToInt32(ddlCiudadEmpresa.SelectedValue), 0, "",
+                0, strFilenameContrato, strFilenameCamara, strFilenameRut, strFilenameCedula, "Activo",0,
                 txbDV.Text, hiddenEditor.Value, Convert.ToInt32(Session["idUsuario"]));
 
 
