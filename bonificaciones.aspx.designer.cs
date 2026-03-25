@@ -78,6 +78,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Literal ltFechaHoy;
 
         /// <summary>
+        /// Control tabSimulador.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabSimulador;
+
+        /// <summary>
+        /// Control tabPlanes.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabPlanes;
+
+        /// <summary>
         /// Control txtNombrePlan.
         /// </summary>
         /// <remarks>
@@ -114,6 +132,15 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlEsMensual;
 
         /// <summary>
+        /// Control tabEscalas.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabEscalas;
+
+        /// <summary>
         /// Control txtNombreEscala.
         /// </summary>
         /// <remarks>
@@ -139,6 +166,15 @@ namespace fpWebApp
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPuntosMax;
+
+        /// <summary>
+        /// Control tabObjetivos.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabObjetivos;
 
         /// <summary>
         /// Control ddlEscala.

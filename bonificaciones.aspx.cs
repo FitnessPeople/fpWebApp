@@ -33,6 +33,7 @@ namespace fpWebApp
                         ObtenerPlanes();
                         ObtenerEscalas();
                         ObtenerObjetivos();
+                        ConfigurarPermisos();
                     } 
 
                 }
@@ -146,6 +147,14 @@ namespace fpWebApp
 
             try
             {
+                int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
+                DataTable dt = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
+
+                int idPerfil = Convert.ToInt32(dt.Rows[0]["IdPerfil"]);
+                if (!(idPerfil == 21 || idPerfil == 37 || idPerfil == 18))
+                {
+                    return new { ok = false, mensaje = "Sin permisos" };
+                }
                 DataSet ds = cg.CrudPlanesSimulador(accion, id, nombre, valor, factorMix, esMensual);
 
                 return new { ok = true };
@@ -369,7 +378,8 @@ namespace fpWebApp
                 Estado = dt.Rows[0]["Estado"].ToString(),
                 Mix = dt.Rows[0]["Mix"].ToString(),
                 Escala = dt.Rows[0]["Escala"].ToString(),
-                Comision = dt.Rows[0]["Comision"].ToString()
+                Comision = dt.Rows[0]["Comision"].ToString(),
+                TotalVentas = dt.Rows[0]["TotalVentas"].ToString()                
             };
         }
 
@@ -381,8 +391,10 @@ namespace fpWebApp
         {
             clasesglobales cg = new clasesglobales();
 
-            decimal mixDecimal = Convert.ToDecimal(mix.Replace(",", "."),
-                System.Globalization.CultureInfo.InvariantCulture);
+            decimal mixDecimal = Convert.ToDecimal(
+                mix.Replace(",", "."),
+                System.Globalization.CultureInfo.InvariantCulture
+            );
 
             DataTable dt = cg.ObtenerRecomendacionEscala(mixDecimal);
 
@@ -390,17 +402,21 @@ namespace fpWebApp
             {
                 return new
                 {
-                    Escala = "",
+                    Estado = "",
+                    NombreEscala = "",
                     MixObjetivo = 0,
-                    MixFaltante = 0
+                    MixFaltante = 0,
+                    Mensaje = ""
                 };
             }
 
             return new
             {
-                Escala = dt.Rows[0]["SiguienteEscala"].ToString(),
-                MixObjetivo = dt.Rows[0]["MixObjetivo"].ToString(),
-                MixFaltante = dt.Rows[0]["MixFaltante"].ToString()
+                Estado = dt.Rows[0]["Estado"].ToString(),
+                NombreEscala = dt.Rows[0]["NombreEscala"]?.ToString(),
+                MixObjetivo = dt.Rows[0]["MixObjetivo"]?.ToString(),
+                MixFaltante = dt.Rows[0]["MixFaltante"]?.ToString(),
+                Mensaje = dt.Rows[0]["Mensaje"]?.ToString()
             };
         }
 
@@ -421,7 +437,8 @@ namespace fpWebApp
                     Cantidad = row["Cantidad"],
                     Objetivo = row["Objetivo"],
                     ComisionUnidad = row["ComisionUnidad"],
-                    ComisionTotal = row["ComisionTotal"]
+                    ComisionTotal = row["ComisionTotal"],
+                    TipoCalculo = row["TipoCalculo"].ToString(),
                 });
             }
 
@@ -463,6 +480,30 @@ namespace fpWebApp
             public decimal Comision { get; set; }
         }
 
+
+        private void ConfigurarPermisos()
+        {
+            clasesglobales cg = new clasesglobales();
+
+            DataTable dt = cg.ConsultarUsuarioSedePerfilPorId(Convert.ToInt32(Session["idUsuario"]));
+
+            if (dt.Rows.Count == 0) return;
+
+            int idPerfil = Convert.ToInt32(dt.Rows[0]["IdPerfil"]);
+
+            
+            bool puedeEditar = (idPerfil == 21 || idPerfil == 37 || idPerfil == 18);
+           
+            tabSimulador.Visible = true;
+            
+            tabPlanes.Visible = true;
+            tabEscalas.Visible = true;
+            tabObjetivos.Visible = true;
+
+           
+            string script = $"window.puedeEditar = {(puedeEditar ? "true" : "false")};";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "permisos", script, true);
+        }
 
 
 

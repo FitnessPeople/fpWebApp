@@ -220,25 +220,25 @@
                                             <ul class="nav nav-tabs">
 
                                                 <li class="active">
-                                                    <a data-toggle="tab" href="#tab-simulador">
+                                                    <a data-toggle="tab" href="#tabSimulador">
                                                         <i class="fa fa-calculator"></i>Simulador
                                                     </a>
                                                 </li>
 
                                                 <li>
-                                                    <a data-toggle="tab" href="#tab-planes">
+                                                    <a data-toggle="tab" href="#tabPlanes">
                                                         <i class="fa fa-tags"></i>Planes
                                                     </a>
                                                 </li>
 
                                                 <li>
-                                                    <a data-toggle="tab" href="#tab-escalas">
+                                                    <a data-toggle="tab" href="#tabEscalas">
                                                         <i class="fa fa-signal"></i>Escalas
                                                     </a>
                                                 </li>
 
                                                 <li>
-                                                    <a data-toggle="tab" href="#tab-objetivos">
+                                                    <a data-toggle="tab" href="#tabObjetivos">
                                                         <i class="fa fa-bullseye"></i>Objetivos
                                                     </a>
                                                 </li>
@@ -320,7 +320,7 @@
 
                                                 </div>--%>
 
-                                                <div id="tab-simulador" class="tab-pane active">
+                                                <div id="tabSimulador" class="tab-pane active" runat="server">
 
                                                     <div class="panel-body">
 
@@ -359,24 +359,31 @@
 
                                                                 <div class="row">
 
-                                                                    <div class="col-md-4">
+                                                                    <div class="col-md-3">
                                                                         <div class="well text-center">
                                                                             <b>Puntos Mix</b>
                                                                             <h3><span id="lblMix">0</span></h3>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="col-md-4">
+                                                                    <div class="col-md-3">
                                                                         <div class="well text-center">
                                                                             <b>Escala</b>
                                                                             <h3><span id="lblEscala">-</span></h3>
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="col-md-4">
+                                                                    <div class="col-md-3">
                                                                         <div class="well text-center">
                                                                             <b>Comisión</b>
                                                                             <h3><span id="lblComision">$0</span></h3>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-xs-3">
+                                                                        <div class="ibox" style="padding: 15px;">
+                                                                            <h5>Total caja</h5>
+                                                                            <h2 id="lblTotalVentas" style="color:#1ab394;">$0</h2>
                                                                         </div>
                                                                     </div>
 
@@ -404,6 +411,7 @@
                                                                                 <th>Objetivo</th>
                                                                                 <th>Comisión Unidad</th>
                                                                                 <th>Comisión Total</th>
+                                                                                <th>Tipo</th>
                                                                             </tr>
                                                                         </thead>
 
@@ -436,7 +444,7 @@
                                                 <!-- TAB PLANES -->
                                                 <!-- ===================== -->
 
-                                                <div id="tab-planes" class="tab-pane">
+                                                <div id="tabPlanes" class="tab-pane" runat="server">
 
                                                     <div class="panel-body">
 
@@ -453,7 +461,10 @@
                                                             <div class="col-md-3">
                                                                 <label>Valor</label>
                                                                 <asp:TextBox ID="txtValorPlan" runat="server"
-                                                                    CssClass="form-control"></asp:TextBox>
+                                                                    CssClass="form-control"
+                                                                    onkeyup="formatCurrency(this)"
+                                                                    onblur="keepFormatted(this)">
+                                                                </asp:TextBox>
                                                             </div>
 
                                                             <div class="col-md-2">
@@ -513,7 +524,7 @@
                                                 <!-- TAB ESCALAS -->
                                                 <!-- ===================== -->
 
-                                                <div id="tab-escalas" class="tab-pane">
+                                                <div id="tabEscalas" class="tab-pane" runat="server">
 
                                                     <div class="panel-body">
 
@@ -586,7 +597,7 @@
                                                 <!-- TAB OBJETIVOS -->
                                                 <!-- ===================== -->
 
-                                                <div id="tab-objetivos" class="tab-pane">
+                                                <div id="tabObjetivos" class="tab-pane" runat="server">
 
                                                     <div class="panel-body">
 
@@ -629,9 +640,11 @@
 
                                                                 <label>Comisión Unidad</label>
 
-                                                                <asp:TextBox ID="txtComisionUnidad"
-                                                                    runat="server"
-                                                                    CssClass="form-control"></asp:TextBox>
+                                                                <asp:TextBox ID="txtComisionUnidad" runat="server"
+                                                                    CssClass="form-control"
+                                                                    onkeyup="formatCurrency(this)"
+                                                                    onblur="keepFormatted(this)">
+                                                                </asp:TextBox>
                                                             </div>
 
                                                             <div class="col-md-2" style="margin-top: 25px">
@@ -840,15 +853,28 @@
                         filas += "<td>" + p.FactorMix + "</td>";
                         filas += "<td>" + (p.EsMensual ? "Sí" : "No") + "</td>";
 
+                        ////filas += "<td>";
+
+                        ////filas += "<a href='#' onclick='editarPlan(" + p.Id + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px' title='Editar'>";
+                        ////filas += "<i class='fa fa-edit'></i>";
+                        ////filas += "</a>";
+
+                        ////filas += "<a href='#' onclick='eliminarPlan(" + p.Id + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px' title='Eliminar'>";
+                        ////filas += "<i class='fa fa-trash'></i>";
+                        ////filas += "</a>";
+
+                        ////filas += "</td>";
+
                         filas += "<td>";
 
-                        filas += "<a href='#' onclick='editarPlan(" + p.Id + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px' title='Editar'>";
-                        filas += "<i class='fa fa-edit'></i>";
-                        filas += "</a>";
+                        if (window.puedeEditar) {
 
-                        filas += "<a href='#' onclick='eliminarPlan(" + p.Id + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px' title='Eliminar'>";
-                        filas += "<i class='fa fa-trash'></i>";
-                        filas += "</a>";
+                            filas += "<a href='#' onclick='editarPlan(" + p.Id + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px'>";
+                            filas += "<i class='fa fa-edit'></i></a>";
+
+                            filas += "<a href='#' onclick='eliminarPlan(" + p.Id + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px'>";
+                            filas += "<i class='fa fa-trash'></i></a>";
+                        }
 
                         filas += "</td>";
 
@@ -874,7 +900,7 @@
 
             var id = $("#idPlanEditar").val();
             var nombre = $("#<%=txtNombrePlan.ClientID%>").val();
-            var valor = $("#<%=txtValorPlan.ClientID%>").val();
+            var valor = $("#<%=txtValorPlan.ClientID%>").val().replace(/[^0-9]/g, '');
             var factorMix = $("#<%=txtFactorMix.ClientID%>").val();
             var esMensual = $("#<%=ddlEsMensual.ClientID%>").val() == "1";
 
@@ -939,7 +965,7 @@
                     var p = response.d;
 
                     $("#<%=txtNombrePlan.ClientID%>").val(p.Nombre);
-                    $("#<%=txtValorPlan.ClientID%>").val(p.Valor);
+                    $("#<%=txtValorPlan.ClientID%>").val(formatoMoneda(p.Valor));
                     $("#<%=txtFactorMix.ClientID%>").val(p.FactorMix);
                     $("#<%=ddlEsMensual.ClientID%>").val(p.EsMensual ? "1" : "0");
 
@@ -1068,15 +1094,28 @@
                             filas += "<td>" + e.PuntosMin + "</td>";
                             filas += "<td>" + e.PuntosMax + "</td>";
 
+                            //filas += "<td>";
+
+                            //filas += "<a href='#' onclick='editarEscala(" + e.IdEscala + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px' title='Editar'>";
+                            //filas += "<i class='fa fa-edit'></i>";
+                            //filas += "</a>";
+
+                            //filas += "<a href='#' onclick='eliminarEscala(" + e.IdEscala + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px' title='Eliminar'>";
+                            //filas += "<i class='fa fa-trash'></i>";
+                            //filas += "</a>";
+
+                            //filas += "</td>";
+
                             filas += "<td>";
 
-                            filas += "<a href='#' onclick='editarEscala(" + e.IdEscala + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px' title='Editar'>";
-                            filas += "<i class='fa fa-edit'></i>";
-                            filas += "</a>";
+                            if (window.puedeEditar) {
 
-                            filas += "<a href='#' onclick='eliminarEscala(" + e.IdEscala + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px' title='Eliminar'>";
-                            filas += "<i class='fa fa-trash'></i>";
-                            filas += "</a>";
+                                filas += "<a href='#' onclick='editarEscala(" + e.IdEscala + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px'>";
+                                filas += "<i class='fa fa-edit'></i></a>";
+
+                                filas += "<a href='#' onclick='eliminarEscala(" + e.IdEscala + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px'>";
+                                filas += "<i class='fa fa-trash'></i></a>";
+                            }
 
                             filas += "</td>";
 
@@ -1327,21 +1366,34 @@
                             filas += "<td>" + o.Escala + "</td>";
                             filas += "<td>" + o.Plan + "</td>";
                             filas += "<td>" + o.CantidadObjetivo + "</td>";
-                            filas += "<td>" + o.ValorUnitarioComision + "</td>";
+                            filas += "<td>" + formatoMoneda(o.ValorUnitarioComision) + "</td>";
+
+                            //filas += "<td>";
+
+                            //filas += "<a href='#' onclick='editarObjetivo(" + o.IdObjetivo + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px'>";
+                            //filas += "<i class='fa fa-edit'></i>";
+                            //filas += "</a>";
+
+                            //filas += "<a href='#' onclick='eliminarObjetivo(" + o.IdObjetivo + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px'>";
+                            //filas += "<i class='fa fa-trash'></i>";
+                            //filas += "</a>";
+
+                            //filas += "</td>";
 
                             filas += "<td>";
 
-                            filas += "<a href='#' onclick='editarObjetivo(" + o.IdObjetivo + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px'>";
-                            filas += "<i class='fa fa-edit'></i>";
-                            filas += "</a>";
+                            filas += "<td>";
 
-                            filas += "<a href='#' onclick='eliminarObjetivo(" + o.IdObjetivo + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px'>";
-                            filas += "<i class='fa fa-trash'></i>";
-                            filas += "</a>";
+                            if (window.puedeEditar) {
+
+                                filas += "<a href='#' onclick='editarObjetivo(" + o.IdObjetivo + ")' class='btn btn-outline btn-primary m-r-xs' style='padding:1px 2px'>";
+                                filas += "<i class='fa fa-edit'></i></a>";
+
+                                filas += "<a href='#' onclick='eliminarObjetivo(" + o.IdObjetivo + ")' class='btn btn-outline btn-danger m-r-xs' style='padding:1px 2px'>";
+                                filas += "<i class='fa fa-trash'></i></a>";
+                            }
 
                             filas += "</td>";
-
-                            filas += "</tr>";
 
                         });
 
@@ -1364,7 +1416,7 @@
             var escala = $("#ddlEscala").val();
             var plan = $("#ddlPlan").val();
             var cantidad = $("#txtCantidadObjetivo").val();
-            var comision = $("#txtComisionUnidad").val();
+            var comision = $("#txtComisionUnidad").val().replace(/[^0-9]/g, '');
 
             if (escala == "" || plan == "" || cantidad == "" || comision == "") {
 
@@ -1458,7 +1510,7 @@
                     $("#ddlEscala").val(o.IdEscala);
                     $("#ddlPlan").val(o.IdPlanSimulador);
                     $("#txtCantidadObjetivo").val(o.CantidadObjetivo);
-                    $("#txtComisionUnidad").val(o.ValorUnitarioComision);
+                    $("#txtComisionUnidad").val(formatoMoneda(o.ValorUnitarioComision));
 
                     $("#idObjetivoEditar").val(o.Id);
 
@@ -1607,9 +1659,17 @@
                     $("#lblMix").text(r.Mix);
                     $("#lblEscala").text(r.Escala);
                     var comision = parseFloat(r.Comision) || 0;
+                    var totalVentas = parseFloat(r.TotalVentas) || 0;
 
                     $("#lblComision").text(
                         comision.toLocaleString('es-CO', {
+                            style: 'currency',
+                            currency: 'COP',
+                            minimumFractionDigits: 0
+                        })
+                    );
+                    $("#lblTotalVentas").text(
+                        totalVentas.toLocaleString('es-CO', {
                             style: 'currency',
                             currency: 'COP',
                             minimumFractionDigits: 0
@@ -1723,11 +1783,15 @@
 
                     var r = response.d;
 
-                    $("#lblRecomendacion").html(
-                        "🚀 Te faltan <b>" + r.MixFaltante +
-                        "</b> puntos mix para la escala <b>" +
-                        r.Escala + "</b>"
-                    );
+                    if (r.Estado === "MAX") {
+                        $("#lblRecomendacion").html("🏆 " + r.Mensaje);
+                    }
+                    else if (r.Estado === "INICIAL") {
+                        $("#lblRecomendacion").html("🎯 " + r.Mensaje);
+                    }
+                    else {
+                        $("#lblRecomendacion").html("🚀 " + r.Mensaje);
+                    }
 
                 }
 
@@ -1813,11 +1877,20 @@
                     datos.forEach(function (d) {
 
                         filas += "<tr>";
+
                         filas += "<td>" + d.Plan + "</td>";
                         filas += "<td>" + d.Cantidad + "</td>";
                         filas += "<td>" + d.Objetivo + "</td>";
-                        filas += "<td>$" + d.ComisionUnidad + "</td>";
-                        filas += "<td>$" + d.ComisionTotal + "</td>";
+                        filas += "<td>" + formatoMoneda(d.ComisionUnidad) + "</td>";
+                        filas += "<td>" + formatoMoneda(d.ComisionTotal) + "</td>";
+
+                        // ✔ AQUÍ VA EL TIPO (DENTRO DEL TR)
+                        if (d.TipoCalculo === "Escala actual") {
+                            filas += "<td style='color:green'>✔ Escala actual</td>";
+                        } else {
+                            filas += "<td style='color:orange'>⚠ Escala anterior</td>";
+                        }
+
                         filas += "</tr>";
 
                     });
@@ -1828,6 +1901,38 @@
 
             });
 
+        }
+
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            if (!window.puedeEditar) {
+
+                // Solo en pestañas específicas
+                $("#tabPlanes input, #tabPlanes select").prop("disabled", true);
+                $("#tabEscalas input").prop("disabled", true);
+                $("#tabObjetivos input, #tabObjetivos select").prop("disabled", true);
+
+                $("#tabPlanes button").hide();
+                $("#tabEscalas button").hide();
+                $("#tabObjetivos button").hide();
+
+            }
+
+        });
+    </script>
+
+    <script>
+        if (r.Estado === "MAX") {
+            $("#lblRecomendacion").html("🏆 " + r.Mensaje);
+        }
+        else if (r.Estado === "INICIAL") {
+            $("#lblRecomendacion").html("🎯 " + r.Mensaje);
+        }
+        else {
+            $("#lblRecomendacion").html("🚀 " + r.Mensaje);
         }
 
     </script>
