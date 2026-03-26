@@ -4021,11 +4021,9 @@ namespace fpWebApp
             return dt;
         }
 
-        public string InsertarEmpresaAfiliada(string documentoEmpresa, string digitoVerificacion, int idTipoDocumento, string nombreComercial, string razonSocial,
-            DateTime fechaConvenio, DateTime? fechaFinConvenio, string nombreContacto, string cargoContacto, string celularEmpresa, string correoEmpresa,
-            string nombrePagador, string telefonoPagador, string correoPagador, string direccionEmpresa, int idCiudadEmpresa, int nroEmpleados,
-            string tipoNegociacion, int diasCredito, string contrato, string imagen, string camaraComercio, string rut, string cedulaRepLegal,
-            string retornoAdm, int idUsuario, string descripcion, out bool respuesta, out string mensaje)
+        public string InsertarEmpresaAfiliada(    string documentoEmpresa, string digitoVerificacion,    int idTipoDocumento, string nombreComercial,    string razonSocial,
+        string nombreContacto,    string cargoContacto, string celularEmpresa,    string correoEmpresa,  string direccionEmpresa,    int idCiudadEmpresa,
+        string imagen,    string descripcion,    int idUsuario,    out bool respuesta,    out string mensaje)
         {
             respuesta = false;
             mensaje = string.Empty;
@@ -4041,33 +4039,21 @@ namespace fpWebApp
                     using (MySqlCommand cmd = new MySqlCommand("Pa_INSERTAR_EMPRESA_AFILIADA", mysqlConexion))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
+
                         cmd.Parameters.AddWithValue("@p_documento_empresa", documentoEmpresa);
                         cmd.Parameters.AddWithValue("@p_digitoverificacion", digitoVerificacion);
                         cmd.Parameters.AddWithValue("@p_id_tipo_documento", idTipoDocumento);
                         cmd.Parameters.AddWithValue("@p_nombre_comercial", nombreComercial);
                         cmd.Parameters.AddWithValue("@p_razon_social", razonSocial);
-                        cmd.Parameters.AddWithValue("@p_fecha_convenio", fechaConvenio);
-                        cmd.Parameters.AddWithValue("@p_fecha_fin_convenio", fechaFinConvenio.HasValue ? (object)fechaFinConvenio.Value : DBNull.Value);
                         cmd.Parameters.AddWithValue("@p_nombre_contacto", nombreContacto);
                         cmd.Parameters.AddWithValue("@p_cargo_contacto", cargoContacto);
                         cmd.Parameters.AddWithValue("@p_celular_empresa", celularEmpresa);
                         cmd.Parameters.AddWithValue("@p_correo_empresa", correoEmpresa);
-                        cmd.Parameters.AddWithValue("@p_nombre_pagador", nombrePagador);
-                        cmd.Parameters.AddWithValue("@p_telefono_pagador", telefonoPagador);
-                        cmd.Parameters.AddWithValue("@p_correo_pagador", correoPagador);
                         cmd.Parameters.AddWithValue("@p_direccion_empresa", direccionEmpresa);
                         cmd.Parameters.AddWithValue("@p_id_ciudad_empresa", idCiudadEmpresa);
-                        cmd.Parameters.AddWithValue("@p_nro_empleados", nroEmpleados);
-                        cmd.Parameters.AddWithValue("@p_tipo_negociacion", tipoNegociacion);
-                        cmd.Parameters.AddWithValue("@p_dias_credito", diasCredito);
-                        cmd.Parameters.AddWithValue("@p_contrato", contrato);
                         cmd.Parameters.AddWithValue("@p_imagen", imagen);
-                        cmd.Parameters.AddWithValue("@p_camara_comercio", camaraComercio);
-                        cmd.Parameters.AddWithValue("@p_rut", rut);
-                        cmd.Parameters.AddWithValue("@p_cedula_rep_leg", cedulaRepLegal);
-                        cmd.Parameters.AddWithValue("@p_retorno_adm", retornoAdm);
-                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
                         cmd.Parameters.AddWithValue("@p_descripcion", descripcion);
+                        cmd.Parameters.AddWithValue("@p_id_usuario", idUsuario);
 
                         MySqlParameter pMensaje = new MySqlParameter("@p_mensaje", MySqlDbType.VarChar, 50);
                         pMensaje.Direction = ParameterDirection.Output;
@@ -4089,29 +4075,22 @@ namespace fpWebApp
             return mensaje;
         }
 
-
-        public string EditarEmpresaAfiliada(
-        int idEmpresaAfiliada, string DocumentoEmpresa, int idTipoDocumento, string NombreComercial, string RazonSocial, DateTime FechaConvenio, DateTime FechaFinConvenio,
-        string NombreContacto, string CargoContacto, string CelularEmpresa, string CorreoEmpresa, string NombrePagador, string TelefonoPagador, string CorreoPagador,
-        string DireccionEmpresa, int idCiudadEmpresa, int NroEmpleados, string TipoNegociacion, int DiasCredito, string Contrato, string CamaraComercio,
-        string Rut, string CedulaRepLeg, string EstadoEmpresa, int RetornoAdm, string digitoverificacion, string Descripcion, int idUsuarioActualiza)
+        public string EditarEmpresaAfiliada( int idEmpresaAfiliada, string DocumentoEmpresa,  int idTipoDocumento, string NombreComercial, string RazonSocial, string NombreContacto,
+        string CargoContacto,   string CelularEmpresa, string CorreoEmpresa,  string DireccionEmpresa, int idCiudadEmpresa, string Imagen, string EstadoEmpresa,  string digitoverificacion, 
+        string Descripcion,int idUsuarioActualiza)
         {
-
             string respuesta = "";
 
             try
             {
-
                 string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
 
                 using (MySqlConnection conn = new MySqlConnection(strConexion))
                 {
-
                     conn.Open();
 
                     using (MySqlCommand cmd = new MySqlCommand("PA_ACTUALIZAR_EMPRESA_AFILIADA", conn))
                     {
-
                         cmd.CommandType = CommandType.StoredProcedure;
 
                         cmd.Parameters.AddWithValue("p_idEmpresaAfiliada", idEmpresaAfiliada);
@@ -4119,26 +4098,14 @@ namespace fpWebApp
                         cmd.Parameters.AddWithValue("p_idTipoDocumento", idTipoDocumento);
                         cmd.Parameters.AddWithValue("p_NombreComercial", NombreComercial);
                         cmd.Parameters.AddWithValue("p_RazonSocial", RazonSocial);
-                        cmd.Parameters.AddWithValue("p_FechaConvenio", FechaConvenio);
-                        cmd.Parameters.AddWithValue("p_FechaFinConvenio", FechaFinConvenio);
                         cmd.Parameters.AddWithValue("p_NombreContacto", NombreContacto);
                         cmd.Parameters.AddWithValue("p_CargoContacto", CargoContacto);
                         cmd.Parameters.AddWithValue("p_CelularEmpresa", CelularEmpresa);
                         cmd.Parameters.AddWithValue("p_CorreoEmpresa", CorreoEmpresa);
-                        cmd.Parameters.AddWithValue("p_NombrePagador", NombrePagador);
-                        cmd.Parameters.AddWithValue("p_TelefonoPagador", TelefonoPagador);
-                        cmd.Parameters.AddWithValue("p_CorreoPagador", CorreoPagador);
                         cmd.Parameters.AddWithValue("p_DireccionEmpresa", DireccionEmpresa);
                         cmd.Parameters.AddWithValue("p_idCiudadEmpresa", idCiudadEmpresa);
-                        cmd.Parameters.AddWithValue("p_NroEmpleados", NroEmpleados);
-                        cmd.Parameters.AddWithValue("p_TipoNegociacion", TipoNegociacion);
-                        cmd.Parameters.AddWithValue("p_DiasCredito", DiasCredito);
-                        cmd.Parameters.AddWithValue("p_Contrato", Contrato);
-                        cmd.Parameters.AddWithValue("p_CamaraComercio", CamaraComercio);
-                        cmd.Parameters.AddWithValue("p_Rut", Rut);
-                        cmd.Parameters.AddWithValue("p_CedulaRepLeg", CedulaRepLeg);
+                        cmd.Parameters.AddWithValue("p_Imagen", Imagen);
                         cmd.Parameters.AddWithValue("p_EstadoEmpresa", EstadoEmpresa);
-                        cmd.Parameters.AddWithValue("p_RetornoAdm", RetornoAdm);
                         cmd.Parameters.AddWithValue("p_digitoverificacion", digitoverificacion);
                         cmd.Parameters.AddWithValue("p_Descripcion", Descripcion);
                         cmd.Parameters.AddWithValue("p_idUsuarioActualiza", idUsuarioActualiza);
@@ -4147,14 +4114,13 @@ namespace fpWebApp
 
                         respuesta = "OK";
                     }
-
                 }
-
             }
             catch (Exception ex)
             {
-                respuesta = ex.Message;
+                respuesta = "ERROR: " + ex.Message;
             }
+
             return respuesta;
         }
 
@@ -4213,6 +4179,40 @@ namespace fpWebApp
                 dt = new DataTable();
                 dt.Columns.Add("Error", typeof(string));
                 dt.Rows.Add(ex.Message);
+            }
+
+            return dt;
+        }
+
+        public DataTable ConsultarHistoricoEmpresaAfiliada(int idEmpresaAfiliada)
+        {
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string strConexion = WebConfigurationManager.ConnectionStrings["ConnectionFP"].ConnectionString;
+
+                using (MySqlConnection conn = new MySqlConnection(strConexion))
+                {
+                    conn.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("Pa_CONSULTAR_HISTORICO_EMPRESA_AFILIADA", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@p_idEmpresaAfiliada", idEmpresaAfiliada);
+
+                        using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                        {
+                            da.Fill(dt);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Puedes loguearlo si quieres
+                dt = null;
             }
 
             return dt;

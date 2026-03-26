@@ -608,6 +608,7 @@
                                                                         <th>Plan</th>
                                                                         <th>Objetivo</th>
                                                                         <th>Comisión</th>
+                                                                        <th>Acciones</th>
                                                                         <th></th>
 
                                                                     </tr>

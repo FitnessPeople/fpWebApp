@@ -274,7 +274,7 @@
                                                 <div class="form-group">
 
                                                     <div class="form-group">
-                                                        <label>Descripción:</label>
+                                                        <label>Actividad de la empresa:</label>
                                                         <div id="editor" cssclass="form-control input-sm"></div>
                                                         <asp:HiddenField ID="hiddenEditor" runat="server" />
                                                     </div>

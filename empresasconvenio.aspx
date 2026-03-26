@@ -514,8 +514,9 @@
                                                     <th data-breakpoints="xs"></th>
                                                     <th data-sortable="false">Documento</th>
                                                     <th data-sortable="true" data-type="text">Razon social</th>
-                                                    <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs sm">Estado asignación</th>
                                                     <th class="text-nowrap" data-breakpoints="xs sm">Asesor</th>
+                                                    <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
                                                     <th data-sortable="false" data-filterable="false" class="text-left">Acciones</th>
                                                 </tr>
                                             </thead>
@@ -529,6 +530,7 @@
                                                             <td><a data-toggle="tab" href='#contact-<%# Eval("NombreComercial").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpresa") %>' class="client-link"><%# Eval("Nombrecomercial") %></a></td>
                                                             <td><%# Eval("EstadoAsignacion") %></td>
                                                             <td><%# Eval("NombreUsuario") %></td>
+                                                            <td><%# Eval("EstadoEmpresa") %></td>
                                                             <td>                                                               
                                                                     <!-- EDITAR -->
                                                                     <a runat="server" id="btnEditarEmpresa"
@@ -552,10 +554,32 @@
                                         <div class="tab-content">
                                             <asp:Repeater ID="rpTabEmpresas" runat="server" OnItemDataBound="rpTabEmpresas_ItemDataBound">
                                                 <ItemTemplate>
+                                            
                                                     <div id='contact-<%# Eval("NombreComercial").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpresa") %>' class='tab-pane <%# Eval("DocumentoEmpresa").ToString() == ViewState["CompanyDoc"]?.ToString() ? "active" : "" %>'>
                                                         <div class="row m-b-lg">
                                                             <div class="ibox-content text-center">
-                                                                <h2><%# Eval("NombreComercial") %></h2>
+                                                              <h2><%# Eval("NombreComercial") %></h2>
+
+                                                                <!--  Datos básicos empresa -->
+                                                                <div class="m-t-sm m-b-sm text-center">
+
+                                                                    <p class="m-b-xs">
+                                                                        <i class="fa fa-map-marker text-navy m-r-xs"></i>
+                                                                        <%# Eval("DireccionEmpresa") %>
+                                                                    </p>
+
+                                                                    <p class="m-b-xs text-muted">
+                                                                        <i class="fa fa-city m-r-xs"></i>
+                                                                        <%# Eval("NombreCiudad") %>
+                                                                    </p>
+
+                                                                    <p class="m-b-xs">
+                                                                        <i class="fa fa-align-left text-info m-r-xs"></i>
+                                                                        <strong>Actividad de la empresa:</strong>
+                                                                        <%# string.IsNullOrEmpty(Eval("Descripcion")?.ToString()) ? "No registrada" : Eval("Descripcion") %>
+                                                                    </p>
+
+                                                                </div>
 
                                                                 <hr class="my-2">
                                                                 <p class="font-bold text-center">Gestión de convenio</p>
@@ -567,10 +591,6 @@
                                                                         data-idempresa='<%# Eval("idEmpresaAfiliada") %>'
                                                                         data-documento='<%# Eval("DocumentoEmpresa") %>'
                                                                         data-nombre='<%# Eval("NombreComercial") %>'
-                                                                        data-nombrepagador='<%# Eval("NombrePagador") %>'
-                                                                        data-telefono='<%# Eval("TelefonoPagador") %>'
-                                                                        data-correo='<%# Eval("CorreoPagador") %>'
-                                                                        data-retorno='<%# Eval("RetornoAdm") %>'>
 
                                                                         <i class="fa fa-file-signature m-r-xs"></i>Nuevo convenio
                                                                     </a>
@@ -810,6 +830,20 @@
 
                                                                 <hr />
                                                                 <strong>Última actividad</strong>
+
+                                                                <asp:Repeater ID="rpHistorial" runat="server">
+                                                                <ItemTemplate>
+                                                                    <div class="feed-element">
+                                                                        <div>
+                                                                            <strong><%# Eval("TipoActividad") %></strong>
+                                                                            <div class="text-info"><%# Eval("Descripcion") %></div>
+                                                                            <small class="text-muted">
+                                                                                <%# Eval("Usuario") %> - <%# Eval("Fecha", "{0:dd/MM/yyyy HH:mm}") %>
+                                                                            </small>
+                                                                        </div>
+                                                                    </div>
+                                                                </ItemTemplate>
+                                                            </asp:Repeater>
                                                                 <%--                                                                <div id="vertical-timeline" class="vertical-container dark-timeline">
 
                                                                     <asp:Repeater ID="rpActividades" runat="server">
@@ -831,7 +865,8 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </ItemTemplate>
+                                       
+                                                 </ItemTemplate>
                                             </asp:Repeater>
                                         </div>
                                     </div>

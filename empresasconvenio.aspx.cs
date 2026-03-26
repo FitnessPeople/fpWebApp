@@ -391,27 +391,126 @@ namespace fpWebApp
             }
         }
 
+        //protected void rpTabEmpresas_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        //{
+        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //    {
+        //        // 🔥 Obtener datos de la empresa actual
+        //        DataRowView row = (DataRowView)e.Item.DataItem;
+
+        //        int idEmpresa = Convert.ToInt32(row["idEmpresaAfiliada"]);
+
+        //        // 🔥 Buscar el repeater interno
+        //        Repeater rpConvenios = (Repeater)e.Item.FindControl("rpConvenios");
+
+        //        if (rpConvenios != null)
+        //        {
+        //            clasesglobales cg = new clasesglobales();
+
+        //            var convenios = cg.ListarConveniosPorEmpresa(idEmpresa); // 
+
+        //            rpConvenios.DataSource = convenios;
+        //            rpConvenios.DataBind();
+        //        }
+        //    }
+
+        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+        //    {
+        //        DataRowView row = (DataRowView)e.Item.DataItem;
+
+        //        int idEmpresa = Convert.ToInt32(row["idEmpresaAfiliada"]);
+
+        //        Repeater rpHistorial = (Repeater)e.Item.FindControl("rpHistorial");
+
+        //        clasesglobales cg = new clasesglobales();
+        //        DataTable dtHistorial = cg.ConsultarHistoricoEmpresaAfiliada(idEmpresa);
+
+        //        rpHistorial.DataSource = dtHistorial;
+        //        rpHistorial.DataBind();
+        //    }
+
+        //}
+
         protected void rpTabEmpresas_ItemDataBound(object sender, RepeaterItemEventArgs e)
         {
-            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            clasesglobales cg = new clasesglobales();
+            try
             {
-                // 🔥 Obtener datos de la empresa actual
-                DataRowView row = (DataRowView)e.Item.DataItem;
-
-                int idEmpresa = Convert.ToInt32(row["idEmpresaAfiliada"]);
-
-                // 🔥 Buscar el repeater interno
-                Repeater rpConvenios = (Repeater)e.Item.FindControl("rpConvenios");
-
-                if (rpConvenios != null)
+                //  Validar tipo de item
+                if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
                 {
-                    clasesglobales cg = new clasesglobales();
+                    //  Obtener fila actual
+                    DataRowView row = (DataRowView)e.Item.DataItem;
 
-                    var convenios = cg.ListarConveniosPorEmpresa(idEmpresa); // 
+                    //  Obtener id de la empresa
+                    int idEmpresa = 0;
+                    int.TryParse(row["idEmpresaAfiliada"].ToString(), out idEmpresa);
 
-                    rpConvenios.DataSource = convenios;
-                    rpConvenios.DataBind();
+                    //  Instancia de clase global
+                    
+
+                    // ======================================================
+                    //  1. CARGAR CONVENIOS (LO QUE YA TENÍAS)
+                    // ======================================================
+
+                    Repeater rpConvenios = (Repeater)e.Item.FindControl("rpConvenios");
+
+                    if (rpConvenios != null)
+                    {
+                        try
+                        {
+                            DataTable dtConvenios = cg.ListarConveniosPorEmpresa(idEmpresa);
+
+                            rpConvenios.DataSource = dtConvenios;
+                            rpConvenios.DataBind();
+                        }
+                        catch (Exception ex)
+                        {
+                            // Puedes loguear si quieres
+                            // Ej: LogError(ex);
+                        }
+                    }
+
+                    // ======================================================
+                    //  2. CARGAR HISTORIAL (NUEVO)
+                    // ======================================================
+
+                    Repeater rpHistorial = (Repeater)e.Item.FindControl("rpHistorial");
+
+                    if (rpHistorial != null)
+                    {
+                        try
+                        {
+                            DataTable dtHistorial = cg.ConsultarHistoricoEmpresaAfiliada(idEmpresa);
+
+                            rpHistorial.DataSource = dtHistorial;
+                            rpHistorial.DataBind();
+                        }
+                        catch (Exception ex)
+                        {
+                            // Evita que rompa toda la página
+                        }
+                    }
+
+                    // ======================================================
+                    //  3. BOTÓN CAMBIAR ESTADO (si lo usas)
+                    // ======================================================
+
+                    HtmlAnchor btnCambiarEstado = (HtmlAnchor)e.Item.FindControl("btnCambiarEstado");
+
+                    if (btnCambiarEstado != null)
+                    {
+                        string estado = row["EstadoEmpresa"].ToString();
+
+                        btnCambiarEstado.InnerText = estado + " (cambiar)";
+                        btnCambiarEstado.Visible = true;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Código: " + idLog, "error");
             }
         }
 
@@ -625,6 +724,7 @@ namespace fpWebApp
                 return new { success = false, mensaje = ex.Message };
             }
         }
+
 
 
     }

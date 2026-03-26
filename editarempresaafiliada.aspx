@@ -310,7 +310,7 @@
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
                                                    
-                                                        <label>Descripción de la negociación / oferta y beneficios:</label>
+                                                        <label>Actividad de la empresa:</label>
                                                         <div id="editor" cssclass="form-control input-sm"></div>
                                                         <asp:HiddenField ID="hiddenEditor" runat="server" />                                                  
                                                 </div>

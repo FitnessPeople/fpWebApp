@@ -149,14 +149,10 @@ namespace fpWebApp
             DateTime hoy = DateTime.Now;
             try
             {
-                mensaje = cg.InsertarEmpresaAfiliada( txbDocumento.Text.Trim(), txbDV.Text.Trim(), Convert.ToInt32(ddlTipoDocumento.SelectedValue),
-                    txbNombreCcial.Text.Trim().ToUpper(), txbRazonSocial.Text.Trim().ToUpper(), hoy, 
-                    null,
-                    txbNombreContacto.Text.Trim().ToUpper(), txbCargoContacto.Text.Trim().ToUpper(), txbTelefonoPpal.Text.Trim(), txbCorreo.Text.Trim(),
-                    "","","", txbDireccion.Text.Trim(),
-                    Convert.ToInt32(ddlCiudadEmpresa.SelectedValue), 0,"",
-                    0, "", "", "", "", "",
-                    "", Convert.ToInt32(Session["IdUsuario"]), contenidoEditor,out respuesta,out mensaje);
+                mensaje = cg.InsertarEmpresaAfiliada(  txbDocumento.Text.Trim(), txbDV.Text.Trim(), Convert.ToInt32(ddlTipoDocumento.SelectedValue),
+                    txbNombreCcial.Text.Trim().ToUpper(), txbRazonSocial.Text.Trim().ToUpper(), txbNombreContacto.Text.Trim().ToUpper(), txbCargoContacto.Text.Trim().ToUpper(),
+                    txbTelefonoPpal.Text.Trim(), txbCorreo.Text.Trim(), txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadEmpresa.SelectedValue),  "",
+                    contenidoEditor, Convert.ToInt32(Session["IdUsuario"]),   out respuesta, out mensaje );
 
                 if (!respuesta)
                 {                    
