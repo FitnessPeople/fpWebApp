@@ -551,7 +551,7 @@
                                 <div class="ibox ">
 
                                     <div class="ibox-content">
-                                        <div class="tab-content">
+                                        <div class="tab-content"> 
                                             <asp:Repeater ID="rpTabEmpresas" runat="server" OnItemDataBound="rpTabEmpresas_ItemDataBound">
                                                 <ItemTemplate>
                                             
@@ -604,9 +604,6 @@
                                                                         <i class="fa fa-user-check m-r-xs"></i>Asignar empresa
                                                                     </a>
 
-                                                                    <a runat="server" id="btnCambiarEstado" href="#" visible="false"
-                                                                        class='btn btn-xs btn-danger'><i class="fa fa-rotate m-r-xs"></i><%# Eval("EstadoEmpresa") %> (cambiar)
-                                                                    </a>
                                                                 </div>
                                                                 <hr class="m-0">
 
@@ -616,6 +613,7 @@
                                                                             <tr>
                                                                                 <th>Convenio</th>
                                                                                 <th>Fecha</th>
+                                                                                <th>Estado</th>
                                                                                 <th>Acciones</th>
                                                                             </tr>
                                                                         </thead>
@@ -630,6 +628,12 @@
                                                                                         </td>
                                                                                         <td>
                                                                                             <%# Eval("FechaConvenio", "{0:dd/MM/yyyy}") %>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <span class='label 
+                                                                                                <%# Eval("EstadoConvenio").ToString() == "ACTIVO" ? "label-primary" : "label-danger" %>'>
+                                                                                                <%# Eval("EstadoConvenio") %>
+                                                                                            </span>
                                                                                         </td>
                                                                                         <td class="text-center">
                                                                                             <div class="btn-group">

@@ -294,7 +294,10 @@
                                                                                             <input type="radio" class="rdDescuento" name="planSeleccionado" />
                                                                                         <td>
                                                                                             <input type="number" class="form-control inputDescuento" min="0" max="100" disabled value="0"></td>
-                                                                                        <td class="valorConDescuento">—</td>
+                                                                                        <%--<td class="valorConDescuento">—</td>--%>
+                                                                                        <td>
+                                                                                            <input type="text" class="form-control inputValorFinal" disabled />
+                                                                                        </td>
                                                                                     </tr>
                                                                                 </ItemTemplate>
                                                                             </asp:Repeater>
@@ -504,231 +507,7 @@
                             </div>
                         </div>
 
-                        <%--                      <script>
-                            function inicializarDescuentos() {
-                                // Formateo de moneda colombiana
-                                function formatCOP(valor) {
-                                    return new Intl.NumberFormat("es-CO", {
-                                        style: "currency",
-                                        currency: "COP",
-                                        minimumFractionDigits: 0
-                                    }).format(valor);
-                                }
 
-                                // Convierte "$120.000" → 120000
-                                function parseCOP(texto) {
-                                    return Number(texto.replace(/[^0-9,-]+/g, '').replace(',', '.')) || 0;
-                                }
-
-                                document.querySelectorAll("#tablaPlanes tbody tr").forEach(fila => {
-                                    const chk = fila.querySelector(".rdDescuento");
-                                    const inputDesc = fila.querySelector(".inputDescuento");
-                                    const celdaValor = fila.querySelector(".valor");
-                                    const celdaValorConDesc = fila.querySelector(".valorConDescuento");
-                                    if (!chk || !inputDesc || !celdaValor || !celdaValorConDesc) return;
-
-                                    const valorBase = parseCOP(celdaValor.textContent.trim());
-                                    celdaValorConDesc.textContent = formatCOP(valorBase);
-
-                                    // Inicia deshabilitado
-                                    inputDesc.disabled = true;
-
-                                    chk.addEventListener("change", function () {
-                                        if (this.checked) {
-                                            inputDesc.disabled = false;
-                                            inputDesc.focus();
-                                        } else {
-                                            inputDesc.disabled = true;
-                                            inputDesc.value = "";
-                                            celdaValorConDesc.textContent = formatCOP(valorBase);
-                                        }
-                                    });
-
-                                    inputDesc.addEventListener("input", function () {
-                                        let porcentaje = parseFloat(this.value) || 0;
-                                        if (porcentaje < 0) porcentaje = 0;
-                                        if (porcentaje > 100) porcentaje = 100;
-                                        const nuevoValor = valorBase - (valorBase * porcentaje / 100);
-                                        celdaValorConDesc.textContent = formatCOP(nuevoValor);
-                                    });
-                                });
-                            }
-
-                            // Ejecutar al cargar completamente el DOM
-                            document.addEventListener("DOMContentLoaded", inicializarDescuentos);
-
-                            // Soporte para UpdatePanel (ScriptManager)
-                            if (typeof Sys !== "undefined" && Sys.WebForms) {
-                                Sys.WebForms.PageRequestManager.getInstance().add_endRequest(inicializarDescuentos);
-                            }
-                        </script>
-
-                        <script>
-                            function obtenerSeleccionPlan() {
-
-                                // Buscar el radio seleccionado
-                                const radio = document.querySelector("input.rdDescuento:checked");
-                                if (!radio) {
-                                    alert("Debe seleccionar un plan.");
-                                    return false; // Evita el postback
-                                }
-
-                                const fila = radio.closest("tr");
-
-                                // Obtener idPlan (primera celda)
-                                const idPlan = fila.children[0].textContent.trim();
-
-                                // Obtener descuento del input
-                                const descuentoInput = fila.querySelector(".inputDescuento");
-                                const descuento = parseFloat(descuentoInput.value) || 0;
-
-                                // Obtener valor final formateado
-                                const celdaValorFinal = fila.querySelector(".valorConDescuento");
-                                const valorFinalTexto = celdaValorFinal.textContent.trim();
-
-                                // Convertir "$120.000" → 120000
-                                const valorFinal = Number(valorFinalTexto.replace(/[^0-9,-]+/g, '').replace(',', '.')) || 0;
-
-                                // Pasar valores al server (HiddenFields)
-                                document.getElementById("<%= hfIdPlan.ClientID %>").value = idPlan;
-                                document.getElementById("<%= hfDescuento.ClientID %>").value = descuento;
-                                document.getElementById("<%= hfValorNegociacion.ClientID %>").value = valorFinal;
-
-                                return true; // permite el postback
-                            }
-                        </script>
-                        <script>
-                            function mostrarPlanSoloLectura() {
-
-                                var idPlan = document.getElementById('<%= hfIdPlan.ClientID %>').value;
-                                var descuento = document.getElementById('<%= hfDescuento.ClientID %>').value;
-                                var valor = document.getElementById('<%= hfValorNegociacion.ClientID %>').value;
-
-                                if (!idPlan) return;
-
-                                // 🔴 BUSCAR TODOS LOS TR DEL REPEATER
-                                var filas = document.querySelectorAll(".rdDescuento");
-
-                                filas.forEach(function (radio) {
-
-                                    var fila = radio.closest("tr");
-                                    var idPlanFila = fila.cells[0].innerText.trim();
-
-                                    var inputDesc = fila.querySelector(".inputDescuento");
-                                    var lblValor = fila.querySelector(".valorConDescuento");
-
-                                    // 🔒 bloquear todo
-                                    radio.disabled = true;
-                                    if (inputDesc) inputDesc.disabled = true;
-
-                                    // 🎯 plan correcto
-                                    if (idPlanFila === idPlan) {
-
-                                        radio.checked = true;
-
-                                        if (inputDesc) {
-                                            inputDesc.value = descuento;
-                                        }
-
-                                        if (lblValor) {
-                                            lblValor.innerText =
-                                                new Intl.NumberFormat('es-CO', {
-                                                    style: 'currency',
-                                                    currency: 'COP',
-                                                    minimumFractionDigits: 0
-                                                }).format(valor);
-                                        }
-                                    }
-                                });
-                            }
-                        </script>--%>
-
-                        <%--                    <script>
-                        function inicializarPlanes() {
-
-                            const modo = document.getElementById('<%= hfModo.ClientID %>').value;
-
-                        const hfIdPlan = document.getElementById('<%= hfIdPlan.ClientID %>').value;
-                        const hfDescuento = document.getElementById('<%= hfDescuento.ClientID %>').value;
-                        const hfValor = document.getElementById('<%= hfValorNegociacion.ClientID %>').value;
-
-                            function formatCOP(valor) {
-                                return new Intl.NumberFormat("es-CO", {
-                                    style: "currency",
-                                    currency: "COP",
-                                    minimumFractionDigits: 0
-                                }).format(valor);
-                            }
-
-                            function parseCOP(texto) {
-                                return Number(texto.replace(/[^0-9]+/g, '')) || 0;
-                            }
-
-                            document.querySelectorAll(".rdDescuento").forEach(radio => {
-
-                                const fila = radio.closest("tr");
-                                const idPlanFila = fila.cells[0].innerText.trim();
-
-                                const inputDesc = fila.querySelector(".inputDescuento");
-                                const celdaValor = fila.querySelector(".valor");
-                                const celdaValorFinal = fila.querySelector(".valorConDescuento");
-
-                                const valorBase = parseCOP(celdaValor.innerText);
-
-                                // 🔹 valor inicial
-                                celdaValorFinal.innerText = formatCOP(valorBase);
-
-                                // 🔒 MODO SOLO LECTURA
-                                if (modo === "lectura") {
-
-                                    radio.disabled = true;
-                                    inputDesc.disabled = true;
-
-                                    if (idPlanFila === hfIdPlan) {
-                                        radio.checked = true;
-                                        inputDesc.value = hfDescuento;
-                                        celdaValorFinal.innerText = formatCOP(hfValor);
-                                    }
-
-                                    return; // ❌ no eventos
-                                }
-
-                                // ✏️ MODO EDICIÓN
-                                inputDesc.disabled = true;
-
-                                radio.addEventListener("change", function () {
-                                    document.querySelectorAll(".inputDescuento").forEach(i => {
-                                        i.disabled = true;
-                                        i.value = "";
-                                    });
-
-                                    document.querySelectorAll(".valorConDescuento").forEach(v => {
-                                        v.innerText = formatCOP(valorBase);
-                                    });
-
-                                    inputDesc.disabled = false;
-                                    inputDesc.focus();
-                                });
-
-                                inputDesc.addEventListener("input", function () {
-                                    let p = parseFloat(this.value) || 0;
-                                    if (p < 0) p = 0;
-                                    if (p > 100) p = 100;
-
-                                    const nuevoValor = valorBase - (valorBase * p / 100);
-                                    celdaValorFinal.innerText = formatCOP(nuevoValor);
-                                });
-                            });
-                        }
-
-                        // DOM + UpdatePanel
-                        Sys.Application.add_load(inicializarPlanes);
-                        //document.addEventListener("DOMContentLoaded", inicializarPlanes);
-                        if (typeof Sys !== "undefined" && Sys.WebForms) {
-                            Sys.WebForms.PageRequestManager.getInstance()
-                                .add_endRequest(inicializarPlanes);
-                        }
-                    </script>--%>
 
                         <script>
                             function inicializarPlanes() {
@@ -737,14 +516,6 @@
                                 const hfIdPlan = document.getElementById('<%= hfIdPlan.ClientID %>').value;
                                 const hfDescuento = document.getElementById('<%= hfDescuento.ClientID %>').value;
                                 const hfValor = document.getElementById('<%= hfValorNegociacion.ClientID %>').value;
-
-                                function formatCOP(valor) {
-                                    return new Intl.NumberFormat("es-CO", {
-                                        style: "currency",
-                                        currency: "COP",
-                                        minimumFractionDigits: 0
-                                    }).format(valor);
-                                }
 
                                 function parseCOP(texto) {
                                     return Number(texto.replace(/[^0-9]+/g, '')) || 0;
@@ -756,48 +527,63 @@
                                     const idPlanFila = fila.cells[0].innerText.trim();
 
                                     const inputDesc = fila.querySelector(".inputDescuento");
+                                    const inputValor = fila.querySelector(".inputValorFinal"); // 🔥 NUEVO
                                     const celdaValor = fila.querySelector(".valor");
-                                    const celdaValorFinal = fila.querySelector(".valorConDescuento");
 
                                     const valorBase = parseCOP(celdaValor.innerText);
-                                    celdaValorFinal.innerText = formatCOP(valorBase);
 
+                                    // 🔹 Inicializar valor
+                                    inputValor.value = formatearCOP(valorBase);
+
+                                    // 🔹 Si es edición (cargar valores)
                                     if (idPlanFila === hfIdPlan) {
                                         radio.checked = true;
                                         inputDesc.value = hfDescuento;
-                                        celdaValorFinal.innerText = formatCOP(hfValor);
+                                        inputValor.value = hfValor;
 
                                         if (modo === "edicion") {
                                             inputDesc.disabled = false;
+                                            inputValor.disabled = false;
                                         }
                                     }
 
-                                    //// 🔒 SOLO LECTURA
-                                    //if (modo === "lectura") {
-                                    //    radio.disabled = true;
-                                    //    inputDesc.disabled = true;
-                                    //    return;
-                                    //}
-
-                                    // edición
+                                    // 🔒 Inicialmente deshabilitado
                                     inputDesc.disabled = true;
+                                    inputValor.disabled = true;
 
+                                    // 🔥 Selección de plan
                                     radio.addEventListener("change", function () {
-                                        document.querySelectorAll(".inputDescuento").forEach(i => {
-                                            i.disabled = true;
-                                            i.value = "";
+
+                                        document.querySelectorAll("#tablaPlanes tbody tr").forEach(row => {
+                                            row.querySelector(".inputDescuento").disabled = true;
+                                            row.querySelector(".inputValorFinal").disabled = true;
                                         });
 
                                         inputDesc.disabled = false;
+                                        inputValor.disabled = false;
+
                                         inputDesc.focus();
                                     });
 
+                                    // 🔥 Calcular automáticamente
                                     inputDesc.addEventListener("input", function () {
+
                                         let p = parseFloat(this.value) || 0;
                                         if (p > 100) p = 100;
+
                                         const nuevoValor = valorBase - (valorBase * p / 100);
-                                        celdaValorFinal.innerText = formatCOP(nuevoValor);
+
+                                        // solo si no ha sido editado manualmente
+                                        if (!inputValor.dataset.editado) {
+                                            inputValor.value = formatearCOP(nuevoValor);
+                                        }
                                     });
+
+                                    // 🔥 Detectar edición manual
+                                    inputValor.addEventListener("input", function () {
+                                        this.dataset.editado = "true";
+                                    });
+
                                 });
                             }
 
@@ -809,20 +595,22 @@
                             function obtenerSeleccionPlan() {
 
                                 const radio = document.querySelector(".rdDescuento:checked");
+
                                 if (!radio) {
                                     alert("Debe seleccionar un plan.");
                                     return false;
                                 }
 
                                 const fila = radio.closest("tr");
+
                                 const idPlan = fila.cells[0].innerText.trim();
 
-                                const descuentoInput = fila.querySelector(".inputDescuento");
-                                const descuento = parseFloat(descuentoInput.value) || 0;
+                                const descuento = parseFloat(
+                                    fila.querySelector(".inputDescuento").value
+                                ) || 0;
 
-                                const celdaValorFinal = fila.querySelector(".valorConDescuento");
-                                const valorFinal = Number(
-                                    celdaValorFinal.innerText.replace(/[^0-9]/g, '')
+                                const valorFinal = limpiarCOP(
+                                    fila.querySelector(".inputValorFinal").value
                                 );
 
                                 document.getElementById("<%= hfIdPlan.ClientID %>").value = idPlan;
@@ -884,12 +672,47 @@
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         __doPostBack('<%= btnAgregar.UniqueID %>', '');
-                                }
-                            });
+                                    }
+                                });
 
                                 return false; // ⛔ detener postback automático
                             }
                         </script>
+
+
+                        <script>
+                            if (inputValor.value > valorBase) {
+                                alert("El valor no puede ser mayor al original");
+                                inputValor.value = valorBase;
+                            }
+                        </script>
+
+                        <script>
+                            function formatearCOP(valor) {
+                                return new Intl.NumberFormat("es-CO", {
+                                    style: "currency",
+                                    currency: "COP",
+                                    minimumFractionDigits: 0
+                                }).format(valor);
+                            }
+
+                            function limpiarCOP(texto) {
+                                return Number(texto.replace(/[^0-9]/g, '')) || 0;
+                            }
+                        </script>
+
+                        <script>
+                            inputValor.addEventListener("input", function (e) {
+
+                                let valor = limpiarCOP(this.value);
+
+                                this.value = formatearCOP(valor);
+
+                                this.dataset.editado = "true";
+                            });
+                        </script>
+
+
 
 
 

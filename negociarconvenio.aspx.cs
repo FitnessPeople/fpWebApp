@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -134,7 +135,7 @@ namespace fpWebApp
                                     hfValorNegociacion.Value = dt.Rows[0]["ValorNegociacion"].ToString();
                                     ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt.Rows[0]["DocumentoEmpresa"].ToString()));
 
-                                    ListaProspectos(ddlEmpresas.SelectedValue);
+                                    ListaProspectos(Convert.ToInt32(ddlEmpresas.SelectedValue));
                                     ddlProspectos.SelectedValue = dt.Rows[0]["idPregestion"].ToString();
                                     hiddenEditor.Value = dt.Rows[0]["Descripcion"].ToString();
                                     txbFechaIni.Value = Convert.ToDateTime(dt.Rows[0]["FechaIni"]).ToString("yyyy-MM-dd");
@@ -160,7 +161,7 @@ namespace fpWebApp
                                     hfValorNegociacion.Value = dt1.Rows[0]["ValorNegociacion"].ToString();
                                     ddlEmpresas.SelectedIndex = ddlEmpresas.Items.IndexOf(ddlEmpresas.Items.FindByValue(dt1.Rows[0]["DocumentoEmpresa"].ToString()));
                                     ddlEmpresas.Enabled = false;
-                                    ListaProspectos(ddlEmpresas.SelectedValue);
+                                    ListaProspectos(Convert.ToInt32(ddlEmpresas.SelectedValue));
                                     ddlProspectos.SelectedValue = dt1.Rows[0]["idPregestion"].ToString();
                                     ddlProspectos.Enabled = false;
                                     hiddenEditor.Value = dt1.Rows[0]["Descripcion"].ToString();
@@ -273,96 +274,149 @@ namespace fpWebApp
                 DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
                 ddlEmpresas.DataSource = dt;
-                ddlEmpresas.DataValueField = "DocumentoEmpresa";
+                ddlEmpresas.DataValueField = "idEmpresaAfiliada"; //  
                 ddlEmpresas.DataTextField = "NombreComercial";
                 ddlEmpresas.DataBind();
 
-                string descripcion = dt.Rows[0]["Descripcion"].ToString();
-                //item.Attributes["data-descripcion"] = descripcion;
-
                 ddlEmpresas.Items.Insert(0, new ListItem("Seleccione", ""));
-
-                // foreach (ListItem item in ddlEmpresas.Items)
-                //{
-                //    if (!string.IsNullOrEmpty(item.Value))  
-                //    {
-
-                //        DataRow[] row = dt.Select($"DocumentoEmpresa = '{item.Value}'");
-
-                //        if (row.Length > 0)
-                //        {
-                //            string estado = row[0]["Origen"].ToString();   
-                //            item.Text = $"{item.Text} ({estado})";       
-                //        }
-                //    }
-                //}
             }
             catch (Exception ex)
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Código:" + idLog, "error");
             }
+        }
+
+        public DataTable ConsultarConvenioActivo(int idEmpresaAfiliada)
+        {
+            DataTable dt =  new DataTable();
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                dt = cg.ConsultarConvevioPorIdEmpresa(idEmpresaAfiliada);              
+
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Código:" + idLog, "error");
+
+                dt = new DataTable();
+                dt.Columns.Add("Error", typeof(string));
+                dt.Rows.Add(ex.Message);
+            }
+            return dt;
         }
 
         protected void ddlEmpresas_SelectedIndexChanged(object sender, EventArgs e)
         {
             clasesglobales cg = new clasesglobales();
+
             try
             {
-                string documento = ddlEmpresas.SelectedValue;
+                string valor = ddlEmpresas.SelectedValue;
 
-                if (!string.IsNullOrEmpty(documento))
+                if (!string.IsNullOrEmpty(valor))
                 {
-                    ListaProspectos(documento);
+                    int idEmpresa = Convert.ToInt32(valor);
 
-                    DataTable dtEmpresa = cg.ConsultarEmpresaAfiliadaPorDocumento(documento);
+                    ListaProspectos(idEmpresa);
 
-                    if (dtEmpresa.Rows.Count > 0)
+                    DataTable dtConvenio = cg.ConsultarConvevioPorIdEmpresa(idEmpresa);
+
+                    if (dtConvenio.Rows.Count > 0)
                     {
-                        string descripcion = dtEmpresa.Rows[0]["Descripcion"].ToString();
-                        CultureInfo cultura = new CultureInfo("es-CO"); // o es-ES
+                        // 🔥 FILTRAR SOLO ACTIVOS
+                        var filasActivas = dtConvenio.AsEnumerable()
+                            .Where(r => r["EstadoConvenio"].ToString().ToUpper() == "ACTIVO");
 
-                        DateTime fechaIni;
-                        DateTime fechaFin;
-
-                        if (DateTime.TryParse(dtEmpresa.Rows[0]["FechaConvenio"].ToString(), cultura, DateTimeStyles.None, out fechaIni))
+                        if (filasActivas.Any())
                         {
-                            txbFechaIni.Value = fechaIni.ToString("yyyy-MM-dd");
-                        }
+                            // 🔥 TOMAR EL MÁS RECIENTE
+                            DataRow row = filasActivas
+                                .OrderByDescending(r =>
+                                    r["FechaConvenio"] == DBNull.Value
+                                    ? DateTime.MinValue
+                                    : Convert.ToDateTime(r["FechaConvenio"])
+                                )
+                                .First();
 
-                        if (DateTime.TryParse(dtEmpresa.Rows[0]["FechaFinConvenio"].ToString(), cultura, DateTimeStyles.None, out fechaFin))
+                            string descripcion = row["Descripcion"].ToString();
+
+                            CultureInfo cultura = new CultureInfo("es-CO");
+
+                            DateTime fechaIni;
+                            DateTime fechaFin;
+
+                            if (DateTime.TryParse(row["FechaConvenio"].ToString(), cultura, DateTimeStyles.None, out fechaIni))
+                            {
+                                txbFechaIni.Value = fechaIni.ToString("yyyy-MM-dd");
+                            }
+                            else
+                            {
+                                txbFechaIni.Value = "";
+                            }
+
+                            if (DateTime.TryParse(row["FechaFinConvenio"].ToString(), cultura, DateTimeStyles.None, out fechaFin))
+                            {
+                                txbFechaFin.Value = fechaFin.ToString("yyyy-MM-dd");
+                            }
+                            else
+                            {
+                                txbFechaFin.Value = "";
+                            }
+
+                            hiddenEditor.Value = descripcion;
+
+                            ScriptManager.RegisterStartupScript(
+                                this,
+                                this.GetType(),
+                                "setEditor",
+                                $"setEditorContent(`{HttpUtility.JavaScriptStringEncode(descripcion)}`);",
+                                true
+                            );
+                        }
+                        else
                         {
-                            txbFechaFin.Value = fechaFin.ToString("yyyy-MM-dd");
+                            // 🔥 EXISTEN CONVENIOS PERO NINGUNO ACTIVO
+                            LimpiarCampos();
+
+                            MostrarAlerta(
+                                "Sin convenio activo",
+                                "La empresa tiene convenios registrados, pero ninguno se encuentra en estado ACTIVO.",
+                                "warning"
+                            );
                         }
+                    }
+                    else
+                    {
+                        // 🔥 NO EXISTE NINGÚN CONVENIO
+                        LimpiarCampos();
 
-                        hiddenEditor.Value = descripcion;
-
-                        ScriptManager.RegisterStartupScript(
-                            this,
-                            this.GetType(),
-                            "setEditor",
-                            $"setEditorContent(`{HttpUtility.JavaScriptStringEncode(descripcion)}`);",
-                            true
+                        MostrarAlerta(
+                            "Sin convenios",
+                            "La empresa seleccionada no tiene convenios registrados.",
+                            "warning"
                         );
-
-
                     }
                 }
             }
             catch (Exception ex)
             {
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Código:" + idLog, "error");
             }
-
         }
 
-        private void ListaProspectos(string documentoEmpresa)
+        private void ListaProspectos(int idEmpresaAfiliada)
         {
             clasesglobales cg = new clasesglobales();
 
             try
             {
+                DataTable dtEmpresa = cg.ConsultarEmpresaAfiliadaPorId(idEmpresaAfiliada);
+                string documentoEmpresa = dtEmpresa.Rows[0]["DocumentoEmpresa"].ToString();
+
                 DataTable dt = cg.ConsultarProspectoClienteCorporativo(documentoEmpresa);
 
                 ddlProspectos.Items.Clear();
@@ -480,7 +534,8 @@ namespace fpWebApp
                     List<int> planesSeleccionados = new List<int>();
 
                     DataTable dt1 = cg.ConsultarNegociacionPorId(int.Parse(descifradoEdit));
-                    ListaProspectos(ddlEmpresas.SelectedValue);
+
+                    ListaProspectos( Convert.ToInt32(ddlEmpresas.SelectedValue));
                     ddlProspectos.SelectedValue = dt1.Rows[0]["idPregestion"].ToString();
 
                     string strInitData = TraerData();
@@ -780,6 +835,21 @@ namespace fpWebApp
                 int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
                 MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
             }
+        }
+
+        private void LimpiarCampos()
+        {
+            txbFechaIni.Value = "";
+            txbFechaFin.Value = "";
+            hiddenEditor.Value = "";
+
+            ScriptManager.RegisterStartupScript(
+                this,
+                this.GetType(),
+                "setEditor",
+                "setEditorContent('');",
+                true
+            );
         }
 
 
