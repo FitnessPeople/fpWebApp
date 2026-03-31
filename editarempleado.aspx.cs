@@ -448,45 +448,45 @@ namespace fpWebApp
             {
                 clasesglobales cg = new clasesglobales();
 
-                string mensaje = cg.ActualizarEmpleado(txbDocumento.Text.ToString(), 
-                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), 
-                    txbNombre.Text.ToString(), 
-                    txbTelefono.Text.ToString(), 
-                    txbTelefonoCorp.Text.ToString(), 
-                    txbEmail.Text.ToString(), 
-                    txbEmailCorp.Text.ToString(), 
-                    txbDireccion.Text.ToString(), 
-                    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), 
-                    txbFechaNac.Text.ToString(), 
-                    strFilename, 
-                    txbContrato.Text.ToString(), 
-                    ddlTipoContrato.SelectedItem.Value.ToString(), 
-                    Convert.ToInt32(ddlEmpresasFP.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), 
-                    txbFechaInicio.Text.ToString(), 
-                    txbFechaFinal.Text.ToString(), 
-                    Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), 
-                    ddlGrupo.SelectedItem.Value.ToString(), 
-                    Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()), 
-                    rblEstado.Text.ToString(), 
-                    Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlProfesion.SelectedItem.Value.ToString()), 
-                    ddlNivelEstudio.SelectedItem.Value.ToString(),
-                    Convert.ToInt32(txbEstratoSocioeconomico.Text.ToString()), 
-                    ddlTipoVivienda.SelectedItem.Value.ToString(),
-                    Convert.ToInt32(txbNroPersonasNucleo.Text.ToString()), 
-                    ddlActividadExtra.SelectedItem.Value.ToString(),
-                    ddlConsumoLicor.SelectedItem.Value.ToString(),
-                    ddlMedioTransporte.SelectedItem.Value.ToString(), 
-                    ddlTipoSangre.SelectedItem.Value.ToString()
-                    );
+                //string mensaje = cg.ActualizarEmpleado(txbDocumento.Text.ToString(), 
+                //    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), 
+                //    txbNombre.Text.ToString(), 
+                //    txbTelefono.Text.ToString(), 
+                //    txbTelefonoCorp.Text.ToString(), 
+                //    txbEmail.Text.ToString(), 
+                //    txbEmailCorp.Text.ToString(), 
+                //    txbDireccion.Text.ToString(), 
+                //    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), 
+                //    txbFechaNac.Text.ToString(), 
+                //    strFilename, 
+                //    txbContrato.Text.ToString(), 
+                //    ddlTipoContrato.SelectedItem.Value.ToString(), 
+                //    Convert.ToInt32(ddlEmpresasFP.SelectedItem.Value.ToString()), 
+                //    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), 
+                //    txbFechaInicio.Text.ToString(), 
+                //    txbFechaFinal.Text.ToString(), 
+                //    Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), 
+                //    ddlGrupo.SelectedItem.Value.ToString(), 
+                //    Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()), 
+                //    Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), 
+                //    Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
+                //    Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), 
+                //    Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()), 
+                //    rblEstado.Text.ToString(), 
+                //    Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), 
+                //    Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()), 
+                //    Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), 
+                //    Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()),
+                //    Convert.ToInt32(ddlProfesion.SelectedItem.Value.ToString()), 
+                //    ddlNivelEstudio.SelectedItem.Value.ToString(),
+                //    Convert.ToInt32(txbEstratoSocioeconomico.Text.ToString()), 
+                //    ddlTipoVivienda.SelectedItem.Value.ToString(),
+                //    Convert.ToInt32(txbNroPersonasNucleo.Text.ToString()), 
+                //    ddlActividadExtra.SelectedItem.Value.ToString(),
+                //    ddlConsumoLicor.SelectedItem.Value.ToString(),
+                //    ddlMedioTransporte.SelectedItem.Value.ToString(), 
+                //    ddlTipoSangre.SelectedItem.Value.ToString(),"","","",txbFechaNac,"","",""
+                //    );
 
                 if (rblEstado.Text.ToString() == "Inactivo")
                 {
@@ -495,39 +495,39 @@ namespace fpWebApp
 
                 string strNewData = TraerData();
 
-                if (mensaje == "OK")
-                {
-                    cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Modifica", "El usuario modificó datos al empleado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+                //if (mensaje == "OK")
+                //{
+                //    cg.InsertarLog(Session["idusuario"].ToString(), "Empleados", "Modifica", "El usuario modificó datos al empleado con documento " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
 
-                    string script = @"
-                        Swal.fire({
-                            title: 'El empleado se actualizó de forma exitosa',
-                            text: 'Gestión Humana - Fitness People',
-                            icon: 'success',
-                            timer: 3000, // 3 segundos
-                            showConfirmButton: false,
-                            timerProgressBar: true
-                        }).then(() => {
-                            window.location.href = 'empleados';
-                        });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                }
-                else
-                {
-                    string script = @"
-                        Swal.fire({
-                            title: 'Error',
-                            text: '" + mensaje.Replace("'", "\\'") + @"',
-                            icon: 'error'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
+                //    string script = @"
+                //        Swal.fire({
+                //            title: 'El empleado se actualizó de forma exitosa',
+                //            text: 'Gestión Humana - Fitness People',
+                //            icon: 'success',
+                //            timer: 3000, // 3 segundos
+                //            showConfirmButton: false,
+                //            timerProgressBar: true
+                //        }).then(() => {
+                //            window.location.href = 'empleados';
+                //        });
+                //        ";
+                //    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                //}
+                //else
+                //{
+                //    string script = @"
+                //        Swal.fire({
+                //            title: 'Error',
+                //            text: '" + mensaje.Replace("'", "\\'") + @"',
+                //            icon: 'error'
+                //        }).then((result) => {
+                //            if (result.isConfirmed) {
                                             
-                            }
-                        });
-                        ";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
-                }
+                //            }
+                //        });
+                //        ";
+                //    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                //}
 
                 //Response.Redirect("empleados");
 
