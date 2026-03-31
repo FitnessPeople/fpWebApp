@@ -399,7 +399,7 @@ namespace fpWebApp
                     string script = @"
                         Swal.fire({
                             title: 'El empleado se actualizó de forma exitosa',
-                            text: 'Texto.',
+                            text: 'Gestión Humana - Fitness People',
                             icon: 'success',
                             timer: 3000, // 3 segundos
                             showConfirmButton: false,
