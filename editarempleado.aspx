@@ -31,6 +31,7 @@
     <!-- Sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+
     <script>
         function changeClass() {
             var element1 = document.querySelector("#empleados");
@@ -137,7 +138,6 @@
                                             <div>
                                                 <h2 class="no-margins">
                                                     <asp:Literal ID="ltNombre" runat="server"></asp:Literal></h2>
-                                                <%--<h4><asp:Literal ID="ltCargo" runat="server"></asp:Literal></h4>--%>
                                                 <small>
                                                     <asp:Literal ID="ltCiudad" runat="server"></asp:Literal>, 
                                                             <asp:Literal ID="ltTelefono" runat="server"></asp:Literal>.</small>
@@ -253,31 +253,21 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Fecha de Nacimiento</label>
                                                             <asp:TextBox ID="txbFechaNac" CssClass="form-control input-sm" runat="server" placeholder="Fecha nacimiento"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Cargo</label>
-                                                            <asp:TextBox ID="txbCargo" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Cargo</label>
-                                                            <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
-                                                <div class="row">
-                                                    <div class="col-sm-4">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Fecha de exp. documento</label>
+                                                            <asp:TextBox ID="txbFechaExpedicion" CssClass="form-control input-sm" runat="server" placeholder="Fecha expedición doc."></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Nivel de Estudio</label>
                                                             <asp:DropDownList ID="ddlNivelEstudio" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
@@ -292,13 +282,8 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-4">
-                                                        <div class="form-group">
-                                                            <label>Profesión</label>
-                                                            <asp:TextBox ID="txbProfesion" CssClass="form-control input-sm" runat="server" Enabled="false"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-4">
+
+                                                    <div class="col-sm-6">
                                                         <div class="form-group">
                                                             <label>Profesión</label>
                                                             <asp:DropDownList ID="ddlProfesion" runat="server" AppendDataBoundItems="true"
@@ -307,9 +292,11 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                                <div class="row">
+
+
+
+
                                                     <div class="col-sm-4">
                                                         <div class="form-group">
                                                             <label>Estado civil</label>
@@ -345,7 +332,38 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
+
+
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Persona encargada</label>
+                                                            <asp:TextBox ID="txbPersonaEncargada" CssClass="form-control input-sm" runat="server" placeholder="Persona encargada"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Teléfono Encargado</label>
+                                                            <asp:TextBox ID="txbTelContacto" CssClass="form-control input-sm" runat="server" placeholder="Teléfono"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Parentesco:</label>
+                                                            <asp:DropDownList ID="ddlParentesco" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                                <asp:ListItem Text="Padre/Madre" Value="Padre/Madre"></asp:ListItem>
+                                                                <asp:ListItem Text="Esposo/a" Value="Esposo/a"></asp:ListItem>
+                                                                <asp:ListItem Text="Hermano/a" Value="Hermano/a"></asp:ListItem>
+                                                                <asp:ListItem Text="Hijo/a" Value="Hijo/a"></asp:ListItem>
+                                                                <asp:ListItem Text="Primo/a" Value="Primo/a"></asp:ListItem>
+                                                                <asp:ListItem Text="Sobrino/a" Value="Sobrino/a"></asp:ListItem>
+                                                                <asp:ListItem Text="Encargado/a" Value="Encargado/a"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
+
                                                 <div class="form-group">
                                                     <label>Foto:</label>
                                                     <div class="fileinput fileinput-new input-group" data-provides="fileinput">
@@ -420,9 +438,10 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6">
+
+                                                    <div class="col-sm-3">
                                                         <div class="form-group">
-                                                            <label>Medio de transporte</label>
+                                                            <label>Medio de transp.</label>
                                                             <asp:DropDownList ID="ddlMedioTransporte" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                 <asp:ListItem Text="Público" Value="Público"></asp:ListItem>
@@ -434,26 +453,43 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="form-group">
+                                                            <label>Placa vehículo</label>
+                                                            <asp:TextBox ID="txbPlaca" CssClass="form-control input-sm" runat="server" placeholder="MVN743"></asp:TextBox>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
 
+
                                                 <div class="row">
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-3">
                                                         <div class="form-group">
                                                             <label>Nro. de Contrato</label>
                                                             <asp:TextBox ID="txbContrato" CssClass="form-control input-sm" runat="server" placeholder="Contrato"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-6">
+                                                    <div class="col-sm-3">
                                                         <div class="form-group">
                                                             <label>Tipo de Contrato</label>
-                                                            <asp:DropDownList ID="ddlTipoContrato" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                            <asp:DropDownList ID="ddlTipoContrato" runat="server"
+                                                                AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                                 <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                                 <asp:ListItem Text="Fijo" Value="Fijo"></asp:ListItem>
                                                                 <asp:ListItem Text="Indefinido" Value="Indefinido"></asp:ListItem>
                                                                 <asp:ListItem Text="OPS" Value="OPS"></asp:ListItem>
                                                                 <asp:ListItem Text="Aprendiz" Value="Aprendiz"></asp:ListItem>
-                                                                <asp:ListItem Text="Obra o labor" Value="Obra o labor"></asp:ListItem>
-                                                                <asp:ListItem Text="Practicante" Value="Practicante"></asp:ListItem>
+                                                            </asp:DropDownList>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Cargo</label>
+                                                            <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -560,14 +596,14 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Estado</label>
-                                                            <asp:RadioButtonList ID="rblEstado" runat="server" RepeatDirection="Horizontal" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="&nbsp;Activo&nbsp;&nbsp;&nbsp;&nbsp;" Value="Activo"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;En pausa&nbsp;&nbsp;&nbsp;&nbsp;" Value="En pausa"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Inactivo" Value="Inactivo"></asp:ListItem>
-                                                            </asp:RadioButtonList>
+                                                            <label>Sede</label>
+                                                            <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true"
+                                                                DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                            </asp:DropDownList>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-sm-6">
@@ -579,13 +615,15 @@
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
+
                                                     <div class="col-sm-6">
                                                         <div class="form-group">
-                                                            <label>Sede</label>
-                                                            <asp:DropDownList ID="ddlSedes" runat="server" AppendDataBoundItems="true"
-                                                                DataTextField="NombreSede" DataValueField="idSede" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                            </asp:DropDownList>
+                                                            <label>Estado</label>
+                                                            <asp:RadioButtonList ID="rblEstado" runat="server" RepeatDirection="Horizontal" CssClass="form-control input-sm">
+                                                                <asp:ListItem Text="&nbsp;Activo&nbsp;&nbsp;&nbsp;&nbsp;" Value="Activo"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;En pausa&nbsp;&nbsp;&nbsp;&nbsp;" Value="En pausa"></asp:ListItem>
+                                                                <asp:ListItem Text="&nbsp;Inactivo" Value="Inactivo"></asp:ListItem>
+                                                            </asp:RadioButtonList>
                                                         </div>
                                                     </div>
                                                 </div>

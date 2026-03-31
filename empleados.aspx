@@ -176,9 +176,16 @@
 
                                             <div class="col-lg-6 form-horizontal">
                                                 <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;"
-                                                    href="nuevoempleado" title="Agregar empleado"
+                                                    href="nuevoempleado" title="Agregar empleado con toda la información"
                                                     runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus m-r-xs"></i>NUEVO
                                                 </a>
+
+                                                <a href="javascript:void(0);"
+                                                    class="btn btn-primary pull-right dim m-l-md btnIngresoRapido" style="font-size: 12px;
+                                                    data-tipo="INGRESO_RAPIDO" title="Agregar empleado con datos básicos">
+                                                    <i class="fa fa-user-edit m-r-xs"></i>INGRESO RÁPIDO
+                                                </a>
+
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
@@ -426,11 +433,7 @@
 
                                                                 <div class="text-center">
 
-                                                                    <a href="javascript:void(0);"
-                                                                        class="btn btn-xs btn-primary btnIngresoRapido"
-                                                                        data-tipo="INGRESO_RAPIDO">
-                                                                        <i class="fa fa-user-edit m-r-xs"></i>Ingreso rápido
-                                                                    </a>
+
 
                                                                     <a href="javascript:void(0);"
                                                                         class="btn btn-xs btn-warning btnMovimiento"

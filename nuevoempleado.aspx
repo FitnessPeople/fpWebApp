@@ -470,6 +470,7 @@
                                                     <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server" placeholder="Fecha inicio"></asp:TextBox>
                                                 </div>
                                             </div>
+
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label>Fecha final</label>
