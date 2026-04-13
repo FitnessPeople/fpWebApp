@@ -103,7 +103,43 @@ namespace fpWebApp
 
         protected void lbExportarExcel_Click(object sender, EventArgs e)
         {
+            string consultaSQL = @"
+                    SELECT a.DocumentoAfiliado, CONCAT(NombreAfiliado, ' ', ApellidoAfiliado) 'Nombre del cliente', 
+	                    CelularAfiliado AS Telefono, EmailAfiliado AS Email, 
+	                    p.NombrePlan AS 'Plan vigente', ppa.fechaHoraPago, ppa.idPago,
+	                    ap.FechaInicioPlan AS 'Fecha inicio plan', 
+	                    ap.FechaFinalPlan AS 'Fecha final plan', ap.FechaProximoCobro AS 'Fecha próximo cobro', ppa.DataIdFuente, ppa.DataIdToken 
+                    FROM AfiliadosPlanes ap 
+                    INNER JOIN PagosPlanAfiliado ppa ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
+                    INNER JOIN (
+	                         SELECT idAfiliadoPlan, MAX(idPago) AS idPagoUltimo
+	                         FROM PagosPlanAfiliado
+	                         GROUP BY idAfiliadoPlan
+	                    ) ult ON ult.idPagoUltimo = ppa.idPago 
+                    INNER JOIN Planes p ON p.idPlan = ap.idPlan 
+                    INNER JOIN Afiliados a ON a.idAfiliado = ap.idAfiliado 
+                    INNER JOIN Sedes s ON s.idSede = a.idSede 
+                    WHERE p.debitoAutomatico = 1 
+                    AND ap.fechaInicioPlan >= '2026-03-24' 
+                    AND ap.fechaInicioPlan <= '2026-03-30'
+                    AND (
+                        ap.estadoPlan IN ('Pendiente', 'Activo')
+                        OR 
+                        (
+                            ap.estadoPlan = 'Finalizado'
+                            AND ap.observacionesPlan LIKE '%Plan finalizado 14-03-2026, Migración Fitmewise%'
+                        )
+                    );";
 
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(consultaSQL);
+            string nombreArchivo = $"PlanesNuevosActivos_2026-04-09";
+
+            if (dt.Rows.Count > 0)
+            {
+                //cg.ExportarExcel(dt, nombreArchivo);
+                cg.ExportarExcelOk(dt, nombreArchivo);
+            }
         }
 
         protected void rpAfiliadosPlanes_ItemDataBound(object sender, System.Web.UI.WebControls.RepeaterItemEventArgs e)
