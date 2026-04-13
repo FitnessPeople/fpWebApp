@@ -15,31 +15,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | Agenda sesiones personalizadas</title>
+    <title>Fitness People | Programar sesión personalizada</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.3/themes/smoothness/jquery-ui.css">
 
     <link href="css/plugins/iCheck/custom.css" rel="stylesheet" />
-    <link href="css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet" />
-
+    <link href="css/plugins/steps/jquery.steps.css" rel="stylesheet" />
     <link href="css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
-
     <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
-
     <link href="css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
-
     <link href="css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+    <link href="css/plugins/codemirror/codemirror.css" rel="stylesheet">
 
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
     <script>
         function changeClass() {
-            var element1 = document.querySelector("#programarsesion");
+            var element1 = document.querySelector("#programarpersonalizada");
             element1.classList.replace("old", "active");
             var element2 = document.querySelector("#coordinaciondeportiva");
             element2.classList.remove("collapse");
@@ -104,7 +106,7 @@
                 <div class="modal-footer">
                     <%--<button type="button" class="btn btn-warning" onclick="window.location.href = 'addevent.aspx?id'";><i class='fa fa-edit'></i>Editar</button>--%>
                     <%--<button type="button" class="btn btn-warning" onclick="if(document.getElementById('event-allday').innerHTML == '0') { window.location.href = 'editevent.aspx?id=' + document.getElementById('event-id').innerHTML }";><i class='fa fa-edit'></i> Editar</button>--%>
-                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'agenda.aspx?deleteid=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="window.location.href = 'programarpersonalizada.aspx?deleteid=' + document.getElementById('event-id').innerHTML" runat="server" id="btnEliminar" visible="false"><i class='fa fa-trash m-r-sm'></i>Eliminar</button>
                     <button type="button" class="btn btn-danger" data-dismiss="modal"><i class='fa fa-times m-r-sm'></i>Cerrar</button>
                 </div>
             </div>
@@ -122,7 +124,7 @@
 
                 <%--Inicio Breadcrumb!!!--%>
                 <div class="col-sm-10">
-                    <h2><i class="fa fa-timeline text-success m-r-sm"></i>Programar sesión personalizada</h2>
+                    <h2><i class="fa fa-chalkboard-user text-success m-r-sm"></i>Programar sesión personalizada</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
                         <li>Coordinación deportiva</li>
@@ -150,6 +152,7 @@
                     <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
                     <form runat="server" id="form">
+                        <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
                         <div class="row animated fadeInDown" id="divContenido" runat="server">
                             <%--<div class="col-xxl-3 col-lg-4 col-md-5 col-sm-6 col-xs-12">--%>
                             <div class="col-sm-12">
@@ -168,7 +171,7 @@
                                     <div class="ibox-content" id="divCrear" runat="server" visible="false">
 
                                         <div class="row">
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-4">
                                                 <label>Entrenador:</label>
                                                 <div class="form-group">
                                                     <asp:DropDownList CssClass="form-control input-sm required" 
@@ -178,7 +181,16 @@
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-4">
+                                                <label>Afiliado:</label>
+                                                <div class="form-group">
+                                                    <asp:TextBox ID="txbAfiliado" CssClass="form-control input-sm" runat="server" 
+                                                        placeholder="Nombre / Cédula / Email / Celular"></asp:TextBox>
+                                                    <asp:Button ID="btnAfiliado" runat="server" Text="" 
+                                                        style="display:none;" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
                                                 <label>Sede:</label>
                                                 <div class="form-group">
                                                     <asp:DropDownList CssClass="form-control input-sm required" 
@@ -188,105 +200,34 @@
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <label>Clase grupal:</label>
-                                                <div class="form-group">
-                                                    <asp:DropDownList CssClass="form-control input-sm required" 
-                                                        ID="ddlClasesGrupales" runat="server" AppendDataBoundItems="true" 
-                                                        DataValueField="idClaseGrupal" DataTextField="Modalidad">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label>Cupo:</label>
-                                                <div class="form-group">
-                                                    <input type="text" class="form-control input-sm" 
-                                                        id="txbCupo" name="txbCupo" runat="server" 
-                                                        placeholder="20" />                                                </div>
-                                            </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-sm-3">
-                                                <label>Fecha Inicial:</label>
+                                                <label>Fecha:</label>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control input-sm" id="txbFechaIni" name="txbFechaIni" runat="server" />
                                                 </div>
                                             </div>
                                             <div class="col-sm-3">
-                                                <label>Fecha Final:</label>
+                                                <label>Hora:</label>
+                                                <div class="input-group clockpicker" data-autoclose="true">
+                                                    <input type="text" class="form-control input-sm" value="07:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
+                                                    <span class="input-group-addon">
+                                                        <span class="fa fa-clock"></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <label>&nbsp;</label>
                                                 <div class="form-group">
-                                                    <%--<span class="input-group-addon"><i class="fa fa-calendar-day"></i></span>--%>
-                                                    <input type="text" class="form-control input-sm" id="txbFechaFin" name="txbFechaFin" runat="server" />
+                                                    <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
+                                                    <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
                                                 </div>
                                             </div>
-
-                                            <div class="col-sm-3 m-b-md">
-                                                <label>Hora inicio:</label>
-                                                <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="05:00" id="txbHoraIni" name="txbHoraIni" runat="server" />
-                                                    <span class="input-group-addon">
-                                                        <span class="fa fa-clock"></span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label>Hora final:</label>
-                                                <div class="input-group clockpicker" data-autoclose="true">
-                                                    <input type="text" class="form-control input-sm" value="06:00" id="txbHoraFin" name="txbHoraFin" runat="server" />
-                                                    <span class="input-group-addon">
-                                                        <span class="fa fa-clock"></span>
-                                                    </span>
-                                                </div>
-                                            </div>
+                                            
                                         </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-horizontal">
-                                                    <div class="form-group m-b-mb">
-                                                        <label class="col-sm-4">Duración de la sesión:</label>
-                                                        <div class="col-sm-8">
-                                                            <asp:DropDownList CssClass="form-control input-sm required" ID="ddlDuracion" runat="server"
-                                                                AppendDataBoundItems="true">
-                                                                <%--<asp:ListItem Text="30 minutos" Value="30"></asp:ListItem>--%>
-                                                                <asp:ListItem Text="60 minutos" Value="60"></asp:ListItem>
-                                                                <%--<asp:ListItem Text="90 minutos" Value="90"></asp:ListItem>--%>
-                                                            </asp:DropDownList>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-horizontal">
-                                                    <div class="form-group m-b-mb">
-                                                        <label class="col-sm-2">Repetir:</label>
-                                                        <div class="col-sm-8">
-                                                            <asp:CheckBoxList ID="cbDiasRepite" runat="server" RepeatDirection="Horizontal" RepeatLayout="Flow" CssClass="form-control input-sm">
-                                                                <asp:ListItem Text="&nbsp;Lun" Value="1" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Mar" Value="2" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Mié" Value="3" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Jue" Value="4" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Vie" Value="5" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                                <asp:ListItem Text="&nbsp;Sáb" Value="6" style="margin-right: 5px; font-size: 10px;"></asp:ListItem>
-                                                            </asp:CheckBoxList>
-                                                        </div>
-                                                        <div class="col-sm-2">
-                                                            <asp:Literal ID="ltMensaje" runat="server"></asp:Literal>
-                                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md m-b-lg pull-right" Text="Agregar" OnClick="btnAgregar_Click" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <%--<div class="form-horizontal">
-                                            <div class="form-group m-b-mb">
-                                                
-                                                
-                                            </div>
-                                        </div>--%>
 
                                     </div>
                                 </div>
@@ -341,10 +282,10 @@
 
     <!-- Mainly scripts -->
     <script src="js/plugins/fullcalendar/moment.min.js"></script>
-    <script src="js/jquery-3.1.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="js/inspinia.js"></script>
@@ -359,8 +300,8 @@
     <!-- Date range picker -->
     <script src="js/plugins/daterangepicker/daterangepicker.js"></script>
 
-    <!-- Chosen -->
-    <script src="js/plugins/chosen/chosen.jquery.js"></script>
+    <!-- Jasny -->
+    <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
     <!-- Input Mask-->
     <script src="js/plugins/jasny/jasny-bootstrap.min.js"></script>
@@ -378,7 +319,6 @@
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
-
         $("#form").validate({
             rules: {
                 ddlEntrenadores: {
@@ -452,6 +392,33 @@
 
         });
 
+    </script>
+
+    <script type="text/javascript">  
+        $(document).ready(function () {
+            $("#txbAfiliado").autocomplete({
+                source: function (request, response) {
+                    $.getJSON("/obtenerafiliados?search=" + request.term, function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                label: item.nombre + " " + item.apellido + " - " + item.id + ", " + item.correo,
+                                value: item.id + " - " + item.nombre + " " + item.apellido,
+                            };
+                        }));
+                    });
+                },
+                select: function (event, ui) {
+                    if (ui.item) {
+                        console.log(ui.item.value);
+                        document.getElementById("txbAfiliado").value = ui.item.value;
+                        var btn = document.getElementById("btnAfiliado");
+                        btn.click();
+                    }
+                },
+                minLength: 3,
+                delay: 100
+            });
+        });
     </script>
 
     <script>

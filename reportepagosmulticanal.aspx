@@ -36,7 +36,7 @@
         function changeClass() {
             var element1 = document.querySelector("#reportepagosmulticanal");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#reportes");
+            var element2 = document.querySelector("#contabilidad");
             element2.classList.remove("collapse");
         }
     </script>

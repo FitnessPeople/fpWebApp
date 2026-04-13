@@ -150,51 +150,6 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.TextBox txbCorreo;
 
         /// <summary>
-        /// Control txbNombrepagador.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbNombrepagador;
-
-        /// <summary>
-        /// Control txbCelularPagador.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCelularPagador;
-
-        /// <summary>
-        /// Control txbCorreoPagador.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbCorreoPagador;
-
-        /// <summary>
-        /// Control rblActivo.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList rblActivo;
-
-        /// <summary>
-        /// Control hiddenEditor.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hiddenEditor;
-
-        /// <summary>
         /// Control txbDireccion.
         /// </summary>
         /// <remarks>
@@ -213,49 +168,13 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.DropDownList ddlCiudadEmpresa;
 
         /// <summary>
-        /// Control txbFechaConvenio.
+        /// Control hiddenEditor.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbFechaConvenio;
-
-        /// <summary>
-        /// Control txbFechaFinConvenio.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbFechaFinConvenio;
-
-        /// <summary>
-        /// Control txbNroEmpleados.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txbNroEmpleados;
-
-        /// <summary>
-        /// Control ddlTipoNegociacion.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlTipoNegociacion;
-
-        /// <summary>
-        /// Control ddlDiasCredito.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDiasCredito;
+        protected global::System.Web.UI.WebControls.HiddenField hiddenEditor;
 
         /// <summary>
         /// Control btnAgregar.

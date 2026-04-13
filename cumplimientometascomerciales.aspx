@@ -73,7 +73,7 @@
         function changeClass() {
             var element1 = document.querySelector("#cumplimientometascomerciales");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#canalesprocesoscomerciales");
+            var element2 = document.querySelector("#gestioncomercial");
             element2.classList.remove("collapse");
         }
     </script>

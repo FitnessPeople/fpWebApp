@@ -139,37 +139,6 @@ namespace fpWebApp
             }
         }
 
-        //protected void btnVerDetalle_Click(object sender, EventArgs e)
-        //{
-        //    clasesglobales cg = new clasesglobales();
-        //    try
-        //    {
-        //        LinkButton btn = (LinkButton)sender;
-        //        GridViewRow row = (GridViewRow)btn.NamingContainer;
-
-        //        int idLiquidacion = Convert.ToInt32(btn.CommandArgument);
-
-        //        Panel pnlDetalle = (Panel)row.FindControl("pnlDetalle");
-        //        GridView gvDetalle = (GridView)row.FindControl("gvDetalle");
-
-
-
-        //        DataTable dtDetalle = cg.ConsultarDetalleLiquidacionesPorIdLiq(idLiquidacion);
-
-        //        gvDetalle.DataSource = dtDetalle;
-        //        gvDetalle.DataBind();
-
-        //        pnlDetalle.Visible = !pnlDetalle.Visible;
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
-        //        MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
-        //    }
-        //}
-
-
 
         private void MostrarAlerta(string titulo, string mensaje, string tipo)
         {
@@ -307,24 +276,143 @@ namespace fpWebApp
             e.Row.Cells[e.Row.Cells.Count - 1].Controls.Add(cell.Controls[0]);
         }
 
+        //protected void gvLiquidaciones_RowCommand(object sender, GridViewCommandEventArgs e)
+        //{
+        //    if (e.CommandName != "ToggleDetalle")
+        //        return;
+
+        //    int idLiquidacion = Convert.ToInt32(e.CommandArgument);
+
+        //    clasesglobales cg = new clasesglobales();
+        //    gvDetalle.DataSource = cg.ConsultarDetalleLiquidacionesPorIdLiq(idLiquidacion);
+        //    gvDetalle.DataBind();
+
+        //    pnlDetalle.Visible = !pnlDetalle.Visible;
+        //}
+
         protected void gvLiquidaciones_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            if (e.CommandName != "ToggleDetalle")
-                return;
+            if (e.CommandName == "GenerarFactura")
+            {
+                int idLiquidacion = Convert.ToInt32(e.CommandArgument);
 
-            int idLiquidacion = Convert.ToInt32(e.CommandArgument);
-
-            clasesglobales cg = new clasesglobales();
-            gvDetalle.DataSource = cg.ConsultarDetalleLiquidacionesPorIdLiq(idLiquidacion);
-            gvDetalle.DataBind();
-
-            pnlDetalle.Visible = !pnlDetalle.Visible;
+                GenerarFacturaCorporativa(idLiquidacion);
+            }
         }
 
+        //private void GenerarFacturaCorporativa(int idLiquidacion)
+        //{
+        //    clasesglobales cg = new clasesglobales();
 
+        //    DataTable dt = cg.ObtenerDatosLiquidacionFactura(idLiquidacion);
 
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        DataRow row = dt.Rows[0];
 
+        //        int idCartera = Convert.ToInt32(row["idCartera"]);
+        //        int idAfiliadoPlan = Convert.ToInt32(row["idAfiliadoPlan"]);
+        //        string documentoEmpresa = row["DocumentoEmpresa"].ToString();
+        //        string documentoAfiliado = row["DocumentoAfiliado"].ToString();
+        //        decimal valorPlan = Convert.ToDecimal(row["ValorPlan"]);
+        //        decimal descuento = Convert.ToDecimal(row["Descuento"]);
+        //        decimal valorFacturado = Convert.ToDecimal(row["ValorFacturar"]);
+        //        int diasFacturados = Convert.ToInt32(row["DiasFacturados"]);
 
+        //        DateTime periodoInicio = Convert.ToDateTime(row["PeriodoInicio"]);
+        //        DateTime periodoFin = Convert.ToDateTime(row["PeriodoFin"]);
+
+        //        string numeroFactura = ""; // luego lo devuelve Siigo
+
+        //        int idUsuario = Convert.ToInt32(Session["idUsuario"]);
+
+        //        //string idFactura = InsertarFacturaCorporativo(
+        //        //    idCartera,
+        //        //    idLiquidacion,
+        //        //    idAfiliadoPlan,
+        //        //    documentoEmpresa,
+        //        //    documentoAfiliado,
+        //        //    numeroFactura,
+        //        //    DateTime.Now,
+        //        //    periodoInicio,
+        //        //    periodoFin,
+        //        //    diasFacturados,
+        //        //    valorPlan,
+        //        //    descuento,
+        //        //    valorFacturado,
+        //        //    idUsuario
+        //        //);
+
+        //        // Aquí puedes llamar la generación en SIIGO
+        //       // GenerarFacturaSiigo(idFactura);
+        //    }
+        //}
+        private void GenerarFacturaCorporativa(int idLiquidacion)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            DataSet ds = cg.ObtenerDatosLiquidacionFactura(idLiquidacion);
+
+            if (ds.Tables.Count >= 2)
+            {
+                DataTable cabecera = ds.Tables[0];
+                DataTable detalle = ds.Tables[1];
+                int diasFactura = 0;
+
+                if (cabecera.Rows.Count > 0 && detalle.Rows.Count > 0)
+                {
+                    DataRow rowCab = cabecera.Rows[0];
+
+                    string documentoEmpresa = rowCab["DocumentoEmpresa"].ToString();
+                    decimal totalFactura = Convert.ToDecimal(rowCab["TotalLiquidado"]);
+
+                    DataTable dt1 = cg.ConsultarEmpresaAfiliadaPorDocumento(documentoEmpresa);
+                    if (dt1.Rows.Count > 0)
+                    {
+                        diasFactura = Convert.ToInt32(dt1.Rows[0]["DiasCredito"].ToString());
+                    }
+
+                    int idUsuario = Convert.ToInt32(Session["idUsuario"]);
+
+                    DateTime periodoInicio = DateTime.Now; // puedes calcularlo
+                    DateTime periodoFin = DateTime.Now;
+
+                    foreach (DataRow rowDet in detalle.Rows)
+                    {
+                        int idCartera = Convert.ToInt32(rowDet["idCartera"]);
+                        int idAfiliadoPlan = Convert.ToInt32(rowDet["idAfiliadoPlan"]);
+                        string documentoAfiliado = rowDet["DocumentoAfiliado"].ToString();
+
+                        decimal valorPlan = Convert.ToDecimal(rowDet["ValorPlan"]);
+                        decimal descuento = Convert.ToDecimal(rowDet["Descuento"]);
+                        decimal valorFacturado = Convert.ToDecimal(rowDet["ValorFacturar"]);
+                        int diasFacturados = Convert.ToInt32(rowDet["DiasFacturados"]);
+
+                        string numeroFactura = ""; // luego lo devuelve Siigo
+
+                        //string idFactura = InsertarFacturaCorporativo(
+                        //    idCartera,
+                        //    idLiquidacion,
+                        //    idAfiliadoPlan,
+                        //    documentoEmpresa,
+                        //    documentoAfiliado,
+                        //    numeroFactura,
+                        //    DateTime.Now,
+                        //    periodoInicio,
+                        //    periodoFin,
+                        //    diasFactura,
+                        //    valorPlan,
+                        //    descuento,
+                        //    valorFacturado,
+                        //    idUsuario
+                        //);
+                    }
+
+                    // después puedes generar la factura en Siigo
+                    // GenerarFacturaSiigo(idLiquidacion);
+                }
+            }
+        }
         protected void btnVerDCRDetalle_Click(object sender, EventArgs e)
         {
             LinkButton btn = (LinkButton)sender;
@@ -376,9 +464,11 @@ namespace fpWebApp
                     return;
                 }
             }
+
+
     
 
-           private async Task<(bool ok, string idSiigoFactura)> GenerarFacturacorporativoAsync(int idAfiliadoPlan, string codSiigoPlan, string nombrePlan, string precioPlan)
+         private async Task<(bool ok, string idSiigoFactura)> GenerarFacturacorporativoAsync(int idAfiliadoPlan, string codSiigoPlan, string nombrePlan, string precioPlan)
         {
             string idAfiliado = Session["IdAfiliado"].ToString();
             string urlRedirect = $"planesAfiliado?id={idAfiliado}";
@@ -532,104 +622,12 @@ namespace fpWebApp
         {
 
         }
+
+        protected void gvLiquidaciones_RowCommand1(object sender, GridViewCommandEventArgs e)
+        {
+
+        }
     }
 
 
-        //public void ExportarPDF(DataTable dtDetalle, DataTable dtTotales, string nombreArchivo)
-        //{
-        //    if (dtDetalle == null || dtDetalle.Rows.Count == 0)
-        //        throw new Exception("No hay datos para exportar");
-
-        //    // Crear documento
-        //    Document doc = new Document(PageSize.A4.Rotate(), 10, 10, 10, 10);
-        //    PdfWriter.GetInstance(doc, HttpContext.Current.Response.OutputStream);
-        //    doc.Open();
-
-        //    // Título
-        //    Paragraph titulo = new Paragraph("Reporte generado",
-        //        FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 14));
-        //    titulo.Alignment = Element.ALIGN_CENTER;
-        //    doc.Add(titulo);
-        //    doc.Add(new Paragraph(" "));
-
-        //    // Tabla dinámica
-        //    PdfPTable tabla = new PdfPTable(dtDetalle.Columns.Count);
-        //    tabla.WidthPercentage = 100;
-
-        //    // Encabezados
-        //    foreach (DataColumn col in dtDetalle.Columns)
-        //    {
-        //        tabla.AddCell(new PdfPCell(new Phrase(col.ColumnName))
-        //        {
-        //            BackgroundColor = BaseColor.LIGHT_GRAY
-        //        });
-        //    }
-
-        //    // Datos
-        //    foreach (DataRow row in dtDetalle.Rows)
-        //    {
-        //        foreach (var item in row.ItemArray)
-        //            tabla.AddCell(item?.ToString() ?? "");
-        //    }
-
-        //    doc.Add(tabla);
-
-        //    // Totales (SI EXISTEN)
-        //    if (dtTotales != null && dtTotales.Rows.Count > 0)
-        //    {
-        //        doc.Add(new Paragraph(" "));
-        //        doc.Add(new Paragraph("Totales", FontFactory.GetFont(FontFactory.HELVETICA_BOLD)));
-
-        //        foreach (DataColumn col in dtTotales.Columns)
-        //        {
-        //            doc.Add(new Paragraph($"{col.ColumnName}: {dtTotales.Rows[0][col]}"));
-        //        }
-        //    }
-
-        //    doc.Close();
-
-        //    HttpContext.Current.Response.ContentType = "application/pdf";
-        //    HttpContext.Current.Response.AddHeader("content-disposition",
-        //        $"attachment;filename={nombreArchivo}.pdf");
-        //    HttpContext.Current.Response.End();
-        //}
-
-
-
-        //protected void rpPagos_ItemDataBound(object sender, RepeaterItemEventArgs e)
-        //{
-        //    if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
-        //    {
-        //        DataRowView row = (DataRowView)e.Item.DataItem;
-        //        int idAfilPlan;
-        //        if (row["idAfilPlan"] is DBNull)
-        //        {
-        //            idAfilPlan = 0;
-        //        }
-        //        else
-        //        {
-        //            idAfilPlan = Convert.ToInt32(row["idAfilPlan"]);
-        //        }
-
-        //        string strQuery = @"
-        //            SELECT  
-        //                ppa.idPago AS Pago, 
-        //                ppa.IdReferencia AS Ref, 
-        //                ppa.FechaHoraPago AS Fecha, 
-        //                ppa.Valor,
-        //                mp.NombreMedioPago AS 'Medio de pago'
-        //            FROM PagosPlanAfiliado ppa
-        //                INNER JOIN AfiliadosPlanes ap ON ppa.idAfiliadoPlan = ap.idAfiliadoPlan 
-        //                INNER JOIN MediosDePago mp ON mp.idMedioPago = ppa.idMedioPago
-        //            WHERE 
-        //                ppa.idAfiliadoPlan = " + idAfilPlan.ToString() + @"";
-
-        //        clasesglobales cg = new clasesglobales();
-        //        DataTable dt = cg.TraerDatos(strQuery);
-
-        //        Repeater rpDetallesPago = (Repeater)e.Item.FindControl("rpDetallesPago");
-        //        rpDetallesPago.DataSource = dt;
-        //        rpDetallesPago.DataBind();
-        //    }
-        //}
     }

@@ -182,7 +182,8 @@ namespace fpWebApp
             ltSede.Text = dt.Rows[0]["NombreSede"].ToString();
             ltDireccion.Text = dt.Rows[0]["DireccionAfiliado"].ToString();
             ltCiudad.Text = dt.Rows[0]["NombreCiudad"].ToString();
-            ltCumple.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
+            //ltCumple.Text = String.Format("{0:dd MMM}", Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]));
+            ltCumple.Text = dt.Rows[0]["FechaNacAfiliado"] != DBNull.Value ? Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]).ToString("dd MMM"): "";
             ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
             //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
 

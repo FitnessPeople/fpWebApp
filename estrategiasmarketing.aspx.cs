@@ -416,7 +416,7 @@ namespace fpWebApp
                             string script = @"
                                     Swal.fire({
                                         title: '«¡Actualizada correctamente!»',
-                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        text: 'Marketing - Fitness People',
                                         icon: 'success',
                                         timer: 3000, // 3 segundos
                                         showConfirmButton: false,
@@ -550,7 +550,7 @@ namespace fpWebApp
                             string script = @"
                                     Swal.fire({
                                         title: '«¡Creada correctamente!»',
-                                        text: '" + mensaje.Replace("'", "\\'") + @"',
+                                        text: 'Marketing - Fitness People',
                                         icon: 'success',
                                         timer: 3000, // 3 segundos
                                         showConfirmButton: false,

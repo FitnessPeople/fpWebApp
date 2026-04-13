@@ -32,7 +32,7 @@
         function changeClass() {
             var element1 = document.querySelector("#empleados");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#sistema");
+            var element2 = document.querySelector("#gestionhumana");
             element2.classList.remove("collapse");
         }
     </script>
@@ -149,10 +149,8 @@
                             <div class="row">
                                 <form role="form" id="form" enctype="multipart/form-data" runat="server">
                                     <div class="col-sm-6 b-r">
-                                        <div class="form-group">
-                                            <label>Nombre Completo</label>
-                                            <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server" placeholder="Nombre completo"></asp:TextBox>
-                                        </div>
+
+
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
@@ -170,7 +168,10 @@
                                                 </div>
                                             </div>
                                         </div>
-
+                                        <div class="form-group">
+                                            <label>Nombre Completo</label>
+                                            <asp:TextBox ID="txbNombre" CssClass="form-control input-sm" runat="server" placeholder="Nombre completo"></asp:TextBox>
+                                        </div>
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
@@ -229,13 +230,11 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Cargo</label>
-                                                    <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
-                                                        DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
+                                                    <label>Fecha de exp. documento</label>
+                                                    <asp:TextBox ID="txbFechaExpedicion" CssClass="form-control input-sm" runat="server" placeholder="Fecha expedición doc."></asp:TextBox>
                                                 </div>
                                             </div>
+
                                         </div>
 
                                         <div class="row">
@@ -298,6 +297,36 @@
                                                         <asp:ListItem Text="AB-" Value="AB-"></asp:ListItem>
                                                         <asp:ListItem Text="0+" Value="O+"></asp:ListItem>
                                                         <asp:ListItem Text="0-" Value="O-"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Persona encargada</label>
+                                                    <asp:TextBox ID="txbPersonaEncargada" CssClass="form-control input-sm" runat="server" placeholder="Persona encargada"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Teléfono Encargado</label>
+                                                    <asp:TextBox ID="txbTelContacto" CssClass="form-control input-sm" runat="server" placeholder="Teléfono"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Parentesco:</label>
+                                                    <asp:DropDownList ID="ddlParentesco" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        <asp:ListItem Text="Padre/Madre" Value="Padre/Madre"></asp:ListItem>
+                                                        <asp:ListItem Text="Esposo/a" Value="Esposo/a"></asp:ListItem>
+                                                        <asp:ListItem Text="Hermano/a" Value="Hermano/a"></asp:ListItem>
+                                                        <asp:ListItem Text="Hijo/a" Value="Hijo/a"></asp:ListItem>
+                                                        <asp:ListItem Text="Primo/a" Value="Primo/a"></asp:ListItem>
+                                                        <asp:ListItem Text="Sobrino/a" Value="Sobrino/a"></asp:ListItem>
+                                                        <asp:ListItem Text="Encargado/a" Value="Encargado/a"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -378,9 +407,10 @@
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <%--   <div class="row">--%>
+                                            <div class="col-sm-3">
                                                 <div class="form-group">
-                                                    <label>Medio de transporte</label>
+                                                    <label>Medio de transp.</label>
                                                     <asp:DropDownList ID="ddlMedioTransporte" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                         <asp:ListItem Text="Público" Value="Público"></asp:ListItem>
@@ -392,24 +422,42 @@
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label>Placa vehículo</label>
+                                                    <asp:TextBox ID="txbPlaca" CssClass="form-control input-sm" runat="server" placeholder="MVN743"></asp:TextBox>
+                                                </div>
+                                            </div>
+                                            <%--    </div>--%>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label>Nro. de Contrato</label>
                                                     <asp:TextBox ID="txbContrato" CssClass="form-control input-sm" runat="server" placeholder="Contrato"></asp:TextBox>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label>Tipo de Contrato</label>
                                                     <asp:DropDownList ID="ddlTipoContrato" runat="server"
                                                         AppendDataBoundItems="true" CssClass="form-control input-sm">
                                                         <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                         <asp:ListItem Text="Fijo" Value="Fijo"></asp:ListItem>
+                                                        <asp:ListItem Text="Indefinido" Value="Indefinido"></asp:ListItem>
                                                         <asp:ListItem Text="OPS" Value="OPS"></asp:ListItem>
                                                         <asp:ListItem Text="Aprendiz" Value="Aprendiz"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <label>Cargo</label>
+                                                    <asp:DropDownList ID="ddlCargo" runat="server" AppendDataBoundItems="true"
+                                                        DataTextField="NombreCargo" DataValueField="idCargo" CssClass="form-control input-sm">
+                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                             </div>
@@ -422,6 +470,7 @@
                                                     <asp:TextBox ID="txbFechaInicio" CssClass="form-control input-sm" runat="server" placeholder="Fecha inicio"></asp:TextBox>
                                                 </div>
                                             </div>
+
                                             <div class="col-sm-3">
                                                 <div class="form-group">
                                                     <label>Fecha final</label>
@@ -625,6 +674,9 @@
                 ddlGenero: {
                     required: true
                 },
+                ddlTipoSangre: {
+                    required: true
+                },
                 txbEstratoSocioeconomico: {
                     required: true,
                     minlength: 1
@@ -661,6 +713,9 @@
                 txbFechaFinal: {
                     required: true
                 },
+                ddlempresasFP: {
+                    required: true
+                },
                 txbSueldo: {
                     required: true
                 },
@@ -683,6 +738,15 @@
                     required: true
                 },
                 ddlEmpresasFP: {
+                    required: true
+                },
+                txbPersonaEncargada: {
+                    required: true
+                },
+                txbTelContacto: {
+                    required: true
+                },
+                ddlParentesco: {
                     required: true
                 },
             },

@@ -295,7 +295,7 @@ namespace fpWebApp
                     string script = $@"
                         Swal.fire({{
                             title: '¡Proceso exitoso!',
-                            text: '{respuesta.mensaje}',
+                            text: 'Corporativo - Fitness People',
                             icon: 'success',
                             timer: 3000,
                             showConfirmButton: false,
@@ -340,7 +340,7 @@ namespace fpWebApp
                 string script = $@"
                         Swal.fire({{
                             title: '¡Proceso exitoso!',
-                            text: '{mensaje}',
+                            text: 'Corporativo - Fitness People',
                             icon: 'success',
                             timer: 3000,
                             showConfirmButton: false,
@@ -646,7 +646,7 @@ namespace fpWebApp
                     return;
                 }
 
-                // ✅ ASIGNACIÓN (solo si todos cumplen)
+               
                 foreach (GridViewRow row in gvProspectos.Rows)
                 {
                     CheckBox chk = row.FindControl("chkSeleccionar") as CheckBox;
@@ -711,7 +711,7 @@ namespace fpWebApp
                         string script = @"
                                 Swal.fire({
                                     title: '¡Eliminado correctamente!',
-                                    text: '',
+                                    text: 'Corporativo - Fitness People',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
                                     showConfirmButton: false,

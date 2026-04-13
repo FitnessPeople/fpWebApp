@@ -74,7 +74,7 @@
         function changeClass() {
             var element1 = document.querySelector("#estacionalidad");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#canalesprocesoscomerciales");
+            var element2 = document.querySelector("#gestioncomercial");
             element2.classList.remove("collapse");
         }
     </script>
@@ -139,7 +139,7 @@
                     <h2><i class="fa fa-calendar-days text-success m-r-sm"></i>Estacionalidad</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Comercial</li>
+                        <li>Gestión Comercial</li>
                         <li class="active"><strong>Estacionalidad</strong></li>
                     </ol>
                 </div>

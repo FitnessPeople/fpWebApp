@@ -1,12 +1,16 @@
 ﻿using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
+using System.IO.Packaging;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Script.Serialization;
 using System.Web.Services;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -59,10 +63,15 @@ namespace fpWebApp
                     CantidadActividadExtra();
                     CantidadConsumoLicor();
                     
+
+
                     CantidadEdades();
                     CantidadMedioTransporte();
                     CantidadTipoSangre();
-                    
+                    CargarCargos();
+                    CargarSedes();
+                    CargarCanalesVenta();
+                    CargarTipoDocumento();
 
                     //ActualizarEstadoxFechaFinal();
                     //indicadores01.Visible = false;
@@ -950,36 +959,354 @@ namespace fpWebApp
         [WebMethod]
         public static object ObtenerDatosEmpleado(string documento)
         {
-            string strConexion = WebConfigurationManager
-                .ConnectionStrings["ConnectionFP"].ConnectionString;
+            clasesglobales cg = new clasesglobales();
 
-            using (MySqlConnection conn = new MySqlConnection(strConexion))
+            try
             {
-                conn.Open();
+               
+                DataTable dt = cg.ConsultarEmpleado(documento);
 
-                string query = @"SELECT idCargo, Cargo, Sueldo
-                         FROM empleados
-                         WHERE DocumentoEmpleado = @doc";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, conn))
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    cmd.Parameters.AddWithValue("@doc", documento);
+                    DataRow row = dt.Rows[0];
 
-                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                    return new
                     {
-                        if (dr.Read())
-                        {
-                            return new
-                            {
-                                Cargo = dr["Cargo"].ToString(),
-                                Sueldo = Convert.ToDecimal(dr["Sueldo"])
-                            };
-                        }
-                    }
+                        Cargo = row["Cargo"].ToString(),
+                        Sueldo = row["Sueldo"] != DBNull.Value ? Convert.ToDecimal(row["Sueldo"]): 0,
+                        idCargo = row["idCargo"] != DBNull.Value ? Convert.ToInt32(row["idCargo"]): 0,
+                        
+                        Sede = row["NombreSede"].ToString(),
+                        idSede = Convert.ToInt32(row["idSede"]),
+
+                        CanalVenta = row["NombreCanalVenta"].ToString(),
+                        idCanalVenta = row["idCanalVenta"] != DBNull.Value ? Convert.ToInt32(row["idCanalVenta"]): 0
+
+                    };
                 }
+            }
+            catch (Exception ex)
+            {
+                return new
+                {
+                    error = true,
+                    mensaje = ex.Message
+                };
             }
 
             return null;
+        }
+
+        private void CargarSedes()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultaCargarSedes("Todos");
+                ddlNuevaSede.DataSource = dt;
+
+                ddlNuevaSede.DataSource = dt;
+                ddlNuevaSede.DataTextField = "NombreSede";
+                ddlNuevaSede.DataValueField = "idSede";
+                ddlNuevaSede.DataBind();
+                ddlNuevaSede.Items.Insert(0, new ListItem("Seleccione sede", ""));
+
+
+                ddlSedeIngreso.DataSource = dt;
+                ddlSedeIngreso.DataSource = dt;
+                ddlSedeIngreso.DataTextField = "NombreSede";
+                ddlSedeIngreso.DataValueField = "idSede";
+                ddlSedeIngreso.DataBind();
+
+                ddlSedeIngreso.Items.Insert(0, new ListItem("Seleccione sede", ""));
+
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Código: " + idLog,"error");
+            }
+
+
+        }
+        private void CargarCargos()
+        {
+            clasesglobales cg = new clasesglobales();
+
+            try
+            {
+                DataTable dt = cg.ConsultarCargos();
+
+                ddlNuevoCargo.DataSource = dt;
+                ddlNuevoCargo.DataTextField = "NombreCargo";   // texto visible
+                ddlNuevoCargo.DataValueField = "idCargo";     // valor
+                ddlNuevoCargo.DataBind();
+
+                ddlNuevoCargo.Items.Insert(0, new ListItem("Seleccione cargo", ""));
+
+                ddlCargoIngreso.DataSource = dt;
+                ddlCargoIngreso.DataTextField = "NombreCargo";   // texto visible
+                ddlCargoIngreso.DataValueField = "idCargo";     // valor
+                ddlCargoIngreso.DataBind();
+
+                ddlCargoIngreso.Items.Insert(0, new ListItem("Seleccione cargo", ""));
+                
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso",
+                    "Ocurrió un inconveniente. Código: " + idLog,
+                    "error");
+            }
+        }
+
+        private void CargarTipoDocumento()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultartiposDocumento();
+                ddlTipoDocumentoNuevo.DataSource = dt;
+                ddlTipoDocumentoNuevo.DataTextField = "TipoDocumento";
+                ddlTipoDocumentoNuevo.DataValueField = "idTipoDoc";
+                ddlTipoDocumentoNuevo.DataBind();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso","Ocurrió un inconveniente. Código: " + idLog,"error");
+            }
+            
+
+        }
+
+        private void CargarCanalesVenta()
+        {
+            clasesglobales cg = new clasesglobales();
+            try
+            {
+                DataTable dt = cg.ConsultarCanalesVenta();
+
+                ddlNuevoCanal.DataSource = dt;
+                ddlNuevoCanal.DataTextField = "NombreCanalVenta";
+                ddlNuevoCanal.DataValueField = "idCanalVenta";
+                ddlNuevoCanal.DataBind();
+
+                ListItem item = ddlNuevoCanal.Items.FindByValue("15");
+                if (item != null)
+                {
+                    ddlNuevoCanal.Items.Remove(item);
+                }
+
+                ///
+                ddlCanalNuevo.DataSource = dt;
+                ddlCanalNuevo.DataTextField = "NombreCanalVenta";
+                ddlCanalNuevo.DataValueField = "idCanalVenta";
+                ddlCanalNuevo.DataBind();
+
+                ListItem item1 = ddlCanalNuevo.Items.FindByValue("15");
+                if (item1 != null)
+                {
+                    ddlCanalNuevo.Items.Remove(item1);
+                }
+
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+            }
+        }
+
+
+
+        [WebMethod(EnableSession = true)]
+        public static object InsertarCambioCargoEmpleado(string documento, int idNuevoCargo)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+
+                DataTable dt = cg.ConsultarEmpleado(documento);
+
+                if (dt == null || dt.Rows.Count == 0)
+                    return new { success = false, mensaje = "Empleado no encontrado." };
+
+                if (HttpContext.Current.Session["idUsuario"] == null)
+                    return new { success = false, mensaje = "La sesión ha expirado." };
+
+                DataRow row = dt.Rows[0];
+
+                int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
+                int idCargoActual = Convert.ToInt32(row["idCargo"]);
+
+                if (idCargoActual == idNuevoCargo)
+                    return new { success = false, mensaje = "El nuevo cargo no puede ser igual al actual." };
+
+                string respuesta = cg.ActualizarCambioDeCargoEmpleado(documento, idNuevoCargo, idUsuario);
+
+                if (respuesta != "OK")
+                    return new { success = false, mensaje = respuesta };
+
+                return new { success = true, mensaje = "Gestión Humana - Fitness People." };
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, mensaje = ex.Message };
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        public static object InsertarCambioSalarialEmpleado(string documento, decimal nuevoSueldo)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+
+                DataTable dt = cg.ConsultarEmpleado(documento);
+
+                if (dt == null || dt.Rows.Count == 0)
+                    return new { success = false, mensaje = "Empleado no encontrado." };
+
+                if (HttpContext.Current.Session["idUsuario"] == null)
+                    return new { success = false, mensaje = "La sesión ha expirado." };
+
+                DataRow row = dt.Rows[0];
+
+                int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
+                decimal sueldoActual = Convert.ToDecimal(row["Sueldo"]);
+
+                decimal salarioMinimo = 1750000m;
+                decimal medioSalarioMinimo = salarioMinimo / 2;
+
+                if (nuevoSueldo <= 0)
+                    return new { success = false, mensaje = "El salario no puede ser cero o negativo." };
+
+                if (nuevoSueldo < medioSalarioMinimo)
+                    return new { success = false, mensaje = "El salario no puede ser menor a medio salario mínimo." };
+
+                if (nuevoSueldo == sueldoActual)
+                    return new { success = false, mensaje = "El nuevo salario no puede ser igual al actual." };
+
+                string respuesta = cg.ActualizarCambioSalarialEmpleado(documento, nuevoSueldo, idUsuario);
+
+                if (respuesta != "OK")
+                    return new { success = false, mensaje = respuesta };
+
+                return new { success = true, mensaje = "Gestión Humana - Fitness People." };
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, mensaje = ex.Message };
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        [System.Web.Script.Services.ScriptMethod(ResponseFormat = System.Web.Script.Services.ResponseFormat.Json)]
+        public static object InsertarTrasladoEmpleado(string documento, int idNuevaSede, int idNuevoCanal)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+                
+                DataTable dt = cg.ConsultarEmpleado(documento);
+
+                if (dt == null || dt.Rows.Count == 0)
+                    return new { success = false, mensaje = "Empleado no encontrado." };
+                
+                if (HttpContext.Current.Session["idUsuario"] == null)
+                    return new { success = false, mensaje = "La sesión ha expirado. Inicie sesión nuevamente." };
+
+                DataRow row = dt.Rows[0];
+
+                int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
+                int idSedeActual = Convert.ToInt32(row["idSede"]);
+                int idCanalActual = Convert.ToInt32(row["idCanalVenta"]);
+                               
+                if (idNuevaSede <= 0)
+                    return new { success = false, mensaje = "Seleccione una sede." };
+
+                if (idSedeActual == idNuevaSede)
+                    return new { success = false, mensaje = "El empleado ya pertenece a esa sede." };
+
+                if (idNuevoCanal <= 0)
+                    return new { success = false, mensaje = "Seleccione un canal válido." };
+
+
+                string respuesta = cg.ActualizarTrasladoEmpleado(documento, idNuevaSede, idNuevoCanal, idUsuario);
+
+                if (respuesta != "OK")
+                    return new { success = false, mensaje = respuesta };
+
+                return new { success = true, mensaje = "Gestión Humana - Fitness People" };
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, mensaje = ex.Message };
+            }
+        }
+
+        [WebMethod(EnableSession = true)]
+        public static object InsertarDatosBasicosEmpleado( int tipoDocumento, string documento, string nombre, string correo,
+        int canal, int sede, int cargo)
+        {
+            try
+            {
+                clasesglobales cg = new clasesglobales();
+
+                if (HttpContext.Current.Session["idUsuario"] == null)
+                    return new { success = false, mensaje = "Sesión expirada." };
+
+                int idUsuario = Convert.ToInt32(HttpContext.Current.Session["idUsuario"]);
+               
+                nombre = ConvertirACapital(nombre);
+
+                string respuesta = cg.InsertarIngresoRapidoEmpleado(tipoDocumento, documento, nombre, correo, canal, sede, cargo, idUsuario );
+
+                if (respuesta != "OK")
+                    return new { success = false, mensaje = respuesta };
+
+                return new { success = true, mensaje = "El colaorador deberá terminar de diligenciar los datos en la opción Mi Cuenta - Gestión Humana - Fitness People" };
+            }
+            catch (Exception ex)
+            {
+                return new { success = false, mensaje = ex.Message };
+            }
+        }
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            clasesglobales cg = new clasesglobales();
+
+            // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+            string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+            ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+        }
+
+        public static string ConvertirACapital(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                return texto;
+
+            TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
+
+            return ti.ToTitleCase(texto.ToLower());
         }
     }
 }

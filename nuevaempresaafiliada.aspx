@@ -56,10 +56,10 @@
             quill.on("text-change", ajustarAlturaEditor);
 
             var contenidoGuardado = document.getElementById('<%= hiddenEditor.ClientID %>').value;
-                if (contenidoGuardado.trim() !== "") {
-                    quill.root.innerHTML = contenidoGuardado;
-                }
-            });
+            if (contenidoGuardado.trim() !== "") {
+                quill.root.innerHTML = contenidoGuardado;
+            }
+        });
         function guardarContenidoEditor() {
             var contenido = quill.root.innerHTML;
             document.getElementById('<%= hiddenEditor.ClientID %>').value = contenido;
@@ -244,202 +244,49 @@
                                                     <asp:TextBox ID="txbCorreo" CssClass="form-control input-sm" runat="server" placeholder="Correo" required></asp:TextBox>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Nombre del Pagador</label>
-                                                    <asp:TextBox ID="txbNombrepagador" CssClass="form-control input-sm" runat="server" placeholder="Pagador"
-                                                        Style="text-transform: uppercase;" SpellCheck="false" autocomplete="off"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Celular</label>
-                                                    <asp:TextBox ID="txbCelularPagador" CssClass="form-control input-sm" runat="server" placeholder="Celular del Pagador"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Correo del pagador</label>
-                                                    <asp:TextBox ID="txbCorreoPagador" CssClass="form-control input-sm" runat="server" placeholder="Correo Pagador"></asp:TextBox>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label for="Retorno" class="col-form-label">Retorno administrativo?:</label>
-                                                    <div class="col-sm-10">
-                                                        <asp:RadioButtonList
-                                                            ID="rblActivo"
-                                                            runat="server"
-                                                            RepeatDirection="Horizontal"
-                                                            CssClass="i-checks">
-                                                            <asp:ListItem Text="Sí" Value="1"></asp:ListItem>
-                                                            <asp:ListItem Text="No" Value="0" Selected="True"></asp:ListItem>
-                                                        </asp:RadioButtonList>
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-12">
-                                                <div class="row">
+                                                <div class="col-sm-6">
                                                     <div class="form-group">
-                                                        <%--                                                        <i class="fas fa-pen text-info"></i>
-                                                        <label for="message-text" class="col-form-label">Descripción de la negociación / oferta y beneficios:</label>
-                                                        <textarea id="txaObservaciones" runat="server" rows="3"
-                                                            cssclass="form-control input-sm" class="form-control" placeholder="Escribe tu comentario…"></textarea>
-                                                        <asp:RequiredFieldValidator ID="rfvObservaciones" runat="server" ControlToValidate="txaObservaciones"
-                                                            ErrorMessage="* Campo requerido" CssClass="font-bold text-danger" Display="Dynamic" ValidationGroup="agregar" />--%>
-                                                        <%--</div>--%>
-                                                        <div class="form-group">
-                                                            <label>Descripción de la negociación / oferta y beneficios:</label>
-                                                            <div id="editor" cssclass="form-control input-sm"></div>
-                                                            <asp:HiddenField ID="hiddenEditor" runat="server" />
-                                                        </div>
+                                                        <label>Dirección</label>
+                                                        <asp:TextBox ID="txbDireccion" CssClass="form-control input-sm" runat="server" placeholder="Dirección"></asp:TextBox>
                                                     </div>
                                                 </div>
-                                            </div>
-
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Ciudad</label>
+                                                        <asp:DropDownList ID="ddlCiudadEmpresa" runat="server"
+                                                            AppendDataBoundItems="true" DataTextField="NombreCiudad"
+                                                            DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
+                                                            <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
+                                                        </asp:DropDownList>
+                                                    </div>
+                                                </div>                                          
                                         </div>
+
                                     </div>
 
                                     <div class="col-sm-6">
-                                        <div class="row">
-                                            <div class="col-sm-6">
+
+                                      <div class="row">
+
+                                                                                  <div class="col-sm-12">
+                                            <div class="row">
                                                 <div class="form-group">
-                                                    <label>Dirección</label>
-                                                    <asp:TextBox ID="txbDireccion" CssClass="form-control input-sm" runat="server" placeholder="Dirección"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Ciudad</label>
-                                                    <asp:DropDownList ID="ddlCiudadEmpresa" runat="server"
-                                                        AppendDataBoundItems="true" DataTextField="NombreCiudad"
-                                                        DataValueField="idCiudad" CssClass="chosen-select form-control input-sm">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
+
+                                                    <div class="form-group">
+                                                        <label>Actividad de la empresa:</label>
+                                                        <div id="editor" cssclass="form-control input-sm"></div>
+                                                        <asp:HiddenField ID="hiddenEditor" runat="server" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label>Fecha inicio convenio</label>
-                                                    <asp:TextBox ID="txbFechaConvenio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label>Fecha fin convenio</label>
-                                                    <asp:TextBox ID="txbFechaFinConvenio" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <div class="form-group">
-                                                    <label>Nro de empleados</label>
-                                                    <asp:TextBox ID="txbNroEmpleados" CssClass="form-control input-sm" runat="server"></asp:TextBox>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Tipo negociación</label>
-                                                    <asp:DropDownList ID="ddlTipoNegociacion" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        <asp:ListItem Text="Alianza" Value="Alianza"></asp:ListItem>
-                                                        <asp:ListItem Text="Convenio" Value="Convenio"></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="form-group">
-                                                    <label>Días de crédito</label>
-                                                    <asp:DropDownList ID="ddlDiasCredito" runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm m-b">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                        <asp:ListItem Text="30" Value="30"></asp:ListItem>
-                                                        <asp:ListItem Text="60" Value="60"></asp:ListItem>
-                                                        <asp:ListItem Text="90" Value="90"></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Contrato:</label>
-                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                <div class="form-control input-sm" data-trigger="fileinput">
-                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                                    <span class="fileinput-filename"></span>
-                                                </div>
-                                                <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
-                                                    <span class="fileinput-exists input-sm">Cambiar</span>
-                                                    <input type="file" name="fileConvenio" id="fileConvenio" accept="application/pdf">
-                                                </span>
-                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
-                                                    data-dismiss="fileinput">Quitar</a>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>Camara de comercio:</label>
-                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                <div class="form-control input-sm" data-trigger="fileinput">
-                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                                    <span class="fileinput-filename"></span>
-                                                </div>
-                                                <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
-                                                    <span class="fileinput-exists input-sm">Cambiar</span>
-                                                    <input type="file" name="fileCamara" id="fileCamara" accept="application/pdf">
-                                                </span>
-                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
-                                                    data-dismiss="fileinput">Quitar</a>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label>RUT:</label>
-                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                <div class="form-control input-sm" data-trigger="fileinput">
-                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                                    <span class="fileinput-filename"></span>
-                                                </div>
-                                                <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
-                                                    <span class="fileinput-exists input-sm">Cambiar</span>
-                                                    <input type="file" name="fileRut" id="fileRut" accept="application/pdf">
-                                                </span>
-                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
-                                                    data-dismiss="fileinput">Quitar</a>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Cédula Representante Legal:</label>
-                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                                <div class="form-control input-sm" data-trigger="fileinput">
-                                                    <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                                    <span class="fileinput-filename"></span>
-                                                </div>
-                                                <span class="input-group-addon btn btn-success btn-file input-sm">
-                                                    <span class="fileinput-new input-sm">Seleccionar archivo *.Pdf</span>
-                                                    <span class="fileinput-exists input-sm">Cambiar</span>
-                                                    <input type="file" name="fileCedulaRepLeg" id="fileCedulaRepLeg" accept="application/pdf">
-                                                </span>
-                                                <a href="#" class="input-group-addon btn btn-danger fileinput-exists input-sm"
-                                                    data-dismiss="fileinput">Quitar</a>
-                                            </div>
                                         </div>
 
                                         <div>
-                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='empresasafiliadas'"><strong>Cancelar</strong></button>
-                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClientClick="guardarContenidoEditor();" OnClick="btnAgregar_Click"  />
+                                            <button class="btn btn-sm btn-danger pull-right m-t-n-xs" type="button" onclick="window.location.href='empresasconvenio'"><strong>Cancelar</strong></button>
+                                            <asp:Button ID="btnAgregar" runat="server" CssClass="btn btn-sm btn-primary m-t-n-xs m-r-md pull-right" Text="Agregar" OnClientClick="guardarContenidoEditor();" OnClick="btnAgregar_Click" />
                                         </div>
                                     </div>
                                 </form>

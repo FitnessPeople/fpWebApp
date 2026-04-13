@@ -38,7 +38,7 @@
         function changeClass() {
             var element1 = document.querySelector("#canalesventa");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#canalesprocesoscomerciales");
+            var element2 = document.querySelector("#gestioncomercial");
             element2.classList.remove("collapse");
         }
     </script>
@@ -103,7 +103,7 @@
                     <h2><i class="fa-solid fa-list-ul text-success m-r-sm"></i> Canales de venta</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Canales y procesos comerciales</li>
+                        <li>Gestión Comercial</li>
                         <li class="active"><strong>Canales de venta</strong></li>
                     </ol>
                 </div>
@@ -198,7 +198,7 @@
                                         <table class="footable table table-striped" data-paging-size="15"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                            data-paging-limit="15" data-filtering="true"
+                                            data-paging-limit="16" data-filtering="true"
                                             data-filter-container="#filter-form-container" data-filter-delay="300"
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left"
                                             data-empty="Sin resultados">

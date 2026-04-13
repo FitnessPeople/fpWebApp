@@ -260,35 +260,6 @@
                                                 </div>
                                             </div>
 
-                                            <%--                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <asp:DropDownList ID="ddlEmpresa" DataTextField="NombreComercial" DataValueField="DocumentoEmpresa"
-                                                        runat="server" AppendDataBoundItems="true" CssClass="form-control input-sm">
-                                                        <asp:ListItem Text="Seleccione" Value=""></asp:ListItem>
-                                                    </asp:DropDownList>
-                                                    <asp:RequiredFieldValidator ID="rfvEmpresa" runat="server"
-                                                        ErrorMessage="* Campo requerido" ControlToValidate="ddlEmpresa"
-                                                        CssClass="text-danger font-bold" ValidationGroup="agregar"></asp:RequiredFieldValidator>
-                                                </div>
-                                            </div>--%>
-
-                                            <%--                                            <div class="col-lg-2">
-                                                <div class="form-group">
-                                                    <input type="text" runat="server" id="txbFechaIni" class="form-control input-sm datepicker" placeholder="Fecha inicial" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-lg-2">
-                                                <div class="form-group">
-                                                    <input type="text" runat="server" id="txbFechaFin" class="form-control input-sm datepicker" placeholder="Fecha final" />
-                                                </div>
-                                            </div>--%>
-                                            <%--                                            <div class="col-lg-1">
-                                                <div class="form-group">
-                                                    <asp:Button ID="btnBuscar" runat="server" Text="Buscar" CssClass="btn btn-primary btn-sm"
-                                                        OnClick" />
-                                                </div>
-                                            </div>--%>
                                             <div class="col-lg-1">
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server"
                                                     CausesValidation="false"
@@ -337,6 +308,18 @@
                                                 <asp:BoundField DataField="NombreComercial" HeaderText="Empresa" />
                                                 <asp:BoundField DataField="TotalLiquidado" HeaderText="Total" DataFormatString="{0:C0}" />
                                                 <asp:BoundField DataField="EstadoLiquidacion" HeaderText="Estado" />
+                                                                                               
+                                                <asp:TemplateField HeaderText="Factura">
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton
+                                                            ID="btnGenerarFactura"
+                                                            runat="server"
+                                                            CssClass="btn btn-success btn-sm"
+                                                            Text="Generar Factura"
+                                                            CommandName="GenerarFactura"
+                                                            CommandArgument='<%# Eval("idLiquidacion") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
 
                                             </Columns>
                                         </asp:GridView>

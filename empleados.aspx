@@ -26,6 +26,11 @@
     <link href="css/animate.css" rel="stylesheet" />
     <link href="css/style.css" rel="stylesheet" />
 
+    <!-- Sweet Alert -->
+    <link href="css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style type="text/css" media="print">
         body {
             visibility: hidden;
@@ -49,7 +54,7 @@
         function changeClass() {
             var element1 = document.querySelector("#empleados");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#sistema");
+            var element2 = document.querySelector("#gestionhumana");
             element2.classList.remove("collapse");
         }
     </script>
@@ -106,6 +111,10 @@
                 </div>
             </div>
         </div>
+
+
+        <asp:HiddenField ID="hdDocumentoMovimiento" runat="server" />
+        <asp:HiddenField ID="hdTipoMovimiento" runat="server" />
         <div id="wrapper">
 
             <uc1:navbar runat="server" ID="navbar1" />
@@ -121,7 +130,7 @@
                         <h2><i class="fa fa-user-tie text-success m-r-sm"></i>Empleados</h2>
                         <ol class="breadcrumb">
                             <li><a href="inicio">Inicio</a></li>
-                            <li>Sistema</li>
+                            <li>Gestión Humana</li>
                             <li class="active"><strong>Empleados</strong></li>
                         </ol>
                     </div>
@@ -148,9 +157,6 @@
                         <uc1:paginasperfil runat="server" ID="paginasperfil" Visible="false" />
 
 
-
-
-
                         <div class="row">
 
                             <div class="col-sm-8">
@@ -170,9 +176,16 @@
 
                                             <div class="col-lg-6 form-horizontal">
                                                 <a class="btn btn-success pull-right dim m-l-md" style="font-size: 12px;"
-                                                    href="nuevoempleado" title="Agregar empleado"
+                                                    href="nuevoempleado" title="Agregar empleado con toda la información"
                                                     runat="server" id="btnAgregar" visible="false"><i class="fa fa-square-plus m-r-xs"></i>NUEVO
                                                 </a>
+
+                                                <a href="javascript:void(0);"
+                                                    class="btn btn-primary pull-right dim m-l-md btnIngresoRapido" style="font-size: 12px;
+                                                    data-tipo="INGRESO_RAPIDO" title="Agregar empleado con datos básicos">
+                                                    <i class="fa fa-user-edit m-r-xs"></i>INGRESO RÁPIDO
+                                                </a>
+
                                                 <asp:LinkButton ID="lbExportarExcel" runat="server" CausesValidation="false"
                                                     CssClass="btn btn-info pull-right dim m-l-md" Style="font-size: 12px;"
                                                     OnClick="lbExportarExcel_Click">
@@ -182,47 +195,155 @@
                                         </div>
 
 
-                                        <div class="modal fade" id="modalAscenso" tabindex="-1">
+                                        <div class="modal fade" id="modalMovimientoEmpleado" tabindex="-1">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
 
-                                                    <div class="modal-header bg-warning">
-                                                        <h4 class="modal-title">Ascenso de empleado</h4>
+                                                    <div class="modal-header text-white bg-primary">
+                                                        <h4 class="modal-title mb-0">
+                                                            <span id="tituloModal"></span>
+                                                            <br />
+                                                            <div id="lblNombreEmpleado" class="h5 font-weight-bold mt-1"></div>
+                                                        </h4>
+                                                        <button type="button" class="close text-white" data-dismiss="modal"></button>
                                                     </div>
 
                                                     <div class="modal-body">
 
-                                                        <input type="hidden" id="txtDocumentoAscenso" />
-
-                                                        <div class="form-group">
+                                                        <div id="seccionCargoActual" class="form-group">
                                                             <label>Cargo actual</label>
                                                             <input type="text" id="txtCargoActual" class="form-control" disabled />
                                                         </div>
-
-                                                        <div class="form-group">
-                                                            <label>Salario actual</label>
-                                                            <input type="text" id="txtSalarioActual" class="form-control" disabled />
+                                                        <!-- SECCION SALARIO ACTUAL -->
+                                                        <div id="seccionSalarioActual" class="seccionMovimiento">
+                                                            <div class="form-group">
+                                                                <label>Salario actual</label>
+                                                                <input type="text" id="txtSalarioActual" class="form-control" disabled />
+                                                            </div>
                                                         </div>
 
-                                                        <hr />
-
-                                                        <div class="form-group">
-                                                            <label>Nuevo cargo</label>
-                                                            <asp:DropDownList ID="ddlNuevoCargo" runat="server"
-                                                                CssClass="form-control">
-                                                            </asp:DropDownList>
+                                                        <!-- SECCION SEDE ACTUAL -->
+                                                        <div id="seccionSedeActual" class="seccionMovimiento" style="display: none;">
+                                                            <div class="form-group">
+                                                                <label>Sede actual</label>
+                                                                <input type="text" id="txtSedeActual" class="form-control" disabled />
+                                                            </div>
                                                         </div>
 
-                                                        <div class="form-group">
-                                                            <label>Nuevo salario</label>
-                                                            <input type="number" id="txtNuevoSalario" class="form-control" />
+                                                        <!-- SECCION ASCENSO -->
+                                                        <div id="seccionCargo" class="seccionMovimiento">
+                                                            <div class="form-group">
+                                                                <label>Nuevo cargo</label>
+                                                                <asp:DropDownList ID="ddlNuevoCargo" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
                                                         </div>
+
+                                                        <div id="seccionSalario" class="seccionMovimiento">
+                                                            <div class="form-group">
+                                                                <label>Nuevo salario</label>
+                                                                <input type="text" id="txtNuevoSalario"
+                                                                    class="form-control"
+                                                                    onkeyup="formatCurrency(this)"
+                                                                    onblur="keepFormatted(this)"
+                                                                    autocomplete="off" />
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- SECCION TRASLADO -->
+                                                        <div id="seccionTraslado" class="seccionMovimiento" style="display: none;">
+
+
+
+                                                            <div class="form-group">
+                                                                <label>Canal de venta actual</label>
+                                                                <input type="text" id="txtCanalActual" class="form-control" disabled />
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label>Nueva sede</label>
+                                                                <asp:DropDownList ID="ddlNuevaSede" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+
+                                                            <div class="form-group">
+                                                                <label>Nuevo canal de venta</label>
+                                                                <asp:DropDownList ID="ddlNuevoCanal" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- SECCION INGRESO RAPIDO -->
+                                                        <div id="seccionIngresoRapido" class="seccionMovimiento" style="display: none;">
+
+                                                            <div class="form-group">
+                                                                <label>Tipo documento</label>
+                                                                <asp:DropDownList ID="ddlTipoDocumentoNuevo" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Documento</label>
+                                                                <input type="text" id="txtDocumentoNuevo" class="form-control" />
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Nombre completo</label>
+                                                                <input type="text" id="txtNombreNuevo" class="form-control" />
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Correo electrónico</label>
+                                                                <input type="email" id="txtCorreoNuevo" class="form-control"
+                                                                    oninput="this.value = this.value.toLowerCase();"
+                                                                    pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                                                                    title="Ingrese un correo válido (ej: usuario@correo.com)" />
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Sede</label>
+                                                                <asp:DropDownList ID="ddlSedeIngreso" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Canal de venta</label>
+                                                                <asp:DropDownList ID="ddlCanalNuevo" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Cargo</label>
+                                                                <asp:DropDownList ID="ddlCargoIngreso" runat="server"
+                                                                    CssClass="form-control">
+                                                                </asp:DropDownList>
+                                                            </div>
+
+                                                        </div>
+
+
 
                                                     </div>
 
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                                        <button type="button" class="btn btn-warning" onclick="guardarAscenso()">Guardar</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                            Cancelar
+                                                        </button>
+                                                        <button type="button"
+                                                            id="btnGuardarMovimiento"
+                                                            class="btn btn-primary"
+                                                            onclick="guardarMovimiento()">
+                                                            Guardar
+                                                        </button>
                                                     </div>
 
                                                 </div>
@@ -242,12 +363,13 @@
                                                     <th data-breakpoints="xs"></th>
                                                     <th data-sortable="true" data-type="text">Nombre</th>
                                                     <th data-sortable="false">Documento</th>
-                                                    <th data-breakpoints="xs">Teléfono corporativo</th>
+                                                    <th data-sortable="true">Cargo</th>
+                                                    <%-- <th data-breakpoints="xs">Teléfono corporativo</th>--%>
                                                     <%--<th data-breakpoints="xs sm">Teléfono personal</th>--%>
                                                     <%--<th data-breakpoints="xs sm md">Correo</th>--%>
                                                     <%--<th data-breakpoints="xs sm">Cargo</th>--%>
                                                     <th data-breakpoints="xs sm">Sede</th>
-                                                    <%--<th data-hide="phone,tablet">Cargo</th>--%>
+
                                                     <th data-type="date" data-breakpoints="xs sm">Cumpleaños</th>
                                                     <th class="text-nowrap" data-breakpoints="xs sm">Estado</th>
                                                     <%--<th data-breakpoints="all" data-title="Info"></th>--%>
@@ -262,7 +384,8 @@
                                                                 <img alt="image" src="img/empleados/<%# Eval("FotoEmpleado") %>"></td>
                                                             <td><a data-toggle="tab" href='#contact-<%# Eval("NombreEmpleado").ToString().Substring(0,3).ToUpper() %><%# Eval("DocumentoEmpleado") %>' class="client-link"><%# Eval("NombreEmpleado") %></a></td>
                                                             <td><%# Eval("DocumentoEmpleado") %></td>
-                                                            <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></td>
+                                                            <td><%# Eval("Cargo") %></td>
+                                                            <%-- <td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoCorporativo") %>" target="_blank"><%# Eval("TelefonoCorporativo") %></a></td>--%>
                                                             <%--<td><i class="fab fa-whatsapp m-r-xs font-bold"></i><a href="https://wa.me/57<%# Eval("TelefonoEmpleado") %>" target="_blank"><%# Eval("TelefonoEmpleado") %></a></td>--%>
                                                             <%--<td><i class="fa fa-envelope m-r-xs font-bold"></i><a href="mailto:<%# Eval("EmailCorporativo") %>" title="Enviar correo"><%# Eval("EmailCorporativo") %></a></td>--%>
                                                             <%--<td><a href="cargos" title="Ir a Cargos"><i class="fa fa-user-nurse m-r-xs font-bold"></i><%# Eval("Cargo") %></a></td>--%>
@@ -302,14 +425,41 @@
                                                                         width="120">
                                                                     <span class="label label-danger">Rh: <%# Eval("TipoSangre") %></span>
                                                                 </div>
-                                                                <p class="font-bold"><%# Eval("Cargo") %></p>
+                                                                <p class="font-bold text-center"><%# Eval("Cargo") %> - <%# Eval("NombreSede") %></p>
+
+
+                                                                <hr class="my-2">
+                                                                <p class="font-bold text-center">Acción del empleado</p>
 
                                                                 <div class="text-center">
 
-                                                                    <a href="javascript:void(0);" class="btn btn-xs btn-warning btnAscenso" data-doc='<%# Eval("DocumentoEmpleado") %>'>
-                                                                        <i class="fa fa-person-arrow-up-from-line m-r-xs"></i>Ascenso
-                                                                    </a><a runat="server" id="btnTraslado" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Traslados</a>
-                                                                    <a runat="server" id="btnCambioSalarial" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio salarial</a>
+
+
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-xs btn-warning btnMovimiento"
+                                                                        data-doc='<%# Eval("DocumentoEmpleado") %>'
+                                                                        data-nombre='<%# Eval("NombreEmpleado") %>'
+                                                                        data-tipo="CAMBIO_CARGO">
+                                                                        <i class="fa fa-user-edit m-r-xs"></i>Cambio cargo
+                                                                    </a>
+
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-xs btn-success btnMovimiento"
+                                                                        data-doc='<%# Eval("DocumentoEmpleado") %>'
+                                                                        data-nombre='<%# Eval("NombreEmpleado") %>'
+                                                                        data-tipo="CAMBIO_SALARIAL">
+                                                                        <i class="fa fa-dollar-sign m-r-xs"></i>Cambio salarial
+                                                                    </a>
+
+                                                                    <a href="javascript:void(0);"
+                                                                        class="btn btn-xs btn-info btnMovimiento"
+                                                                        data-doc='<%# Eval("DocumentoEmpleado") %>'
+                                                                        data-nombre='<%# Eval("NombreEmpleado") %>'
+                                                                        data-tipo="TRASLADO">
+                                                                        <i class="fa fa-exchange-alt m-r-xs"></i>Traslado
+                                                                    </a>
+
+
                                                                     <a runat="server" id="btnCambioContrato" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Cambio de contrato</a>
                                                                     <a runat="server" id="btnRetiro" href="#" class="btn btn-xs btn-warning"><i class="fa fa-person-running m-r-xs" visible="false"></i>Retiro</a>
 
@@ -322,6 +472,7 @@
                                                                         class='btn btn-xs btn-danger'><i class="fa fa-rotate m-r-xs"></i><%# Eval("Estado") %> (cambiar)
                                                                     </a>
                                                                 </div>
+                                                                <hr class="m-0">
                                                             </div>
                                                         </div>
                                                         <div class="client-detail">
@@ -570,6 +721,21 @@
             <uc1:rightsidebar runat="server" ID="rightsidebar1" />
         </div>
 
+
+        <%--        <script>
+
+        var documentoSeleccionado = "";
+
+        function abrirAscenso(doc) {
+
+            documentoSeleccionado = doc;
+
+            console.log("Documento recibido:", documentoSeleccionado);
+
+            $("#modalAscenso").modal("show");
+        }
+
+        </script>--%>
     </form>
 
     <!-- Mainly scripts -->
@@ -601,6 +767,8 @@
             $('#tabla').footable();
         });
     </script>
+
+    <!-- Gráficas -->
 
     <script>
         // Gráfico de Géneros
@@ -1256,10 +1424,13 @@
         });
 
     </script>
+
     <script>
         $(document).on("click", ".btnAscenso", function () {
 
             var documento = $(this).data("doc");
+            var nombreEmpleado = $(this).data("nombre");
+            $("#lblNombreEmpleado").text(nombreEmpleado);
 
             $("#txtDocumentoAscenso").val(documento);
 
@@ -1279,6 +1450,459 @@
 
                     $("#modalAscenso").modal("show");
                 }
+            });
+
+        });
+
+    </script>
+
+    <script>
+        $(document).on("click", ".btnAscenso", function () {
+
+            var documento = $(this).data("doc");
+
+            console.log("Documento detectado:", documento);
+
+            $("#hdDocumentoAscenso").val(documento);
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/ObtenerDatosEmpleado",
+                data: JSON.stringify({ documento: documento }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    var data = response.d;
+
+                    $("#txtCargoActual").val(data.Cargo);
+                    var sueldoActual = parseFloat(data.Sueldo);
+
+                    $("#txtSalarioActual").val(
+                        "$ " + sueldoActual.toLocaleString("es-CO")
+                    );
+                    $("#txtNuevoSalario").val("$ 0");
+
+                    $("#modalAscenso").modal("show");
+                }
+            });
+        });
+    </script>
+
+
+    <script>
+        function guardarCambioCargo() {
+
+            var documento = $("#hdDocumentoMovimiento").val();
+            var idNuevoCargo = parseInt($("#ddlNuevoCargo").val());
+
+            if (!idNuevoCargo || isNaN(idNuevoCargo)) {
+                alert("Seleccione un nuevo cargo.");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/InsertarCambioCargoEmpleado",
+                data: JSON.stringify({
+                    documento: documento,
+                    idNuevoCargo: idNuevoCargo
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalMovimientoEmpleado").modal("hide");
+
+                        Swal.fire({
+                            title: 'Cambio de cargo registrado',
+                            text: response.d.mensaje,
+                            icon: 'success',
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    } else {
+                        alert(response.d.mensaje);
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function guardarCambioSalarial() {
+
+            var documento = $("#hdDocumentoMovimiento").val();
+
+            var sueldoTexto = $("#txtNuevoSalario").val() || "";
+            sueldoTexto = sueldoTexto.replace(/\$/g, "").replace(/\./g, "").trim();
+
+            var nuevoSueldo = parseFloat(sueldoTexto);
+
+            if (isNaN(nuevoSueldo) || nuevoSueldo <= 0) {
+                alert("Ingrese un salario válido.");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/InsertarCambioSalarialEmpleado",
+                data: JSON.stringify({
+                    documento: documento,
+                    nuevoSueldo: nuevoSueldo
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalMovimientoEmpleado").modal("hide");
+
+                        Swal.fire({
+                            title: 'Cambio salarial registrado',
+                            text: response.d.mensaje,
+                            icon: 'success',
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    } else {
+                        alert(response.d.mensaje);
+                    }
+                }
+            });
+        }
+    </script>
+
+
+
+    <script>
+        function guardarTraslado() {
+
+            var documento = $("#hdDocumentoMovimiento").val();
+            var idNuevaSede = parseInt($("#ddlNuevaSede").val());
+            var idNuevoCanal = parseInt($("#ddlNuevoCanal").val());
+
+            if (!idNuevaSede || isNaN(idNuevaSede)) {
+                alert("Seleccione una sede válida.");
+                return;
+            }
+
+            if (!idNuevoCanal || isNaN(idNuevoCanal)) {
+                alert("Seleccione un canal de venta.");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/InsertarTrasladoEmpleado",
+                data: JSON.stringify({
+                    documento: documento,
+                    idNuevaSede: idNuevaSede,
+                    idNuevoCanal: idNuevoCanal
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalMovimientoEmpleado").modal("hide");
+
+                        Swal.fire({
+                            title: 'Traslado registrado',
+                            text: response.d.mensaje,
+                            icon: 'success',
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    } else {
+                        alert(response.d.mensaje);
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function guardarIngresoRapido() {
+
+            var tipoDocumento = $("#ddlTipoDocumentoNuevo").val();
+            var documento = $("#txtDocumentoNuevo").val();
+            var nombre = $("#txtNombreNuevo").val();
+            var correo = $("#txtCorreoNuevo").val();
+            var sede = $("#ddlSedeIngreso").val();
+            var canal = $("#ddlCanalNuevo").val();
+            var cargo = $("#ddlCargoIngreso").val();
+
+            if (!documento || !nombre) {
+                alert("Documento y nombre son obligatorios");
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/InsertarDatosBasicosEmpleado",
+                data: JSON.stringify({
+                    tipoDocumento: tipoDocumento,
+                    documento: documento,
+                    nombre: nombre,
+                    correo: correo,
+                    canal: canal,
+                    sede: sede,
+                    cargo: cargo
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    if (response.d.success) {
+
+                        $("#modalMovimientoEmpleado").modal("hide");
+
+                        Swal.fire({
+                            title: "Empleado creado",
+                            text: response.d.mensaje,
+                            icon: "success",
+                            timer: 2500,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    } else {
+                        alert(response.d.mensaje);
+                    }
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $(document).on("click", ".btnMovimiento", function () {
+
+            var documento = $(this).data("doc");
+            var nombreEmpleado = $(this).data("nombre");
+            var tipo = $(this).data("tipo");
+
+            $("#hdDocumentoMovimiento").val(documento);
+            $("#hdTipoMovimiento").val(tipo);
+            $("#lblNombreEmpleado").text(nombreEmpleado);
+
+            cargarDatosEmpleado(documento, tipo);
+        });
+    </script>
+
+    <script>
+        function cargarDatosEmpleado(documento, tipo) {
+
+            $.ajax({
+                type: "POST",
+                url: "Empleados.aspx/ObtenerDatosEmpleado",
+                data: JSON.stringify({ documento: documento }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    var data = response.d;
+
+                    $("#txtCargoActual").val(data.Cargo);
+
+                    var sueldoActual = parseFloat(data.Sueldo);
+                    $("#txtSalarioActual").val(
+                        "$ " + sueldoActual.toLocaleString("es-CO")
+                    );
+
+                    $("#txtSedeActual").val(data.Sede);
+
+                    $("#txtCanalActual").val(data.CanalVenta);
+
+                    configurarModalSegunTipo(tipo);
+
+                    $("#modalMovimientoEmpleado").modal("show");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function configurarModalSegunTipo(tipo) {
+
+            $(".seccionMovimiento").hide();
+
+            if (tipo === "CAMBIO_CARGO") {
+
+                $("#tituloModal").text("Cambio de cargo");
+
+                $("#btnGuardarMovimiento")
+                    .removeClass()
+                    .addClass("btn btn-warning");
+
+                $("#seccionCargo").show();
+                $("#seccionSalarioActual").show();
+            }
+
+            if (tipo === "CAMBIO_SALARIAL") {
+
+                $("#tituloModal").text("Cambio salarial");
+
+                $("#btnGuardarMovimiento")
+                    .removeClass()
+                    .addClass("btn btn-success");
+
+                $("#seccionSalarioActual").show();
+                $("#seccionSalario").show();
+
+                $("#txtNuevoSalario").val("$ 0");
+            }
+
+            if (tipo === "TRASLADO") {
+
+                $("#tituloModal").text("Traslado de empleado");
+
+                $("#btnGuardarMovimiento")
+                    .removeClass()
+                    .addClass("btn btn-info");
+
+                $("#seccionSedeActual").show();
+                $("#seccionTraslado").show();
+            }
+
+            if (tipo === "INGRESO_RAPIDO") {
+
+                $("#tituloModal").text("Nuevo ingreso rápido");
+
+                $("#btnGuardarMovimiento")
+                    .removeClass()
+                    .addClass("btn btn-primary");
+                $("#seccionCargoActual").hide();
+                $("#seccionIngresoRapido").show();
+
+            }
+        }
+    </script>
+
+    <script>
+        function guardarMovimiento() {
+
+            var tipo = $("#hdTipoMovimiento").val();
+
+            if (tipo === "CAMBIO_CARGO") {
+                guardarCambioCargo();
+            }
+
+            if (tipo === "CAMBIO_SALARIAL") {
+                guardarCambioSalarial();
+            }
+
+            if (tipo === "TRASLADO") {
+                guardarTraslado();
+            }
+            if (tipo === "INGRESO_RAPIDO") {
+                guardarIngresoRapido();
+            }
+
+        }
+    </script>
+
+    <script>
+        function formatCurrency(input) {
+
+            let value = input.value.replace(/\D/g, "");
+
+            if (value === "") {
+                input.value = "";
+                return;
+            }
+
+            let number = parseInt(value, 10);
+
+            input.value = "$ " + number.toLocaleString("es-CO");
+        }
+
+        function keepFormatted(input) {
+
+            if (input.value === "") return;
+
+            let value = input.value.replace(/\D/g, "");
+            let number = parseInt(value, 10);
+
+            input.value = "$ " + number.toLocaleString("es-CO");
+        }
+    </script>
+
+    <script>
+        function abrirIngresoRapido() {
+
+            $("#hdTipoMovimiento").val("INGRESO_RAPIDO");
+
+            configurarModalSegunTipo("INGRESO_RAPIDO");
+
+            $("#modalMovimientoEmpleado").modal("show");
+        }
+    </script>
+
+    <script>
+        $(document).on("click", ".btnIngresoRapido", function () {
+
+            $("#hdTipoMovimiento").val("INGRESO_RAPIDO");
+
+            configurarModalSegunTipo("INGRESO_RAPIDO");
+            $("#txtDocumentoNuevo").val("");
+            $("#txtNombreNuevo").val("");
+            $("#txtCorreoNuevo").val("");
+            txtCargoActual
+
+
+            $("#modalMovimientoEmpleado").modal("show");
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#txtDocumentoNuevo').on('change blur', function () {
+
+                var documento = $(this).val().trim();
+                if (documento.length === 0) return;
+
+                var url = 'https://pqrdsuperargo.supersalud.gov.co/api/api/adres/0/' + documento;
+
+                // limpiar campo nombre
+                $('#txtNombreNuevo').val('');
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+
+                    success: function (data) {
+
+                        var nombreCompleto =
+                            [data.nombre, data.s_nombre].filter(Boolean).join(' ') + ' ' +
+                            [data.apellido, data.s_apellido].filter(Boolean).join(' ');
+
+                        $('#txtNombreNuevo').val(nombreCompleto.toUpperCase());
+
+                    },
+
+                    error: function () {
+
+                        console.log("No se encontró información en ADRES");
+
+                    }
+                });
+
             });
 
         });

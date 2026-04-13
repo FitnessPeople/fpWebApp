@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -31,6 +32,7 @@ namespace fpWebApp
                         txbFechaNac.Attributes.Add("type", "date");
                         txbFechaInicio.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
+                        txbFechaExpedicion.Attributes.Add("type", "date");
                         txbEmail.Attributes.Add("type", "email");
                         txbEmailCorp.Attributes.Add("type", "email");
 
@@ -265,6 +267,20 @@ namespace fpWebApp
                     postedFile.SaveAs(filePath);
                     strFilename = nuevoNombre;
                 }
+                string placa = string.IsNullOrWhiteSpace(txbPlaca.Text) ? null  : txbPlaca.Text.Trim().ToUpper();
+
+                DateTime? fechaExpedicion = null;
+
+                if (DateTime.TryParse(txbFechaExpedicion.Text, out DateTime fechaTemp))
+                {
+                    fechaExpedicion = fechaTemp;
+                }
+                else if (!string.IsNullOrWhiteSpace(txbFechaExpedicion.Text))
+                {
+                    ltMensaje.Text = "Fecha de expedición inválida";
+                    return;
+                }
+                string nombre = ConvertirACapital(txbNombre.Text);
 
                 try
                 {
@@ -299,6 +315,7 @@ namespace fpWebApp
                         Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), 
                         Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()),
                         Convert.ToInt32(ddlProfesion.SelectedItem.Value.ToString()),
+                        "",
                         ddlNivelEstudio.SelectedItem.Value.ToString(),
                         Convert.ToInt32(txbEstratoSocioeconomico.Text.ToString()),
                         ddlTipoVivienda.SelectedItem.Value.ToString(),
@@ -307,12 +324,15 @@ namespace fpWebApp
                         ddlConsumoLicor.SelectedItem.Value.ToString(),
                         ddlMedioTransporte.SelectedItem.Value.ToString(),
                         ddlTipoSangre.SelectedItem.Value.ToString(),
+                        placa,
+                        "NA",
+                        fechaExpedicion,
+                        txbPersonaEncargada.Text,
+                        txbTelContacto.Text,
+                        ddlParentesco.SelectedItem.Value.ToString(),
                         Convert.ToInt32(Session["idUsuario"])
                         );
 
-                    //var respHist= cg.InsertarIngresoHistoricoNuevoUsuario(txbDocumento.Text.ToString().Trim(), Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()),
-                    //    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), ddlTipoContrato.SelectedItem.Value.ToString(),
-                    //    Convert.ToInt32(Session["idUsuario"].ToString()));
 
                     if (mensaje == "OK")
                     {
@@ -321,7 +341,7 @@ namespace fpWebApp
                         string script = @"
                             Swal.fire({
                                 title: 'El empleado se creo de forma exitosa',
-                                text: '',
+                                text: 'Gestión Humana - Fitness People',
                                 icon: 'success',
                                 timer: 3000, // 3 segundos
                                 showConfirmButton: false,
@@ -364,6 +384,16 @@ namespace fpWebApp
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                 }
             }
+        }
+
+        public static string ConvertirACapital(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                return texto;
+
+            TextInfo ti = CultureInfo.CurrentCulture.TextInfo;
+
+            return ti.ToTitleCase(texto.ToLower());
         }
     }
 }

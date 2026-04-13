@@ -229,7 +229,8 @@
                                                         <asp:ListItem Text="Estado de contratos empresariales" Value="18"></asp:ListItem>
                                                         <asp:ListItem Text="Empleados activos / inactivos" Value="18"></asp:ListItem>
                                                         <asp:ListItem Text="Usuarios activos / inactivos" Value="19"></asp:ListItem>
-                                                        <asp:ListItem Text="Roles y permisos" Value="20"></asp:ListItem>
+                                                        <asp:ListItem Text="Movimientos empleados" Value="20"></asp:ListItem>
+                                                        <asp:ListItem Text="Roles y permisos" Value="21"></asp:ListItem>
                                                     </asp:DropDownList>
                                                 </div>
                                                 <asp:RequiredFieldValidator ID="rfvTipoRep" runat="server" ControlToValidate="ddlTipoReporte"

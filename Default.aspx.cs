@@ -20,8 +20,7 @@ namespace fpWebApp
         }
 
         protected void btnIngresar_Click(object sender, EventArgs e)
-        {
-            //string usuario = txbEmail.Text.ToString() + ddlDominio.SelectedItem.Value.ToString();
+        {            
             string usuario = txbIdentificacion.Text.ToString();
             string clave = txbPassword.Text.ToString();
 
@@ -87,8 +86,7 @@ namespace fpWebApp
 
             try
             {
-                clasesglobales cg = new clasesglobales();
-                //DataTable dt1 = cg.ValidarUsuario(UserName, Password);
+                clasesglobales cg = new clasesglobales();                
                 DataTable dt = cg.ValidarUsuario(UserName, Password);
 
                 if (dt.Rows.Count > 0)

@@ -30,6 +30,7 @@ namespace fpWebApp
                         txbDocumento.Attributes.Add("type", "number");
                         txbTelefono.Attributes.Add("type", "number");
                         txbFechaNac.Attributes.Add("type", "date");
+                        txbFechaExpedicion.Attributes.Add("type", "date");
                         txbFechaInicio.Attributes.Add("type", "date");
                         txbFechaFinal.Attributes.Add("type", "date");
                         txbEmail.Attributes.Add("type", "email");
@@ -266,8 +267,15 @@ namespace fpWebApp
                     dtFecha = Convert.ToDateTime(dt.Rows[0]["FechaNacEmpleado"].ToString());
                 }
                 txbFechaNac.Text = dtFecha.ToString("yyyy-MM-dd");
-                txbCargo.Text = dt.Rows[0]["Cargo"].ToString();
-                txbProfesion.Text = dt.Rows[0]["Profesion"].ToString();
+
+
+                DateTime dtFechaExp = new DateTime();
+                if (dt.Rows[0]["FechaExpedicionCed"].ToString() != "")
+                {
+                    dtFecha = Convert.ToDateTime(dt.Rows[0]["FechaExpedicionCed"].ToString());
+                }
+                txbFechaExpedicion.Text = dtFechaExp.ToString("yyyy-MM-dd");
+
                 if (dt.Rows[0]["NivelEstudio"].ToString() != "")
                 {
                     ddlNivelEstudio.SelectedIndex = Convert.ToInt16(ddlNivelEstudio.Items.IndexOf(ddlNivelEstudio.Items.FindByText(dt.Rows[0]["NivelEstudio"].ToString())));
@@ -309,6 +317,18 @@ namespace fpWebApp
                 {
                     ddlTipoSangre.SelectedIndex = Convert.ToInt16(ddlTipoSangre.Items.IndexOf(ddlTipoSangre.Items.FindByText(dt.Rows[0]["TipoSangre"].ToString())));
                 }
+
+                txbPersonaEncargada.Text = dt.Rows[0]["NombreContactoEmergencia"].ToString();
+                txbTelContacto.Text = dt.Rows[0]["TelefonoContactoEmergencia"].ToString();
+
+                if (dt.Rows[0]["ParentescoContactoEmergencia"].ToString() != "")
+                {
+                    ddlParentesco.SelectedIndex = Convert.ToInt16(ddlParentesco.Items.IndexOf(ddlParentesco.Items.FindByText(dt.Rows[0]["ParentescoContactoEmergencia"].ToString())));
+                }
+
+                txbPlaca.Text = dt.Rows[0]["PlacaVehiculo"].ToString();
+
+
                 //DateTime dtFechaIni = Convert.ToDateTime(dt.Rows[0]["FechaInicio"].ToString());
 
                 DateTime dtFechaIni = dt.Rows[0]["FechaInicio"] == DBNull.Value
@@ -443,50 +463,47 @@ namespace fpWebApp
                 strFilename = nuevoNombre;
             }
 
+
+            // 📌 Archivo (foto)
+            //string strFilename = "";
+            //if (Request.Files["fileFoto"] != null && Request.Files["fileFoto"].ContentLength > 0)
+            //{
+            //    var file = Request.Files["fileFoto"];
+            //    strFilename = Guid.NewGuid().ToString() + System.IO.Path.GetExtension(file.FileName);
+            //    string path = Server.MapPath("~/images/empleados/") + strFilename;
+            //    file.SaveAs(path);
+            //}
+
+            // 📌 Fecha expedición (nullable)
+            DateTime? fechaExpedicion = null;
+            if (!string.IsNullOrWhiteSpace(txbFechaExpedicion.Text))
+            {
+                fechaExpedicion = Convert.ToDateTime(txbFechaExpedicion.Text);
+            }
+
+            // 📌 Sueldo limpio
+            decimal sueldo = 0;
+            if (!string.IsNullOrWhiteSpace(txbSueldo.Text))
+            {
+                sueldo = Convert.ToDecimal(Regex.Replace(txbSueldo.Text, @"[^\d]", ""));
+            }
+
+
             string strInitData = TraerData();
             try
             {
                 clasesglobales cg = new clasesglobales();
 
-                string mensaje = cg.ActualizarEmpleado(txbDocumento.Text.ToString(), 
-                    Convert.ToInt32(ddlTipoDocumento.SelectedItem.Value.ToString()), 
-                    txbNombre.Text.ToString(), 
-                    txbTelefono.Text.ToString(), 
-                    txbTelefonoCorp.Text.ToString(), 
-                    txbEmail.Text.ToString(), 
-                    txbEmailCorp.Text.ToString(), 
-                    txbDireccion.Text.ToString(), 
-                    Convert.ToInt32(ddlCiudadEmpleado.SelectedItem.Value.ToString()), 
-                    txbFechaNac.Text.ToString(), 
-                    strFilename, 
-                    txbContrato.Text.ToString(), 
-                    ddlTipoContrato.SelectedItem.Value.ToString(), 
-                    Convert.ToInt32(ddlEmpresasFP.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlSedes.SelectedItem.Value.ToString()), 
-                    txbFechaInicio.Text.ToString(), 
-                    txbFechaFinal.Text.ToString(), 
-                    Convert.ToInt32(Regex.Replace(txbSueldo.Text, @"[^\d]", "")), 
-                    ddlGrupo.SelectedItem.Value.ToString(), 
-                    Convert.ToInt32(ddlEps.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlFondoPension.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlArl.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlCajaComp.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlCesantias.SelectedItem.Value.ToString()), 
-                    rblEstado.Text.ToString(), 
-                    Convert.ToInt32(ddlGenero.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlEstadoCivil.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlCanalVenta.SelectedItem.Value.ToString()), 
-                    Convert.ToInt32(ddlCargo.SelectedItem.Value.ToString()),
-                    Convert.ToInt32(ddlProfesion.SelectedItem.Value.ToString()), 
-                    ddlNivelEstudio.SelectedItem.Value.ToString(),
-                    Convert.ToInt32(txbEstratoSocioeconomico.Text.ToString()), 
-                    ddlTipoVivienda.SelectedItem.Value.ToString(),
-                    Convert.ToInt32(txbNroPersonasNucleo.Text.ToString()), 
-                    ddlActividadExtra.SelectedItem.Value.ToString(),
-                    ddlConsumoLicor.SelectedItem.Value.ToString(),
-                    ddlMedioTransporte.SelectedItem.Value.ToString(), 
-                    ddlTipoSangre.SelectedItem.Value.ToString()
-                    );
+                string mensaje = cg.ActualizarEmpleado( txbDocumento.Text, Convert.ToInt32(ddlTipoDocumento.SelectedValue), txbNombre.Text,
+                    txbTelefono.Text, txbTelefonoCorp.Text, txbEmail.Text, txbEmailCorp.Text, txbDireccion.Text, Convert.ToInt32(ddlCiudadEmpleado.SelectedValue),
+                    txbFechaNac.Text, strFilename, txbContrato.Text, ddlTipoContrato.SelectedValue, Convert.ToInt32(ddlEmpresasFP.SelectedValue), Convert.ToInt32(ddlSedes.SelectedValue),
+                    txbFechaInicio.Text, txbFechaFinal.Text, sueldo, ddlGrupo.SelectedValue, Convert.ToInt32(ddlEps.SelectedValue),Convert.ToInt32(ddlFondoPension.SelectedValue),
+                    Convert.ToInt32(ddlArl.SelectedValue),Convert.ToInt32(ddlCajaComp.SelectedValue), Convert.ToInt32(ddlCesantias.SelectedValue),
+                    rblEstado.SelectedValue, Convert.ToInt32(ddlGenero.SelectedValue), Convert.ToInt32(ddlEstadoCivil.SelectedValue),Convert.ToInt32(ddlCanalVenta.SelectedValue),
+                    Convert.ToInt32(ddlCargo.SelectedValue), Convert.ToInt32(ddlProfesion.SelectedValue), ddlProfesion.SelectedItem.Text,
+                    ddlNivelEstudio.SelectedValue, Convert.ToInt32(txbEstratoSocioeconomico.Text), ddlTipoVivienda.SelectedValue, Convert.ToInt32(txbNroPersonasNucleo.Text),
+                    ddlActividadExtra.SelectedValue,ddlConsumoLicor.SelectedValue, ddlMedioTransporte.SelectedValue, ddlTipoSangre.SelectedValue, txbPlaca.Text,
+                    "", fechaExpedicion, txbPersonaEncargada.Text, txbTelContacto.Text, ddlParentesco.SelectedValue, Convert.ToInt32(Session["idUsuario"]) );
 
                 if (rblEstado.Text.ToString() == "Inactivo")
                 {
@@ -502,7 +519,7 @@ namespace fpWebApp
                     string script = @"
                         Swal.fire({
                             title: 'El empleado se actualizó de forma exitosa',
-                            text: 'Fitness People',
+                            text: 'Gestión Humana - Fitness People',
                             icon: 'success',
                             timer: 3000, // 3 segundos
                             showConfirmButton: false,
@@ -529,7 +546,7 @@ namespace fpWebApp
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
                 }
 
-                //Response.Redirect("empleados");
+                Response.Redirect("empleados");
 
 
             }

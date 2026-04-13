@@ -1,8 +1,11 @@
-﻿using System;
+﻿using iTextSharp.text.pdf.codec.wmf;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Web;
+using System.Web.Services.Description;
+using System.Web.UI;
 
 namespace fpWebApp
 {
@@ -14,7 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Empresas afiliadas");
+                    ValidarPermisos("Empresas convenio");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         divMensaje.Visible = true;
@@ -24,10 +27,11 @@ namespace fpWebApp
                     if (ViewState["CrearModificar"].ToString() == "1")
                     {
                         txbTelefonoPpal.Attributes.Add("type", "number");
-                        txbTelefonoSrio.Attributes.Add("type", "number");
-                        txbCelular.Attributes.Add("type", "number");
-                        txbFechaConvenio.Attributes.Add("type", "date");
-                        txbNroEmpleados.Attributes.Add("type", "number");
+                        //txbTelefonoSrio.Attributes.Add("type", "number");
+                        //txbCelular.Attributes.Add("type", "number");
+                        //txbFechaConvenio.Attributes.Add("type", "date");
+                        //txbFechaFinConvenio.Attributes.Add("type", "date");
+                        //txbNroEmpleados.Attributes.Add("type", "number");
                         CargarTipoDocumento();
                         CargarCiudad();
                         CargarEmpresa();
@@ -95,9 +99,9 @@ namespace fpWebApp
         {
             if (Request.QueryString.Count > 0)
             {
-                string strQuery = "SELECT * FROM EmpresasAfiliadas WHERE idEmpresaAfiliada = " + Request.QueryString["editid"].ToString();
-                clasesglobales cg1 = new clasesglobales();
-                DataTable dt = cg1.TraerDatos(strQuery);
+                clasesglobales cg = new clasesglobales();
+                DataTable dt = cg.ConsultarEmpresaAfiliadaPorId(Convert.ToInt32(Request.QueryString["editid"].ToString()));
+                string contenidoEditor = hiddenEditor.Value;
 
                 if (dt.Rows.Count > 0)
                 {
@@ -105,31 +109,26 @@ namespace fpWebApp
                     txbRazonSocial.Text = dt.Rows[0]["RazonSocial"].ToString();
                     txbDocumento.Text = dt.Rows[0]["DocumentoEmpresa"].ToString();
                     ddlTipoDocumento.SelectedIndex = Convert.ToInt16(dt.Rows[0]["idTipoDocumento"].ToString());
-                    txbTelefonoPpal.Text = dt.Rows[0]["TelefonoPpal"].ToString();
-                    txbTelefonoSrio.Text = dt.Rows[0]["TelefonoSrio"].ToString();
-                    txbCelular.Text = dt.Rows[0]["CelularEmpresa"].ToString();
+                    txbDV.Text = dt.Rows[0]["digitoverificacion"].ToString();
+                    txbNombreContacto.Text = dt.Rows[0]["NombreContacto"].ToString();
+                    txbCargoContacto.Text = dt.Rows[0]["CargoContacto"].ToString();
+                    txbTelefonoPpal.Text = dt.Rows[0]["CelularEmpresa"].ToString();
                     txbCorreo.Text = dt.Rows[0]["CorreoEmpresa"].ToString();
+
+                    hiddenEditor.Value = dt.Rows[0]["Descripcion"].ToString();
                     txbDireccion.Text = dt.Rows[0]["DireccionEmpresa"].ToString();
                     ddlCiudadEmpresa.SelectedIndex = Convert.ToInt16(ddlCiudadEmpresa.Items.IndexOf(ddlCiudadEmpresa.Items.FindByValue(dt.Rows[0]["idCiudadEmpresa"].ToString())));
-                    txbFechaConvenio.Attributes.Add("type", "date");
 
-                    DateTime dtFecha = Convert.ToDateTime(dt.Rows[0]["FechaConvenio"].ToString());
-                    txbFechaConvenio.Text = dtFecha.ToString("yyyy-MM-dd");
-                    txbNroEmpleados.Text = dt.Rows[0]["NroEmpleados"].ToString();
-                    ddlTipoNegociacion.SelectedIndex = Convert.ToInt16(ddlTipoNegociacion.Items.IndexOf(ddlTipoNegociacion.Items.FindByText(dt.Rows[0]["TipoNegociacion"].ToString())));
-                    ddlDiasCredito.SelectedIndex = Convert.ToInt16(ddlDiasCredito.Items.IndexOf(ddlDiasCredito.Items.FindByText(dt.Rows[0]["DiasCredito"].ToString())));
+                    string estado = dt.Rows[0]["EstadoEmpresa"].ToString();
 
-                    if (dt.Rows[0]["Contrato"].ToString() != "")
+                    if (rblEstado.Items.FindByValue(estado) != null)
                     {
-                        //imgFoto.ImageUrl = "img/afiliados/" + dt.Rows[0]["FotoAfiliado"].ToString();
-                        ViewState["Contrato"] = dt.Rows[0]["Contrato"].ToString();
-                        ltContrato.Text = "<a class=\"btn btn-block btn-social btn-reddit dropdown-toggle\" data-toggle=\"modal\" " +
-                            "href=\"#\" data-target=\"#myModal2\" " +
-                            "data-file=\"" + ViewState["Contrato"].ToString() + "\">" +
-                            "<span class=\"fa fa-file-pdf\"></span> " + ViewState["Contrato"].ToString() + " " +
-                            "<a>";
+                        rblEstado.SelectedValue = estado;
                     }
-                    rblEstado.Items.FindByValue(dt.Rows[0]["EstadoEmpresa"].ToString()).Selected = true;
+
+
+
+
                 }
                 else
                 {
@@ -148,66 +147,77 @@ namespace fpWebApp
 
         protected void btnActualizar_Click(object sender, EventArgs e)
         {
-            string strFilename = "";
-            // Actualiza la tabla EmpresasAfiliadas
-            if (ViewState["Contrato"] != null)
-            {
-                strFilename = ViewState["Contrato"].ToString();
-            }
 
-            HttpPostedFile postedFile = Request.Files["fileConvenio"];
 
-            if (postedFile != null && postedFile.ContentLength > 0)
-            {
-                //Save the File.
-                string filePath = Server.MapPath("img//contratos//") + Path.GetFileName(postedFile.FileName);
-                postedFile.SaveAs(filePath);
-                strFilename = postedFile.FileName;
-            }
-
-            string strInitData = TraerData();
+            clasesglobales cg1 = new clasesglobales();
+            string respuesta = string.Empty;
             try
             {
-                string strQuery = "UPDATE EmpresasAfiliadas SET " +
-                    "NombreComercial = '" + txbNombreCcial.Text.ToString().Replace("'", "").Replace("<", "").Replace(">", "").Replace("=", "").Trim() + "', " +
-                    "RazonSocial = '" + txbRazonSocial.Text.ToString().Replace("'", "").Replace("<", "").Replace(">", "").Replace("=", "").Trim() + "', " +
-                    "DocumentoEmpresa = '" + txbDocumento.Text.ToString().Trim() + "', " +
-                    "idTipoDocumento = " + ddlTipoDocumento.SelectedItem.Value.ToString() + ", " +
-                    "TelefonoPpal = '" + txbTelefonoPpal.Text.ToString().Replace("e", "").Replace("+", "").Replace("-", "").Replace(".", "") + "', " +
-                    "TelefonoSrio = '" + txbTelefonoSrio.Text.ToString().Replace("e", "").Replace("+", "").Replace("-", "").Replace(".", "") + "', " +
-                    "CelularEmpresa = '" + txbCelular.Text.ToString().Replace("e", "").Replace("+", "").Replace("-", "").Replace(".", "") + "', " +
-                    "CorreoEmpresa = '" + txbCorreo.Text.ToString().Trim() + "', " +
-                    "DireccionEmpresa = '" + txbDireccion.Text.ToString().Trim() + "', " +
-                    "idCiudadEmpresa = '" + ddlCiudadEmpresa.SelectedItem.Value.ToString() + "', " +
-                    "FechaConvenio = '" + txbFechaConvenio.Text.ToString() + "', " +
-                    "NroEmpleados = " + txbNroEmpleados.Text.ToString().Replace("e", "").Replace("+", "").Replace("-", "").Replace(".", "") + ", " +
-                    "Contrato = '" + strFilename + "', " +
-                    "TipoNegociacion = '" + ddlTipoNegociacion.SelectedItem.Value.ToString() + "', " +
-                    "DiasCredito = '" + ddlDiasCredito.SelectedItem.Value.ToString() + "', " +
-                    "EstadoEmpresa = '" + rblEstado.Text.ToString() + "' " +
-                    "WHERE idEmpresaAfiliada = " + Request.QueryString["editid"].ToString();
+                DataTable dt = cg1.ConsultarEmpresaAfiliadaPorId(Convert.ToInt32(Request.QueryString["editid"].ToString()));
+                string strInitData = TraerData();
+
+                DateTime hoy = DateTime.Now;
+
+                string estado = rblEstado.SelectedValue;
+
+
 
                 clasesglobales cg = new clasesglobales();
-                string mensaje = cg.TraerDatosStr(strQuery);
-                
+                respuesta = cg.EditarEmpresaAfiliada(Convert.ToInt32(Request.QueryString["editid"].ToString()), txbDocumento.Text.Trim(), Convert.ToInt32(ddlTipoDocumento.SelectedValue),
+                    txbNombreCcial.Text.Trim().ToUpper(), txbRazonSocial.Text.Trim().ToUpper(), txbNombreContacto.Text.Trim().ToUpper(),  txbCargoContacto.Text.Trim().ToUpper(),
+                    txbTelefonoPpal.Text.Trim(), txbCorreo.Text.Trim(), txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadEmpresa.SelectedValue), "", estado,
+                    txbDV.Text.Trim(), hiddenEditor.Value, Convert.ToInt32(Session["idUsuario"]) );
+
                 string strNewData = TraerData();
 
-                
-                cg.InsertarLog(Session["idusuario"].ToString(), "empresas afiliadas", "Modifica", "El usuario modificó datos a la empresa afiliada con documento: " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+                cg.InsertarLog(Session["idusuario"].ToString(), "empresas convenio", "Modifica", "El usuario modificó datos a la empresa afiliada con documento: " + txbDocumento.Text.ToString() + ".", strInitData, strNewData);
+
+                if (respuesta != "OK")
+                {
+                    string script = @"
+                            Swal.fire({
+                                title: 'Error',
+                                text: '" + respuesta.Replace("'", "\\'") + @"',
+                                icon: 'error'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                            
+                                }
+                            });
+                        ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorMensajeModal", script, true);
+                }
+                else
+                {
+                    string script = @"
+                            Swal.fire({
+                                title: 'La empresa se actualizó de forma exitosa',
+                                text: 'Corporativo - Fitness People',
+                                icon: 'success',
+                                timer: 3000, // 3 segundos
+                                showConfirmButton: false,
+                                timerProgressBar: true
+                            }).then(() => {
+                                window.location.href = 'empresasconvenio';
+                            });
+                            ";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+
+                    cg.InsertarLog(Session["idusuario"].ToString(), "empresas convenio", "Nuevo", "El usuario creó una nueva empresa convenio con documento: " + txbDocumento.Text.ToString() + ".", "", "");
+                }
             }
             catch (SqlException ex)
             {
-                string mensaje = ex.Message;               
+                respuesta = ex.Message;
             }
-
-            Response.Redirect("empresasafiliadas");
         }
+
 
         private string TraerData()
         {
-            string strQuery = "SELECT * FROM EmpresasAfiliadas WHERE idEmpresaAfiliada = " + Request.QueryString["editid"].ToString();
+
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            DataTable dt = cg.ConsultarEmpresaAfiliadaPorId(Convert.ToInt32(Request.QueryString["editid"].ToString()));
 
             string strData = "";
             foreach (DataColumn column in dt.Columns)

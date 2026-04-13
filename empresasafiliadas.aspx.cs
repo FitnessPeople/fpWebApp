@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
@@ -39,8 +40,8 @@ namespace fpWebApp
                         {
                             btnAgregar.Visible = true;
                         }
-                    }
-                    listaEmpresasAfiliadas();
+                        listaEmpresasAfiliadas();
+                    }                    
                 }
                 else
                 {
@@ -74,17 +75,23 @@ namespace fpWebApp
 
         private void listaEmpresasAfiliadas()
         {
-            string strQuery = "SELECT *, " +
-                "IF(EstadoEmpresa='Activo','success','danger') badge " +
-                "FROM EmpresasAfiliadas ea, ciudades c " +
-                "WHERE ea.idCiudadEmpresa = c.idCiudad ";
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.TraerDatos(strQuery);
+            try
+            {
+                DataTable dt = cg.ConsultarEmpresasAfiliadas();
 
-            rpEmpresasAfiliadas.DataSource = dt;
-            rpEmpresasAfiliadas.DataBind();
+                rpEmpresasAfiliadas.DataSource = dt;
+                rpEmpresasAfiliadas.DataBind();
 
-            dt.Dispose();
+                dt.Dispose();
+            }
+            catch (Exception ex)
+            {
+                int idLog = cg.ManejarError(ex, this.GetType().Name, Convert.ToInt32(Session["idUsuario"]));
+                MostrarAlerta("Error de proceso", "Ocurrió un inconveniente. Si persiste, comuníquese con sistemas. Código de error:" + idLog, "error");
+
+            }
+
         }
 
         protected void rpEmpresasAfiliadas_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -137,6 +144,26 @@ namespace fpWebApp
             {
                 Response.Write("<script>alert('Error al exportar: " + ex.Message + "');</script>");
             }
+        }
+
+        private void MostrarAlerta(string titulo, string mensaje, string tipo)
+        {
+            clasesglobales cg = new clasesglobales();
+
+                // tipo puede ser: 'success', 'error', 'warning', 'info', 'question'
+                string script = $@"
+                Swal.hideLoading();
+                Swal.fire({{
+                title: '{titulo}',
+                text: '{mensaje}',
+                icon: '{tipo}', 
+                allowOutsideClick: false, 
+                showCloseButton: false, 
+                confirmButtonText: 'Aceptar'
+            }});";
+
+                ScriptManager.RegisterStartupScript(this, GetType(), "SweetAlert", script, true);
+    
         }
     }
 }

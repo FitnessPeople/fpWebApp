@@ -17,7 +17,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Empresas afiliadas");
+                    ValidarPermisos("Empresas convenio");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         divMensaje.Visible = true;
@@ -29,11 +29,11 @@ namespace fpWebApp
                         if (ViewState["CrearModificar"].ToString() == "1")
                         {
                             txbTelefonoPpal.Attributes.Add("type", "number");
-                            txbCorreoPagador.Attributes.Add("type", "email");
-                            txbCelularPagador.Attributes.Add("type", "number");
-                            txbFechaConvenio.Attributes.Add("type", "date");
-                            txbFechaFinConvenio.Attributes.Add("type", "date");
-                            txbNroEmpleados.Attributes.Add("type", "number");
+                            //txbCorreoPagador.Attributes.Add("type", "email");
+                            //txbCelularPagador.Attributes.Add("type", "number");
+                            //txbFechaConvenio.Attributes.Add("type", "date");
+                            //txbFechaFinConvenio.Attributes.Add("type", "date");
+                            //txbNroEmpleados.Attributes.Add("type", "number");
                             CargarTipoDocumento();
                             CargarCiudad();
                             btnAgregar.Visible = true;
@@ -145,16 +145,14 @@ namespace fpWebApp
             clasesglobales cg = new clasesglobales();
             bool respuesta;
             string mensaje;
+
+            DateTime hoy = DateTime.Now;
             try
             {
-                mensaje = cg.InsertarEmpresaAfiliada( txbDocumento.Text.Trim(), txbDV.Text.Trim(), Convert.ToInt32(ddlTipoDocumento.SelectedValue),
-                    txbNombreCcial.Text.Trim().ToUpper(), txbRazonSocial.Text.Trim().ToUpper(), Convert.ToDateTime(txbFechaConvenio.Text), 
-                    string.IsNullOrEmpty(txbFechaFinConvenio.Text) ? (DateTime?)null: Convert.ToDateTime(txbFechaFinConvenio.Text),
-                    txbNombreContacto.Text.Trim().ToUpper(), txbCargoContacto.Text.Trim().ToUpper(), txbTelefonoPpal.Text.Trim(), txbCorreo.Text.Trim(),
-                    txbNombrepagador.Text.Trim().ToUpper(),txbCelularPagador.Text.Trim(),txbCorreoPagador.Text.Trim(), txbDireccion.Text.Trim(),
-                    Convert.ToInt32(ddlCiudadEmpresa.SelectedValue), Convert.ToInt32(txbNroEmpleados.Text), ddlTipoNegociacion.SelectedValue,
-                    Convert.ToInt32(ddlDiasCredito.SelectedValue), strFilenameContrato, "", strFilenameCamara, strFilenameRut, strFilenameCedRep,
-                    rblActivo.SelectedValue, Convert.ToInt32(Session["IdUsuario"]), contenidoEditor,out respuesta,out mensaje);
+                mensaje = cg.InsertarEmpresaAfiliada(  txbDocumento.Text.Trim(), txbDV.Text.Trim(), Convert.ToInt32(ddlTipoDocumento.SelectedValue),
+                    txbNombreCcial.Text.Trim().ToUpper(), txbRazonSocial.Text.Trim().ToUpper(), txbNombreContacto.Text.Trim().ToUpper(), txbCargoContacto.Text.Trim().ToUpper(),
+                    txbTelefonoPpal.Text.Trim(), txbCorreo.Text.Trim(), txbDireccion.Text.Trim(), Convert.ToInt32(ddlCiudadEmpresa.SelectedValue),  "",
+                    contenidoEditor, Convert.ToInt32(Session["IdUsuario"]),   out respuesta, out mensaje );
 
                 if (!respuesta)
                 {                    
@@ -176,13 +174,13 @@ namespace fpWebApp
                     string script = @"
                             Swal.fire({
                                 title: 'La empresa convenio se creó de forma exitosa',
-                                text: '',
+                                text: 'Corporativo - Fitness People',
                                 icon: 'success',
                                 timer: 3000, // 3 segundos
                                 showConfirmButton: false,
                                 timerProgressBar: true
                             }).then(() => {
-                                window.location.href = 'empresasafiliadas';
+                                window.location.href = 'empresasconvenio';
                             });
                             ";
                     ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);

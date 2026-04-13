@@ -72,6 +72,7 @@ namespace fpWebApp
                         VentasWeb();
                         VentasCounter();
                         TotalDebitosAutomaticos();
+                        TotalPagosUnicos();
                     }
                 }
                 else
@@ -635,7 +636,7 @@ namespace fpWebApp
                 AND DATE(pa.FechaHoraPago) 
                 BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
                 AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
-                AND u.idUsuario = 152";
+                AND u.idUsuario <> 156";
             }
             else
             {
@@ -650,7 +651,7 @@ namespace fpWebApp
                 AND DATE(pa.FechaHoraPago) 
                 BETWEEN IFNULL(NULLIF('" + txbFechaIni.Value.ToString() + @"', ''), DATE_FORMAT(CURDATE(), '%Y-%m-01')) 
                 AND IFNULL(NULLIF('" + txbFechaFin.Value.ToString() + @"', ''), CURDATE()) 
-                AND u.idUsuario = 152 
+                AND u.idUsuario <> 156 
                 AND ap.idPlan = " + ddlPlanes.SelectedValue.ToString();
             }
                 
@@ -673,51 +674,68 @@ namespace fpWebApp
 
         private void TotalDebitosAutomaticos()
         {
-            string strQuery = @"SELECT 
-                    SUM(CASE WHEN icono = 'rotate' THEN 1 ELSE 0 END) AS CantidadRotate,
-                    SUM(CASE WHEN icono = 'rotate' THEN valor ELSE 0 END) AS TotalRotate,
-    
-                    SUM(CASE WHEN icono = 'star' THEN 1 ELSE 0 END) AS CantidadStar,
-                    SUM(CASE WHEN icono = 'star' THEN valor ELSE 0 END) AS TotalStar
+            string strQuery = $@"SELECT 
+                                SUM(CASE WHEN ppa.FechaHoraPago > t.PrimeraFecha THEN 1 ELSE 0 END) AS CantidadRecurrencias,
+                                SUM(CASE WHEN ppa.FechaHoraPago > t.PrimeraFecha THEN ppa.valor ELSE 0 END) AS TotalRecurrencias,
 
-                FROM (
-                    SELECT  
-                        ppa.valor,
-                        IF(
-                            MONTH(ap.FechaInicioPlan)=MONTH(ppa.fechaHoraPago) 
-                            OR (
-                                MONTH(ap.FechaInicioPlan) = MONTH(DATE_ADD(ppa.fechaHoraPago, INTERVAL 1 MONTH))
-                                AND YEAR(ap.FechaInicioPlan) = YEAR(DATE_ADD(ppa.fechaHoraPago, INTERVAL 1 MONTH))
-                                AND DAY(ap.FechaInicioPlan) BETWEEN 1 AND 3
-                            ),
-                            'star',
-                            'rotate'
-                        ) AS icono
-
-                    FROM pagosplanafiliado ppa
-                        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
-                        INNER JOIN planes p ON p.idPlan = ap.idPlan 
-
-                    WHERE p.debitoAutomatico = 1 
-                        AND (4 IS NULL OR ppa.idMedioPago = 4)
-                        AND DATE(ppa.FechaHoraPago) BETWEEN '" + txbFechaIni.Value.ToString() + @"' AND '" + txbFechaFin.Value.ToString() + @"'  
-                        AND (0 = 0 OR ap.idPlan = 0)
-                ) AS t;";
+                                SUM(CASE WHEN ppa.FechaHoraPago = t.PrimeraFecha THEN 1 ELSE 0 END) AS CantidadNuevos,
+                                SUM(CASE WHEN ppa.FechaHoraPago = t.PrimeraFecha THEN ppa.valor ELSE 0 END) AS TotalNuevos
+                                FROM PagosPlanAfiliado ppa
+                                INNER JOIN (
+                                    SELECT 
+                                        idAfiliadoPlan,
+                                        MIN(FechaHoraPago) AS PrimeraFecha
+                                    FROM PagosPlanAfiliado
+                                    GROUP BY idAfiliadoPlan
+                                ) t ON t.idAfiliadoPlan = ppa.idAfiliadoPlan
+                                INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
+                                INNER JOIN Planes p ON p.idPlan = ap.idPlan
+                                WHERE DATE(ppa.FechaHoraPago) BETWEEN '{txbFechaIni.Value.ToString()}' AND '{txbFechaFin.Value.ToString()}' 
+                                AND p.debitoAutomatico = 1;";
             
             clasesglobales cg = new clasesglobales();
             DataTable dt = cg.TraerDatos(strQuery);
 
             if (dt.Rows.Count > 0)
             {
-                ltCuantos4.Text = "$ " + String.Format("{0:N0}", dt.Rows[0]["TotalRotate"]);
-                ltRegistros4.Text = dt.Rows[0]["CantidadRotate"].ToString();
+                ltCuantos4.Text = "$ " + String.Format("{0:N0}", dt.Rows[0]["TotalRecurrencias"]);
+                ltRegistros4.Text = dt.Rows[0]["CantidadRecurrencias"].ToString();
 
-                ltCuantos5.Text = "$ " + String.Format("{0:N0}", dt.Rows[0]["TotalStar"]);
-                ltRegistros5.Text = dt.Rows[0]["CantidadStar"].ToString();
+                ltCuantos5.Text = "$ " + String.Format("{0:N0}", dt.Rows[0]["TotalNuevos"]);
+                ltRegistros5.Text = dt.Rows[0]["CantidadNuevos"].ToString();
             }
 
-            ltCuantos6.Text = "$ 0";
-            ltRegistros6.Text = "0";
+            dt.Dispose();
+        }
+
+        private void TotalPagosUnicos()
+        {
+            string strQuery = $@"SELECT 
+                                    COUNT(*) AS CantidadNuevosPagosUnicos,
+                                    SUM(ppa.valor) AS IngresosNuevosPagosUnicos
+                                FROM PagosPlanAfiliado ppa 
+                                INNER JOIN AfiliadosPlanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan 
+                                INNER JOIN Planes p ON p.idPlan = ap.idPlan 
+                                WHERE DATE(ppa.FechaHoraPago) BETWEEN '{txbFechaIni.Value.ToString()}' AND '{txbFechaFin.Value.ToString()}' 
+                                  AND p.debitoAutomatico = 0
+                                  AND ppa.fechaHoraPago = (
+                                        SELECT MIN(ppa2.fechaHoraPago) 
+                                        FROM PagosPlanAfiliado ppa2 
+                                        WHERE ppa2.idAfiliadoPlan = ppa.idAfiliadoPlan
+                                  );";
+
+            clasesglobales cg = new clasesglobales();
+            DataTable dt = cg.TraerDatos(strQuery);
+
+            if (dt.Rows.Count > 0)
+            {
+                int ingresos = Convert.ToInt32(dt.Rows[0]["IngresosNuevosPagosUnicos"] == DBNull.Value
+                    ? 0
+                    : Convert.ToDecimal(dt.Rows[0]["IngresosNuevosPagosUnicos"]));
+
+                ltCuantos6.Text = "$ " + String.Format("{0:N0}", ingresos);
+                ltRegistros6.Text = dt.Rows[0]["CantidadNuevosPagosUnicos"].ToString();
+            }
 
             dt.Dispose();
         }
@@ -897,22 +915,36 @@ namespace fpWebApp
             try
             {
                 // TODO: Arreglar datos quemados
-                string consultaSQL = @"
-                    SELECT a.DocumentoAfiliado AS 'Documento de Afiliado', CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS 'Nombre de Afiliado', 
-                    pa.Valor AS 'Valor', pa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
-                    pa.Banco AS 'Entidad Bancaría', pa.FechaHoraPago AS 'Fecha de Pago', pa.estadoPago AS 'Estado', 
-                    u.NombreUsuario AS 'Nombre de Usuario', cv.NombreCanalVenta AS 'Canal de Venta' 
-                    FROM pagosplanafiliado pa
-                    INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = pa.idAfiliadoPlan
-                    INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
-                    INNER JOIN usuarios u ON u.idUsuario = pa.idUsuario  
-                    INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
-                    INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
-                    INNER JOIN mediosdepago mp ON mp.idMedioPago = pa.idMedioPago 
-                    WHERE DATE(pa.FechaHoraPago) 
-                    BETWEEN '"  + txbFechaIni.Value.ToString() + @"' 
-                    AND '"  + txbFechaFin.Value.ToString() + @"'  
-                    ORDER BY pa.FechaHoraPago DESC;";
+                string consultaSQL = $@"SELECT a.DocumentoAfiliado AS 'Documento de Afiliado', CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS 'Nombre de Afiliado', 
+                                        p.nombrePlan AS 'Nombre de Plan', ppa.Valor AS 'Valor', ppa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
+                                        ppa.Banco AS 'Entidad Bancaría', ppa.FechaHoraPago AS 'Fecha de Pago', ppa.estadoPago AS 'Estado', 
+                                        u.NombreUsuario AS 'Nombre de Usuario', cv.NombreCanalVenta AS 'Canal de Venta', 
+                                        CASE 
+                                            WHEN ppa.FechaHoraPago = (
+                                                SELECT MIN(ppa2.FechaHoraPago)
+                                                FROM pagosplanafiliado ppa2
+                                                WHERE ppa2.idAfiliadoPlan = ppa.idAfiliadoPlan
+                                            )
+                                            THEN 'Nuevo'
+
+                                            WHEN ppa.FechaHoraPago > (
+                                                SELECT MIN(ppa2.FechaHoraPago)
+                                                FROM pagosplanafiliado ppa2
+                                                WHERE ppa2.idAfiliadoPlan = ppa.idAfiliadoPlan
+                                            )
+                                            THEN 'Recurrencia'
+                                        END AS 'Tipo Débito Automático' 
+                                        FROM pagosplanafiliado ppa
+                                        INNER JOIN afiliadosplanes ap ON ap.idAfiliadoPlan = ppa.idAfiliadoPlan
+                                        INNER JOIN afiliados a ON a.idAfiliado = ap.idAfiliado    
+                                        INNER JOIN usuarios u ON u.idUsuario = ppa.idUsuario  
+                                        INNER JOIN empleados e ON e.DocumentoEmpleado = u.idEmpleado
+                                        INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
+                                        INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
+                                        INNER JOIN planes p ON p.idPlan = ap.idPlan 
+                                        WHERE DATE(ppa.FechaHoraPago) BETWEEN '{txbFechaIni.Value.ToString()}' AND '{txbFechaFin.Value.ToString()}' 
+                                        AND p.debitoAutomatico = 1 
+                                        ORDER BY ppa.FechaHoraPago DESC;";
 
                 clasesglobales cg = new clasesglobales();
                 DataTable dt = cg.TraerDatos(consultaSQL);
@@ -974,6 +1006,7 @@ namespace fpWebApp
             VentasCounter();
             VentasWeb();
             TotalDebitosAutomaticos();
+            TotalPagosUnicos();
             //}
             //else
             //{

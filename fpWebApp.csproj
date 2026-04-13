@@ -262,6 +262,7 @@
     <Content Include="biodispositivos.aspx" />
     <Content Include="biopersonas.aspx" />
     <Content Include="blogs.aspx" />
+    <Content Include="bonificaciones.aspx" />
     <Content Include="cajascomp.aspx" />
     <Content Include="calendar.html" />
     <Content Include="calendariofpadmin.aspx" />
@@ -477,6 +478,7 @@
     <Content Include="embajadores.aspx" />
     <Content Include="empleados.aspx" />
     <Content Include="empresasafiliadas.aspx" />
+    <Content Include="empresasconvenio.aspx" />
     <Content Include="eps.aspx" />
     <Content Include="especialistas.aspx" />
     <Content Include="estacionalidad.aspx" />
@@ -610,6 +612,7 @@
     <Content Include="incapacidades.aspx" />
     <Content Include="incapacidadesAfil.aspx" />
     <Content Include="inicio.aspx" />
+    <Content Include="inscripcionesclases.aspx" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\bootstrap.min.js" />
     <Content Include="js\demo\chartjs-demo.js" />
@@ -1189,6 +1192,13 @@
     <Compile Include="blogs.aspx.designer.cs">
       <DependentUpon>blogs.aspx</DependentUpon>
     </Compile>
+    <Compile Include="bonificaciones.aspx.cs">
+      <DependentUpon>bonificaciones.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="bonificaciones.aspx.designer.cs">
+      <DependentUpon>bonificaciones.aspx</DependentUpon>
+    </Compile>
     <Compile Include="cajascomp.aspx.cs">
       <DependentUpon>cajascomp.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1424,6 +1434,9 @@
     </Compile>
     <Compile Include="controles\graficosLidAsis.ascx.designer.cs">
       <DependentUpon>graficosLidAsis.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="controles\HandlerDocumentos.ashx.cs">
+      <DependentUpon>HandlerDocumentos.ashx</DependentUpon>
     </Compile>
     <Compile Include="controles\header.ascx.cs">
       <DependentUpon>header.ascx</DependentUpon>
@@ -1780,6 +1793,13 @@
     <Compile Include="empresasafiliadas.aspx.designer.cs">
       <DependentUpon>empresasafiliadas.aspx</DependentUpon>
     </Compile>
+    <Compile Include="empresasconvenio.aspx.cs">
+      <DependentUpon>empresasconvenio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="empresasconvenio.aspx.designer.cs">
+      <DependentUpon>empresasconvenio.aspx</DependentUpon>
+    </Compile>
     <Compile Include="eps.aspx.cs">
       <DependentUpon>eps.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1992,6 +2012,13 @@
     </Compile>
     <Compile Include="inicio.aspx.designer.cs">
       <DependentUpon>inicio.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="inscripcionesclases.aspx.cs">
+      <DependentUpon>inscripcionesclases.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="inscripcionesclases.aspx.designer.cs">
+      <DependentUpon>inscripcionesclases.aspx</DependentUpon>
     </Compile>
     <Compile Include="liquidacionesgeneradas.aspx.cs">
       <DependentUpon>liquidacionesgeneradas.aspx</DependentUpon>
@@ -2508,6 +2535,7 @@
     <Content Include="docs\traspasos\Ori_2206_Des_2207_Logística.pdf" />
     <Content Include="docs\traspasos\Ori_2336_Des_2260_Fitness People 250425-1.pdf" />
     <Content Include="docs\traspasos\RutActualizadoChristian.pdf" />
+    <Content Include="controles\HandlerDocumentos.ashx" />
     <None Include="packages.config" />
     <Content Include="UploadImage.ashx" />
     <Content Include="UploadFile.ashx" />

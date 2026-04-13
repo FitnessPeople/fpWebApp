@@ -14,7 +14,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Fitness People | CRM Contactos / Empresas</title>
+    <title>Fitness People | CRM Contactos</title>
 
     <link href="css/bootstrap.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet" />
@@ -73,7 +73,7 @@
         function changeClass() {
             var element1 = document.querySelector("#listacontactoscrm");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#crm");
+            var element2 = document.querySelector("#gestioncomercial");
             element2.classList.remove("collapse");
         }
     </script>
@@ -253,7 +253,7 @@
                     <h2><i class="fa fa-user-tie text-success m-r-sm"></i>CRM Lista</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><strong>CRM / Lista contactos CRM</strong></li>
+                        <li class="active"><strong> Gestión Comercial / Lista contactos CRM</strong></li>
                     </ol>
                 </div>
                 <div class="col-sm-2">
@@ -357,23 +357,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <%--                                                <div class="row">
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <i class="fa fa-dollar text-info"></i>
-                                                            <label for="ValorPropuesta" class="col-form-label">Valor Propuesta:</label>
-                                                            <asp:TextBox ID="txbValorPropuesta" CssClass="form-control input-sm" runat="server" placeholder="$0"
-                                                                onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" autocomplete="off"></asp:TextBox>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group">
-                                                            <i class="fas fa-paperclip text-info"></i>
-                                                            <label for="ArchivoPropuesta" class="col-form-label">Archivo Propuesta:</label>
-                                                            <input type="file" runat="server" class="form-control" id="ArchivoPropuesta" placeholder="subir archivo">
-                                                        </div>
-                                                    </div>
-                                                </div>--%>
+
                                                 <div class="form-group">
                                                     <i class="fas fa-pen text-info"></i>
                                                     <label for="message-text" class="col-form-label">Contexto de la negociación:</label>
@@ -382,21 +366,7 @@
                                                     </textarea>
                                                 </div>
                                             </div>
-<%--                                            <div class="modal-footer">
-                                                <asp:Literal ID="ltMensajeVal" runat="server"></asp:Literal>
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                                    onclick="window.location.reload();">
-                                                    Cerrar</button>
-                                                <asp:Button ID="btnAgregar" runat="server" OnClick="btnAgregar_Click"
-                                                    Text="Agregar" CssClass="btn btn-primary mb-3" Visible="false"
-                                                    ValidationGroup="agregar" />
-                                                <asp:Button ID="btnActualizar" runat="server" OnClick="btnActualizar_Click"
-                                                    Text="Actualizar" Visible="true"
-                                                    class="btn btn-primary mb-3" />
 
-
-
-                                            </div>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -424,10 +394,7 @@
                                                     </button>
                                                 </span>
                                             </div>
-                                            <%-- <button type="button" class="btn btn-success m-l-md"
-                                                data-toggle="modal" data-target="#ModalContacto" data-whatever="@fat">
-                                                <i class="fa fa-plus"></i> Nuevo
-                                            </button>--%>
+
                                         </div>
                                         <div class="clients-list">
                                             <ul class="nav nav-tabs">

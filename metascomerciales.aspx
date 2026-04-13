@@ -42,7 +42,7 @@
         function changeClass() {
             var element1 = document.querySelector("#metascomerciales");
             element1.classList.replace("old", "active");
-            var element2 = document.querySelector("#canalesprocesoscomerciales");
+            var element2 = document.querySelector("#gestioncomercial");
             element2.classList.remove("collapse");
         }
     </script>
@@ -107,7 +107,7 @@
                     <h2><i class="fa fa-chart-column text-success m-r-sm"></i>Metas comerciales</h2>
                     <ol class="breadcrumb">
                         <li><a href="inicio">Inicio</a></li>
-                        <li>Comercial</li>
+                        <li>Gestión Comercial</li>
                         <li class="active"><strong>Metas comerciales</strong></li>
                     </ol>
                 </div>
@@ -135,69 +135,6 @@
                         <div class="row" id="divContenido" runat="server">
                             <div class="col-lg-12">
                                 <div class="row">
-
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-warning">
-                                                <h5>Ritmo vs tiempo</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="lblRitmoReal" runat="server"></asp:Literal>%
-                                                </h1>
-                                                <small>Esperado:
-                                                    <asp:Literal ID="lblRitmoEsperado" runat="server"></asp:Literal>%
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-danger">
-                                                <h5>Proyección cierre mes</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="lblProyeccionCierre" runat="server"></asp:Literal>
-                                                </h1>
-                                                <small>Meta:
-                                                    <asp:Literal ID="lblMetaMes" runat="server"></asp:Literal>
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-info">
-                                                <h5>Días hábiles restantes</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="lblDiasHabiles" runat="server"></asp:Literal>
-                                                </h1>
-                                                <small>Necesario por día:
-                                                    <asp:Literal ID="lblVentaNecesariaDia" runat="server"></asp:Literal>
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-lg-3">
-                                        <div class="ibox float-e-margins">
-                                            <div class="ibox-title text-danger">
-                                                <h5>Presión comercial</h5>
-                                            </div>
-                                            <div class="ibox-content">
-                                                <h1 class="no-margins">
-                                                    <asp:Literal ID="lblPresion" runat="server"></asp:Literal>x
-                                                </h1>
-                                                <small>vs promedio diario actual
-                                                </small>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                 </div>
                             </div>
@@ -249,9 +186,17 @@
                                                         <div class="form-group">
                                                             <label>Año:</label>
                                                             <asp:DropDownList ID="ddlAnnio" runat="server"
-                                                                CssClass="form-control input-sm" AppendDataBoundItems="true">
-                                                                <asp:ListItem Text="2025" Value="2025"></asp:ListItem>
+                                                                CssClass="form-control input-sm" AppendDataBoundItems="true">                                                               
                                                                 <asp:ListItem Text="2026" Value="2026"></asp:ListItem>
+                                                                <asp:ListItem Text="2027" Value="2027"></asp:ListItem>
+                                                                <asp:ListItem Text="2028" Value="2028"></asp:ListItem>
+                                                                <asp:ListItem Text="2029" Value="2029"></asp:ListItem>
+                                                                <asp:ListItem Text="2030" Value="2030"></asp:ListItem>
+                                                                <asp:ListItem Text="2031" Value="2031"></asp:ListItem>
+                                                                <asp:ListItem Text="2032" Value="2032"></asp:ListItem>
+                                                                <asp:ListItem Text="2033" Value="2033"></asp:ListItem>
+                                                                <asp:ListItem Text="2034" Value="2034"></asp:ListItem>
+                                                                <asp:ListItem Text="2035" Value="2035"></asp:ListItem>
                                                             </asp:DropDownList>
                                                         </div>
                                                     </div>
@@ -292,14 +237,7 @@
                                                                 onkeyup="formatCurrency(this)" onblur="keepFormatted(this)" placeholder="$ XX.000.000"></asp:TextBox>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                        <div class="form-group">
-                                                            <label>Asesor Online:</label>
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label>Director sede:</label>
@@ -310,6 +248,7 @@
                                                     <div class="col-md-6">
                                                     </div>
                                                 </div>
+
                                                 <div class="form-group">
                                                     <a href="metascomerciales" class="btn btn-sm btn-danger pull-right m-t-n-xs m-l-md">Cancelar</a>
                                                     <asp:Button ID="btnAgregar" runat="server" Text="Agregar"
@@ -354,10 +293,10 @@
                                             </div>
                                         </div>
 
-                                        <table class="footable table table-striped list-group-item-text" data-paging-size="10"
+                                        <table class="footable table table-striped list-group-item-text" data-paging-size="13"
                                             data-filter-min="3" data-filter-placeholder="Buscar"
                                             data-paging="true" data-sorting="true" data-paging-count-format="{CP} de {TP}"
-                                            data-paging-limit="10" data-filtering="true"
+                                            data-paging-limit="13" data-filtering="true"
                                             data-filter-container="#filter-form-container" data-filter-delay="300"
                                             data-filter-dropdown-title="Buscar en:" data-filter-position="left"
                                             data-empty="Sin resultados">

@@ -236,7 +236,7 @@ namespace fpWebApp
                 DataTable dt1 = cg.ConsultarUsuarioSedePerfilPorId(idUsuario);
                 int idPerfil = Convert.ToInt32(dt1.Rows[0]["idPerfil"]);
 
-                if (idPerfil == 36 || idPerfil == 1 || idPerfil == 37) // 36: Líder corporativo, 1: CEO, 37: Director operativo
+                if (idPerfil == 36 || idPerfil == 21 || idPerfil == 37 || idPerfil == 12 || idPerfil == 18) // 36: Líder corporativo, 1: Dir comercial, 37: Director operativo audior ing desarololo
                 {
                     phAsesorHeader.Visible = true;
                     rpEmpresasCRM.ItemDataBound += (s, e) =>
@@ -295,13 +295,13 @@ namespace fpWebApp
                             string script = @"
                                 Swal.fire({
                                     title: 'Registro actualizado correctamente.',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    text: 'Corporativo - Fitness People',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }).then(() => {
-                                    window.location.href = 'prospectosempresas';
+                                    window.location.href = 'prospectocorporativo';
                                 });
                                 ";
 
@@ -316,7 +316,7 @@ namespace fpWebApp
                                 icon: 'error'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                  window.location.href = 'prospectosempresas';
+                                  window.location.href = 'prospectocorporativo';
                                 }
                             });
                         ";
@@ -353,13 +353,13 @@ namespace fpWebApp
                             string script = @"
                                 Swal.fire({
                                     title: 'Registro eliminado correctamente.',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    text: 'Corporativo - Fitness People',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }).then(() => {
-                                    window.location.href = 'prospectosempresas';
+                                    window.location.href = 'prospectocorporativo';
                                 });
                                 ";
 
@@ -374,7 +374,7 @@ namespace fpWebApp
                                 icon: 'error'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                  window.location.href = 'prospectosempresas';
+                                  window.location.href = 'prospectocorporativo';
                                 }
                             });
                         ";
@@ -417,13 +417,13 @@ namespace fpWebApp
                             string script = @"
                                 Swal.fire({
                                     title: 'La empresa prospecto se creó correctamente.',
-                                    text: '" + mensaje.Replace("'", "\\'") + @"',
+                                    text: 'Corporativo - Fitness People',
                                     icon: 'success',
                                     timer: 3000, // 3 segundos
                                     showConfirmButton: false,
                                     timerProgressBar: true
                                 }).then(() => {
-                                    window.location.href = 'prospectosempresas';
+                                    window.location.href = 'prospectocorporativo';
                                 });
                                 ";
 
@@ -438,7 +438,7 @@ namespace fpWebApp
                                 icon: 'error'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                  window.location.href = 'prospectosempresas';
+                                  window.location.href = 'prospectocorporativo';
                                 }
                             });
                         ";
@@ -536,13 +536,13 @@ namespace fpWebApp
                 if (ViewState["CrearModificar"].ToString() == "1")
                 {
                     HtmlAnchor btnEditar = (HtmlAnchor)e.Item.FindControl("btnEditar");
-                    btnEditar.Attributes.Add("href", "prospectosempresas?editid=" + row.Row[0].ToString());
+                    btnEditar.Attributes.Add("href", "prospectocorporativo?editid=" + row.Row[0].ToString());
                     btnEditar.Visible = true;
                 }
                 if (ViewState["Borrar"].ToString() == "1")
                 {
                     HtmlAnchor btnEliminar = (HtmlAnchor)e.Item.FindControl("btnEliminar");
-                    btnEliminar.Attributes.Add("href", "prospectosempresas?deleteid=" + row.Row[0].ToString());
+                    btnEliminar.Attributes.Add("href", "prospectocorporativo?deleteid=" + row.Row[0].ToString());
                     btnEliminar.Visible = true;
                 }
 

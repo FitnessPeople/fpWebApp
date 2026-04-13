@@ -20,7 +20,7 @@ namespace fpWebApp
             {
                 if (Session["idUsuario"] != null)
                 {
-                    ValidarPermisos("Programar sesión");
+                    ValidarPermisos("Programar sesión personalizada");
                     if (ViewState["SinPermiso"].ToString() == "1")
                     {
                         divMensaje.Visible = true;
@@ -35,14 +35,11 @@ namespace fpWebApp
                     {
                         DateTime dtHoy = DateTime.Now;
                         txbFechaIni.Attributes.Add("type", "date");
-                        txbFechaFin.Attributes.Add("type", "date");
                         txbFechaIni.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
-                        txbFechaFin.Attributes.Add("min", dtHoy.Year.ToString() + "-" + String.Format("{0:MM}", dtHoy) + "-" + String.Format("{0:dd}", dtHoy));
                         divCrear.Visible = true;
                         CargarSedesSesion();
                         CargarSedesCalendario();
                         CargarEntrenadores();
-                        CargarClasesGrupales();
                     }
                     if (ViewState["Borrar"].ToString() == "1")
                     {
@@ -54,21 +51,21 @@ namespace fpWebApp
                         {
                             try
                             {
-                                string strQuery = "DELETE FROM ProgramacionClasesGrupales " +
-                                    "WHERE idProgramacion = " + Request.QueryString["deleteid"].ToString();
+                                string strQuery = "DELETE FROM ProgramacionSesionPersonalizada " +
+                                    "WHERE idProgramacionPer = " + Request.QueryString["deleteid"].ToString();
                                 clasesglobales cg = new clasesglobales();
                                 string mensaje = cg.TraerDatosStr(strQuery);
 
                                 if (mensaje == "OK")
                                 {
-                                    cg.InsertarLog(Session["idusuario"].ToString(), "DisponibilidadEspecialistas", "Elimina", "El usuario eliminó un nuevo espacio del especialista.", "", "");
+                                    cg.InsertarLog(Session["idusuario"].ToString(), "ProgramacionSesionPersonalizada", "Elimina", "El usuario eliminó una sesión personalizada.", "", "");
                                 }
                             }
                             catch (SqlException ex)
                             {
                                 string mensaje = ex.Message;
                             }
-                            Response.Redirect("agenda");
+                            Response.Redirect("programarpersonalizada");
                         }
                     }
                 }
@@ -151,194 +148,102 @@ namespace fpWebApp
             dt.Dispose();
         }
 
-        private void CargarClasesGrupales()
-        {
-            clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarClasesGrupales();
-
-            ddlClasesGrupales.DataSource = dt;
-            ddlClasesGrupales.DataBind();
-
-            dt.Dispose();
-        }
-
         protected void btnAgregar_Click(object sender, EventArgs e)
         {
             DateTime dtFechaFinCita;
 
             DateTime dtFechaIni = Convert.ToDateTime(txbFechaIni.Value.ToString());
-            DateTime dtFechaFin = Convert.ToDateTime(txbFechaFin.Value.ToString());
-
-            int intCountItemsChecked = 0;
-            foreach (ListItem item in cbDiasRepite.Items)
-            {
-                if (item.Selected)
-                {
-                    intCountItemsChecked += 1;
-                }
-            }
-
-            int nroDias = (dtFechaFin - dtFechaIni).Days + 1;
 
             string script = string.Empty;
 
-            for (int i = 0; i < nroDias; i++)
+            DateTime dtFechaIniCita = Convert.ToDateTime(dtFechaIni.ToString("yyyy-MM-dd") + " " + txbHoraIni.Value.ToString());
+            DateTime dtFechaFinCitaDia = dtFechaIniCita.AddHours(1);
+
+            if (dtFechaFinCitaDia > dtFechaIniCita)
             {
-                DateTime dtFechaIniCita = Convert.ToDateTime(dtFechaIni.AddDays(i).ToString("yyyy-MM-dd") + " " + txbHoraIni.Value.ToString());
-                DateTime dtFechaFinCitaDia = Convert.ToDateTime(dtFechaIni.AddDays(i).ToString("yyyy-MM-dd") + " " + txbHoraFin.Value.ToString());
-
-                if (dtFechaFinCitaDia > dtFechaIniCita)
+                try
                 {
-                    try
+                    while (dtFechaIniCita < dtFechaFinCitaDia)
                     {
-                        while (dtFechaIniCita < dtFechaFinCitaDia)
+                        dtFechaFinCita = dtFechaFinCitaDia;
+
+                        // Consulta si se cruza la cita en la sede con la fecha y hora de otra disponible
+                        string strQuery = "SELECT * FROM ProgramacionSesionPersonalizada " +
+                            "WHERE (idEntrenador = " + ddlEntrenadores.SelectedItem.Value.ToString() + " " +
+                            "OR idSede = " + ddlSedesSesion.SelectedItem.Value.ToString() + ") " +
+                            "AND FechaHora = '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' ";
+                        clasesglobales cg = new clasesglobales();
+                        DataTable dt = cg.TraerDatos(strQuery);
+
+                        if (dt.Rows.Count == 0)
                         {
-                            dtFechaFinCita = dtFechaIniCita.AddMinutes(Convert.ToDouble(ddlDuracion.SelectedItem.Value.ToString()));
-
-                            // Consulta si se cruza la cita en la sede con la fecha y hora de otra disponible
-                            string strQuery = "SELECT * FROM ProgramacionClasesGrupales " +
-                                "WHERE (idClaseGrupal = " + ddlClasesGrupales.SelectedItem.Value.ToString() + " " +
-                                "OR idEntrenador = " + ddlEntrenadores.SelectedItem.Value.ToString() + " " +
-                                "OR idSede = " + ddlSedesSesion.SelectedItem.Value.ToString() + ") " +
-                                "AND (('" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaInicio AND '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaFin) " +
-                                "OR ('" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' > FechaInicio AND '" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "' < FechaFin))";
-                            clasesglobales cg = new clasesglobales();
-                            DataTable dt = cg.TraerDatos(strQuery);
-
-                            if (dt.Rows.Count == 0)
-                            {
-                                // Consulta si se cruza la cita del entrenador con la fecha y hora de otra disponible
-                                strQuery = "SELECT * FROM ProgramacionClasesGrupales " +
-                                    "WHERE idEntrenador = " + ddlEntrenadores.SelectedItem.Value.ToString() + " " +
-                                    "AND idClaseGrupal != " + ddlClasesGrupales.SelectedItem.Value.ToString() + " " +
-                                    "AND idSede = " + ddlSedesSesion.SelectedItem.Value.ToString() + " " +
-                                    "AND TIMESTAMPDIFF(MINUTE, '" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', FechaInicio) <= 60 " +
-                                    "AND '" + dtFechaIniCita.ToString("yyyy-MM-dd") + "' = DATE(FechaInicio) ";
-                                DataTable dt1 = cg.TraerDatos(strQuery);
-
-                                if (dt1.Rows.Count == 0)
-                                {
-                                    if (dtFechaIniCita.Hour < 5 || dtFechaIniCita.Hour >= 21)
-                                    {
-                                        script = @"
-                                            Swal.fire({
-                                                title: 'Advertencia',
-                                                text: 'Horario fuera del intervalo permitido para la sesión.',
-                                                icon: 'error'
-                                            }).then(() => {
-                                            });
-                                            ";
-                                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                                        dtFechaIniCita = dtFechaFinCita;
-                                    }
-                                    else
-                                    {
-                                        if (intCountItemsChecked > 0)
-                                        {
-                                            foreach (ListItem item in cbDiasRepite.Items)
-                                            {
-                                                if (item.Selected)
-                                                {
-                                                    if (Convert.ToInt16(dtFechaIniCita.DayOfWeek) == Convert.ToInt16(item.Value.ToString()))
-                                                    {
-                                                        strQuery = "INSERT INTO ProgramacionClasesGrupales " +
-                                                            "(idClaseGrupal, idEntrenador, idSede, FechaInicio, FechaFin, " +
-                                                            "CupoMaximo, Estado) " +
-                                                            "VALUES (" + ddlClasesGrupales.SelectedItem.Value.ToString() + ", " +
-                                                            "" + ddlEntrenadores.SelectedItem.Value.ToString() + ", " +
-                                                            "" + ddlSedesSesion.SelectedItem.Value.ToString() + ", " +
-                                                            "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                                            "'" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                                            "" + txbCupo.Value.ToString() + ", " +
-                                                            "'Programado') ";
-
-                                                        string mensaje = cg.TraerDatosStr(strQuery);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else
-                                        {
-                                            strQuery = "INSERT INTO ProgramacionClasesGrupales " +
-                                                "(idClaseGrupal, idEntrenador, idSede, FechaInicio, FechaFin, " +
-                                                "CupoMaximo, Estado) " +
-                                                "VALUES (" + ddlClasesGrupales.SelectedItem.Value.ToString() + ", " +
-                                                "" + ddlEntrenadores.SelectedItem.Value.ToString() + ", " +
-                                                "" + ddlSedesSesion.SelectedItem.Value.ToString() + ", " +
-                                                "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                                "'" + dtFechaFinCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
-                                                "" + txbCupo.Value.ToString() + ", " +
-                                                "'Programado') ";
-
-                                            string mensaje = cg.TraerDatosStr(strQuery);
-                                        }
-                                        dtFechaIniCita = dtFechaFinCita;
-
-                                        script = @"
-                                            Swal.fire({
-                                                title: 'Sesión creada exitosamente.',
-                                                text: '',
-                                                icon: 'success',
-                                                timer: 3000, // 3 segundos
-                                                showConfirmButton: false,
-                                                timerProgressBar: true
-                                            }).then(() => {
-                                                window.location.href = 'programarsesion';
-                                            });
-                                            ";
-                                        ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
-                                    }
-                                }
-                                else
-                                {
-                                    script = @"
-                                        Swal.fire({
-                                            title: 'Advertencia',
-                                            text: 'Ya esta ocupado este especialista en otra sede.',
-                                            icon: 'error'
-                                        }).then(() => {
-                                        });
-                                        ";
-                                    ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                                    dtFechaIniCita = dtFechaFinCitaDia;
-                                }
-                                dt1.Dispose();
-                            }
-                            else
+                            
+                            if (dtFechaIniCita.Hour < 5 || dtFechaIniCita.Hour > 21)
                             {
                                 script = @"
                                     Swal.fire({
                                         title: 'Advertencia',
-                                        text: 'Ya esta ocupado este horario en la sede.',
+                                        text: 'Horario fuera del permitido. El horario debe ser entre 5 am hasta 9 pm.',
                                         icon: 'error'
                                     }).then(() => {
                                     });
                                     ";
                                 ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
-                                dtFechaIniCita = dtFechaFinCitaDia;
+                                dtFechaIniCita = dtFechaFinCita;
                             }
-                            dt.Dispose();
+                            else
+                            {
+                                string[] strDocumento = txbAfiliado.Text.ToString().Split('-');
+
+                                strQuery = "INSERT INTO ProgramacionSesionPersonalizada " +
+                                    "(idEntrenador, DocumentoAfiliado, idSede, FechaHora, Estado) " +
+                                    "VALUES (" + ddlEntrenadores.SelectedItem.Value.ToString() + ", " +
+                                    "'" + strDocumento[0].Trim() + "', " +
+                                    "" + ddlSedesSesion.SelectedItem.Value.ToString() + ", " +
+                                    "'" + dtFechaIniCita.ToString("yyyy-MM-dd H:mm:ss") + "', " +
+                                    "'Agendada') ";
+
+                                string mensaje = cg.TraerDatosStr(strQuery);
+                                
+                                dtFechaIniCita = dtFechaFinCita;
+
+                                script = @"
+                                    Swal.fire({
+                                        title: 'Sesión creada exitosamente.',
+                                        text: '',
+                                        icon: 'success',
+                                        timer: 3000, // 3 segundos
+                                        showConfirmButton: false,
+                                        timerProgressBar: true
+                                    }).then(() => {
+                                        window.location.href = 'programarpersonalizada';
+                                    });
+                                    ";
+                                ScriptManager.RegisterStartupScript(this, GetType(), "ExitoMensaje", script, true);
+                            }
                         }
-                    }
-                    catch (SqlException ex)
-                    {
-                        script = @"
-                            Swal.fire({
-                                title: 'Error',
-                                text: 'SqlException: (" + ex.Message.ToString() + @").',
-                                icon: 'error'
-                            }).then(() => {
-                            });
-                            ";
-                        ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                        else
+                        {
+                            script = @"
+                                Swal.fire({
+                                    title: 'Advertencia',
+                                    text: 'Ya esta ocupado este horario en la sede.',
+                                    icon: 'error'
+                                }).then(() => {
+                                });
+                                ";
+                            ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+                            dtFechaIniCita = dtFechaFinCitaDia;
+                        }
+                        dt.Dispose();
                     }
                 }
-                else
+                catch (SqlException ex)
                 {
                     script = @"
                         Swal.fire({
-                            title: 'Advertencia',
-                            text: 'Hora de inicio debe ser menor a hora final.',
+                            title: 'Error',
+                            text: 'SqlException: (" + ex.Message.ToString() + @").',
                             icon: 'error'
                         }).then(() => {
                         });
@@ -346,17 +251,29 @@ namespace fpWebApp
                     ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
                 }
             }
+            else
+            {
+                script = @"
+                    Swal.fire({
+                        title: 'Advertencia',
+                        text: 'Hora de inicio debe ser menor a hora final.',
+                        icon: 'error'
+                    }).then(() => {
+                    });
+                    ";
+                ScriptManager.RegisterStartupScript(this, GetType(), "ErrorCatch", script, true);
+            }
         }
 
         protected void ddlSedes_SelectedIndexChanged(object sender, EventArgs e)
         {
-            CargarSesiones(ddlSedes.SelectedItem.Value.ToString());
+            CargarSesionesPersonalizadas(ddlSedes.SelectedItem.Value.ToString());
         }
 
-        private void CargarSesiones(string idSede)
+        private void CargarSesionesPersonalizadas(string idSede)
         {
             clasesglobales cg = new clasesglobales();
-            DataTable dt = cg.ConsultaCargarSesiones(int.Parse(idSede));
+            DataTable dt = cg.ConsultaCargarSesionesPersonalizadas(int.Parse(idSede));
 
             _strEventos = "events: [\r\n";
 
@@ -364,15 +281,16 @@ namespace fpWebApp
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    IFormatProvider provider = new CultureInfo("en-US");
-                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHoraIni"].ToString(), provider);
-                    DateTime dtFin = Convert.ToDateTime(dt.Rows[i]["FechaHoraFin"].ToString(), provider);
+                    //IFormatProvider provider = new CultureInfo("en-US");
+                    //DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHora"].ToString(), provider);
+                    DateTime dtIni = Convert.ToDateTime(dt.Rows[i]["FechaHora"].ToString());
+                    DateTime dtFin = dtIni.AddHours(1);
 
                     string strFechaHoraIni = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtIni);
                     string strFechaHoraFin = String.Format("{0:yyyy-MM-ddTHH:mm:ss}", dtFin);
 
                     _strEventos += "{\r\n";
-                    _strEventos += "id: '" + dt.Rows[i]["idProgramacion"].ToString() + "',\r\n";
+                    _strEventos += "id: '" + dt.Rows[i]["idProgramacionPer"].ToString() + "',\r\n";
                     //_strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
                     //_strEventos += "start: '" + dt.Rows[i]["FechaHoraIni"].ToString() + "',\r\n";
                     _strEventos += "start: '" + strFechaHoraIni + "',\r\n";
@@ -380,31 +298,10 @@ namespace fpWebApp
                     _strEventos += "end: '" + strFechaHoraFin + "',\r\n";
                     //_strEventos += "className: 'bg-primary',\r\n";
 
-                    //if (dt.Rows[i]["idAfiliado"].ToString() != "")
-                    //{
-                    //    if (dt.Rows[i]["Cancelada"].ToString() != "0")
-                    //    {
-                    //        _strEventos += "color: '#ed5565',\r\n"; //danger
-                    //        _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "description: 'Cita cancelada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "icon: 'id-card',\r\n";
-                    //        _strEventos += "btnEliminar: 'none',\r\n";
-                    //    }
-                    //    else
-                    //    {
-                    //        _strEventos += "color: '#F8AC59',\r\n"; //warning
-                    //        _strEventos += "title: '" + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "description: 'Cita asignada: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
-                    //        _strEventos += "icon: 'id-card',\r\n";
-                    //        _strEventos += "btnEliminar: 'none',\r\n";
-                    //    }
-                    //}
-                    //else
-                    //{
-                    _strEventos += "title: '" + dt.Rows[i]["Modalidad"].ToString() + " - " + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
+                    _strEventos += "title: '" + dt.Rows[i]["NombreEmpleado"].ToString() + "',\r\n";
                     _strEventos += "color: '#1ab394',\r\n";
-                    _strEventos += "description: 'Cupo total: " + dt.Rows[i]["CupoMaximo"].ToString() + "',\r\n";
-                    _strEventos += "icon: 'user-doctor',\r\n";
+                    _strEventos += "description: 'Entrenamiento personalizado para: " + dt.Rows[i]["NombreAfiliado"].ToString() + " " + dt.Rows[i]["ApellidoAfiliado"].ToString() + "',\r\n";
+                    _strEventos += "icon: 'handshake-angle',\r\n";
                     _strEventos += "btnEliminar: 'inline',\r\n";
                     //}
 

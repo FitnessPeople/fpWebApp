@@ -259,6 +259,7 @@ namespace fpWebApp
                         Swal.fire({
                             title: 'Usuario actualizado correctamente',
                             html: 'La clave del usuario ha sido cambiada por defecto.<br><br><b>Recuerde informar al usuario.</b>',
+                            text: 'Gestión Humana - Fitness People',
                             icon: 'success',
                             timer: 3000,
                             showConfirmButton: false,
