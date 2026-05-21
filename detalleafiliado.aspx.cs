@@ -186,6 +186,7 @@ namespace fpWebApp
             ltCumple.Text = dt.Rows[0]["FechaNacAfiliado"] != DBNull.Value ? Convert.ToDateTime(dt.Rows[0]["FechaNacAfiliado"]).ToString("dd MMM"): "";
             ltEstado.Text = "<span class=\"label label-" + dt.Rows[0]["label"].ToString() + "\">" + dt.Rows[0]["EstadoAfiliado"].ToString() + "</span>";
             //ltFoto.Text = "<img src=\"img/afiliados/nofoto.png\" class=\"img-circle circle-border m-b-md\" width=\"120px\" alt=\"profile\">";
+            ltObservacionesParQ.Text = dt.Rows[0]["ObservacionesParQ"].ToString();
 
             if (dt.Rows[0]["FotoAfiliado"].ToString() != "")
             {
@@ -333,6 +334,9 @@ namespace fpWebApp
             {
                 rpParq.DataSource = dt;
                 rpParq.DataBind();
+
+                DateTime fechaParQ = Convert.ToDateTime(dt.Rows[0]["FechaRespParQ"]);
+                ltFechaObservacionParQ.Text = fechaParQ.ToString("dd MMM yyyy");
             }
             dt.Dispose();
         }

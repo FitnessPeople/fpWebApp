@@ -426,14 +426,57 @@
                                                 <ItemTemplate>
                                                     <div class="feed-element">
                                                         <div>
-                                                            <small class="pull-right text-navy"><%# Eval("FechaRespParQ", "{0:dd MMM yyyy}") %></small>
-                                                            <strong><%# Eval("Orden") %></strong>
-                                                            <div><%# Eval("PreguntaParq") %></div>
-                                                            <small class="text-muted"><span class="label label-<%# Eval("label") %>"><%# Eval("Respuesta1") %></span> <%# Eval("Argumento") %></small>
+                                                            <small class="pull-right text-navy">
+                                                                <%# Eval("FechaRespParQ", "{0:dd MMM yyyy}") %>
+                                                            </small>
+                                                            <strong>
+                                                                <%# Eval("Orden") %>
+                                                            </strong>
+
+                                                            <div style="margin-top: 5px;">
+                                                                <%# Eval("PreguntaParq") %>
+                                                            </div>
+
+                                                            <div style="margin-top: 10px; display: flex; justify-content: space-between;">
+                                                                <small class="text-muted" style="margin-right: 10px;">
+                                                                    <span class="label label-<%# Eval("label") %>">
+                                                                        <%# Eval("Respuesta1") %>
+                                                                    </span> 
+                                                                </small>
+
+                                                                <small>
+                                                                    <span>
+                                                                        <%# Eval("Argumento") %>
+                                                                    </span> 
+                                                                </small>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </ItemTemplate>
                                             </asp:Repeater>
+
+                                            <div class="feed-element">
+                                                <div>
+                                                    <small class="pull-right text-navy">
+                                                        <asp:Literal ID="ltFechaObservacionParQ" runat="server"></asp:Literal>
+                                                    </small>
+                                                    <strong>
+                                                        11
+                                                    </strong>
+
+                                                    <div style="margin-top: 5px;">
+                                                        Observaciones de PARQ
+                                                    </div>
+
+                                                    <div style="margin-top: 10px; display: flex; justify-content: space-between;">
+                                                        <small class="text-muted" style="margin-right: 10px; font-size: 14px;">
+                                                            <span>
+                                                                <asp:Literal ID="ltObservacionesParQ" runat="server"></asp:Literal>
+                                                            </span> 
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
 

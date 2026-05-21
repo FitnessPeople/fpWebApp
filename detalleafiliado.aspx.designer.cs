@@ -267,6 +267,24 @@ namespace fpWebApp
         protected global::System.Web.UI.WebControls.Repeater rpParq;
 
         /// <summary>
+        /// Control ltFechaObservacionParQ.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltFechaObservacionParQ;
+
+        /// <summary>
+        /// Control ltObservacionesParQ.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal ltObservacionesParQ;
+
+        /// <summary>
         /// Control ltCRM.
         /// </summary>
         /// <remarks>
