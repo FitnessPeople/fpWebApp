@@ -916,7 +916,7 @@ namespace fpWebApp
             {
                 // TODO: Arreglar datos quemados
                 string consultaSQL = $@"SELECT a.DocumentoAfiliado AS 'Documento de Afiliado', CONCAT_WS(' ', a.NombreAfiliado, a.ApellidoAfiliado) AS 'Nombre de Afiliado', 
-                                        p.nombrePlan AS 'Nombre de Plan', ppa.Valor AS 'Valor', ppa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
+                                        p.nombrePlan AS 'Nombre de Plan', s.nombreSede AS 'Sede', ppa.Valor AS 'Valor', ppa.idReferencia AS 'Nro. de Referencia', mp.NombreMedioPago AS 'Tipo de Pago', 
                                         ppa.Banco AS 'Entidad Bancaría', ppa.FechaHoraPago AS 'Fecha de Pago', ppa.estadoPago AS 'Estado', 
                                         u.NombreUsuario AS 'Nombre de Usuario', cv.NombreCanalVenta AS 'Canal de Venta', 
                                         CASE 
@@ -942,6 +942,7 @@ namespace fpWebApp
                                         INNER JOIN canalesventa cv ON cv.idCanalVenta = e.idCanalVenta 
                                         INNER JOIN mediosdepago mp ON mp.idMedioPago = ppa.idMedioPago 
                                         INNER JOIN planes p ON p.idPlan = ap.idPlan 
+                                        INNER JOIN sedes s ON s.idSede = a.idSede 
                                         WHERE DATE(ppa.FechaHoraPago) BETWEEN '{txbFechaIni.Value.ToString()}' AND '{txbFechaFin.Value.ToString()}' 
                                         AND p.debitoAutomatico = 1 
                                         ORDER BY ppa.FechaHoraPago DESC;";
