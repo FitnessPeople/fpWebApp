@@ -361,7 +361,7 @@
                                                     <th data-breakpoints="xs sm md">Referencia</th>
                                                     <th data-breakpoints="xs sm md">Fecha</th>
                                                     <%--<th data-breakpoints="xs sm md">Estado</th>--%>
-                                                    <th data-breakpoints="xs sm md">Usuario</th>
+                                                    <th data-breakpoints="xs sm md">Sede</th>
                                                     <th data-breakpoints="xs sm md">Canal</th>
                                                     <th data-breakpoints="xs sm md">Detalle</th>
                                                 </tr>
@@ -379,7 +379,7 @@
                                                             <td><%# Eval("IdReferencia") %></td>
                                                             <td><%# Eval("FechaHoraPago", "{0:dd MMM yyyy HH:mm}") %></td>
                                                             <%--<td><%# Eval("EstadoPago") %></td>--%>
-                                                            <td><%# Eval("Usuario") %></td>
+                                                            <td><%# Eval("Sede") %></td>
                                                             <td><%# Eval("CanalVenta") %></td>
                                                             <td>
                                                                 <asp:Button ID="btnDetalle" runat="server" Text="Ver"
